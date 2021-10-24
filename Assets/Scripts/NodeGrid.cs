@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,42 +17,41 @@ public class NodeGrid : MonoBehaviour
 	private Node destination;
 	private Node start;
 	private float nodeRadius;
-	private List<Node> path;
+	private Vector3[] turnPoints;
+	private List<Node> path = new List<Node>();
 
 	private void Awake()
 	{
-		path = new List<Node>();
+		turnPoints = new Vector3[0];
+
 		nodeRadius = nodeSize / 2;
 		height = Mathf.RoundToInt(wordSizeGrid.x / nodeSize);
 		width = Mathf.RoundToInt(wordSizeGrid.y / nodeSize);
 
 		buttonLeft = transform.position - (Vector3.right * wordSizeGrid.x / 2) - (Vector3.forward * wordSizeGrid.y / 2);
 		generateGrid();
-
-		start = graph[0, 0];
-		start.g = 0;
-		//start.color = Color.blue;
-
-
 	}
 
 	public void Update()
 	{
-		// updating start node =>  tracking the player prefab
+		// updating start node => tracking the player prefab
 		start = getNodeFromTransformPosition(playerPrefab);
 
-		if (Input.GetMouseButton(0))
+		if (Input.GetMouseButtonDown(0))
 		{
 			getNodeFromMousePosition();
+			resetGrid();
 		}
 	}
 
-	/// <summary> this methode get the  position of an GameObj and translate it to node coordonate and return the node,
-	/// even if the player moves within a single node size the nethode will not return new node until the player exit this node
+	/// <summary>
+	/// this methode get the position of an GameObj and translate it to node coordonate and
+	/// return the node, even if the player moves within a single node size the nethode will not
+	/// return new node until the player exit this node
 	/// </summary>
 	/// <param name="prefab"> Transform obj </param>
 	/// <returns> node </returns>
-	Node getNodeFromTransformPosition(Transform prefab)
+	private Node getNodeFromTransformPosition(Transform prefab)
 	{
 		Vector3 pos = prefab.position;
 		float posX = pos.x;
@@ -61,10 +61,9 @@ public class NodeGrid : MonoBehaviour
 		float percentY = Mathf.Floor(posY) + nodeRadius;
 
 		return GetNode(percentX, percentY);
-
 	}
 
-	void resetGrid()
+	private void resetGrid()
 	{
 		foreach (Node node in graph)
 		{
@@ -75,10 +74,11 @@ public class NodeGrid : MonoBehaviour
 			node.isObstacle = Physics.CheckSphere(node.coord, nodeSize / 2, Unwalkable);
 			node.color = node.isObstacle ? Color.red : Color.cyan;
 		}
-		// after resetting every single node in the graph 
+		// after resetting every single node in the graph
 		// we want to persist the previous start node
 		//graph[start.x, start.y].color = Color.blue;
-		graph[start.x, start.y].g = 0;
+		//graph[start.x, start.y].g = 0;
+		//start.g = 0;
 
 		// for every node in the path variable we want to change its color
 		//foreach (Node node in path)
@@ -86,8 +86,38 @@ public class NodeGrid : MonoBehaviour
 		//	node.color = Color.green;
 		//}
 		//graph[destination.x, destination.y].color = Color.black;
-
+		//path = new Vector3[0];
 	}
+
+	/// <summary>
+	/// move the unit toward the destination var sent from the grid to Gridpath var
+	/// </summary>
+	/// <param name="unit"> Transform unit </param>
+	/// <param name="path"> Array of position to </param>
+	private IEnumerator followPath(Transform unit, Vector3[] path, float speed)
+	{
+		//if (path.Length == 0) yield return null;
+
+		Vector3 currentPoint = path[0];
+		int index = 0;
+
+		while (true)
+		{
+			if (unit.position == currentPoint)
+			{
+				index++;
+				if (index >= path.Length)
+					yield break;
+				currentPoint = path[index];
+			}
+
+			unit.position = Vector3.MoveTowards(unit.position, currentPoint, speed * Time.deltaTime);
+			//Vector3 dir = currentPoint - unit.position;
+			//unit.Translate(1f * Time.fixedDeltaTime * dir.normalized, Space.World);
+			//unit.position += (unit.position.normalized - currentPoint.normalized) * speed * Time.deltaTime;
+		}
+	}
+
 	private Node getNodeFromMousePosition()
 	{
 		Plane plane = new Plane(Vector3.up, 0);
@@ -101,7 +131,6 @@ public class NodeGrid : MonoBehaviour
 			if (worldPosition.x >= transform.position.x - wordSizeGrid.x / 2 && worldPosition.x <= wordSizeGrid.x / 2 + transform.position.x
 				&& worldPosition.z >= transform.position.z - wordSizeGrid.y / 2 && worldPosition.z <= wordSizeGrid.y / 2 + transform.position.z)
 			{
-
 				float roundX = Mathf.Floor(worldPosition.x) + nodeRadius;
 				float roundY = Mathf.Floor(worldPosition.z) + nodeRadius;
 				Node selectedNode = GetNode(roundX, roundY);
@@ -111,10 +140,21 @@ public class NodeGrid : MonoBehaviour
 					{
 						return start;
 					}
-					destination = selectedNode;
-					//destination.color = Color.black;
 
-					FindPath.AStarAlgo(start, destination);
+					if (selectedNode == start)
+					{
+						Debug.Log($" cant click on same Node  ");
+						return start;
+					}
+					destination = selectedNode;
+					destination.color = Color.black;
+
+					bool foundPath = FindPath.getPathToDestination(start, destination, out turnPoints, out path);
+
+					if (foundPath)
+					{
+						StartCoroutine(followPath(playerPrefab, turnPoints, 1f));
+					}
 					resetGrid();
 				}
 			}
@@ -134,15 +174,14 @@ public class NodeGrid : MonoBehaviour
 				Vector3 nodeCoord = buttonLeft + offset + Vector3.right * nodeSize * x + Vector3.forward * nodeSize * y;
 				// create node
 				graph[x, y] = new Node(nodeCoord, x, y);
-				// project a sphere to check with the Layer Unwalkable or Player if some thing
-				// above the node
-				string[] collidableLayers = { "Player", "Unwalkable" };
+				// project a sphere to check with the Layer Unwalkable or Player if
+				// some thing above the node
+				string[] collidableLayers = { "Unwalkable" };
 				int layerToCheck = LayerMask.GetMask(collidableLayers);
 				//graph[x, y].isObstacle = Physics.CheckSphere(nodeCoord, nodeSize / 2, layerToCheck);
 
 				Collider[] hitColliders = Physics.OverlapSphere(nodeCoord, nodeSize / 2, layerToCheck);
 				graph[x, y].isObstacle = hitColliders.Length > 0 ? true : false;
-
 			}
 		}
 
@@ -173,10 +212,6 @@ public class NodeGrid : MonoBehaviour
 				}
 			}
 		}
-
-
-
-
 	}
 
 	private void OnDrawGizmos()
@@ -185,30 +220,29 @@ public class NodeGrid : MonoBehaviour
 
 		if (graph != null)
 		{
-
 			foreach (Node node in graph)
 			{
 				//string[] collidableLayers = { "Player", "Unwalkable" };
 				string[] collidableLayers = { "Unwalkable" };
 				int layerToCheck = LayerMask.GetMask(collidableLayers);
 
-				Collider[] hitColliders = Physics.OverlapSphere(node.coord, nodeSize / 2, layerToCheck);
-				node.isObstacle = hitColliders.Length > 0 ? true : false;
+				//Collider[] hitColliders = Physics.OverlapSphere(node.coord, nodeSize / 2, layerToCheck);
+				//node.isObstacle = hitColliders.Length > 0 ? true : false;
 
+				//node.color = node.isObstacle ? Color.red : Color.cyan;
 
-				node.color = node.isObstacle ? Color.red : Color.cyan;
-				if (path.Contains(node))
+				if (path.Contains(node)) node.color = Color.gray;
+
+				foreach (var n in turnPoints)
 				{
-					node.color = Color.green;
+					if (n == node.coord)
+					{
+						node.color = Color.green;
+						break;
+					}
 				}
-				if (node == destination)
-				{
-					node.color = Color.black;
-				}
-				if (node == start)
-				{
-					node.color = Color.blue;
-				}
+				if (node == destination) { node.color = Color.black; }
+				if (node == start) { node.color = Color.blue; }
 				Gizmos.color = node.color;
 
 				Gizmos.DrawCube(node.coord, new Vector3(nodeSize - 0.1f, 0.1f, nodeSize - 0.1f));
@@ -216,8 +250,6 @@ public class NodeGrid : MonoBehaviour
 			}
 		}
 	}
-
-
 
 	private Node GetNode(float i, float j)
 	{
@@ -234,4 +266,3 @@ public class NodeGrid : MonoBehaviour
 		return null;
 	}
 }
-

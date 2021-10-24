@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class PathRequestManager : MonoBehaviour
 {
-	Queue<PathRequest> pathRequestQueue = new Queue<PathRequest>();
-	PathRequest currentPathRequest;
+	private Queue<PathRequest> pathRequestQueue = new Queue<PathRequest>();
+	private PathRequest currentPathRequest;
 	public static PathRequestManager Instance;
-	bool isProcessing = false;
+	private bool isProcessing = false;
 
 	private void Awake()
 	{
 		if (Instance == null) Instance = this;
 	}
+
 	public static void RequestPath(Node startNode, Node endNode, Action callback)
 	{
 		PathRequest newRequest = new PathRequest(startNode, endNode, callback);
@@ -27,7 +28,7 @@ public class PathRequestManager : MonoBehaviour
 		{
 			isProcessing = true;
 			currentPathRequest = pathRequestQueue.Dequeue();
-			FindPath.StartFindPath(currentPathRequest.startNode, currentPathRequest.endNode);
+			//FindPath.StartFindPath(currentPathRequest.startNode, currentPathRequest.endNode);
 		}
 	}
 
@@ -36,22 +37,19 @@ public class PathRequestManager : MonoBehaviour
 		isProcessing = false;
 		currentPathRequest.callback();
 		TryProcessNext();
-
 	}
 }
 
 public class PathRequest
 {
-
 	public Action callback;
 	public Node startNode;
 	public Node endNode;
+
 	public PathRequest(Node startNode, Node endNode, Action callback)
 	{
 		this.callback = callback;
 		this.startNode = startNode;
 		this.endNode = endNode;
 	}
-
-
 }
