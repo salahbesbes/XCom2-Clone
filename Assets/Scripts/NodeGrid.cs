@@ -4,43 +4,60 @@ using UnityEngine;
 
 public class NodeGrid : MonoBehaviour
 {
+	public static NodeGrid Instance;
 	public float nodeSize = 1;
 	public Vector2 wordSizeGrid;
 	public Transform playerPrefab;
 	public LayerMask Unwalkable;
 	public LayerMask nodeLayer;
 	public LayerMask playerLayer;
-	private Node[,] graph;
-	private int width;
-	private int height;
-	private Vector3 buttonLeft;
-	private Node destination;
-	private Node start;
-	private float nodeRadius;
-	private Vector3[] turnPoints;
-	private List<Node> path = new List<Node>();
+
+	[HideInInspector]
+	public Node[,] graph;
+
+	[HideInInspector]
+	public int width, height;
+
+	[HideInInspector]
+	public Vector3 buttonLeft;
+
+	[HideInInspector]
+	public Node destination, start;
+
+	[HideInInspector]
+	public float nodeRadius;
+
+	[HideInInspector]
+	public Vector3[] turnPoints;
+
+	[HideInInspector]
+	public List<Node> path = new List<Node>();
 
 	private void Awake()
 	{
-		turnPoints = new Vector3[0];
+		if (Instance == null)
+		{
+			Instance = this;
+			turnPoints = new Vector3[0];
 
-		nodeRadius = nodeSize / 2;
-		height = Mathf.RoundToInt(wordSizeGrid.x / nodeSize);
-		width = Mathf.RoundToInt(wordSizeGrid.y / nodeSize);
+			nodeRadius = nodeSize / 2;
+			height = Mathf.RoundToInt(wordSizeGrid.x / nodeSize);
+			width = Mathf.RoundToInt(wordSizeGrid.y / nodeSize);
 
-		buttonLeft = transform.position - (Vector3.right * wordSizeGrid.x / 2) - (Vector3.forward * wordSizeGrid.y / 2);
-		generateGrid();
+			buttonLeft = transform.position - (Vector3.right * wordSizeGrid.x / 2) - (Vector3.forward * wordSizeGrid.y / 2);
+			generateGrid();
+		}
 	}
 
 	public void Update()
 	{
-		// updating start node => tracking the player prefab
-		start = getNodeFromTransformPosition(playerPrefab);
+		//// updating start node => tracking the player prefab
+		//start = getNodeFromTransformPosition(playerPrefab);
 
 		if (Input.GetMouseButtonDown(0))
 		{
-			getNodeFromMousePosition();
-			resetGrid();
+			destination = getNodeFromMousePosition();
+			if (destination != null) MovePrefab();
 		}
 	}
 
@@ -51,7 +68,7 @@ public class NodeGrid : MonoBehaviour
 	/// </summary>
 	/// <param name="prefab"> Transform obj </param>
 	/// <returns> node </returns>
-	private Node getNodeFromTransformPosition(Transform prefab)
+	public Node getNodeFromTransformPosition(Transform prefab)
 	{
 		Vector3 pos = prefab.position;
 		float posX = pos.x;
@@ -63,7 +80,7 @@ public class NodeGrid : MonoBehaviour
 		return GetNode(percentX, percentY);
 	}
 
-	private void resetGrid()
+	public void resetGrid()
 	{
 		foreach (Node node in graph)
 		{
@@ -73,34 +90,29 @@ public class NodeGrid : MonoBehaviour
 			//node.path = new List<Node>();
 			node.isObstacle = Physics.CheckSphere(node.coord, nodeSize / 2, Unwalkable);
 			node.color = node.isObstacle ? Color.red : Color.cyan;
+			node.inRange = false;
 		}
-		// after resetting every single node in the graph
-		// we want to persist the previous start node
-		//graph[start.x, start.y].color = Color.blue;
-		//graph[start.x, start.y].g = 0;
-		//start.g = 0;
-
-		// for every node in the path variable we want to change its color
-		//foreach (Node node in path)
-		//{
-		//	node.color = Color.green;
-		//}
-		//graph[destination.x, destination.y].color = Color.black;
-		//path = new Vector3[0];
 	}
 
 	/// <summary>
-	/// move the unit toward the destination var sent from the grid to Gridpath var
+	/// move the unit toward the destination var sent from the grid to Gridpath var. this
+	/// methode start on mouse douwn frame and the player start moving on the next frame until
+	/// it reaches the goal. thats why we are using the carroutine. to simulate the update
+	/// methode we use a while loop the problem is that the while loop is too rapid ( high
+	/// frequency iteration) to iterate with the same frequence of the update methode we use
+	/// yield return null or some other tools the wait for certain time "WaitForSeconds"
 	/// </summary>
 	/// <param name="unit"> Transform unit </param>
 	/// <param name="path"> Array of position to </param>
-	private IEnumerator followPath(Transform unit, Vector3[] path, float speed)
+	public IEnumerator followPath(Transform unit, Vector3[] path, float speed)
 	{
-		//if (path.Length == 0) yield return null;
+		// yield break exit out the caroutine
+		if (path.Length == 0) yield break;
+		if (unit == null) yield break;
 
 		Vector3 currentPoint = path[0];
 		int index = 0;
-
+		// this while loop simulate the update methode
 		while (true)
 		{
 			if (unit.position == currentPoint)
@@ -112,13 +124,13 @@ public class NodeGrid : MonoBehaviour
 			}
 
 			unit.position = Vector3.MoveTowards(unit.position, currentPoint, speed * Time.deltaTime);
-			//Vector3 dir = currentPoint - unit.position;
-			//unit.Translate(1f * Time.fixedDeltaTime * dir.normalized, Space.World);
-			//unit.position += (unit.position.normalized - currentPoint.normalized) * speed * Time.deltaTime;
+			// this yield return null waits until the next frame reached ( dont exit the
+			// methode )
+			yield return null;
 		}
 	}
 
-	private Node getNodeFromMousePosition()
+	public Node getNodeFromMousePosition()
 	{
 		Plane plane = new Plane(Vector3.up, 0);
 		float distance;
@@ -134,32 +146,31 @@ public class NodeGrid : MonoBehaviour
 				float roundX = Mathf.Floor(worldPosition.x) + nodeRadius;
 				float roundY = Mathf.Floor(worldPosition.z) + nodeRadius;
 				Node selectedNode = GetNode(roundX, roundY);
-				if (selectedNode != null)
-				{
-					if (selectedNode.isObstacle == true)
-					{
-						return start;
-					}
-
-					if (selectedNode == start)
-					{
-						Debug.Log($" cant click on same Node  ");
-						return start;
-					}
-					destination = selectedNode;
-					destination.color = Color.black;
-
-					bool foundPath = FindPath.getPathToDestination(start, destination, out turnPoints, out path);
-
-					if (foundPath)
-					{
-						StartCoroutine(followPath(playerPrefab, turnPoints, 1f));
-					}
-					resetGrid();
-				}
+				if (selectedNode.isObstacle == true) return null;
+				else return selectedNode;
 			}
 		}
-		return start;
+		return null;
+	}
+
+	public void MovePrefab()
+	{
+		if (destination != null && start != null)
+		{
+			if (destination == start)
+			{
+				Debug.Log($" cant click on same Node  ");
+			}
+			destination.color = Color.black;
+
+			bool foundPath = FindPath.getPathToDestination(start, destination, out turnPoints, out path);
+
+			if (foundPath)
+			{
+				StartCoroutine(followPath(playerPrefab, turnPoints, 30f));
+			}
+			resetGrid();
+		}
 	}
 
 	private void generateGrid()
@@ -226,10 +237,10 @@ public class NodeGrid : MonoBehaviour
 				string[] collidableLayers = { "Unwalkable" };
 				int layerToCheck = LayerMask.GetMask(collidableLayers);
 
-				//Collider[] hitColliders = Physics.OverlapSphere(node.coord, nodeSize / 2, layerToCheck);
-				//node.isObstacle = hitColliders.Length > 0 ? true : false;
+				Collider[] hitColliders = Physics.OverlapSphere(node.coord, nodeSize / 2, layerToCheck);
+				node.isObstacle = hitColliders.Length > 0 ? true : false;
 
-				//node.color = node.isObstacle ? Color.red : Color.cyan;
+				node.color = node.isObstacle ? Color.red : node.inRange ? Color.black : Color.cyan;
 
 				if (path.Contains(node)) node.color = Color.gray;
 
@@ -251,7 +262,7 @@ public class NodeGrid : MonoBehaviour
 		}
 	}
 
-	private Node GetNode(float i, float j)
+	public Node GetNode(float i, float j)
 	{
 		for (int x = 0; x < height; x++)
 		{

@@ -633,13 +633,13 @@ MonoBehaviour:
   playerPrefab: {fileID: 1924770321}
   Unwalkable:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8
   nodeLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 64
   playerLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 128
 --- !u!1 &1924770317
 GameObject:
   m_ObjectHideFlags: 0
