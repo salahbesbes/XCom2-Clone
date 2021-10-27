@@ -188,6 +188,7 @@ public class Node
 	public Color color;
 	public List<Node> path;
 	public bool inRange = false;
+	public bool firstRange = false;
 
 	public Node(Vector3 coord, int x, int y)
 	{
