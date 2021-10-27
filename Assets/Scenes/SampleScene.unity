@@ -132,7 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 603710805}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -258,7 +258,7 @@ GameObject:
   - component: {fileID: 798162396}
   - component: {fileID: 798162395}
   - component: {fileID: 798162394}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -418,7 +418,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.04, y: 9.72, z: 0.04}
+  m_LocalPosition: {x: 0.04, y: 20, z: 0.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -436,7 +436,7 @@ GameObject:
   - component: {fileID: 967328130}
   - component: {fileID: 967328129}
   - component: {fileID: 967328128}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 1803648059}
   - component: {fileID: 1803648058}
   - component: {fileID: 1803648062}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -629,14 +629,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeSize: 1
-  wordSizeGrid: {x: 10, y: 10}
-  playerPrefab: {fileID: 0}
+  wordSizeGrid: {x: 20, y: 20}
+  playerPrefab: {fileID: 1924770321}
   Unwalkable:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 64
   nodeLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 128
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -754,7 +754,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSelected: 0
-  movementRange: 4
+  movementRange: 10
 --- !u!1 &2055236469
 GameObject:
   m_ObjectHideFlags: 0
@@ -767,7 +767,7 @@ GameObject:
   - component: {fileID: 2055236472}
   - component: {fileID: 2055236471}
   - component: {fileID: 2055236470}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -862,7 +862,7 @@ GameObject:
   - component: {fileID: 2109072413}
   - component: {fileID: 2109072412}
   - component: {fileID: 2109072411}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

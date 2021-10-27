@@ -46,6 +46,11 @@ public class NodeGrid : MonoBehaviour
 
 			buttonLeft = transform.position - (Vector3.right * wordSizeGrid.x / 2) - (Vector3.forward * wordSizeGrid.y / 2);
 			generateGrid();
+			start = graph[0, 0];
+
+			DontDestroyOnLoad(gameObject);
+			transform.localScale = new Vector3((float)width / 10, 1, (float)height / 10);
+			FindObjectOfType<Camera>().transform.position += new Vector3(0, 45 * (width / 50), 0);
 		}
 	}
 
@@ -53,11 +58,11 @@ public class NodeGrid : MonoBehaviour
 	{
 		//// updating start node => tracking the player prefab
 		//start = getNodeFromTransformPosition(playerPrefab);
-
+		//generateGrid();
 		if (Input.GetMouseButtonDown(0))
 		{
 			destination = getNodeFromMousePosition();
-			if (destination != null) MovePrefab();
+
 		}
 	}
 
@@ -70,14 +75,18 @@ public class NodeGrid : MonoBehaviour
 	/// <returns> node </returns>
 	public Node getNodeFromTransformPosition(Transform prefab)
 	{
-		Vector3 pos = prefab.position;
-		float posX = pos.x;
-		float posY = pos.z;
+		if (prefab != null)
+		{
+			Vector3 pos = prefab.position;
+			float posX = pos.x;
+			float posY = pos.z;
 
-		float percentX = Mathf.Floor(posX) + nodeRadius;
-		float percentY = Mathf.Floor(posY) + nodeRadius;
+			float percentX = Mathf.Floor(posX) + nodeRadius;
+			float percentY = Mathf.Floor(posY) + nodeRadius;
 
-		return GetNode(percentX, percentY);
+			return GetNode(percentX, percentY);
+		}
+		return start;
 	}
 
 	public void resetGrid()
@@ -91,6 +100,7 @@ public class NodeGrid : MonoBehaviour
 			node.isObstacle = Physics.CheckSphere(node.coord, nodeSize / 2, Unwalkable);
 			node.color = node.isObstacle ? Color.red : Color.cyan;
 			node.inRange = false;
+			node.firstRange = false;
 		}
 	}
 
@@ -119,7 +129,9 @@ public class NodeGrid : MonoBehaviour
 			{
 				index++;
 				if (index >= path.Length)
+				{
 					yield break;
+				}
 				currentPoint = path[index];
 			}
 
@@ -128,6 +140,8 @@ public class NodeGrid : MonoBehaviour
 			// methode )
 			yield return null;
 		}
+
+
 	}
 
 	public Node getNodeFromMousePosition()
@@ -168,8 +182,9 @@ public class NodeGrid : MonoBehaviour
 			if (foundPath)
 			{
 				StartCoroutine(followPath(playerPrefab, turnPoints, 30f));
+				resetGrid();
 			}
-			resetGrid();
+
 		}
 	}
 
@@ -239,9 +254,8 @@ public class NodeGrid : MonoBehaviour
 
 				Collider[] hitColliders = Physics.OverlapSphere(node.coord, nodeSize / 2, layerToCheck);
 				node.isObstacle = hitColliders.Length > 0 ? true : false;
-
-				node.color = node.isObstacle ? Color.red : node.inRange ? Color.black : Color.cyan;
-
+				node.color = node.isObstacle ? Color.red : node.inRange ? node.firstRange ? Color.yellow : Color.black : Color.cyan;
+				//if (node.inRange && node.firstRange) node.color = Color.yellow;
 				if (path.Contains(node)) node.color = Color.gray;
 
 				foreach (var n in turnPoints)
@@ -257,7 +271,6 @@ public class NodeGrid : MonoBehaviour
 				Gizmos.color = node.color;
 
 				Gizmos.DrawCube(node.coord, new Vector3(nodeSize - 0.1f, 0.1f, nodeSize - 0.1f));
-				//Gizmos.DrawSphere(node.coord, nodeSize / 2);
 			}
 		}
 	}
@@ -268,9 +281,12 @@ public class NodeGrid : MonoBehaviour
 		{
 			for (int y = 0; y < width; y++)
 			{
-				if (graph[x, y].coord.x == i && graph[x, y].coord.z == j)
+				if (Instance.graph != null)
 				{
-					return graph[x, y];
+					if (Instance.graph[x, y].coord.x == i && Instance.graph[x, y].coord.z == j)
+					{
+						return Instance.graph[x, y];
+					}
 				}
 			}
 		}
