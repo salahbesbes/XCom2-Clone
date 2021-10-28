@@ -10,14 +10,12 @@ public class RangeMovement : MonoBehaviour
 	private void Start()
 	{
 		grid = NodeGrid.Instance;
-		//oldDestination = grid.start;
 	}
 
 	// Update is called once per frame
 	private void Update()
 	{
-		if (grid.start == grid.destination)
-			oldDestination = grid.start;
+		if (oldDestination == null) oldDestination = grid.start;
 		if (grid)
 		{
 			if (Input.GetMouseButtonDown(1))
@@ -35,55 +33,46 @@ public class RangeMovement : MonoBehaviour
 				grid.playerPrefab = transform;
 
 				grid.start = grid.getNodeFromTransformPosition(transform);
-				if (oldDestination == null)
-					oldDestination = grid.start;
-				if (Input.GetMouseButtonDown(0))
-				{
-					grid.destination = grid.getNodeFromMousePosition();
 
-					if (oldDestination.firstRange == true)
-					{
-						Unit unit = GetComponent<Unit>();
-						MoveAction action = new MoveAction(oldDestination, grid.destination);
-						action.MoveMethod = ActionsManager.Instance.moveAction;
-						bool inRange = updateRangeMove(oldDestination, 0, false);
-						Debug.Log($" old dest is {oldDestination} in range {inRange}");
-						unit.EnQueue(action);
-					}
-					else if (oldDestination.inRange && oldDestination.firstRange == false)
-					{
-						Unit unit = GetComponent<Unit>();
-						MoveAction action = new MoveAction(oldDestination, grid.destination);
-						action.MoveMethod = ActionsManager.Instance.moveAction;
-						bool inRange = updateRangeMove(oldDestination, 0, false);
-						Debug.Log($" old dest is {oldDestination} in range {inRange}");
-						unit.EnQueue(action);
-					}
-				}
-				grid.resetGrid();
+				//grid.resetGrid();
 
-				bool test = updateRangeMove(grid.start, 0, false);
 				//Debug.Log($" in range {test}");
 				// update only on idel state ( arrive at desti or didnt move yet )
 				if (grid.start == grid.destination || grid.destination == null)
 				{
+					grid.resetGrid();
+					bool test = updateRangeMove(grid.start, 0, false);
+					oldDestination = grid.destination;
+					GetComponent<Unit>().tryExecuteNextAction();
 				}
-				else
-				{
-					// this execust every frame so we need to check fom some
-					// required
+				// this execust every frame so we need to check fom some required
 
-					if (Input.GetMouseButtonDown(0))
+				grid.destination = grid.getNodeFromMousePosition();
+				if (Input.GetMouseButtonDown(0))
+				{
+					if (grid.destination.firstRange == true)
 					{
+						bool inRange = updateRangeMove(oldDestination, 0, false);
+						Unit unit = GetComponent<Unit>();
+						MoveAction action = new MoveAction(oldDestination, grid.destination);
+						action.MoveMethod = ActionsManager.Instance.moveAction;
+						Debug.Log($" old dest is {oldDestination} in range {inRange}");
+						unit.EnQueue(action);
+					}
+					else if (grid.destination.inRange && grid.destination.firstRange == false)
+					{
+						bool inRange = updateRangeMove(oldDestination, 0, false);
+						Unit unit = GetComponent<Unit>();
+						MoveAction action = new MoveAction(oldDestination, grid.destination);
+						action.MoveMethod = ActionsManager.Instance.moveAction;
+						Debug.Log($" old dest is {oldDestination} in range {inRange}");
+						unit.EnQueue(action);
 					}
 				}
 			}
 		}
 	}
 
-	/// <summary> every node in range of the player position is updated to inRagnge </summary>
-	/// <param name="node"> current node position </param>
-	/// <param name="range"> start from 0 range always </param>
 	public bool updateRangeMove(Node node, int range, bool inRange)
 	{
 		if (range == movementRange - 1)

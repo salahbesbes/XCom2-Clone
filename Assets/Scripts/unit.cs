@@ -13,10 +13,6 @@ public class Unit : MonoBehaviour
 
 	private void Update()
 	{
-		if (processing == false)
-		{
-			tryExecuteNextAction();
-		}
 	}
 
 	private void Start()
@@ -27,6 +23,7 @@ public class Unit : MonoBehaviour
 	public void EnQueue(ActionType action)
 	{
 		actionsInQueue.Enqueue(action);
+
 		tryExecuteNextAction();
 	}
 

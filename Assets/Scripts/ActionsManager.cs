@@ -37,35 +37,38 @@ public class ActionsManager : MonoBehaviour
 	/// <param name="path"> Array of position to </param>
 	private IEnumerator startMove(float speed, Node currentPosition, Node destination)
 	{
+		// yield break exit out the caroutine
+		//if (turnPoints.Length == 0) yield break;
+		if (playerPrefab == null) yield break;
+
 		List<Node> path = new List<Node>();
 		Vector3[] turnPoints = new Vector3[0];
 		bool foundPath = FindPath.getPathToDestination(currentPosition, destination, out turnPoints, out path);
-		grid.path = path;
-		grid.turnPoints = turnPoints;
-		// yield break exit out the caroutine
-		if (turnPoints.Length == 0) yield break;
-		if (playerPrefab == null) yield break;
-
-		Vector3 currentPoint = turnPoints[0];
-		int index = 0;
-		// this while loop simulate the update methode
-		while (true)
+		if (foundPath)
 		{
-			if (playerPrefab.position == currentPoint)
+			grid.path = path;
+			grid.turnPoints = turnPoints;
+			Vector3 currentPoint = turnPoints[0];
+			int index = 0;
+			// this while loop simulate the update methode
+			while (true)
 			{
-				index++;
-				if (index >= turnPoints.Length)
+				if (playerPrefab.position == currentPoint)
 				{
-					player.finishProcessingAction();
-					yield break;
+					index++;
+					if (index >= turnPoints.Length)
+					{
+						player.finishProcessingAction();
+						yield break;
+					}
+					currentPoint = turnPoints[index];
 				}
-				currentPoint = turnPoints[index];
-			}
 
-			playerPrefab.position = Vector3.MoveTowards(playerPrefab.position, currentPoint, speed * Time.deltaTime);
-			// this yield return null waits until the next frame reached ( dont exit the
-			// methode )
-			yield return null;
+				playerPrefab.position = Vector3.MoveTowards(playerPrefab.position, currentPoint, speed * Time.deltaTime);
+				// this yield return null waits until the next frame reached ( dont
+				// exit the methode )
+				yield return null;
+			}
 		}
 
 		//Debug.Log($"start walking ... wait 3s ");
@@ -82,8 +85,6 @@ public class ActionsManager : MonoBehaviour
 	{
 		Node destination = end;
 		Node currentPosition = start;
-		List<Node> path = new List<Node>();
-		Vector3[] turnPoints = new Vector3[0];
 		Debug.Log($"{currentPosition} {destination}");
 		if (destination != null && currentPosition != null)
 		{
@@ -103,6 +104,7 @@ public class ActionsManager : MonoBehaviour
 			//	StartCoroutine(startMove(3f, turnPoints));
 			//	grid.resetGrid();
 			//}
+
 			StartCoroutine(startMove(3f, currentPosition, destination));
 		}
 	}
