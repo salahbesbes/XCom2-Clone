@@ -1,29 +1,123 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class unit : MonoBehaviour
+public class Unit : MonoBehaviour
 {
-	private Transform currentTarget;
-	private int currentWayPointIndex = 0;
-	private Vector3 currentPoint = Vector3.zero;
-	private Vector3[] WayPoints = new Vector3[3] { new Vector3(-5, 0, -4), new Vector3(-3, 0, -3), new Vector3(-5, 0, -2) };
-	private int index = 0;
+	public List<ActionType> actions = new List<ActionType>();
+	private NodeGrid grid;
+	public Queue<ActionType> actionsInQueue = new Queue<ActionType>();
+	public bool processing = false;
+	public ActionType currentActionInProcess;
+
+	private void Update()
+	{
+		if (processing == false)
+		{
+			tryExecuteNextAction();
+		}
+	}
 
 	private void Start()
 	{
-		currentPoint = WayPoints[0];
+		grid = FindObjectOfType<NodeGrid>();
 	}
 
-	// after we move the gameObject in the fixedupdate methode the camera detect new position in
-	// the update methode
-	private void Update()
+	public void EnQueue(ActionType action)
 	{
-		if (transform.position == currentPoint)
-		{
-			index++;
-			currentPoint = WayPoints[index];
-			Debug.Log($"{currentPoint}");
-		}
+		actionsInQueue.Enqueue(action);
+		tryExecuteNextAction();
+	}
 
-		transform.position = Vector3.MoveTowards(transform.position, currentPoint, 1f * Time.deltaTime);
+	public void tryExecuteNextAction()
+	{
+		if (processing == false && actionsInQueue.Count > 0)
+		{
+			processing = true;
+			ActionType firstAction = actionsInQueue.Dequeue();
+			firstAction.TryUseAction();
+		}
+	}
+
+	public void finishProcessingAction()
+	{
+		processing = false;
+		grid.path = new List<Node>();
+		grid.turnPoints = new Vector3[0];
+	}
+
+	public ActionType GetActionNamed(string actionName)
+	{
+		return actions.Single(el => el.Name == actionName);
+	}
+}
+
+public interface IStatus
+{
+}
+
+[Serializable]
+public abstract class ActionType
+{
+	[SerializeField]
+	public string name = "Default Name";
+
+	public string Name { get => name; set => name = value; }
+
+	[SerializeField, Range(0, 2)]
+	private int cost = 1;
+
+	public int Cost { get => cost; set => cost = value; }
+
+	public abstract bool TryUseAction();
+
+	public abstract bool onFinishAction();
+
+	public override string ToString()
+	{
+		return $"-- {Name} --- action with cose {Cost}";
+	}
+}
+
+public interface IActionType
+{
+	string Name { get; set; }
+	int Cost { get; set; }
+
+	bool TryUseAction();
+
+	bool onFinishAction();
+}
+
+public class MoveAction : ActionType
+{
+	public Node start;
+	public Node destination;
+	public Action<Node, Node> MoveMethod;
+	private NodeGrid Grid { get; set; }
+
+	public MoveAction(Node start, Node destination, int cost = 1)
+	{
+		Name = $"{GetType()}";
+		Cost = cost;
+		this.start = start;
+		this.destination = destination;
+	}
+
+	public override bool TryUseAction()
+	{
+		MoveMethod(start, destination);
+		return true;
+	}
+
+	public override bool onFinishAction()
+	{
+		throw new NotImplementedException();
+	}
+
+	public override string ToString()
+	{
+		return $"{base.ToString()} \n  start {start} destination {destination}";
 	}
 }

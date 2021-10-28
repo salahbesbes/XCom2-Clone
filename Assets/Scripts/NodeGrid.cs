@@ -57,13 +57,8 @@ public class NodeGrid : MonoBehaviour
 	public void Update()
 	{
 		//// updating start node => tracking the player prefab
-		//start = getNodeFromTransformPosition(playerPrefab);
+		start = getNodeFromTransformPosition(playerPrefab);
 		//generateGrid();
-		if (Input.GetMouseButtonDown(0))
-		{
-			destination = getNodeFromMousePosition();
-
-		}
 	}
 
 	/// <summary>
@@ -140,8 +135,6 @@ public class NodeGrid : MonoBehaviour
 			// methode )
 			yield return null;
 		}
-
-
 	}
 
 	public Node getNodeFromMousePosition()
@@ -184,7 +177,6 @@ public class NodeGrid : MonoBehaviour
 				StartCoroutine(followPath(playerPrefab, turnPoints, 30f));
 				resetGrid();
 			}
-
 		}
 	}
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,7 +13,7 @@ public class PathRequestManager : MonoBehaviour
 		if (Instance == null) Instance = this;
 	}
 
-	public static void RequestPath(Node startNode, Node endNode, Action callback)
+	public static void RequestPath(Node startNode, Node endNode, ActionType callback)
 	{
 		PathRequest newRequest = new PathRequest(startNode, endNode, callback);
 		Instance.pathRequestQueue.Enqueue(newRequest);
@@ -35,18 +34,18 @@ public class PathRequestManager : MonoBehaviour
 	public void finishedProcessingPath()
 	{
 		isProcessing = false;
-		currentPathRequest.callback();
+		//currentPathRequest.callback();
 		TryProcessNext();
 	}
 }
 
 public class PathRequest
 {
-	public Action callback;
+	public ActionType callback;
 	public Node startNode;
 	public Node endNode;
 
-	public PathRequest(Node startNode, Node endNode, Action callback)
+	public PathRequest(Node startNode, Node endNode, ActionType callback)
 	{
 		this.callback = callback;
 		this.startNode = startNode;

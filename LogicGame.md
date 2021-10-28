@@ -38,6 +38,11 @@ First Step
 Second Step
 
 ----------------  player Movement range -------------------
+
+toDo: the queue hold the List<Node> path and Vect3[] turnPoint, each time we execute the  we update the grid with the path and turnPoints
+the constructor of the Action do all the calculation and save the start and destination point too.
+
+
 1) if the player have 8 as rangeMovment it can move for exemple until 8 tiles to the left not more ( it wont move )
 2) if he moves for 4 tile or less he can remove again 4 tiles.
 3) each move cost 1 action point
