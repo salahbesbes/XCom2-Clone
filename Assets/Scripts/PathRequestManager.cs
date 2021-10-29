@@ -1,54 +1,54 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class PathRequest
+{
+	public Action callback;
+
+	public PathRequest(Action callback)
+	{
+		this.callback = callback;
+	}
+}
+
 public class PathRequestManager : MonoBehaviour
 {
-	private Queue<PathRequest> pathRequestQueue = new Queue<PathRequest>();
-	private PathRequest currentPathRequest;
+	public static int counter = 0;
 	public static PathRequestManager Instance;
-	private bool isProcessing = false;
+	public bool isProcessing = false;
+	private playerAction currentPathRequest;
+	private Queue<playerAction> pathRequestQueue = new Queue<playerAction>();
 
-	private void Awake()
+	public void Enqueue(playerAction act)
 	{
-		if (Instance == null) Instance = this;
-	}
-
-	public static void RequestPath(Node startNode, Node endNode, ActionType callback)
-	{
-		PathRequest newRequest = new PathRequest(startNode, endNode, callback);
-		Instance.pathRequestQueue.Enqueue(newRequest);
+		Instance.pathRequestQueue.Enqueue(act);
 		Instance.TryProcessNext();
-	}
-
-	private void TryProcessNext()
-	{
-		// if we are not processing and the que queue is not empty
-		if (!isProcessing && pathRequestQueue.Count > 0)
-		{
-			isProcessing = true;
-			currentPathRequest = pathRequestQueue.Dequeue();
-			//FindPath.StartFindPath(currentPathRequest.startNode, currentPathRequest.endNode);
-		}
 	}
 
 	public void finishedProcessingPath()
 	{
 		isProcessing = false;
-		//currentPathRequest.callback();
-		TryProcessNext();
+		Debug.Log($"finish the process");
+		//TryProcessNext();
 	}
-}
 
-public class PathRequest
-{
-	public ActionType callback;
-	public Node startNode;
-	public Node endNode;
-
-	public PathRequest(Node startNode, Node endNode, ActionType callback)
+	public void TryProcessNext()
 	{
-		this.callback = callback;
-		this.startNode = startNode;
-		this.endNode = endNode;
+		Debug.Log($"processing {isProcessing}  length {pathRequestQueue.Count}");
+		// if we are not processing and the que queue is not empty
+		if (!isProcessing && pathRequestQueue.Count > 0)
+		{
+			//Debug.Log($" queue count =  {pathRequestQueue.Count} ");
+			isProcessing = true;
+			currentPathRequest = pathRequestQueue.Dequeue();
+			Debug.Log($"{currentPathRequest}");
+			currentPathRequest.executeAction();
+		}
+	}
+
+	public void Awake()
+	{
+		if (Instance == null) Instance = this;
 	}
 }

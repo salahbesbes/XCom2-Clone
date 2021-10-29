@@ -2,10 +2,56 @@ using UnityEngine;
 
 public class RangeMovement : MonoBehaviour
 {
-	private NodeGrid grid;
 	public bool isSelected = false;
 	public int movementRange = 20;
+	private NodeGrid grid;
+
 	private Node oldDestination;
+
+	//public void MovePrefab()
+	//{
+	//	if (destination != null && start != null)
+	//	{
+	//		if (destination == start)
+	//		{
+	//			Debug.Log($" cant click on same Node  ");
+	//		}
+	//		destination.color = Color.black;
+
+	// bool foundPath = FindPath.getPathToDestination(start, destination, out turnPoints, out path);
+
+	//		if (foundPath)
+	//		{
+	//			StartCoroutine(followPath(playerPrefab, turnPoints, 30f));
+	//			resetGrid();
+	//		}
+	//	}
+	//}
+
+	public void OnDrawGizmos()
+	{
+	}
+
+	public bool updateRangeMove(Node node, int range, bool inRange)
+	{
+		if (range == movementRange - 1)
+			return inRange;
+		if (range <= (movementRange - 1) / 2)
+			node.firstRange = true;
+
+		foreach (var neighbor in node.neighbours)
+		{
+			if (grid.destination == neighbor)
+				inRange = true;
+			if (neighbor.inRange == false)
+			{
+				neighbor.inRange = true;
+			}
+
+			updateRangeMove(neighbor, range + 1, inRange);
+		}
+		return true;
+	}
 
 	private void Start()
 	{
@@ -71,26 +117,5 @@ public class RangeMovement : MonoBehaviour
 				}
 			}
 		}
-	}
-
-	public bool updateRangeMove(Node node, int range, bool inRange)
-	{
-		if (range == movementRange - 1)
-			return inRange;
-		if (range <= (movementRange - 1) / 2)
-			node.firstRange = true;
-
-		foreach (var neighbor in node.neighbours)
-		{
-			if (grid.destination == neighbor)
-				inRange = true;
-			if (neighbor.inRange == false)
-			{
-				neighbor.inRange = true;
-			}
-
-			updateRangeMove(neighbor, range + 1, inRange);
-		}
-		return true;
 	}
 }

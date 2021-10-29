@@ -3,51 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Unit : MonoBehaviour
+public interface IActionType
 {
-	public List<ActionType> actions = new List<ActionType>();
-	private NodeGrid grid;
-	public Queue<ActionType> actionsInQueue = new Queue<ActionType>();
-	public bool processing = false;
-	public ActionType currentActionInProcess;
+	int Cost { get; set; }
+	string Name { get; set; }
 
-	private void Update()
-	{
-	}
+	bool onFinishAction();
 
-	private void Start()
-	{
-		grid = FindObjectOfType<NodeGrid>();
-	}
-
-	public void EnQueue(ActionType action)
-	{
-		actionsInQueue.Enqueue(action);
-
-		tryExecuteNextAction();
-	}
-
-	public void tryExecuteNextAction()
-	{
-		if (processing == false && actionsInQueue.Count > 0)
-		{
-			processing = true;
-			ActionType firstAction = actionsInQueue.Dequeue();
-			firstAction.TryUseAction();
-		}
-	}
-
-	public void finishProcessingAction()
-	{
-		processing = false;
-		grid.path = new List<Node>();
-		grid.turnPoints = new Vector3[0];
-	}
-
-	public ActionType GetActionNamed(string actionName)
-	{
-		return actions.Single(el => el.Name == actionName);
-	}
+	bool TryUseAction();
 }
 
 public interface IStatus
@@ -60,14 +23,11 @@ public abstract class ActionType
 	[SerializeField]
 	public string name = "Default Name";
 
-	public string Name { get => name; set => name = value; }
-
 	[SerializeField, Range(0, 2)]
 	private int cost = 1;
 
 	public int Cost { get => cost; set => cost = value; }
-
-	public abstract bool TryUseAction();
+	public string Name { get => name; set => name = value; }
 
 	public abstract bool onFinishAction();
 
@@ -75,24 +35,15 @@ public abstract class ActionType
 	{
 		return $"-- {Name} --- action with cose {Cost}";
 	}
-}
 
-public interface IActionType
-{
-	string Name { get; set; }
-	int Cost { get; set; }
-
-	bool TryUseAction();
-
-	bool onFinishAction();
+	public abstract bool TryUseAction();
 }
 
 public class MoveAction : ActionType
 {
-	public Node start;
 	public Node destination;
 	public Action<Node, Node> MoveMethod;
-	private NodeGrid Grid { get; set; }
+	public Node start;
 
 	public MoveAction(Node start, Node destination, int cost = 1)
 	{
@@ -102,11 +53,7 @@ public class MoveAction : ActionType
 		this.destination = destination;
 	}
 
-	public override bool TryUseAction()
-	{
-		MoveMethod(start, destination);
-		return true;
-	}
+	private NodeGrid Grid { get; set; }
 
 	public override bool onFinishAction()
 	{
@@ -116,5 +63,58 @@ public class MoveAction : ActionType
 	public override string ToString()
 	{
 		return $"{base.ToString()} \n  start {start} destination {destination}";
+	}
+
+	public override bool TryUseAction()
+	{
+		MoveMethod(start, destination);
+		return true;
+	}
+}
+
+public class Unit : MonoBehaviour
+{
+	public List<ActionType> actions = new List<ActionType>();
+	public Queue<ActionType> actionsInQueue = new Queue<ActionType>();
+	public ActionType currentActionInProcess;
+	public bool processing = false;
+	private NodeGrid grid;
+
+	public void EnQueue(ActionType action)
+	{
+		actionsInQueue.Enqueue(action);
+
+		tryExecuteNextAction();
+	}
+
+	public void finishProcessingAction()
+	{
+		processing = false;
+		//grid.path = new List<Node>();
+		//grid.turnPoints = new Vector3[0];
+	}
+
+	public ActionType GetActionNamed(string actionName)
+	{
+		return actions.Single(el => el.Name == actionName);
+	}
+
+	public void tryExecuteNextAction()
+	{
+		if (processing == false && actionsInQueue.Count > 0)
+		{
+			processing = true;
+			ActionType firstAction = actionsInQueue.Dequeue();
+			firstAction.TryUseAction();
+		}
+	}
+
+	private void Start()
+	{
+		grid = FindObjectOfType<NodeGrid>();
+	}
+
+	private void Update()
+	{
 	}
 }
