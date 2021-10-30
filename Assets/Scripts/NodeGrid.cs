@@ -8,8 +8,8 @@ public class NodeGrid : MonoBehaviour
 	[HideInInspector]
 	public Vector3 buttonLeft;
 
-	[HideInInspector]
-	public Node destination, start;
+	//[HideInInspector]
+	//public Node destination, start;
 
 	[HideInInspector]
 	public Node[,] graph;
@@ -82,7 +82,7 @@ public class NodeGrid : MonoBehaviour
 				}
 			}
 		}
-		return start;
+		return null;
 	}
 
 	public Node getNodeFromMousePosition()
@@ -128,7 +128,7 @@ public class NodeGrid : MonoBehaviour
 
 			return GetNode(percentX, percentY);
 		}
-		return start;
+		return null;
 	}
 
 	public void resetGrid()
@@ -149,7 +149,7 @@ public class NodeGrid : MonoBehaviour
 	public void Update()
 	{
 		//// updating start node => tracking the player prefab
-		start = getNodeFromTransformPosition(playerPrefab);
+		//start = getNodeFromTransformPosition(playerPrefab);
 		//generateGrid();
 	}
 
@@ -172,7 +172,7 @@ public class NodeGrid : MonoBehaviour
 
 			buttonLeft = transform.position - (Vector3.right * wordSizeGrid.x / 2) - (Vector3.forward * wordSizeGrid.y / 2);
 			generateGrid();
-			start = graph[0, 0];
+			//start = graph[0, 0];
 
 			DontDestroyOnLoad(gameObject);
 			transform.localScale = new Vector3((float)width / 10, 1, (float)height / 10);
@@ -228,41 +228,6 @@ public class NodeGrid : MonoBehaviour
 				{
 					graph[x, y].neighbours.Add(graph[x, y + 1]);
 				}
-			}
-		}
-	}
-
-	private void OnDrawGizmos()
-	{
-		//Gizmos.DrawCube(transform.position, new Vector3(wordSizeGrid.x, 0.1f, wordSizeGrid.y));
-
-		if (graph != null)
-		{
-			foreach (Node node in graph)
-			{
-				//string[] collidableLayers = { "Player", "Unwalkable" };
-				string[] collidableLayers = { "Unwalkable" };
-				int layerToCheck = LayerMask.GetMask(collidableLayers);
-
-				Collider[] hitColliders = Physics.OverlapSphere(node.coord, nodeSize / 2, layerToCheck);
-				node.isObstacle = hitColliders.Length > 0 ? true : false;
-				node.color = node.isObstacle ? Color.red : node.inRange ? node.firstRange ? Color.yellow : Color.black : Color.cyan;
-				//if (node.inRange && node.firstRange) node.color = Color.yellow;
-				//if (path.Contains(node)) node.color = Color.gray;
-
-				//foreach (var n in turnPoints)
-				//{
-				//	if (n == node.coord)
-				//	{
-				//		node.color = Color.green;
-				//		break;
-				//	}
-				//}
-				if (node == destination) { node.color = Color.black; }
-				if (node == start) { node.color = Color.blue; }
-				Gizmos.color = node.color;
-
-				Gizmos.DrawCube(node.coord, new Vector3(nodeSize - 0.1f, 0.1f, nodeSize - 0.1f));
 			}
 		}
 	}

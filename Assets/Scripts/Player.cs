@@ -8,33 +8,33 @@ public class Player : MonoBehaviour
 	public List<Node> path;
 	public Vector3[] turnPoints;
 	private NodeGrid grid;
+	public Node actualPos;
+	public Node destination;
+	public Queue<ActionType> queueOfActions;
+	public bool processing = false;
 
-	public void MovePrefab()
+	public void MovePrefab(Node start, Node end)
 	{
-		if (grid.destination != null && grid.start != null)
+		if (destination != null && actualPos != null)
 		{
-			if (grid.destination == grid.start)
+			if (destination == actualPos)
 			{
 				Debug.Log($" cant click on same Node  ");
 			}
-			grid.destination.color = Color.black;
+			destination.color = Color.black;
 
-			path = FindPath.getPathToDestination(grid.start, grid.destination);
-			turnPoints = FindPath.createWayPoint(path);
+			path = FindPath.getPathToDestination(start, end);
 
-			if (turnPoints.Length > 0)
+			if (path.Count > 0)
 			{
+				turnPoints = FindPath.createWayPoint(path);
 				StartCoroutine(move(turnPoints));
-				//resetGrid();
 			}
 		}
 	}
 
 	public IEnumerator move(Vector3[] turnPoints)
 	{
-		string res = $"start moving start";
-		Debug.Log($"{res}");
-
 		if (turnPoints.Length > 0)
 		{
 			//grid.path = path;
@@ -50,19 +50,28 @@ public class Player : MonoBehaviour
 					if (index >= turnPoints.Length)
 					{
 						//PathRequestManager.Instance.finishedProcessingPath();
-						Debug.Log($"finish moving");
 
-						yield break; ;
+						break;
 					}
 					currentPoint = turnPoints[index];
 				}
 
-				transform.position = Vector3.MoveTowards(transform.position, currentPoint, 2f * Time.deltaTime);
+				transform.position = Vector3.MoveTowards(transform.position, currentPoint, 5f * Time.deltaTime);
 				// this yield return null waits until the next frame reached ( dont
 				// exit the methode )
 				yield return null;
 			}
 		}
+
+		Debug.Log($"finish moving");
+		finishAction();
+		yield return null;
+	}
+
+	private void finishAction()
+	{
+		processing = false;
+		ExecuteActionInQueue();
 	}
 
 	public void moveAction(Vector3[] turnPoints)
@@ -78,9 +87,10 @@ public class Player : MonoBehaviour
 		{
 			yield return new WaitForSeconds(0.5f);
 		}
-		res = $"=> finish shooting counter = {PathRequestManager.counter}";
+		res = "finish shooting";
 		Debug.Log($"{res}");
-		PathRequestManager.Instance.finishedProcessingPath();
+		finishAction();
+		yield return null;
 	}
 
 	public void shootAction()
@@ -90,36 +100,75 @@ public class Player : MonoBehaviour
 
 	public void Update()
 	{
-		PathRequestManager.Instance.TryProcessNext();
+		grid.resetGrid();
+		actualPos = grid.getNodeFromTransformPosition(transform);
 		if (Input.GetMouseButtonDown(0))
 		{
-			grid.destination = grid.getNodeFromMousePosition();
-			//List<Node> path = new List<Node>();
-			//Vector3[] turnPoints = new Vector3[0];
+			Node oldDest = destination;
+			destination = grid.getNodeFromMousePosition();
+			Debug.Log($"{destination}");
+			if (destination != null)
+			{
+				if (oldDest == null || destination == actualPos)
+					oldDest = actualPos;
 
-			//path = FindPath.getPathToDestination(grid.GetNode(transform.position.x, transform.position.z), grid.destination);
-			//turnPoints = FindPath.createWayPoint(path);
-			//PathRequestManager.Instance.Enqueue(new MoveActionPlayer(moveAction, "move", turnPoints));
-
-			MovePrefab();
+				MoveAction move = new MoveAction(MovePrefab, "Move", oldDest, destination);
+				Enqueue(move);
+			}
 		}
 		if (Input.GetMouseButtonDown(1))
 		{
-			//pathRequest.Enqueue(new playerAction(shootAction, "shoot"));
+			ShootAction shoot = new ShootAction(shootAction, "shoot");
+			Enqueue(shoot);
+		}
+	}
+
+	public void Enqueue(ActionType action)
+	{
+		queueOfActions.Enqueue(action);
+		ExecuteActionInQueue();
+	}
+
+	public void ExecuteActionInQueue()
+	{
+		if (processing == false && queueOfActions.Count > 0)
+		{
+			processing = true;
+			ActionType action = queueOfActions.Dequeue();
+			action.TryExecuteAction();
 		}
 	}
 
 	public void OnDrawGizmos()
 	{
-		foreach (Node node in path)
+		if (grid.graph != null)
 		{
-			node.color = Color.gray;
-		}
+			foreach (Node node in grid.graph)
+			{
+				//string[] collidableLayers = { "Player", "Unwalkable" };
+				string[] collidableLayers = { "Unwalkable" };
+				int layerToCheck = LayerMask.GetMask(collidableLayers);
 
-		foreach (Vector3 v in turnPoints)
-		{
-			Node node = grid.GetNode(v.x, v.z);
-			node.color = Color.green;
+				Collider[] hitColliders = Physics.OverlapSphere(node.coord, grid.nodeSize / 2, layerToCheck);
+				node.isObstacle = hitColliders.Length > 0 ? true : false;
+				node.color = node.isObstacle ? Color.red : node.inRange ? node.firstRange ? Color.yellow : Color.black : Color.cyan;
+				if (node.inRange && node.firstRange) node.color = Color.yellow;
+				if (path.Contains(node)) node.color = Color.gray;
+
+				foreach (var n in turnPoints)
+				{
+					if (n == node.coord)
+					{
+						node.color = Color.green;
+						break;
+					}
+				}
+				if (node == destination) { node.color = Color.black; }
+				if (node == actualPos) { node.color = Color.blue; }
+				Gizmos.color = node.color;
+
+				Gizmos.DrawCube(node.coord, new Vector3(grid.nodeSize - 0.1f, 0.1f, grid.nodeSize - 0.1f));
+			}
 		}
 	}
 
@@ -128,6 +177,7 @@ public class Player : MonoBehaviour
 		grid = FindObjectOfType<NodeGrid>();
 		path = new List<Node>();
 		turnPoints = new Vector3[0];
+		queueOfActions = new Queue<ActionType>();
 	}
 
 	public void Start()
@@ -135,36 +185,50 @@ public class Player : MonoBehaviour
 	}
 }
 
-public class MoveActionPlayer : playerAction
+public class MoveAction : ActionType
 {
-	public new Action<Vector3[]> callback;
-	public Vector3[] turnPoints;
+	public new Action<Node, Node> executeAction;
+	private Node start, end;
 
-	public MoveActionPlayer(Action<Vector3[]> callback, string name, Vector3[] turnPoints)
+	public MoveAction(Action<Node, Node> callback, string name, Node start, Node end)
 	{
-		this.callback = callback;
+		executeAction = callback;
 
 		this.name = name;
-		this.turnPoints = turnPoints;
+		this.start = start;
+		this.end = end;
 	}
 
-	public override void executeAction()
+	public override void TryExecuteAction()
 	{
-		callback(turnPoints);
-		PathRequestManager.Instance.StopAllCoroutines();
-		PathRequestManager.Instance.finishedProcessingPath();
+		executeAction(start, end);
 	}
 
 	public override string ToString()
 	{
-		return $"move action destination is {turnPoints}";
+		return $"{base.ToString() } moving from {start} to {end}";
 	}
 }
 
-public abstract class playerAction
+public class ShootAction : ActionType
 {
-	public Action callback;
+	public ShootAction(Action callback, string name)
+	{
+		executeAction = callback;
+
+		this.name = name;
+	}
+
+	public override void TryExecuteAction()
+	{
+		executeAction();
+	}
+}
+
+public abstract class ActionType
+{
+	public Action executeAction;
 	public string name;
 
-	public abstract void executeAction();
+	public abstract void TryExecuteAction();
 }

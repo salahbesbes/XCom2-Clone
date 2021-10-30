@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ActionsManager : MonoBehaviour
@@ -7,65 +5,26 @@ public class ActionsManager : MonoBehaviour
 	public static ActionsManager Instance;
 	public Transform playerPrefab;
 	private NodeGrid grid;
-	private Unit player;
+	private Player player;
 	/// <summary> this Action manager need to fill the Player Action on Awake not On Start </summary>
 
-	public bool finishAction()
-	{
-		//player.EnQueue("shoot");
-		Debug.Log($" on action finish lenth of queue{ player.actionsInQueue.Count}");
-		player.processing = false;
-		//player.tryExecuteNextAction();
-		//player.ExecuteActionsInQueue();
-		return true;
-	}
 
-	public void moveAction(Node start, Node end)
-	{
-		Node destination = end;
-		Node currentPosition = start;
-		Debug.Log($"{currentPosition} {destination}");
-		if (destination != null && currentPosition != null)
-		{
-			if (destination == currentPosition)
-			{
-				Debug.Log($" cant click on same Node  ");
-				return;
-			}
-			destination.color = Color.black;
 
-			//bool foundPath = FindPath.getPathToDestination(currentPosition, destination, out turnPoints, out path);
-			//grid.path = path;
-			////grid.turnPoints = turnPoints;
-
-			//if (foundPath)
-			//{
-			//	StartCoroutine(startMove(3f, turnPoints));
-			//	grid.resetGrid();
-			//}
-
-			StartCoroutine(startMove(3f, currentPosition, destination));
-		}
-	}
-
-	public void shootAction()
-	{
-		StartCoroutine(startShoot());
-	}
 
 	private void Awake()
 	{
 		if (Instance == null)
 		{
-			player = playerPrefab.GetComponent<Unit>();
+			player = playerPrefab.GetComponent<Player>();
 			grid = FindObjectOfType<NodeGrid>();
 			Instance = this;
-			ActionType move = new MoveAction(grid.start, grid.destination);
 
-			player.actions.Add(move);
 		}
 	}
+	private void Update()
+	{
 
+	}
 	/// <summary>
 	/// move the playerPrefab toward the destination var sent from the grid to Gridpath var.
 	/// this methode start on mouse douwn frame and the player start moving on the next frame
@@ -76,60 +35,5 @@ public class ActionsManager : MonoBehaviour
 	/// </summary>
 	/// <param name="playerPrefab"> Transform playerPrefab </param>
 	/// <param name="path"> Array of position to </param>
-	private IEnumerator startMove(float speed, Node currentPosition, Node destination)
-	{
-		// yield break exit out the caroutine
-		//if (turnPoints.Length == 0) yield break;
-		if (playerPrefab == null) yield break;
 
-		List<Node> path = new List<Node>();
-		Vector3[] turnPoints = new Vector3[0];
-		//bool foundPath = FindPath.getPathToDestination(currentPosition, destination);
-		if (true)
-		{
-			//grid.path = path;
-			//grid.turnPoints = turnPoints;
-			Vector3 currentPoint = turnPoints[0];
-			int index = 0;
-			// this while loop simulate the update methode
-			while (true)
-			{
-				if (playerPrefab.position == currentPoint)
-				{
-					index++;
-					if (index >= turnPoints.Length)
-					{
-						PathRequestManager.Instance.finishedProcessingPath();
-						StopCoroutine("startMove");
-						yield break;
-					}
-					currentPoint = turnPoints[index];
-				}
-
-				playerPrefab.position = Vector3.MoveTowards(playerPrefab.position, currentPoint, speed * Time.deltaTime);
-				// this yield return null waits until the next frame reached ( dont
-				// exit the methode )
-				yield return null;
-			}
-		}
-
-		//Debug.Log($"start walking ... wait 3s ");
-		//for (int i = 0; i < 3; i++)
-		//{
-		//	Debug.Log($"{i}");
-		//	yield return new WaitForSeconds(1);
-		//}
-		//Debug.Log($"stop walking");
-		//player.finishProcessingAction();
-	}
-
-	private IEnumerator startShoot()
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			Debug.Log($" shooting .... ");
-			// spend 0.25 sec to spawn 1 enemy in a wave
-			yield return new WaitForSeconds(1);
-		}
-	}
 }
