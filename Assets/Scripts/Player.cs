@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+	public ActionType[] actions;
 	public List<Node> path;
 	public Vector3[] turnPoints;
 	private NodeGrid grid;
@@ -141,9 +142,9 @@ public class Player : MonoBehaviour
 
 	public void OnDrawGizmos()
 	{
-		if (grid.graph != null)
+		if (grid != null)
 		{
-			foreach (Node node in grid.graph)
+			foreach (Node node in grid?.graph)
 			{
 				//string[] collidableLayers = { "Player", "Unwalkable" };
 				string[] collidableLayers = { "Unwalkable" };
@@ -178,6 +179,7 @@ public class Player : MonoBehaviour
 		path = new List<Node>();
 		turnPoints = new Vector3[0];
 		queueOfActions = new Queue<ActionType>();
+		actions = new ActionType[0];
 	}
 
 	public void Start()
@@ -225,10 +227,13 @@ public class ShootAction : ActionType
 	}
 }
 
-public abstract class ActionType
+[Serializable]
+public class ActionType
 {
 	public Action executeAction;
 	public string name;
 
-	public abstract void TryExecuteAction();
+	public virtual void TryExecuteAction()
+	{
+	}
 }
