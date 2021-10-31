@@ -262,9 +262,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c82d3029a127de4da008aa33678a39e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdDownShooting: 1
+  holdDownShooting: 0
   shooting: 0
-  bulletSpeed: 300
+  bulletSpeed: 1
   bouncingForce: 0
   readyToShoot: 1
   reloading: 0
@@ -273,8 +273,8 @@ MonoBehaviour:
   maxMagazine: 100
   bulletRange: 50
   spread: 0
-  timeBetweenShooting: 0.2
-  timeBetweenShots: 0.06
+  timeBetweenShooting: 1
+  timeBetweenShots: 1
   bulletPrefab: {fileID: 2225754711644898913, guid: 6b064e4c3a06afb4fb0ca0d45f8eeabc, type: 3}
   startPoint: {fileID: 2132888773}
   fps_Cam: {fileID: 1184229622}
