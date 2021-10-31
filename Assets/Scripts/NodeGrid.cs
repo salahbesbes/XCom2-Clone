@@ -206,8 +206,8 @@ public class NodeGrid : MonoBehaviour
 				Vector3 nodeCoord = buttonLeft + offset + Vector3.right * nodeSize * x + Vector3.forward * nodeSize * y;
 				// create node
 				graph[x, y] = new Node(nodeCoord, x, y);
-				// project a sphere to check with the Layer Unwalkable or Player if
-				// some thing above the node
+				// project a sphere to check with the Layer Unwalkable if some thing
+				// with the layer Unwalkable above it
 				string[] collidableLayers = { "Unwalkable" };
 				int layerToCheck = LayerMask.GetMask(collidableLayers);
 				//graph[x, y].isObstacle = Physics.CheckSphere(nodeCoord, nodeSize / 2, layerToCheck);
@@ -217,30 +217,51 @@ public class NodeGrid : MonoBehaviour
 			}
 		}
 
-		//calculate neighbours
+		//calculate neighbours and create a cover for each node
 		for (int x = 0; x < height; x++)
 		{
 			for (int y = 0; y < width; y++)
 			{
+				Node currentNode = graph[x, y];
 				//X is not 0, then we can add left (x - 1)
 				if (x > 0)
 				{
-					graph[x, y].neighbours.Add(graph[x - 1, y]);
+					currentNode.neighbours.Add(graph[x - 1, y]);
+					if (graph[x - 1, y].isObstacle == true)
+					{
+						currentNode.LeftCover = new Cover(true);
+						currentNode.flinkedLeft = false;
+					}
 				}
 				//X is not mapSizeX - 1, then we can add right (x + 1)
 				if (x < height - 1)
 				{
-					graph[x, y].neighbours.Add(graph[x + 1, y]);
+					currentNode.neighbours.Add(graph[x + 1, y]);
+					if (graph[x + 1, y].isObstacle == true)
+					{
+						currentNode.RightCover = new Cover(true);
+						currentNode.flinkedRight = false;
+					}
 				}
 				//Y is not 0, then we can add downwards (y - 1 )
 				if (y > 0)
 				{
-					graph[x, y].neighbours.Add(graph[x, y - 1]);
+					currentNode.neighbours.Add(graph[x, y - 1]);
+					if (graph[x, y - 1].isObstacle == true)
+					{
+						currentNode.DownCover = new Cover(true);
+						currentNode.flinkedDown = false;
+					}
 				}
 				//Y is not mapSizeY -1, then we can add upwards (y + 1)
 				if (y < width - 1)
 				{
-					graph[x, y].neighbours.Add(graph[x, y + 1]);
+					currentNode.neighbours.Add(graph[x, y + 1]);
+					if (graph[x, y + 1].isObstacle == true)
+					{
+						currentNode.UpCover = new Cover(true);
+						currentNode.flinkedUp = false;
+					}
 				}
 			}
 		}

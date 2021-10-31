@@ -185,6 +185,17 @@ public class Node
 	public int x;
 	public int y;
 
+	public bool flinkedLeft = true;
+	public bool flinkedRight = true;
+	public bool flinkedUp = true;
+	public bool flinkedDown = true;
+	public bool sameline = false;
+
+	public Cover UpCover;
+	public Cover DownCover;
+	public Cover LeftCover;
+	public Cover RightCover;
+
 	public Node(Vector3 coord, int x, int y)
 	{
 		this.coord = coord;
@@ -197,5 +208,29 @@ public class Node
 	public override string ToString()
 	{
 		return $" ({x}, {y}) ";
+	}
+}
+
+public struct Cover
+{
+	private float _value;
+	public bool Exist { get; set; }
+
+	public float Value
+	{
+		get { return _value; }
+		set { _value = value; }
+	}
+
+	public Cover(bool exist = false, float coverValue = 45f)
+	{
+		_value = 0;
+		Exist = exist;
+		Value = coverValue;
+	}
+
+	public override string ToString()
+	{
+		return $"cover exist {Exist} => to check existance use .Exist bool";
 	}
 }

@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
 	public Queue<ActionType> queueOfActions;
 	public bool processing = false;
 	public Weapon weapon;
+	public Enemy enemy;
+	private float playerHeight;
 
 	public void MovePrefab(Node start, Node end)
 	{
@@ -81,20 +83,6 @@ public class Player : MonoBehaviour
 		StartCoroutine(move(turnPoints));
 	}
 
-	public IEnumerator shoot()
-	{
-		//string res = "start shooting ";
-		//Debug.Log($"{res}");
-		for (int i = 0; i < 4; i++)
-		{
-			yield return new WaitForSeconds(0.5f);
-		}
-		//res = "finish shooting";
-		//Debug.Log($"{res}");
-		finishAction();
-		yield return null;
-	}
-
 	public void shootAction()
 	{
 		StartCoroutine(weapon.startShooting());
@@ -122,6 +110,90 @@ public class Player : MonoBehaviour
 		{
 			StartCoroutine(weapon.startShooting());
 		}
+
+		checkforFlinkPosition(enemy.position);
+	}
+
+	public void checkforFlinkPosition(Node node)
+	{
+		RaycastHit hit;
+		int X = node.x;
+		int Y = node.y;
+		float limitX = X, limitY = Y;
+		Debug.Log($"fDown {node.flinkedDown} fUp {node.flinkedUp} fleft {node.flinkedLeft} fRight {node.flinkedRight}");
+		if (actualPos.x > X)
+		{
+			if (actualPos.y > Y)
+			{
+				Debug.Log($" im at Right-top of enemy");
+				if (node.flinkedRight && node.flinkedUp)
+				{
+					CheckForTargetWithRayCast();
+					Debug.Log($"im flinking the enemy ");
+				}
+			}
+			else if (actualPos.y < Y)
+			{
+				Debug.Log($" im at Right-Down of enemy");
+				if (node.flinkedRight && node.flinkedDown)
+				{
+					CheckForTargetWithRayCast();
+
+					Debug.Log($"im flinking the enemy ");
+				}
+			}
+			else
+			{
+				Debug.Log($" im on the Horizental line of the enemy");
+			}
+		}
+		else if (actualPos.x < X)
+		{
+			if (actualPos.y > Y)
+			{
+				Debug.Log($" im at left-top of enemy");
+				if (node.flinkedLeft && node.flinkedUp)
+				{
+					CheckForTargetWithRayCast();
+
+					Debug.Log($"im flinking the enemy ");
+				}
+			}
+			else if (actualPos.y < Y)
+			{
+				Debug.Log($" im at left-Down of enemy");
+				if (node.flinkedLeft && node.flinkedDown)
+				{
+					CheckForTargetWithRayCast();
+
+					Debug.Log($"im flinking the enemy ");
+				}
+			}
+			else
+			{
+				Debug.Log($" im on the Horizental line of the enemy");
+			}
+		}
+		else
+		{
+			Debug.Log($" im on the Vertical line of the enemy");
+		}
+	}
+
+	public void CheckForTargetWithRayCast()
+	{
+		Vector3 dir = enemy.position.coord - actualPos.coord;
+		LayerMask enemyLayer = LayerMask.GetMask("Enemy");
+		Ray raytest = new Ray();
+		raytest.direction = dir;
+		raytest.origin = actualPos.coord + Vector3.up * playerHeight;
+		RaycastHit hit;
+		Debug.Log($" raycast  {Physics.Raycast(raytest, out hit, enemyLayer)}");
+		if (Physics.Raycast(raytest, out hit, enemyLayer))
+		{
+			Debug.Log($"hit => {hit.transform.tag} name = {hit.transform?.name}");
+		}
+		Debug.DrawRay(raytest.origin, raytest.direction, Color.red);
 	}
 
 	public void Enqueue(ActionType action)
@@ -164,12 +236,24 @@ public class Player : MonoBehaviour
 						break;
 					}
 				}
+
 				if (node == destination) { node.color = Color.black; }
 				if (node == actualPos) { node.color = Color.blue; }
+				if (node == enemy.position) { node.color = enemy.isFlanked == false ? Color.magenta : Color.yellow; }
 				Gizmos.color = node.color;
 
 				Gizmos.DrawCube(node.coord, new Vector3(grid.nodeSize - 0.1f, 0.1f, grid.nodeSize - 0.1f));
 			}
+
+			//Vector3 dir = enemy.position.coord + Vector3.up * 3 - actualPos.coord;
+			//LayerMask enemyLayer = LayerMask.GetMask("Enemy");
+			//Gizmos.DrawLine(enemy.position.coord, actualPos.coord);
+			//RaycastHit hit;
+			//if (Physics.Raycast(actualPos.coord, dir, out hit))
+			//{
+			//	//Debug.Log($"hit is tagged enemy {hit.transform.CompareTag("Enemy")}");
+			//	//Debug.Log($"{hit.transform.gameObject.layer == enemyLayer}");
+			//}
 		}
 	}
 
@@ -180,6 +264,7 @@ public class Player : MonoBehaviour
 		turnPoints = new Vector3[0];
 		queueOfActions = new Queue<ActionType>();
 		actions = new ActionType[0];
+		playerHeight = transform.GetComponent<Renderer>().bounds.;
 	}
 
 	public void Start()

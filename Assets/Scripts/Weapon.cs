@@ -70,7 +70,7 @@ public class Weapon : MonoBehaviour
 		float y = Random.Range(-spread, spread);
 
 		dir = dir + new Vector3(x, y, 0);
-		Debug.Log($"hit point {hit.point}  node.coord {hitNode.coord} dir {dir}");
+		//Debug.Log($"hit point {hit.point}  node.coord {hitNode.coord} dir {dir}");
 
 		GameObject bullet = Instantiate(bulletPrefab, startPoint.position, Quaternion.identity);
 		// we orient the bullet to the direction created
@@ -97,6 +97,7 @@ public class Weapon : MonoBehaviour
 			RaycastHit hit;
 			if (Physics.Raycast(ray, out hit))
 			{
+				Debug.Log($"hit {hit}");
 				if (shutGun)
 				{
 					for (int i = 0; i < bulletInOneShot; i++)
@@ -138,7 +139,6 @@ public class Weapon : MonoBehaviour
 			Ray ray = fps_Cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 			RaycastHit hit;
 			Gizmos.color = Color.red;
-			Gizmos.DrawRay(ray);
 			if (Physics.Raycast(ray, out hit))
 			{
 				Node hitNode = grid.getNodeFromTransformPosition(null, hit.point);
