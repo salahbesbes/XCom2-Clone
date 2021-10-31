@@ -27,7 +27,7 @@ public static class FindPath
 			//find any path
 			if (QueueNotTested.Count == 0)
 			{
-				Debug.Log($"cant find path   ");
+				Debug.Log($"cant find path ");
 				success = false;
 				break;
 			}
@@ -43,7 +43,7 @@ public static class FindPath
 			// if the current == end we find the en point
 			if (current == destination)
 			{
-				Debug.Log($"Found End :) ");
+				//Debug.Log($"Found End :) ");
 				result = getThePath(startNode, current);
 				success = true;
 				break;
@@ -61,11 +61,13 @@ public static class FindPath
 				{
 					// calculate the g val (toWard the parent)
 					float neighborG = CalcG(current, neighbor);
-					// calculate the new possible g value (toWard the start node)
+					// calculate the new possible g value (toWard the start
+					// node)
 					float tempG = current.g + neighborG;
 					// by default the neighbor.g is positif Infinit but after
 					// setting g val to a neighbor we can revisit this node and
-					// at this time the g val is not infinit so we wan do the comparison
+					// at this time the g val is not infinit so we wan do the
+					// comparison
 
 					if (tempG < neighbor.g)
 					{

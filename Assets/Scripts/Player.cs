@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
 			}
 		}
 
-		Debug.Log($"finish moving");
+		//Debug.Log($"finish moving");
 		finishAction();
 		yield return null;
 	}
@@ -82,14 +82,14 @@ public class Player : MonoBehaviour
 
 	public IEnumerator shoot()
 	{
-		string res = "start shooting ";
-		Debug.Log($"{res}");
+		//string res = "start shooting ";
+		//Debug.Log($"{res}");
 		for (int i = 0; i < 4; i++)
 		{
 			yield return new WaitForSeconds(0.5f);
 		}
-		res = "finish shooting";
-		Debug.Log($"{res}");
+		//res = "finish shooting";
+		//Debug.Log($"{res}");
 		finishAction();
 		yield return null;
 	}
@@ -107,7 +107,7 @@ public class Player : MonoBehaviour
 		{
 			Node oldDest = destination;
 			destination = grid.getNodeFromMousePosition();
-			Debug.Log($"{destination}");
+			Debug.Log($"destination {destination} coord = {destination?.coord}");
 			if (destination != null)
 			{
 				if (oldDest == null || destination == actualPos)
@@ -142,7 +142,7 @@ public class Player : MonoBehaviour
 
 	public void OnDrawGizmos()
 	{
-		if (grid != null)
+		if (grid != null && grid.graph != null)
 		{
 			foreach (Node node in grid?.graph)
 			{

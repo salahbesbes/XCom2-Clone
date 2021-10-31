@@ -115,13 +115,23 @@ public class NodeGrid : MonoBehaviour
 	/// </summary>
 	/// <param name="prefab"> Transform obj </param>
 	/// <returns> node </returns>
-	public Node getNodeFromTransformPosition(Transform prefab)
+	public Node getNodeFromTransformPosition(Transform prefab, Vector3? vect3 = null)
 	{
 		if (prefab != null)
 		{
 			Vector3 pos = prefab.position;
 			float posX = pos.x;
 			float posY = pos.z;
+
+			float percentX = Mathf.Floor(posX) + nodeRadius;
+			float percentY = Mathf.Floor(posY) + nodeRadius;
+
+			return GetNode(percentX, percentY);
+		}
+		else if (prefab == null && vect3 != null)
+		{
+			float posX = vect3.Value.x;
+			float posY = vect3.Value.z;
 
 			float percentX = Mathf.Floor(posX) + nodeRadius;
 			float percentY = Mathf.Floor(posY) + nodeRadius;
