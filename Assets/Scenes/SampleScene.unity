@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 7906103}
   - component: {fileID: 7906102}
   - component: {fileID: 7906101}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ GameObject:
   m_Component:
   - component: {fileID: 232894140}
   - component: {fileID: 232894141}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -270,10 +270,10 @@ MonoBehaviour:
   reloading: 0
   bulletLeft: 0
   bulletsShot: 0
-  maxMagazine: 500
+  maxMagazine: 20
   bulletRange: 50
   spread: 0.128
-  timeBetweenShooting: 1
+  timeBetweenShooting: 0.1
   timeBetweenShots: 0.01
   shutGun: 0
   bulletInOneShot: 8
@@ -290,7 +290,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 603710805}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -416,7 +416,7 @@ GameObject:
   - component: {fileID: 798162396}
   - component: {fileID: 798162395}
   - component: {fileID: 798162394}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -594,7 +594,7 @@ GameObject:
   - component: {fileID: 967328130}
   - component: {fileID: 967328129}
   - component: {fileID: 967328128}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -687,7 +687,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1184229620}
   - component: {fileID: 1184229622}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: fps_cam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -763,7 +763,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1214974210}
   - component: {fileID: 1214974212}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -803,6 +803,7 @@ MonoBehaviour:
   turnPoints:
   - {x: 0, y: 0, z: 0}
   processing: 0
+  weapon: {fileID: 232894141}
 --- !u!1 &1601371983
 GameObject:
   m_ObjectHideFlags: 0
@@ -815,7 +816,7 @@ GameObject:
   - component: {fileID: 1601371987}
   - component: {fileID: 1601371986}
   - component: {fileID: 1601371985}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Weapon_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -911,7 +912,7 @@ GameObject:
   - component: {fileID: 1803648059}
   - component: {fileID: 1803648058}
   - component: {fileID: 1803648062}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1008,18 +1009,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonLeft: {x: 0, y: 0, z: 0}
-  nodeLayer:
-    serializedVersion: 2
-    m_Bits: 128
   nodeRadius: 0
   nodeSize: 1
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 256
   playerPrefab: {fileID: 7906104}
-  Unwalkable:
-    serializedVersion: 2
-    m_Bits: 64
   width: 0
   height: 0
   wordSizeGrid: {x: 20, y: 20}
@@ -1035,7 +1027,7 @@ GameObject:
   - component: {fileID: 2055236472}
   - component: {fileID: 2055236471}
   - component: {fileID: 2055236470}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1130,7 +1122,7 @@ GameObject:
   - component: {fileID: 2109072413}
   - component: {fileID: 2109072412}
   - component: {fileID: 2109072411}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1222,7 +1214,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2132888773}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: startPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

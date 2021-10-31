@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
 	public Node destination;
 	public Queue<ActionType> queueOfActions;
 	public bool processing = false;
+	public Weapon weapon;
 
 	public void MovePrefab(Node start, Node end)
 	{
@@ -69,7 +70,7 @@ public class Player : MonoBehaviour
 		yield return null;
 	}
 
-	private void finishAction()
+	public void finishAction()
 	{
 		processing = false;
 		ExecuteActionInQueue();
@@ -96,7 +97,7 @@ public class Player : MonoBehaviour
 
 	public void shootAction()
 	{
-		StartCoroutine(shoot());
+		StartCoroutine(weapon.startShooting());
 	}
 
 	public void Update()
@@ -119,8 +120,7 @@ public class Player : MonoBehaviour
 		}
 		if (Input.GetMouseButtonDown(1))
 		{
-			ShootAction shoot = new ShootAction(shootAction, "shoot");
-			Enqueue(shoot);
+			StartCoroutine(weapon.startShooting());
 		}
 	}
 

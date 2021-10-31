@@ -14,15 +14,15 @@ public class NodeGrid : MonoBehaviour
 	[HideInInspector]
 	public Node[,] graph;
 
-	public LayerMask nodeLayer;
+	//private LayerMask nodeLayer;
 
 	[HideInInspector]
 	public float nodeRadius;
 
 	public float nodeSize = 1;
-	public LayerMask playerLayer;
+	private LayerMask playerLayer;
 	public Transform playerPrefab;
-	public LayerMask Unwalkable;
+	private LayerMask Unwalkable;
 
 	[HideInInspector]
 	public int width, height;
@@ -187,6 +187,10 @@ public class NodeGrid : MonoBehaviour
 			DontDestroyOnLoad(gameObject);
 			transform.localScale = new Vector3((float)width / 10, 1, (float)height / 10);
 			FindObjectOfType<Camera>().transform.position += new Vector3(0, 45 * (width / 50), 0);
+
+			//nodeLayer = LayerMask.GetMask("Node");
+			playerLayer = LayerMask.GetMask("Player");
+			Unwalkable = LayerMask.GetMask("Unwalkable");
 		}
 	}
 

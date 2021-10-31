@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Weapon : MonoBehaviour
 {
 	public bool holdDownShooting = true;
 	public bool shooting = false;
@@ -34,7 +34,7 @@ public class Bullet : MonoBehaviour
 
 	public void Update()
 	{
-		CheckForInput();
+		//CheckForInput();
 	}
 
 	public void CheckForInput()
@@ -46,7 +46,7 @@ public class Bullet : MonoBehaviour
 		//Debug.Log($"{shooting} {readyToShoot} {!reloading} {bulletLeft > 0}");
 		if (shooting && readyToShoot && !reloading && bulletLeft > 0)
 		{
-			StartCoroutine(ShootAction());
+			StartCoroutine(startShooting());
 		}
 	}
 
@@ -77,7 +77,8 @@ public class Bullet : MonoBehaviour
 		bullet.transform.forward = dir.normalized;
 
 		Rigidbody rb = bullet.GetComponent<Rigidbody>();
-		// the bullet create at any point folow the direction
+		// the bullet create at any point folow the direction (wich have 0 on y at any
+		// direction) so the bullet created at the startPoint stays on the same height
 		rb.AddForce(dir * bulletSpeed * Time.fixedDeltaTime, ForceMode.Impulse);
 		//rb.AddForce(fps_Cam.transform.up * bouncingForce, ForceMode.Impulse);
 
@@ -85,32 +86,43 @@ public class Bullet : MonoBehaviour
 		bulletsShot++;
 	}
 
-	public IEnumerator ShootAction()
+	public IEnumerator startShooting()
 	{
 		// need to read documentation on the ViewportPointToRay method Vector3(0.5f, 0.5f,
 		// 0) the ray is at the center of the camera view. The bottom-left of the camera is
 		// (0,0); the top-right is (1,1).
-
-		Ray ray = fps_Cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-		RaycastHit hit;
-		if (Physics.Raycast(ray, out hit))
+		if (readyToShoot && !reloading && bulletLeft > 0)
 		{
-			if (shutGun)
+			Ray ray = fps_Cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+			RaycastHit hit;
+			if (Physics.Raycast(ray, out hit))
 			{
-				for (int i = 0; i < bulletInOneShot; i++)
+				if (shutGun)
 				{
-					Shoot(hit);
-					// delay between each instantiate method
-					yield return new WaitForSeconds(timeBetweenShots);
+					for (int i = 0; i < bulletInOneShot; i++)
+					{
+						Shoot(hit);
+						// delay between each instantiate method
+						yield return new WaitForSeconds(timeBetweenShots);
+					}
+				}
+				else
+				{
+					//todo: Replace this system by the cost Action point
+					float halfMagazine = maxMagazine / 2;
+					// fire until ( not required )
+					while (bulletLeft >= halfMagazine)
+					{
+						Shoot(hit);
+						yield return new WaitForSeconds(timeBetweenShooting);
+					}
+					maxMagazine = 0;
 				}
 			}
 			else
-			{
-				Shoot(hit);
-			}
+				print("I'm looking at nothing!");
 		}
-		else
-			print("I'm looking at nothing!");
+		player.finishAction();
 	}
 
 	private IEnumerator DelayShooting()
@@ -121,16 +133,19 @@ public class Bullet : MonoBehaviour
 
 	public void OnDrawGizmos()
 	{
-		Ray ray = fps_Cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-		RaycastHit hit;
-		Gizmos.color = Color.red;
-		Gizmos.DrawRay(ray);
-		if (Physics.Raycast(ray, out hit))
+		if (grid != null)
 		{
-			Node hitNode = grid.getNodeFromTransformPosition(null, hit.point);
-			Vector3 targetPoint = hitNode.coord;
+			Ray ray = fps_Cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+			RaycastHit hit;
+			Gizmos.color = Color.red;
+			Gizmos.DrawRay(ray);
+			if (Physics.Raycast(ray, out hit))
+			{
+				Node hitNode = grid.getNodeFromTransformPosition(null, hit.point);
+				Vector3 targetPoint = hitNode.coord;
 
-			Gizmos.DrawLine(player.actualPos.coord, targetPoint);
+				Gizmos.DrawLine(player.actualPos.coord, targetPoint);
+			}
 		}
 	}
 }
