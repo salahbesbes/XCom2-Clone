@@ -56,6 +56,34 @@ the constructor of the Action do all the calculation and save the start and dest
 
 
 
+------------ Worker Queue implementation   -------------
+
+
+1) player does not have to wait until he finish the action to do some other action,
+	while he is moving he can click on any tile to move again after finishing the first move
+	and he can do other action too like shooting, realoding ....
+2) i have created an abstaract class of name ActionType that have <string>name, <Action>callback properties
+	and an abstract methode <Void>TryExecuteAction that calls the callback methode
+	each action inhirit from that class and each action have their own callback funtion logit and params
+	if the callback he params i use the keyword new to override the ActionType abstract property
+3) each action created is an instance of TypeAction, so i have created a <ActionType>queque, and every time the player request
+	some action i dequeue the first action and tryExecute it when it finish executing (it could be IEnumeration callback )
+	i check if there is more action in the queue and retry the process.
+
+
+----------- Flanking Enemy ----------
+
+1) Any Node can have 4 sides of <Stract>Cover, Left, Right, Up, Down, it depend on if the neighbor side is Obstacle or not
+	at the same time it has 4 sides of flank bool variable, if it has cover of the left side it is flanked on the right side and so on
+2) the player can switch between Enemies and have a selectOne, based on the player position toward the selected Enemy, we change the 
+	Enemy property isFlanked and to some logic
+
+
+------ Player Shooting ------------
+1) inside the Player GameObject i have placed a Camera wich contains an Object Weapon, the role of the camera is to have a Ray that
+	point to the center of that Camera Screen so that the weapon have the direction always pointed to the center of the Camera
+2) the Script Weapon contain multiple properties so that we can easly change the behavior of the Weapon as needed (pistol, shotgun, ak47, ..)
+	and the shooting is cosider an action that can be enqueued.
 
 
 

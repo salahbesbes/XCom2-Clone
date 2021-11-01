@@ -2,26 +2,32 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-	public ActionType[] actions;
-	public List<Node> path;
-	public Vector3[] turnPoints;
+	//public ActionType[] actions;
+	private List<Node> path;
+
+	private Vector3[] turnPoints;
 	private NodeGrid grid;
-	public Node actualPos;
+	public Node currentPos;
 	public Node destination;
 	public Queue<ActionType> queueOfActions;
 	public bool processing = false;
 	public Weapon weapon;
 	public Enemy enemy;
-	private float playerHeight;
+	public Transform shootingPoint;
+
+	public List<ActionType> actions = new List<ActionType>();
+	public Transform UIholder;
+	public GameObject Action_Prefab;
 
 	public void MovePrefab(Node start, Node end)
 	{
-		if (destination != null && actualPos != null)
+		if (destination != null && currentPos != null)
 		{
-			if (destination == actualPos)
+			if (destination == currentPos)
 			{
 				Debug.Log($" cant click on same Node  ");
 			}
@@ -59,7 +65,6 @@ public class Player : MonoBehaviour
 					}
 					currentPoint = turnPoints[index];
 				}
-
 				transform.position = Vector3.MoveTowards(transform.position, currentPoint, 5f * Time.deltaTime);
 				// this yield return null waits until the next frame reached ( dont
 				// exit the methode )
@@ -83,6 +88,11 @@ public class Player : MonoBehaviour
 		StartCoroutine(move(turnPoints));
 	}
 
+	public void ReloadAction()
+	{
+		StartCoroutine(weapon.Reload());
+	}
+
 	public void shootAction()
 	{
 		StartCoroutine(weapon.startShooting());
@@ -91,16 +101,16 @@ public class Player : MonoBehaviour
 	public void Update()
 	{
 		grid.resetGrid();
-		actualPos = grid.getNodeFromTransformPosition(transform);
+		currentPos = grid.getNodeFromTransformPosition(transform);
 		if (Input.GetMouseButtonDown(0))
 		{
 			Node oldDest = destination;
 			destination = grid.getNodeFromMousePosition();
-			Debug.Log($"destination {destination} coord = {destination?.coord}");
+			//Debug.Log($"destination {destination} coord = {destination?.coord}");
 			if (destination != null)
 			{
-				if (oldDest == null || destination == actualPos)
-					oldDest = actualPos;
+				if (oldDest == null || destination == currentPos)
+					oldDest = currentPos;
 
 				MoveAction move = new MoveAction(MovePrefab, "Move", oldDest, destination);
 				Enqueue(move);
@@ -108,22 +118,32 @@ public class Player : MonoBehaviour
 		}
 		if (Input.GetMouseButtonDown(1))
 		{
-			StartCoroutine(weapon.startShooting());
+			ShootAction shoot = new ShootAction(shootAction, "Shoot");
+			Enqueue(shoot);
+			//StartCoroutine(weapon.startShooting());
 		}
-
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			ReloadAction reload = new ReloadAction(shootAction, "Reload");
+			Enqueue(reload);
+			StartCoroutine(weapon.Reload());
+		}
 		checkforFlinkPosition(enemy.position);
 	}
 
 	public void checkforFlinkPosition(Node node)
 	{
-		RaycastHit hit;
+		transform.LookAt(enemy.transform);
+
 		int X = node.x;
 		int Y = node.y;
 		float limitX = X, limitY = Y;
-		Debug.Log($"fDown {node.flinkedDown} fUp {node.flinkedUp} fleft {node.flinkedLeft} fRight {node.flinkedRight}");
-		if (actualPos.x > X)
+		//Debug.Log($"fDown {node.flinkedDown} fUp {node.flinkedUp} fleft {node.flinkedLeft} fRight {node.flinkedRight}");
+		// every frame i suppose that the player is not flanking the enemy then i update the property only when i flank it
+		enemy.isFlanked = false;
+		if (currentPos.x > X)
 		{
-			if (actualPos.y > Y)
+			if (currentPos.y > Y)
 			{
 				Debug.Log($" im at Right-top of enemy");
 				if (node.flinkedRight && node.flinkedUp)
@@ -132,7 +152,7 @@ public class Player : MonoBehaviour
 					Debug.Log($"im flinking the enemy ");
 				}
 			}
-			else if (actualPos.y < Y)
+			else if (currentPos.y < Y)
 			{
 				Debug.Log($" im at Right-Down of enemy");
 				if (node.flinkedRight && node.flinkedDown)
@@ -144,14 +164,17 @@ public class Player : MonoBehaviour
 			}
 			else
 			{
+				CheckForTargetWithRayCast();
+
 				Debug.Log($" im on the Horizental line of the enemy");
 			}
 		}
-		else if (actualPos.x < X)
+		else if (currentPos.x < X)
 		{
-			if (actualPos.y > Y)
+			if (currentPos.y > Y)
 			{
 				Debug.Log($" im at left-top of enemy");
+
 				if (node.flinkedLeft && node.flinkedUp)
 				{
 					CheckForTargetWithRayCast();
@@ -159,7 +182,7 @@ public class Player : MonoBehaviour
 					Debug.Log($"im flinking the enemy ");
 				}
 			}
-			else if (actualPos.y < Y)
+			else if (currentPos.y < Y)
 			{
 				Debug.Log($" im at left-Down of enemy");
 				if (node.flinkedLeft && node.flinkedDown)
@@ -171,29 +194,50 @@ public class Player : MonoBehaviour
 			}
 			else
 			{
+				CheckForTargetWithRayCast();
+
 				Debug.Log($" im on the Horizental line of the enemy");
 			}
 		}
 		else
 		{
+			CheckForTargetWithRayCast();
+
 			Debug.Log($" im on the Vertical line of the enemy");
 		}
 	}
 
 	public void CheckForTargetWithRayCast()
 	{
-		Vector3 dir = enemy.position.coord - actualPos.coord;
-		LayerMask enemyLayer = LayerMask.GetMask("Enemy");
-		Ray raytest = new Ray();
-		raytest.direction = dir;
-		raytest.origin = actualPos.coord + Vector3.up * playerHeight;
 		RaycastHit hit;
-		Debug.Log($" raycast  {Physics.Raycast(raytest, out hit, enemyLayer)}");
-		if (Physics.Raycast(raytest, out hit, enemyLayer))
+		Vector3 dir = enemy.position.coord - shootingPoint.position;
+		string[] collidableLayers = { "Unwalkable", "Enemy" };
+		int layerToCheck = LayerMask.GetMask(collidableLayers);
+		// if i can see the player directly without any Obstacle in between => im flanking
+		// it else if i see some thing other the enemy in the way => im not
+		/* note i dont understand why layer to check is not working properly, if the collidableLayers
+		// contain 2 layer, the raycast should detect only object with those layer, and the
+		// first object the ray hit it return that hit object, but it doesnot do i thought,
+		// when it found an "unwalckable" object the ray conteniou and detect the "Enemy".
+		// in my case since im always looking at the enemy the raycast always return True
+		// even if the obsacle is in front of the enemy
+		*/
+		if (Physics.Raycast(shootingPoint.position, dir, out hit, layerToCheck))
 		{
-			Debug.Log($"hit => {hit.transform.tag} name = {hit.transform?.name}");
+			// to compaire the layer of the object we hit to the "Enemy" layer.
+			// LayerMask return an bitMask int type different to the gameObject.layer
+			// int type => (index) convert index of the layer Enemy to the BitMast type
+			// to compair it
+			if ((LayerMask.GetMask("Enemy") & 1 << hit.transform.gameObject.layer) != 0)
+				enemy.isFlanked = true;
+			else
+				enemy.isFlanked = false;
 		}
-		Debug.DrawRay(raytest.origin, raytest.direction, Color.red);
+		else
+		{
+			enemy.isFlanked = false;
+		}
+		Debug.DrawRay(shootingPoint.position, dir, Color.yellow);
 	}
 
 	public void Enqueue(ActionType action)
@@ -238,7 +282,7 @@ public class Player : MonoBehaviour
 				}
 
 				if (node == destination) { node.color = Color.black; }
-				if (node == actualPos) { node.color = Color.blue; }
+				if (node == currentPos) { node.color = Color.blue; }
 				if (node == enemy.position) { node.color = enemy.isFlanked == false ? Color.magenta : Color.yellow; }
 				Gizmos.color = node.color;
 
@@ -263,12 +307,25 @@ public class Player : MonoBehaviour
 		path = new List<Node>();
 		turnPoints = new Vector3[0];
 		queueOfActions = new Queue<ActionType>();
-		actions = new ActionType[0];
-		playerHeight = transform.GetComponent<Renderer>().bounds.;
+		//actions = new ActionType[0];
+		//playerHeight = transform.GetComponent<Renderer>().bounds.size.y;
 	}
 
 	public void Start()
 	{
+		foreach (var action in actions)
+		{
+			GameObject obj = Instantiate(Action_Prefab);
+			obj.transform.name = action.name + "_Action";
+			Button btn = obj.GetComponentInChildren<Button>();
+			btn.GetComponent<Image>().sprite = action.icon;
+			obj.transform.SetParent(UIholder);
+		}
+	}
+
+	public void Sx()
+	{
+		Debug.Log($"clicked on icon");
 	}
 }
 
@@ -312,11 +369,27 @@ public class ShootAction : ActionType
 	}
 }
 
+public class ReloadAction : ActionType
+{
+	public ReloadAction(Action callback, string name)
+	{
+		executeAction = callback;
+
+		this.name = name;
+	}
+
+	public override void TryExecuteAction()
+	{
+		executeAction();
+	}
+}
+
 [Serializable]
 public class ActionType
 {
 	public Action executeAction;
 	public string name;
+	public Sprite icon;
 
 	public virtual void TryExecuteAction()
 	{

@@ -6,10 +6,8 @@ public class ActionsManager : MonoBehaviour
 	public Transform playerPrefab;
 	private NodeGrid grid;
 	private Player player;
+
 	/// <summary> this Action manager need to fill the Player Action on Awake not On Start </summary>
-
-
-
 
 	private void Awake()
 	{
@@ -18,13 +16,13 @@ public class ActionsManager : MonoBehaviour
 			player = playerPrefab.GetComponent<Player>();
 			grid = FindObjectOfType<NodeGrid>();
 			Instance = this;
-
 		}
 	}
+
 	private void Update()
 	{
-
 	}
+
 	/// <summary>
 	/// move the playerPrefab toward the destination var sent from the grid to Gridpath var.
 	/// this methode start on mouse douwn frame and the player start moving on the next frame
@@ -35,5 +33,4 @@ public class ActionsManager : MonoBehaviour
 	/// </summary>
 	/// <param name="playerPrefab"> Transform playerPrefab </param>
 	/// <param name="path"> Array of position to </param>
-
 }

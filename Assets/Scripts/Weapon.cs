@@ -16,6 +16,7 @@ public class Weapon : MonoBehaviour
 
 	[Range(0, 0.5f)]
 	public float spread = 1f;
+
 	public float timeBetweenShooting = 0.2f;
 	public float timeBetweenShots = 0.06f;
 	public bool shutGun = false;
@@ -48,6 +49,18 @@ public class Weapon : MonoBehaviour
 		{
 			StartCoroutine(startShooting());
 		}
+		if (Input.GetKeyDown(KeyCode.R))
+			reloading = true;
+		if (reloading && !shooting && bulletLeft == maxMagazine) Reload();
+	}
+
+	public IEnumerator Reload()
+	{
+		yield return new WaitForSeconds(2f);
+		bulletLeft = maxMagazine;
+		reloading = false;
+		Debug.Log($"finish reloading");
+		player.finishAction();
 	}
 
 	public void Shoot(RaycastHit hit)
@@ -63,9 +76,9 @@ public class Weapon : MonoBehaviour
 		Node hitNode = grid.getNodeFromTransformPosition(null, hit.point);
 		Vector3 targetPoint = hitNode.coord;
 		// this is the direction between the player node to the hit point node
-		Vector3 dir = targetPoint - player.actualPos.coord;
+		Vector3 dir = targetPoint - player.currentPos.coord;
 
-		// spred to different direction around the target
+		// sp to different direction around the target
 		float x = Random.Range(-spread, spread);
 		float y = Random.Range(-spread, spread);
 
@@ -97,7 +110,7 @@ public class Weapon : MonoBehaviour
 			RaycastHit hit;
 			if (Physics.Raycast(ray, out hit))
 			{
-				Debug.Log($"hit {hit}");
+				//Debug.Log($"hit {hit}");
 				if (shutGun)
 				{
 					for (int i = 0; i < bulletInOneShot; i++)
@@ -112,12 +125,12 @@ public class Weapon : MonoBehaviour
 					//todo: Replace this system by the cost Action point
 					float halfMagazine = maxMagazine / 2;
 					// fire until ( not required )
-					while (bulletLeft >= halfMagazine)
+					while (bulletLeft >= halfMagazine || bulletsShot <= halfMagazine)
 					{
 						Shoot(hit);
 						yield return new WaitForSeconds(timeBetweenShooting);
 					}
-					maxMagazine = 0;
+					//maxMagazine = 0;
 				}
 			}
 			else
@@ -144,7 +157,7 @@ public class Weapon : MonoBehaviour
 				Node hitNode = grid.getNodeFromTransformPosition(null, hit.point);
 				Vector3 targetPoint = hitNode.coord;
 
-				Gizmos.DrawLine(player.actualPos.coord, targetPoint);
+				//Gizmos.DrawLine(player.actualPos.coord, targetPoint);
 			}
 		}
 	}
