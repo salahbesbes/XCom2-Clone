@@ -4,26 +4,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour
+public class BaseUnit : MonoBehaviour
 {
 	//public ActionType[] actions;
-	private List<Node> path;
+	protected List<Node> path;
+	public Queue<ActionBase> queueOfActions;
 
-	private Vector3[] turnPoints;
-	private NodeGrid grid;
+	protected Vector3[] turnPoints;
+	protected NodeGrid grid;
 	public Node currentPos;
 	public Node destination;
-	public Queue<ActionType> queueOfActions;
 	public bool processing = false;
 	public Weapon weapon;
-	public Enemy enemy;
-	public Transform shootingPoint;
 
-	public List<ActionType> actions = new List<ActionType>();
-	public Transform UIholder;
-	public GameObject Action_Prefab;
+	private void Awake()
+	{
+		grid = FindObjectOfType<NodeGrid>();
+		path = new List<Node>();
+		turnPoints = new Vector3[0];
+	}
 
-	public void MovePrefab(Node start, Node end)
+	public void MoveAction(Node start, Node end)
 	{
 		if (destination != null && currentPos != null)
 		{
@@ -73,19 +74,14 @@ public class Player : MonoBehaviour
 		}
 
 		//Debug.Log($"finish moving");
-		finishAction();
+		FinishAction();
 		yield return null;
 	}
 
-	public void finishAction()
+	public void FinishAction()
 	{
 		processing = false;
 		ExecuteActionInQueue();
-	}
-
-	public void moveAction(Vector3[] turnPoints)
-	{
-		StartCoroutine(move(turnPoints));
 	}
 
 	public void ReloadAction()
@@ -93,15 +89,62 @@ public class Player : MonoBehaviour
 		StartCoroutine(weapon.Reload());
 	}
 
-	public void shootAction()
+	public void ShootAction()
 	{
 		StartCoroutine(weapon.startShooting());
 	}
 
+	public void Enqueue(ActionBase action)
+	{
+		queueOfActions.Enqueue(action);
+		ExecuteActionInQueue();
+	}
+
+	public void ExecuteActionInQueue()
+	{
+		if (processing == false && queueOfActions.Count > 0)
+		{
+			processing = true;
+			ActionBase action = queueOfActions.Dequeue();
+			action.TryExecuteAction();
+		}
+	}
+
+	private void Update()
+	{
+	}
+}
+
+public class Player : BaseUnit
+{
+	public Enemy enemy;
+	public Transform shootingPoint;
+
+	public List<ActionBase> actions = new List<ActionBase>();
+	public Transform UIholder;
+	public GameObject Action_Prefab;
+
+	private Action getOnClickEvent(string ActionName)
+	{
+		switch (ActionName)
+		{
+			case "Shoot":
+				return ShootAction;
+
+			case "Reload":
+				return ReloadAction;
+
+			default:
+				Debug.Log($" check Action Name   ");
+				break;
+		}
+		return null;
+	}
+
 	public void Update()
 	{
-		grid.resetGrid();
 		currentPos = grid.getNodeFromTransformPosition(transform);
+
 		if (Input.GetMouseButtonDown(0))
 		{
 			Node oldDest = destination;
@@ -112,19 +155,19 @@ public class Player : MonoBehaviour
 				if (oldDest == null || destination == currentPos)
 					oldDest = currentPos;
 
-				MoveAction move = new MoveAction(MovePrefab, "Move", oldDest, destination);
+				MoveAction move = new MoveAction(MoveAction, "Move", oldDest, destination);
 				Enqueue(move);
 			}
 		}
 		if (Input.GetMouseButtonDown(1))
 		{
-			ShootAction shoot = new ShootAction(shootAction, "Shoot");
+			ShootAction shoot = new ShootAction(ShootAction, "Shoot");
 			Enqueue(shoot);
 			//StartCoroutine(weapon.startShooting());
 		}
 		if (Input.GetKeyDown(KeyCode.R))
 		{
-			ReloadAction reload = new ReloadAction(shootAction, "Reload");
+			ReloadAction reload = new ReloadAction(ShootAction, "Reload");
 			Enqueue(reload);
 			StartCoroutine(weapon.Reload());
 		}
@@ -133,84 +176,102 @@ public class Player : MonoBehaviour
 
 	public void checkforFlinkPosition(Node node)
 	{
-		transform.LookAt(enemy.transform);
-
-		int X = node.x;
-		int Y = node.y;
-		float limitX = X, limitY = Y;
-		//Debug.Log($"fDown {node.flinkedDown} fUp {node.flinkedUp} fleft {node.flinkedLeft} fRight {node.flinkedRight}");
-		// every frame i suppose that the player is not flanking the enemy then i update the property only when i flank it
-		enemy.isFlanked = false;
-		if (currentPos.x > X)
+		if (node != null)
 		{
-			if (currentPos.y > Y)
+			//todo: optimize the flanking check system
+			transform.LookAt(enemy.transform);
+
+			int X = node.x;
+			int Y = node.y;
+			float limitX = X, limitY = Y;
+			//Debug.Log($"fDown {node.flinkedDown} fUp {node.flinkedUp} fleft {node.flinkedLeft} fRight {node.flinkedRight}");
+			// every frame i suppose that the player is not flanking the enemy then i update the property only when i flank it
+			enemy.isFlanked = false;
+			if (currentPos.x > X)
 			{
-				Debug.Log($" im at Right-top of enemy");
-				if (node.flinkedRight && node.flinkedUp)
+				if (currentPos.y > Y)
+				{
+					Debug.Log($" im at Right-top of enemy");
+					if (node.flinkedRight && node.flinkedUp)
+					{
+						Debug.Log($"im flinking the enemy ");
+						CheckForTargetWithRayCast();
+					}
+					else if (currentPos.x == X + 1 && currentPos.DownCover.Exist && !currentPos.LeftCover.Exist)
+					{
+						if (node.flinkedUp)
+						{
+							Debug.Log($"--------------- im flinking the enemy -----------");
+							CheckForTargetWithRayCast(Vector3.left);
+						}
+					}
+				}
+				else if (currentPos.y < Y)
+				{
+					Debug.Log($" im at Right-Down of enemy");
+					if (node.flinkedRight && node.flinkedDown)
+					{
+						CheckForTargetWithRayCast();
+
+						Debug.Log($"im flinking the enemy ");
+					}
+					else if (currentPos.x == X + 1 && currentPos.UpCover.Exist)
+					{
+						Debug.Log($"{currentPos.UpCover.Exist}");
+						if (node.flinkedDown && !currentPos.LeftCover.Exist)
+						{
+							CheckForTargetWithRayCast(Vector3.left);
+							Debug.Log($"--------------- im flinking the enemy -----------");
+						}
+					}
+				}
+				else
 				{
 					CheckForTargetWithRayCast();
-					Debug.Log($"im flinking the enemy ");
+					Debug.Log($" im on the Horizental line of the enemy");
 				}
 			}
-			else if (currentPos.y < Y)
+			else if (currentPos.x < X)
 			{
-				Debug.Log($" im at Right-Down of enemy");
-				if (node.flinkedRight && node.flinkedDown)
+				if (currentPos.y > Y)
+				{
+					Debug.Log($" im at left-top of enemy");
+
+					if (node.flinkedLeft && node.flinkedUp)
+					{
+						CheckForTargetWithRayCast();
+
+						Debug.Log($"im flinking the enemy ");
+					}
+				}
+				else if (currentPos.y < Y)
+				{
+					Debug.Log($" im at left-Down of enemy");
+					if (node.flinkedLeft && node.flinkedDown)
+					{
+						CheckForTargetWithRayCast();
+						Debug.Log($"im flinking the enemy ");
+					}
+				}
+				else
 				{
 					CheckForTargetWithRayCast();
-
-					Debug.Log($"im flinking the enemy ");
+					Debug.Log($" im on the Horizental line of the enemy");
 				}
 			}
 			else
 			{
 				CheckForTargetWithRayCast();
-
-				Debug.Log($" im on the Horizental line of the enemy");
+				Debug.Log($" im on the Vertical line of the enemy");
 			}
-		}
-		else if (currentPos.x < X)
-		{
-			if (currentPos.y > Y)
-			{
-				Debug.Log($" im at left-top of enemy");
-
-				if (node.flinkedLeft && node.flinkedUp)
-				{
-					CheckForTargetWithRayCast();
-
-					Debug.Log($"im flinking the enemy ");
-				}
-			}
-			else if (currentPos.y < Y)
-			{
-				Debug.Log($" im at left-Down of enemy");
-				if (node.flinkedLeft && node.flinkedDown)
-				{
-					CheckForTargetWithRayCast();
-
-					Debug.Log($"im flinking the enemy ");
-				}
-			}
-			else
-			{
-				CheckForTargetWithRayCast();
-
-				Debug.Log($" im on the Horizental line of the enemy");
-			}
-		}
-		else
-		{
-			CheckForTargetWithRayCast();
-
-			Debug.Log($" im on the Vertical line of the enemy");
 		}
 	}
 
-	public void CheckForTargetWithRayCast()
+	public void CheckForTargetWithRayCast(Vector3? offset = null)
 	{
 		RaycastHit hit;
-		Vector3 dir = enemy.position.coord - shootingPoint.position;
+		offset = offset == null ? Vector3.zero : offset + Vector3.back * 0.5f;
+		Vector3 dir = enemy.position.coord - (shootingPoint.position + (Vector3)offset);
 		string[] collidableLayers = { "Unwalkable", "Enemy" };
 		int layerToCheck = LayerMask.GetMask(collidableLayers);
 		// if i can see the player directly without any Obstacle in between => im flanking
@@ -222,7 +283,7 @@ public class Player : MonoBehaviour
 		// in my case since im always looking at the enemy the raycast always return True
 		// even if the obsacle is in front of the enemy
 		*/
-		if (Physics.Raycast(shootingPoint.position, dir, out hit, layerToCheck))
+		if (Physics.Raycast(shootingPoint.position + (Vector3)offset, dir, out hit, layerToCheck))
 		{
 			// to compaire the layer of the object we hit to the "Enemy" layer.
 			// LayerMask return an bitMask int type different to the gameObject.layer
@@ -237,23 +298,7 @@ public class Player : MonoBehaviour
 		{
 			enemy.isFlanked = false;
 		}
-		Debug.DrawRay(shootingPoint.position, dir, Color.yellow);
-	}
-
-	public void Enqueue(ActionType action)
-	{
-		queueOfActions.Enqueue(action);
-		ExecuteActionInQueue();
-	}
-
-	public void ExecuteActionInQueue()
-	{
-		if (processing == false && queueOfActions.Count > 0)
-		{
-			processing = true;
-			ActionType action = queueOfActions.Dequeue();
-			action.TryExecuteAction();
-		}
+		Debug.DrawRay(shootingPoint.position + (Vector3)offset, dir, Color.yellow);
 	}
 
 	public void OnDrawGizmos()
@@ -306,7 +351,7 @@ public class Player : MonoBehaviour
 		grid = FindObjectOfType<NodeGrid>();
 		path = new List<Node>();
 		turnPoints = new Vector3[0];
-		queueOfActions = new Queue<ActionType>();
+		queueOfActions = new Queue<ActionBase>();
 		//actions = new ActionType[0];
 		//playerHeight = transform.GetComponent<Renderer>().bounds.size.y;
 	}
@@ -319,6 +364,8 @@ public class Player : MonoBehaviour
 			obj.transform.name = action.name + "_Action";
 			Button btn = obj.GetComponentInChildren<Button>();
 			btn.GetComponent<Image>().sprite = action.icon;
+			btn.onClick.AddListener(delegate { getOnClickEvent(action.name)(); });
+
 			obj.transform.SetParent(UIholder);
 		}
 	}
@@ -329,7 +376,7 @@ public class Player : MonoBehaviour
 	}
 }
 
-public class MoveAction : ActionType
+public class MoveAction : ActionBase
 {
 	public new Action<Node, Node> executeAction;
 	private Node start, end;
@@ -354,7 +401,7 @@ public class MoveAction : ActionType
 	}
 }
 
-public class ShootAction : ActionType
+public class ShootAction : ActionBase
 {
 	public ShootAction(Action callback, string name)
 	{
@@ -369,7 +416,7 @@ public class ShootAction : ActionType
 	}
 }
 
-public class ReloadAction : ActionType
+public class ReloadAction : ActionBase
 {
 	public ReloadAction(Action callback, string name)
 	{
@@ -385,7 +432,7 @@ public class ReloadAction : ActionType
 }
 
 [Serializable]
-public class ActionType
+public class ActionBase
 {
 	public Action executeAction;
 	public string name;

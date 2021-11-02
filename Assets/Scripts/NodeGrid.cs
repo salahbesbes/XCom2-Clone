@@ -158,9 +158,7 @@ public class NodeGrid : MonoBehaviour
 
 	public void Update()
 	{
-		//// updating start node => tracking the player prefab
-		//start = getNodeFromTransformPosition(playerPrefab);
-		//generateGrid();
+		resetGrid();
 	}
 
 	//[HideInInspector]

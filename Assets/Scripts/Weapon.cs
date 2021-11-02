@@ -60,7 +60,7 @@ public class Weapon : MonoBehaviour
 		bulletLeft = maxMagazine;
 		reloading = false;
 		Debug.Log($"finish reloading");
-		player.finishAction();
+		player.FinishAction();
 	}
 
 	public void Shoot(RaycastHit hit)
@@ -136,7 +136,7 @@ public class Weapon : MonoBehaviour
 			else
 				print("I'm looking at nothing!");
 		}
-		player.finishAction();
+		player.FinishAction();
 	}
 
 	private IEnumerator DelayShooting()
