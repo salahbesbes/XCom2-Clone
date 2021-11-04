@@ -8,6 +8,7 @@ public class BaseUnit : MonoBehaviour
 {
 	//public ActionType[] actions;
 	protected List<Node> path;
+
 	public Queue<ActionBase> queueOfActions;
 
 	protected Vector3[] turnPoints;
@@ -75,12 +76,15 @@ public class BaseUnit : MonoBehaviour
 
 		//Debug.Log($"finish moving");
 		FinishAction();
+		//onActionFinish();
 		yield return null;
 	}
 
 	public void FinishAction()
 	{
 		processing = false;
+		// update the cost
+		//GetComponent<PlayerStats>().ActionPoint -=
 		ExecuteActionInQueue();
 	}
 
@@ -106,25 +110,11 @@ public class BaseUnit : MonoBehaviour
 		{
 			processing = true;
 			ActionBase action = queueOfActions.Dequeue();
-			action.TryExecuteAction();
+			action.TryExecuteAction(action);
 		}
 	}
 
-	private void Update()
-	{
-	}
-}
-
-public class Player : BaseUnit
-{
-	public Enemy enemy;
-	public Transform shootingPoint;
-
-	public List<ActionBase> actions = new List<ActionBase>();
-	public Transform UIholder;
-	public GameObject Action_Prefab;
-
-	private Action getOnClickEvent(string ActionName)
+	public Action getOnClickEvent(string ActionName)
 	{
 		switch (ActionName)
 		{
@@ -140,6 +130,20 @@ public class Player : BaseUnit
 		}
 		return null;
 	}
+
+	private void Update()
+	{
+	}
+}
+
+public class Player : BaseUnit
+{
+	public Enemy enemy;
+	public Transform shootingPoint;
+
+	public List<ActionBase> actions = new List<ActionBase>();
+	public Transform UIholder;
+	public GameObject Action_Prefab;
 
 	public void Update()
 	{
@@ -369,11 +373,6 @@ public class Player : BaseUnit
 			obj.transform.SetParent(UIholder);
 		}
 	}
-
-	public void Sx()
-	{
-		Debug.Log($"clicked on icon");
-	}
 }
 
 public class MoveAction : ActionBase
@@ -421,13 +420,12 @@ public class ReloadAction : ActionBase
 	public ReloadAction(Action callback, string name)
 	{
 		executeAction = callback;
-
 		this.name = name;
 	}
 
 	public override void TryExecuteAction()
 	{
-		executeAction();
+		executeAction(this);
 	}
 }
 
@@ -437,8 +435,13 @@ public class ActionBase
 	public Action executeAction;
 	public string name;
 	public Sprite icon;
+	public int cost = 1;
 
 	public virtual void TryExecuteAction()
+	{
+	}
+
+	public virtual void onActionFinish()
 	{
 	}
 }
