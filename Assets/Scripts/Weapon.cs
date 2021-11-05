@@ -40,27 +40,27 @@ public class Weapon : MonoBehaviour
 
 	public void CheckForInput()
 	{
-		//if (holdDownShooting) shooting = Input.GetMouseButton(1);
-		//else shooting = Input.GetMouseButtonDown(1);
-		if (holdDownShooting) shooting = Input.GetKey(KeyCode.R);
-		else shooting = Input.GetKeyDown(KeyCode.R);
-		//Debug.Log($"{shooting} {readyToShoot} {!reloading} {bulletLeft > 0}");
-		if (shooting && readyToShoot && !reloading && bulletLeft > 0)
-		{
-			StartCoroutine(startShooting());
-		}
-		if (Input.GetKeyDown(KeyCode.R))
-			reloading = true;
-		if (reloading && !shooting && bulletLeft == maxMagazine) Reload();
+		////if (holdDownShooting) shooting = Input.GetMouseButton(1);
+		////else shooting = Input.GetMouseButtonDown(1);
+		//if (holdDownShooting) shooting = Input.GetKey(KeyCode.R);
+		//else shooting = Input.GetKeyDown(KeyCode.R);
+		////Debug.Log($"{shooting} {readyToShoot} {!reloading} {bulletLeft > 0}");
+		//if (shooting && readyToShoot && !reloading && bulletLeft > 0)
+		//{
+		//	StartCoroutine(startShooting());
+		//}
+		//if (Input.GetKeyDown(KeyCode.R))
+		//	reloading = true;
+		//if (reloading && !shooting && bulletLeft == maxMagazine) Reload();
 	}
 
-	public IEnumerator Reload()
+	public IEnumerator Reload(ReloadAction reload)
 	{
 		yield return new WaitForSeconds(2f);
 		bulletLeft = maxMagazine;
 		reloading = false;
 		Debug.Log($"finish reloading");
-		player.FinishAction();
+		player.FinishAction(reload);
 	}
 
 	public void Shoot(RaycastHit hit)
@@ -99,7 +99,7 @@ public class Weapon : MonoBehaviour
 		bulletsShot++;
 	}
 
-	public IEnumerator startShooting()
+	public IEnumerator startShooting(ShootAction shoot)
 	{
 		// need to read documentation on the ViewportPointToRay method Vector3(0.5f, 0.5f,
 		// 0) the ray is at the center of the camera view. The bottom-left of the camera is
@@ -136,7 +136,7 @@ public class Weapon : MonoBehaviour
 			else
 				print("I'm looking at nothing!");
 		}
-		player.FinishAction();
+		player.FinishAction(shoot);
 	}
 
 	private IEnumerator DelayShooting()

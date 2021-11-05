@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 7906103}
   - component: {fileID: 7906102}
   - component: {fileID: 7906101}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Player_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ GameObject:
   m_Component:
   - component: {fileID: 232894140}
   - component: {fileID: 232894141}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -290,7 +290,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 603710805}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -416,7 +416,7 @@ GameObject:
   - component: {fileID: 736150536}
   - component: {fileID: 736150535}
   - component: {fileID: 736150534}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -511,7 +511,7 @@ GameObject:
   - component: {fileID: 798162396}
   - component: {fileID: 798162395}
   - component: {fileID: 798162394}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -606,7 +606,7 @@ GameObject:
   - component: {fileID: 939109562}
   - component: {fileID: 939109561}
   - component: {fileID: 939109560}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -784,7 +784,7 @@ GameObject:
   - component: {fileID: 967328130}
   - component: {fileID: 967328129}
   - component: {fileID: 967328128}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -943,7 +943,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1184229620}
   - component: {fileID: 1184229622}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: fps_cam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1020,7 +1020,7 @@ GameObject:
   - component: {fileID: 1214974210}
   - component: {fileID: 1214974212}
   - component: {fileID: 1214974211}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1080,12 +1080,9 @@ MonoBehaviour:
   shootingPoint: {fileID: 2132888773}
   actions:
   - name: Shoot
-    icon: {fileID: 21300000, guid: 2d2177ddfa3c51e4c859ca426b81f092, type: 3}
+    icon: {fileID: 21300000, guid: ef32accb6bf9ab24cb20f5b7ac6eee83, type: 3}
     cost: 1
   - name: Reload
-    icon: {fileID: 21300000, guid: 7925c47caf74cf143abe3cf8eddd9b7c, type: 3}
-    cost: 1
-  - name: Reset
     icon: {fileID: 21300000, guid: 7925c47caf74cf143abe3cf8eddd9b7c, type: 3}
     cost: 1
   UIholder: {fileID: 1881600540}
@@ -1103,7 +1100,7 @@ GameObject:
   - component: {fileID: 1221692623}
   - component: {fileID: 1221692622}
   - component: {fileID: 1221692626}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1374,7 +1371,7 @@ GameObject:
   - component: {fileID: 1601371987}
   - component: {fileID: 1601371986}
   - component: {fileID: 1601371985}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Weapon_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1470,7 +1467,7 @@ GameObject:
   - component: {fileID: 1803648059}
   - component: {fileID: 1803648058}
   - component: {fileID: 1803648062}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1647,7 +1644,7 @@ GameObject:
   - component: {fileID: 2055236472}
   - component: {fileID: 2055236471}
   - component: {fileID: 2055236470}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1742,7 +1739,7 @@ GameObject:
   - component: {fileID: 2109072413}
   - component: {fileID: 2109072412}
   - component: {fileID: 2109072411}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1834,7 +1831,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2132888773}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: startPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

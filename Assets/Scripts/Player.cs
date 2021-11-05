@@ -25,7 +25,7 @@ public class BaseUnit : MonoBehaviour
 		turnPoints = new Vector3[0];
 	}
 
-	public void MoveAction(Node start, Node end)
+	public void MoveActionCallback(MoveAction actionInstance, Node start, Node end)
 	{
 		if (destination != null && currentPos != null)
 		{
@@ -40,12 +40,12 @@ public class BaseUnit : MonoBehaviour
 			if (path.Count > 0)
 			{
 				turnPoints = FindPath.createWayPoint(path);
-				StartCoroutine(move(turnPoints));
+				StartCoroutine(move(actionInstance, turnPoints));
 			}
 		}
 	}
 
-	public IEnumerator move(Vector3[] turnPoints)
+	public IEnumerator move(MoveAction moveInstance, Vector3[] turnPoints)
 	{
 		if (turnPoints.Length > 0)
 		{
@@ -75,27 +75,27 @@ public class BaseUnit : MonoBehaviour
 		}
 
 		//Debug.Log($"finish moving");
-		FinishAction();
+		FinishAction(moveInstance);
 		//onActionFinish();
 		yield return null;
 	}
 
-	public void FinishAction()
+	public void FinishAction(ActionBase action)
 	{
 		processing = false;
 		// update the cost
-		//GetComponent<PlayerStats>().ActionPoint -=
+		GetComponent<PlayerStats>().ActionPoint -= action.cost;
 		ExecuteActionInQueue();
 	}
 
-	public void ReloadAction()
+	public void ReloadAction(ReloadAction reload)
 	{
-		StartCoroutine(weapon.Reload());
+		StartCoroutine(weapon.Reload(reload));
 	}
 
-	public void ShootAction()
+	public void ShootAction(ShootAction soot)
 	{
-		StartCoroutine(weapon.startShooting());
+		StartCoroutine(weapon.startShooting(soot));
 	}
 
 	public void Enqueue(ActionBase action)
@@ -110,7 +110,7 @@ public class BaseUnit : MonoBehaviour
 		{
 			processing = true;
 			ActionBase action = queueOfActions.Dequeue();
-			action.TryExecuteAction(action);
+			action.TryExecuteAction();
 		}
 	}
 
@@ -119,20 +119,18 @@ public class BaseUnit : MonoBehaviour
 		switch (ActionName)
 		{
 			case "Shoot":
-				return ShootAction;
+				ShootAction shoot = new ShootAction(ShootAction, ActionName);
+				return () => ShootAction(shoot);
 
 			case "Reload":
-				return ReloadAction;
+				ReloadAction reload = new ReloadAction(ReloadAction, ActionName);
+				return () => ReloadAction(reload);
 
 			default:
-				Debug.Log($" check Action Name   ");
+				Debug.Log($" {ActionName} Action does not exist");
 				break;
 		}
 		return null;
-	}
-
-	private void Update()
-	{
 	}
 }
 
@@ -159,7 +157,7 @@ public class Player : BaseUnit
 				if (oldDest == null || destination == currentPos)
 					oldDest = currentPos;
 
-				MoveAction move = new MoveAction(MoveAction, "Move", oldDest, destination);
+				MoveAction move = new MoveAction(MoveActionCallback, "Move", oldDest, destination);
 				Enqueue(move);
 			}
 		}
@@ -167,13 +165,13 @@ public class Player : BaseUnit
 		{
 			ShootAction shoot = new ShootAction(ShootAction, "Shoot");
 			Enqueue(shoot);
-			//StartCoroutine(weapon.startShooting());
+			//StartCoroutine(weapon.startShooting(shoot));
 		}
 		if (Input.GetKeyDown(KeyCode.R))
 		{
-			ReloadAction reload = new ReloadAction(ShootAction, "Reload");
+			ReloadAction reload = new ReloadAction(ReloadAction, "Reload");
 			Enqueue(reload);
-			StartCoroutine(weapon.Reload());
+			//StartCoroutine(weapon.Reload(reload));
 		}
 		checkforFlinkPosition(enemy.position);
 	}
@@ -196,37 +194,47 @@ public class Player : BaseUnit
 				if (currentPos.y > Y)
 				{
 					Debug.Log($" im at Right-top of enemy");
-					if (node.flinkedRight && node.flinkedUp)
+					if (currentPos.x == X + 1 || currentPos.y == Y + 1)
 					{
-						Debug.Log($"im flinking the enemy ");
-						CheckForTargetWithRayCast();
-					}
-					else if (currentPos.x == X + 1 && currentPos.DownCover.Exist && !currentPos.LeftCover.Exist)
-					{
-						if (node.flinkedUp)
+						if (currentPos.DownCover.Exist && currentPos.LeftCover.Exist == false)
 						{
-							Debug.Log($"--------------- im flinking the enemy -----------");
-							CheckForTargetWithRayCast(Vector3.left);
+							if (node.flinkedUp)
+								CheckForTargetWithRayCast(Vector3.forward + Vector3.forward * 0.5f);
 						}
+
+						if (currentPos.LeftCover.Exist && currentPos.DownCover.Exist == false)
+						{
+							if (node.flinkedRight)
+								CheckForTargetWithRayCast(Vector3.right + Vector3.forward * 0.5f);
+						}
+					}
+					else if (node.flinkedRight || node.flinkedUp)
+					{
+						CheckForTargetWithRayCast();
 					}
 				}
 				else if (currentPos.y < Y)
 				{
 					Debug.Log($" im at Right-Down of enemy");
-					if (node.flinkedRight && node.flinkedDown)
+
+					if (currentPos.x == X + 1 || currentPos.y == Y - 1)
+					{
+						if (currentPos.UpCover.Exist && currentPos.LeftCover.Exist == false)
+						{
+							if (node.flinkedDown)
+								CheckForTargetWithRayCast(Vector3.left + Vector3.back * 0.5f);
+						}
+						if (currentPos.LeftCover.Exist)
+						{
+							if (node.flinkedRight)
+								CheckForTargetWithRayCast(Vector3.right + Vector3.forward * 0.5f);
+						}
+					}
+					else if (node.flinkedRight || node.flinkedDown)
 					{
 						CheckForTargetWithRayCast();
 
 						Debug.Log($"im flinking the enemy ");
-					}
-					else if (currentPos.x == X + 1 && currentPos.UpCover.Exist)
-					{
-						Debug.Log($"{currentPos.UpCover.Exist}");
-						if (node.flinkedDown && !currentPos.LeftCover.Exist)
-						{
-							CheckForTargetWithRayCast(Vector3.left);
-							Debug.Log($"--------------- im flinking the enemy -----------");
-						}
 					}
 				}
 				else
@@ -241,7 +249,15 @@ public class Player : BaseUnit
 				{
 					Debug.Log($" im at left-top of enemy");
 
-					if (node.flinkedLeft && node.flinkedUp)
+					if (currentPos.x == X - 1)
+					{
+						if (currentPos.DownCover.Exist && currentPos.RightCover.Exist == false)
+						{
+							if (node.flinkedUp)
+								CheckForTargetWithRayCast(Vector3.right + Vector3.forward * 0.5f);
+						}
+					}
+					else if (node.flinkedLeft || node.flinkedUp)
 					{
 						CheckForTargetWithRayCast();
 
@@ -251,7 +267,20 @@ public class Player : BaseUnit
 				else if (currentPos.y < Y)
 				{
 					Debug.Log($" im at left-Down of enemy");
-					if (node.flinkedLeft && node.flinkedDown)
+					if (currentPos.x == X - 1 || currentPos.y == Y - 1)
+					{
+						if (currentPos.UpCover.Exist)
+						{
+							if (node.flinkedDown)
+								CheckForTargetWithRayCast(Vector3.right + Vector3.back * 0.5f);
+						}
+						if (currentPos.RightCover.Exist)
+						{
+							if (node.flinkedLeft)
+								CheckForTargetWithRayCast(Vector3.forward + Vector3.back * 0.5f);
+						}
+					}
+					else if (node.flinkedLeft || node.flinkedDown)
 					{
 						CheckForTargetWithRayCast();
 						Debug.Log($"im flinking the enemy ");
@@ -266,6 +295,7 @@ public class Player : BaseUnit
 			else
 			{
 				CheckForTargetWithRayCast();
+
 				Debug.Log($" im on the Vertical line of the enemy");
 			}
 		}
@@ -274,7 +304,7 @@ public class Player : BaseUnit
 	public void CheckForTargetWithRayCast(Vector3? offset = null)
 	{
 		RaycastHit hit;
-		offset = offset == null ? Vector3.zero : offset + Vector3.back * 0.5f;
+		offset = offset == null ? Vector3.zero : offset;
 		Vector3 dir = enemy.position.coord - (shootingPoint.position + (Vector3)offset);
 		string[] collidableLayers = { "Unwalkable", "Enemy" };
 		int layerToCheck = LayerMask.GetMask(collidableLayers);
@@ -362,7 +392,7 @@ public class Player : BaseUnit
 
 	public void Start()
 	{
-		foreach (var action in actions)
+		foreach (ActionBase action in actions)
 		{
 			GameObject obj = Instantiate(Action_Prefab);
 			obj.transform.name = action.name + "_Action";
@@ -377,10 +407,10 @@ public class Player : BaseUnit
 
 public class MoveAction : ActionBase
 {
-	public new Action<Node, Node> executeAction;
+	public new Action<MoveAction, Node, Node> executeAction;
 	private Node start, end;
 
-	public MoveAction(Action<Node, Node> callback, string name, Node start, Node end)
+	public MoveAction(Action<MoveAction, Node, Node> callback, string name, Node start, Node end)
 	{
 		executeAction = callback;
 
@@ -391,7 +421,7 @@ public class MoveAction : ActionBase
 
 	public override void TryExecuteAction()
 	{
-		executeAction(start, end);
+		executeAction(this, start, end);
 	}
 
 	public override string ToString()
@@ -402,7 +432,9 @@ public class MoveAction : ActionBase
 
 public class ShootAction : ActionBase
 {
-	public ShootAction(Action callback, string name)
+	public new Action<ShootAction> executeAction;
+
+	public ShootAction(Action<ShootAction> callback, string name)
 	{
 		executeAction = callback;
 
@@ -411,13 +443,15 @@ public class ShootAction : ActionBase
 
 	public override void TryExecuteAction()
 	{
-		executeAction();
+		executeAction(this);
 	}
 }
 
 public class ReloadAction : ActionBase
 {
-	public ReloadAction(Action callback, string name)
+	public new Action<ReloadAction> executeAction;
+
+	public ReloadAction(Action<ReloadAction> callback, string name)
 	{
 		executeAction = callback;
 		this.name = name;
