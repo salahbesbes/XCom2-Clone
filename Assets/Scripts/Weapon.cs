@@ -12,7 +12,6 @@ public class Weapon : MonoBehaviour
 	public int bulletLeft;
 	public int bulletsShot;
 	public int maxMagazine = 100;
-	public float bulletRange = 50f;
 
 	[Range(0, 0.5f)]
 	public float spread = 1f;
@@ -104,13 +103,13 @@ public class Weapon : MonoBehaviour
 		// need to read documentation on the ViewportPointToRay method Vector3(0.5f, 0.5f,
 		// 0) the ray is at the center of the camera view. The bottom-left of the camera is
 		// (0,0); the top-right is (1,1).
+
 		if (readyToShoot && !reloading && bulletLeft > 0)
 		{
 			Ray ray = fps_Cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 			RaycastHit hit;
 			if (Physics.Raycast(ray, out hit))
 			{
-				//Debug.Log($"hit {hit}");
 				if (shutGun)
 				{
 					for (int i = 0; i < bulletInOneShot; i++)
@@ -125,7 +124,7 @@ public class Weapon : MonoBehaviour
 					//todo: Replace this system by the cost Action point
 					float halfMagazine = maxMagazine / 2;
 					// fire until ( not required )
-					while (bulletLeft >= halfMagazine || bulletsShot <= halfMagazine)
+					while (bulletLeft >= halfMagazine)
 					{
 						Shoot(hit);
 						yield return new WaitForSeconds(timeBetweenShooting);
@@ -136,6 +135,7 @@ public class Weapon : MonoBehaviour
 			else
 				print("I'm looking at nothing!");
 		}
+		Debug.Log($"finish shotting");
 		player.FinishAction(shoot);
 	}
 

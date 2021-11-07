@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -49,6 +50,10 @@ public class BaseUnit : MonoBehaviour
 	{
 		if (turnPoints.Length > 0)
 		{
+			for (int i = 0; i < turnPoints.Length; i++)
+			{
+				turnPoints[i].y = 0.5f;
+			}
 			//grid.path = path;
 			//grid.turnPoints = turnPoints;
 			Vector3 currentPoint = turnPoints[0];
@@ -88,12 +93,12 @@ public class BaseUnit : MonoBehaviour
 		ExecuteActionInQueue();
 	}
 
-	public void ReloadAction(ReloadAction reload)
+	public void ReloadActionCallBack(ReloadAction reload)
 	{
 		StartCoroutine(weapon.Reload(reload));
 	}
 
-	public void ShootAction(ShootAction soot)
+	public void ShootActionCallBack(ShootAction soot)
 	{
 		StartCoroutine(weapon.startShooting(soot));
 	}
@@ -113,25 +118,6 @@ public class BaseUnit : MonoBehaviour
 			action.TryExecuteAction();
 		}
 	}
-
-	public Action getOnClickEvent(string ActionName)
-	{
-		switch (ActionName)
-		{
-			case "Shoot":
-				ShootAction shoot = new ShootAction(ShootAction, ActionName);
-				return () => ShootAction(shoot);
-
-			case "Reload":
-				ReloadAction reload = new ReloadAction(ReloadAction, ActionName);
-				return () => ReloadAction(reload);
-
-			default:
-				Debug.Log($" {ActionName} Action does not exist");
-				break;
-		}
-		return null;
-	}
 }
 
 public class Player : BaseUnit
@@ -140,172 +126,278 @@ public class Player : BaseUnit
 	public Transform shootingPoint;
 
 	public List<ActionBase> actions = new List<ActionBase>();
-	public Transform UIholder;
-	public GameObject Action_Prefab;
 
-	public void Update()
+	public Transform ActionHolder;
+	public GameObject Action_Prefab;
+	public Transform partToRotate;
+
+	public void getOnClickEvent(string ActionName)
+	{
+		switch (ActionName)
+		{
+			case "Shoot":
+				CreateNewShootAction();
+				break;
+
+			case "Reload":
+				CreateNewReloadAction();
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	private void Update()
 	{
 		currentPos = grid.getNodeFromTransformPosition(transform);
 
 		if (Input.GetMouseButtonDown(0))
 		{
-			Node oldDest = destination;
-			destination = grid.getNodeFromMousePosition();
-			//Debug.Log($"destination {destination} coord = {destination?.coord}");
-			if (destination != null)
-			{
-				if (oldDest == null || destination == currentPos)
-					oldDest = currentPos;
-
-				MoveAction move = new MoveAction(MoveActionCallback, "Move", oldDest, destination);
-				Enqueue(move);
-			}
+			CreateNewMoveAction();
 		}
 		if (Input.GetMouseButtonDown(1))
 		{
-			ShootAction shoot = new ShootAction(ShootAction, "Shoot");
-			Enqueue(shoot);
-			//StartCoroutine(weapon.startShooting(shoot));
+			CreateNewShootAction();
 		}
 		if (Input.GetKeyDown(KeyCode.R))
 		{
-			ReloadAction reload = new ReloadAction(ReloadAction, "Reload");
-			Enqueue(reload);
-			//StartCoroutine(weapon.Reload(reload));
+			CreateNewReloadAction();
 		}
-		checkforFlinkPosition(enemy.position);
+		LockOnTarger();
+		checkFlank(enemy.NodeCoord);
 	}
 
-	public void checkforFlinkPosition(Node node)
+	public void CreateNewMoveAction()
 	{
-		if (node != null)
+		// cant have more that 2 actions
+
+		//int actionPoints = GetComponent<PlayerStats>().ActionPoint;
+		//if (actionPoints == 0 || (processing && queueOfActions.Count >= 1))
+		//{
+		//	Debug.Log($" No action point Left !!!");
+		//	return;
+		//}
+		Node oldDest = destination;
+		destination = grid.getNodeFromMousePosition();
+		//Debug.Log($"destination {destination} coord = {destination?.coord}");
+		if (destination != null)
 		{
-			//todo: optimize the flanking check system
-			transform.LookAt(enemy.transform);
+			if (oldDest == null || destination == currentPos)
+				oldDest = currentPos;
+			MoveAction move = new MoveAction(MoveActionCallback, "Move", oldDest, destination);
+			Enqueue(move);
+		}
+	}
 
-			int X = node.x;
-			int Y = node.y;
-			float limitX = X, limitY = Y;
-			//Debug.Log($"fDown {node.flinkedDown} fUp {node.flinkedUp} fleft {node.flinkedLeft} fRight {node.flinkedRight}");
-			// every frame i suppose that the player is not flanking the enemy then i update the property only when i flank it
-			enemy.isFlanked = false;
-			if (currentPos.x > X)
+	public void CreateNewReloadAction()
+	{
+		// cant have more that 2 actions
+		//int actionPoints = GetComponent<PlayerStats>().ActionPoint;
+		//if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
+		//{
+		//	Debug.Log($" No action point Left !!!");
+		//	return;
+		//}
+		ReloadAction reload = new ReloadAction(ReloadActionCallBack, "Reload");
+		Enqueue(reload);
+	}
+
+	public void CreateNewShootAction()
+	{
+		// cant have more that 2 actions
+		//int actionPoints = GetComponent<PlayerStats>().ActionPoint;
+		//if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
+		//{
+		//	Debug.Log($" No action point Left !!!");
+		//	return;
+		//}
+
+		ShootAction shoot = new ShootAction(ShootActionCallBack, "Shoot");
+		Enqueue(shoot);
+	}
+
+	//public void checkforFlinkPosition(Node node)
+	//{
+	//if (node != null)
+	//{
+	////todo: optimize the flanking check system
+	//transform.LookAt(enemy.transform);
+
+	//int X = node.x;
+	//int Y = node.y;
+	//float limitX = X, limitY = Y;
+	////Debug.Log($"fDown {node.flinkedDown} fUp {node.flinkedUp} fleft {node.flinkedLeft} fRight {node.flinkedRight}");
+	//// every frame i suppose that the player is not flanking the enemy then i update the property only when i flank it
+	//enemy.isFlanked = false;
+	//if (currentPos.x > X)
+	//{
+	//	if (currentPos.y > Y)
+	//	{
+	//		Debug.Log($" im at Right-top of enemy");
+	//		if (currentPos.x == X + 1 || currentPos.y == Y + 1)
+	//		{
+	//			if (currentPos.DownCover.Exist && currentPos.LeftCover.Exist == false)
+	//			{
+	//				if (node.flinkedUp)
+	//					CheckForTargetWithRayCast(Vector3.forward + Vector3.forward * 0.5f);
+	//			}
+
+	// if (currentPos.LeftCover.Exist && currentPos.DownCover.Exist == false) { if
+	// (node.flinkedRight) CheckForTargetWithRayCast(Vector3.right + Vector3.forward * 0.5f); }
+	// } else if (node.flinkedRight || node.flinkedUp) { CheckForTargetWithRayCast(); } } else
+	// if (currentPos.y < Y) { Debug.Log($" im at Right-Down of enemy");
+
+	// if (currentPos.x == X + 1 || currentPos.y == Y - 1) { if (currentPos.UpCover.Exist &&
+	// currentPos.LeftCover.Exist == false) { if (node.flinkedDown)
+	// CheckForTargetWithRayCast(Vector3.left + Vector3.back * 0.5f); } if
+	// (currentPos.LeftCover.Exist) { if (node.flinkedRight)
+	// CheckForTargetWithRayCast(Vector3.right + Vector3.forward * 0.5f); } } else if
+	// (node.flinkedRight || node.flinkedDown) { CheckForTargetWithRayCast();
+
+	//			Debug.Log($"im flinking the enemy ");
+	//		}
+	//	}
+	//	else
+	//	{
+	//		CheckForTargetWithRayCast();
+	//		Debug.Log($" im on the Horizental line of the enemy");
+	//	}
+	//}
+	//else if (currentPos.x < X)
+	//{
+	//	if (currentPos.y > Y)
+	//	{
+	//		Debug.Log($" im at left-top of enemy");
+
+	// if (currentPos.x == X - 1) { if (currentPos.DownCover.Exist &&
+	// currentPos.RightCover.Exist == false) { if (node.flinkedUp)
+	// CheckForTargetWithRayCast(Vector3.right + Vector3.forward * 0.5f); } } else if
+	// (node.flinkedLeft || node.flinkedUp) { CheckForTargetWithRayCast();
+
+	//			Debug.Log($"im flinking the enemy ");
+	//		}
+	//	}
+	//	else if (currentPos.y < Y)
+	//	{
+	//		Debug.Log($" im at left-Down of enemy");
+	//		if (currentPos.x == X - 1 || currentPos.y == Y - 1)
+	//		{
+	//			if (currentPos.UpCover.Exist)
+	//			{
+	//				if (node.flinkedDown)
+	//					CheckForTargetWithRayCast(Vector3.right + Vector3.back * 0.5f);
+	//			}
+	//			if (currentPos.RightCover.Exist)
+	//			{
+	//				if (node.flinkedLeft)
+	//					CheckForTargetWithRayCast(Vector3.forward + Vector3.back * 0.5f);
+	//			}
+	//		}
+	//		else if (node.flinkedLeft || node.flinkedDown)
+	//		{
+	//			CheckForTargetWithRayCast();
+	//			Debug.Log($"im flinking the enemy ");
+	//		}
+	//	}
+	//	else
+	//	{
+	//		CheckForTargetWithRayCast();
+	//		Debug.Log($" im on the Horizental line of the enemy");
+	//	}
+	//}
+	//else
+	//{
+	//	CheckForTargetWithRayCast();
+
+	//	Debug.Log($" im on the Vertical line of the enemy");
+	//}
+
+	//}
+	//}
+
+	private bool checkPointIfSameLineOrColumAsTarget(Vector3 target, Vector3 pointNode)
+	{
+		if (pointNode != null)
+		{
+			if (target.x == pointNode.x || target.z == pointNode.z)
 			{
-				if (currentPos.y > Y)
-				{
-					Debug.Log($" im at Right-top of enemy");
-					if (currentPos.x == X + 1 || currentPos.y == Y + 1)
-					{
-						if (currentPos.DownCover.Exist && currentPos.LeftCover.Exist == false)
-						{
-							if (node.flinkedUp)
-								CheckForTargetWithRayCast(Vector3.forward + Vector3.forward * 0.5f);
-						}
+				return true;
+			}
+		}
+		return false;
+	}
 
-						if (currentPos.LeftCover.Exist && currentPos.DownCover.Exist == false)
-						{
-							if (node.flinkedRight)
-								CheckForTargetWithRayCast(Vector3.right + Vector3.forward * 0.5f);
-						}
-					}
-					else if (node.flinkedRight || node.flinkedUp)
-					{
-						CheckForTargetWithRayCast();
-					}
-				}
-				else if (currentPos.y < Y)
-				{
-					Debug.Log($" im at Right-Down of enemy");
+	public void checkFlank(Node target)
+	{
+		Transform points = transform.Find("Points");
+		Vector3 selectedPointCood = Vector3.zero;
+		Vector3 selectedPoint;
+		if (target != null && points != null)
+		{
+			Dictionary<Vector3, float> ordredDictByMagnitude = new Dictionary<Vector3, float>();
 
-					if (currentPos.x == X + 1 || currentPos.y == Y - 1)
-					{
-						if (currentPos.UpCover.Exist && currentPos.LeftCover.Exist == false)
-						{
-							if (node.flinkedDown)
-								CheckForTargetWithRayCast(Vector3.left + Vector3.back * 0.5f);
-						}
-						if (currentPos.LeftCover.Exist)
-						{
-							if (node.flinkedRight)
-								CheckForTargetWithRayCast(Vector3.right + Vector3.forward * 0.5f);
-						}
-					}
-					else if (node.flinkedRight || node.flinkedDown)
-					{
-						CheckForTargetWithRayCast();
+			for (int i = 0; i < points.childCount; i++)
+			{
+				Transform point = points.GetChild(i);
+				float mag = (target.coord - point.position).magnitude;
+				ordredDictByMagnitude.Add(point.position, mag);
+			}
 
-						Debug.Log($"im flinking the enemy ");
-					}
-				}
-				else
+			ordredDictByMagnitude = ordredDictByMagnitude.OrderBy((item) => item.Value)
+									.ToDictionary(t => t.Key, t => t.Value);
+
+			// default node is the nearest one to the target (first one in the dict)
+			Vector3 defaultPoint = ordredDictByMagnitude.First().Key;
+			selectedPoint = defaultPoint;
+
+			bool foundPotentialPositionToFlank = false;
+			foreach (var item in ordredDictByMagnitude)
+			{
+				Vector3 point = item.Key;
+				if (checkPointIfSameLineOrColumAsTarget(target.coord, point))
 				{
-					CheckForTargetWithRayCast();
-					Debug.Log($" im on the Horizental line of the enemy");
+					foundPotentialPositionToFlank = true;
+					// update selected Point Coord
+					selectedPoint = point;
+					break;
 				}
 			}
-			else if (currentPos.x < X)
+			if (foundPotentialPositionToFlank)
 			{
-				if (currentPos.y > Y)
+				if (defaultPoint == selectedPoint)
 				{
-					Debug.Log($" im at left-top of enemy");
-
-					if (currentPos.x == X - 1)
-					{
-						if (currentPos.DownCover.Exist && currentPos.RightCover.Exist == false)
-						{
-							if (node.flinkedUp)
-								CheckForTargetWithRayCast(Vector3.right + Vector3.forward * 0.5f);
-						}
-					}
-					else if (node.flinkedLeft || node.flinkedUp)
-					{
-						CheckForTargetWithRayCast();
-
-						Debug.Log($"im flinking the enemy ");
-					}
+					selectedPoint = ordredDictByMagnitude.ElementAt(1).Key;
 				}
-				else if (currentPos.y < Y)
-				{
-					Debug.Log($" im at left-Down of enemy");
-					if (currentPos.x == X - 1 || currentPos.y == Y - 1)
-					{
-						if (currentPos.UpCover.Exist)
-						{
-							if (node.flinkedDown)
-								CheckForTargetWithRayCast(Vector3.right + Vector3.back * 0.5f);
-						}
-						if (currentPos.RightCover.Exist)
-						{
-							if (node.flinkedLeft)
-								CheckForTargetWithRayCast(Vector3.forward + Vector3.back * 0.5f);
-						}
-					}
-					else if (node.flinkedLeft || node.flinkedDown)
-					{
-						CheckForTargetWithRayCast();
-						Debug.Log($"im flinking the enemy ");
-					}
-				}
-				else
-				{
-					CheckForTargetWithRayCast();
-					Debug.Log($" im on the Horizental line of the enemy");
-				}
+				CheckForTargetWithRayCast(selectedPoint, target.coord);
 			}
 			else
 			{
-				CheckForTargetWithRayCast();
-
-				Debug.Log($" im on the Vertical line of the enemy");
+				CheckForTargetWithRayCast(defaultPoint, target.coord);
 			}
 		}
 	}
 
-	public void CheckForTargetWithRayCast(Vector3? offset = null)
+	private void LockOnTarger()
+	{
+		if (currentPos != null && enemy.NodeCoord != null)
+		{
+			// handle rotation on axe Y
+			Vector3 dir = enemy.NodeCoord.coord - currentPos.coord;
+			Quaternion lookRotation = Quaternion.LookRotation(dir);
+			// smooth the rotation of the turrent
+			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,
+							lookRotation,
+							Time.deltaTime * 5f)
+							.eulerAngles;
+			partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+		}
+	}
+
+	public void CheckForTargetWithRayCast(Vector3 pointPosition, Vector3 targetPosition)
 	{
 		RaycastHit hit;
-		offset = offset == null ? Vector3.zero : offset;
-		Vector3 dir = enemy.position.coord - (shootingPoint.position + (Vector3)offset);
+		Vector3 dir = targetPosition - pointPosition;
 		string[] collidableLayers = { "Unwalkable", "Enemy" };
 		int layerToCheck = LayerMask.GetMask(collidableLayers);
 		// if i can see the player directly without any Obstacle in between => im flanking
@@ -317,7 +409,7 @@ public class Player : BaseUnit
 		// in my case since im always looking at the enemy the raycast always return True
 		// even if the obsacle is in front of the enemy
 		*/
-		if (Physics.Raycast(shootingPoint.position + (Vector3)offset, dir, out hit, layerToCheck))
+		if (Physics.Raycast(pointPosition, dir, out hit, layerToCheck))
 		{
 			// to compaire the layer of the object we hit to the "Enemy" layer.
 			// LayerMask return an bitMask int type different to the gameObject.layer
@@ -332,7 +424,7 @@ public class Player : BaseUnit
 		{
 			enemy.isFlanked = false;
 		}
-		Debug.DrawRay(shootingPoint.position + (Vector3)offset, dir, Color.yellow);
+		Debug.DrawRay(pointPosition, dir, Color.yellow);
 	}
 
 	public void OnDrawGizmos()
@@ -362,7 +454,7 @@ public class Player : BaseUnit
 
 				if (node == destination) { node.color = Color.black; }
 				if (node == currentPos) { node.color = Color.blue; }
-				if (node == enemy.position) { node.color = enemy.isFlanked == false ? Color.magenta : Color.yellow; }
+				if (node == enemy.NodeCoord) { node.color = enemy.isFlanked == false ? Color.magenta : Color.yellow; }
 				Gizmos.color = node.color;
 
 				Gizmos.DrawCube(node.coord, new Vector3(grid.nodeSize - 0.1f, 0.1f, grid.nodeSize - 0.1f));
@@ -398,9 +490,9 @@ public class Player : BaseUnit
 			obj.transform.name = action.name + "_Action";
 			Button btn = obj.GetComponentInChildren<Button>();
 			btn.GetComponent<Image>().sprite = action.icon;
-			btn.onClick.AddListener(delegate { getOnClickEvent(action.name)(); });
+			btn.onClick.AddListener(delegate { getOnClickEvent(action.name); });
 
-			obj.transform.SetParent(UIholder);
+			obj.transform.SetParent(ActionHolder);
 		}
 	}
 }
