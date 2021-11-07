@@ -122,7 +122,7 @@ public class BaseUnit : MonoBehaviour
 
 public class Player : BaseUnit
 {
-	public Enemy enemy;
+	public Enemy currentTarget;
 	public Transform shootingPoint;
 
 	public List<ActionBase> actions = new List<ActionBase>();
@@ -164,8 +164,27 @@ public class Player : BaseUnit
 		{
 			CreateNewReloadAction();
 		}
+		if (Input.GetKeyDown(KeyCode.LeftShift))
+		{
+			SelectNextEnemy();
+		}
+
 		LockOnTarger();
-		checkFlank(enemy.NodeCoord);
+		checkFlank(currentTarget.NodeCoord);
+	}
+
+	private void SelectNextEnemy()
+	{
+		List<Enemy> enemies = FindObjectOfType<EnemyManager>().enemies;
+		int nbEnemies = enemies.Count;
+
+		if (currentTarget != null)
+		{
+			int currentTargetIndex = enemies.FindIndex(instance => instance == currentTarget);
+
+			currentTarget = enemies[(currentTargetIndex + 1) % nbEnemies];
+			Debug.Log($"Selected  {currentTarget}");
+		}
 	}
 
 	public void CreateNewMoveAction()
@@ -380,10 +399,10 @@ public class Player : BaseUnit
 
 	private void LockOnTarger()
 	{
-		if (currentPos != null && enemy.NodeCoord != null)
+		if (currentPos != null && currentTarget.NodeCoord != null)
 		{
 			// handle rotation on axe Y
-			Vector3 dir = enemy.NodeCoord.coord - currentPos.coord;
+			Vector3 dir = currentTarget.NodeCoord.coord - currentPos.coord;
 			Quaternion lookRotation = Quaternion.LookRotation(dir);
 			// smooth the rotation of the turrent
 			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,
@@ -416,13 +435,13 @@ public class Player : BaseUnit
 			// int type => (index) convert index of the layer Enemy to the BitMast type
 			// to compair it
 			if ((LayerMask.GetMask("Enemy") & 1 << hit.transform.gameObject.layer) != 0)
-				enemy.isFlanked = true;
+				currentTarget.isFlanked = true;
 			else
-				enemy.isFlanked = false;
+				currentTarget.isFlanked = false;
 		}
 		else
 		{
-			enemy.isFlanked = false;
+			currentTarget.isFlanked = false;
 		}
 		Debug.DrawRay(pointPosition, dir, Color.yellow);
 	}
@@ -454,7 +473,7 @@ public class Player : BaseUnit
 
 				if (node == destination) { node.color = Color.black; }
 				if (node == currentPos) { node.color = Color.blue; }
-				if (node == enemy.NodeCoord) { node.color = enemy.isFlanked == false ? Color.magenta : Color.yellow; }
+				if (node == currentTarget.NodeCoord) { node.color = currentTarget.isFlanked == false ? Color.magenta : Color.yellow; }
 				Gizmos.color = node.color;
 
 				Gizmos.DrawCube(node.coord, new Vector3(grid.nodeSize - 0.1f, 0.1f, grid.nodeSize - 0.1f));
@@ -480,6 +499,8 @@ public class Player : BaseUnit
 		queueOfActions = new Queue<ActionBase>();
 		//actions = new ActionType[0];
 		//playerHeight = transform.GetComponent<Renderer>().bounds.size.y;
+		List<Enemy> enemies = FindObjectOfType<EnemyManager>().enemies;
+		currentTarget = enemies.First();
 	}
 
 	public void Start()

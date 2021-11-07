@@ -12,6 +12,7 @@ public class Weapon : MonoBehaviour
 	public int bulletLeft;
 	public int bulletsShot;
 	public int maxMagazine = 100;
+	public float bulletRange = 5;
 
 	[Range(0, 0.5f)]
 	public float spread = 1f;
@@ -30,11 +31,14 @@ public class Weapon : MonoBehaviour
 	{
 		bulletLeft = maxMagazine;
 		grid = FindObjectOfType<NodeGrid>();
+		Vector3 fwd = transform.TransformDirection(Vector3.forward);
+		Debug.DrawRay(startPoint.position, fwd, Color.green);
 	}
 
 	public void Update()
 	{
-		//CheckForInput();
+		Vector3 fwd = transform.TransformDirection(Vector3.forward);
+		Debug.DrawRay(startPoint.position, fwd * bulletRange, Color.green);
 	}
 
 	public void CheckForInput()
@@ -106,9 +110,13 @@ public class Weapon : MonoBehaviour
 
 		if (readyToShoot && !reloading && bulletLeft > 0)
 		{
-			Ray ray = fps_Cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+			//if (Physics.Raycast(transform.position, fwd, out objectHit, 50))
+			//{ }
+			//Ray ray = fps_Cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+			Vector3 fwd = transform.TransformDirection(Vector3.forward);
+			Debug.DrawRay(startPoint.position, fwd * bulletRange, Color.green);
 			RaycastHit hit;
-			if (Physics.Raycast(ray, out hit))
+			if (Physics.Raycast(startPoint.position, fwd, out hit, bulletRange))
 			{
 				if (shutGun)
 				{
@@ -133,7 +141,10 @@ public class Weapon : MonoBehaviour
 				}
 			}
 			else
+			{
+				Debug.Log($" out of range!  bullet range is  {bulletRange} ");
 				print("I'm looking at nothing!");
+			}
 		}
 		Debug.Log($"finish shotting");
 		player.FinishAction(shoot);
@@ -149,16 +160,16 @@ public class Weapon : MonoBehaviour
 	{
 		if (grid != null)
 		{
-			Ray ray = fps_Cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-			RaycastHit hit;
-			Gizmos.color = Color.red;
-			if (Physics.Raycast(ray, out hit))
-			{
-				Node hitNode = grid.getNodeFromTransformPosition(null, hit.point);
-				Vector3 targetPoint = hitNode.coord;
+			//Ray ray = fps_Cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+			//RaycastHit hit;
+			//Gizmos.color = Color.red;
+			//if (Physics.Raycast(ray, out hit))
+			//{
+			//	Node hitNode = grid.getNodeFromTransformPosition(null, hit.point);
+			//	Vector3 targetPoint = hitNode.coord;
 
-				//Gizmos.DrawLine(player.actualPos.coord, targetPoint);
-			}
+			//	//Gizmos.DrawLine(player.actualPos.coord, targetPoint);
+			//}
 		}
 	}
 }

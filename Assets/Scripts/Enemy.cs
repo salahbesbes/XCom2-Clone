@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Charachter
 {
 	private NodeGrid grid;
 	public Node NodeCoord;
@@ -15,4 +15,13 @@ public class Enemy : MonoBehaviour
 	{
 		NodeCoord = grid.getNodeFromTransformPosition(transform);
 	}
+
+	public override string ToString()
+	{
+		return $"Enemy  at position {NodeCoord.coord}";
+	}
+}
+
+public class Charachter : MonoBehaviour
+{
 }

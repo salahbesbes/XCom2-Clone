@@ -206,7 +206,7 @@ public class NodeGrid : MonoBehaviour
 				graph[x, y] = new Node(nodeCoord, x, y);
 				// project a sphere to check with the Layer Unwalkable if some thing
 				// with the layer Unwalkable above it
-				string[] collidableLayers = { "Unwalkable" };
+				string[] collidableLayers = { "Unwalkable", "Enemy", "Player" };
 				int layerToCheck = LayerMask.GetMask(collidableLayers);
 				//graph[x, y].isObstacle = Physics.CheckSphere(nodeCoord, nodeSize / 2, layerToCheck);
 
