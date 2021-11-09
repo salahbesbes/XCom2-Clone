@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStats : MonoBehaviour, ISubject<PlayerStats, PlayerStats>
 {
 	[SerializeField]
 	private float _Health;
@@ -12,7 +12,7 @@ public class PlayerStats : MonoBehaviour
 		set
 		{
 			_Health = Mathf.Clamp(value, 0, MaxHealth);
-			eventListner.Invoke(nameof(Health));
+			EventListner.Invoke(this);
 		}
 	}
 
@@ -25,7 +25,7 @@ public class PlayerStats : MonoBehaviour
 		set
 		{
 			_MoveRange = value;
-			eventListner.Invoke(nameof(MoveRange));
+			EventListner.Invoke(this);
 		}
 	}
 
@@ -38,7 +38,7 @@ public class PlayerStats : MonoBehaviour
 		set
 		{
 			_MoveVision = value;
-			eventListner.Invoke(nameof(MoveVision));
+			EventListner.Invoke(this);
 		}
 	}
 
@@ -51,17 +51,17 @@ public class PlayerStats : MonoBehaviour
 		set
 		{
 			_ActionPoint = value;
-			eventListner.Invoke(nameof(ActionPoint));
+			EventListner.Invoke(this);
 		}
 	}
+
+	public Action<PlayerStats> EventListner { get; set; }
 
 	public Transform healthBar;
 	public GameObject Textprefab;
 	public float MaxHealth = 20;
 
 	//private Dictionary<string, dynamic> dictProperties = new Dictionary<string, dynamic>()
-
-	public static event Action<string> eventListner = delegate { };
 
 	private void Update()
 	{
@@ -82,7 +82,7 @@ public class PlayerStats : MonoBehaviour
 	private void OnEnable()
 	{
 		// subscribe the observable to the this subscriaber
-		healthBar.GetComponent<ObserverAbstraction>().Subsribe(this);
+		healthBar.GetComponent<ObserverAbstraction<PlayerStats, PlayerStats>>().Subsribe(this);
 	}
 
 	public void Start()

@@ -18,8 +18,9 @@ public class BaseUnit : MonoBehaviour
 	public Node destination;
 	public bool processing = false;
 	public Weapon weapon;
+	private GameStateManager gameManager;
 
-	private void Awake()
+	private void Start()
 	{
 		grid = FindObjectOfType<NodeGrid>();
 		path = new List<Node>();
@@ -118,11 +119,19 @@ public class BaseUnit : MonoBehaviour
 			action.TryExecuteAction();
 		}
 	}
+
+	public override string ToString()
+	{
+		return $" {GetType().Name} {transform.name} selected";
+	}
 }
 
 public class Player : BaseUnit
 {
-	public Enemy currentTarget;
+	private Enemy currentTarget;
+
+	private GameStateManager gameStateManager;
+
 	public Transform shootingPoint;
 
 	public List<ActionBase> actions = new List<ActionBase>();
@@ -170,19 +179,19 @@ public class Player : BaseUnit
 		}
 
 		LockOnTarger();
-		checkFlank(currentTarget.NodeCoord);
+		checkFlank(currentTarget?.NodeCoord);
 	}
 
 	private void SelectNextEnemy()
 	{
-		List<Enemy> enemies = FindObjectOfType<EnemyManager>().enemies;
+		List<Transform> enemies = gameStateManager.enemies;
 		int nbEnemies = enemies.Count;
 
 		if (currentTarget != null)
 		{
 			int currentTargetIndex = enemies.FindIndex(instance => instance == currentTarget);
 
-			currentTarget = enemies[(currentTargetIndex + 1) % nbEnemies];
+			currentTarget = enemies[(currentTargetIndex + 1) % nbEnemies].GetComponent<Enemy>();
 			Debug.Log($"Selected  {currentTarget}");
 		}
 	}
@@ -349,6 +358,8 @@ public class Player : BaseUnit
 
 	public void checkFlank(Node target)
 	{
+		if (currentPos == null) return;
+
 		Transform points = transform.Find("Points");
 		Vector3 selectedPointCood = Vector3.zero;
 		Vector3 selectedPoint;
@@ -399,7 +410,7 @@ public class Player : BaseUnit
 
 	private void LockOnTarger()
 	{
-		if (currentPos != null && currentTarget.NodeCoord != null)
+		if (currentPos != null && currentTarget?.NodeCoord != null)
 		{
 			// handle rotation on axe Y
 			Vector3 dir = currentTarget.NodeCoord.coord - currentPos.coord;
@@ -415,6 +426,7 @@ public class Player : BaseUnit
 
 	public void CheckForTargetWithRayCast(Vector3 pointPosition, Vector3 targetPosition)
 	{
+		if (currentPos == null) return;
 		RaycastHit hit;
 		Vector3 dir = targetPosition - pointPosition;
 		string[] collidableLayers = { "Unwalkable", "Enemy" };
@@ -450,6 +462,8 @@ public class Player : BaseUnit
 	{
 		if (grid != null && grid.graph != null)
 		{
+			if (currentPos == null) return;
+
 			foreach (Node node in grid?.graph)
 			{
 				//string[] collidableLayers = { "Player", "Unwalkable" };
@@ -493,18 +507,20 @@ public class Player : BaseUnit
 
 	public void Awake()
 	{
+	}
+
+	public void Start()
+	{
 		grid = FindObjectOfType<NodeGrid>();
 		path = new List<Node>();
 		turnPoints = new Vector3[0];
 		queueOfActions = new Queue<ActionBase>();
 		//actions = new ActionType[0];
 		//playerHeight = transform.GetComponent<Renderer>().bounds.size.y;
-		List<Enemy> enemies = FindObjectOfType<EnemyManager>().enemies;
-		currentTarget = enemies.First();
-	}
+		List<Transform> enemies = FindObjectOfType<GameStateManager>().enemies;
+		currentTarget = enemies.First().GetComponent<Enemy>();
+		gameStateManager = FindObjectOfType<GameStateManager>();
 
-	public void Start()
-	{
 		foreach (ActionBase action in actions)
 		{
 			GameObject obj = Instantiate(Action_Prefab);

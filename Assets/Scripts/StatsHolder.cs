@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StatsHolder : ObserverAbstraction
+public class StatsHolder : ObserverAbstraction<PlayerStats, PlayerStats>
 {
 	public float chipSpeed;
 	private float lerpSpeed;
@@ -16,29 +16,18 @@ public class StatsHolder : ObserverAbstraction
 	public Text actionPointText;
 	public Text HealthText;
 
-	public override void OnHealthChange(string ComponentName)
+	public override void OnSubjectEventChanges(PlayerStats Subject)
 	{
-		switch (ComponentName)
-		{
-			case "Health":
-				HealthText.text = $"{playerstats.Health}";
-				updateHealthBar();
-				break;
-
-			case "ActionPoint":
-				actionPointText.text = $"{playerstats.ActionPoint}";
-				break;
-
-			default:
-				break;
-		}
+		HealthText.text = $"{SubjectRef.Health}";
+		updateHealthBar();
+		actionPointText.text = $"{SubjectRef.ActionPoint}";
 	}
 
 	private void Start()
 	{
 		//float unitWidth = healthUnit.transform.GetComponent<Image>().rectTransform.rect.width;
 		//float len = 0;
-		//for (int i = 0; i < playerstats.Health; i++)
+		//for (int i = 0; i < SubjectRef.Health; i++)
 		//{
 		//	GameObject unit = Instantiate(healthUnit, frontHealthBar.transform.position, frameHealthBar.transform.rotation);
 		//	maxHealthUnit++;
@@ -79,7 +68,7 @@ public class StatsHolder : ObserverAbstraction
 	private IEnumerator updateHealthUnitProgressively()
 	{
 		yield return null;
-		int RestHealthUnit = Mathf.FloorToInt(playerstats.Health * maxHealthUnit / playerstats.MaxHealth);
+		int RestHealthUnit = Mathf.FloorToInt(SubjectRef.Health * maxHealthUnit / SubjectRef.MaxHealth);
 		for (int i = 0; i <= RestHealthUnit; i++)
 		{
 			if (frontHealthBar.transform.childCount == i) break;
@@ -95,7 +84,7 @@ public class StatsHolder : ObserverAbstraction
 		float fillA = frontHealthBar.fillAmount;
 		float fillB = backHealthBar.fillAmount;
 		// percent between [0,1]
-		float newHealthPercent = playerstats.Health / playerstats.MaxHealth;
+		float newHealthPercent = SubjectRef.Health / SubjectRef.MaxHealth;
 		StopCoroutine("updateHealthBarProgressively");
 		if (fillB > newHealthPercent)
 		{
@@ -103,7 +92,7 @@ public class StatsHolder : ObserverAbstraction
 			frontHealthBar.fillAmount = newHealthPercent;
 			backHealthBar.color = Color.red;
 
-			int RestHealthUnit = Mathf.FloorToInt(playerstats.Health * maxHealthUnit / playerstats.MaxHealth);
+			int RestHealthUnit = Mathf.FloorToInt(SubjectRef.Health * maxHealthUnit / SubjectRef.MaxHealth);
 			//for (int i = frontHealthBar.transform.childCount - 1; i > RestHealthUnit; i--)
 			//{
 			//	frontHealthBar.transform.GetChild(i).gameObject.SetActive(false);
