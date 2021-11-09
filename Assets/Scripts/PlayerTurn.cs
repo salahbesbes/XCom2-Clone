@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -7,15 +6,15 @@ public class PlayerTurn : AnyState
 	private Color InitColor;
 
 	public string StateName = "Default";
-	public List<Player> players;
 
 	public override void EnterState(GameStateManager gameManager)
 	{
 		StateName = nameof(PlayerTurn);
-		players = gameManager.players.Select(el => el.GetComponent<Player>()).ToList();
-		gameManager.selectedPlayer = players.FirstOrDefault();
-		gameManager.selectedEnemy = gameManager.enemies.Select(el => el.GetComponent<Enemy>()).ToList().First();
+		gameManager.selectedPlayer = gameManager.players.FirstOrDefault();
+		gameManager.selectedEnemy = gameManager.enemies.FirstOrDefault();
+
 		gameManager.selectedPlayer.enabled = true;
+		//Debug.Log($" PlayerTurn Start ,  {gameManager.selectedPlayer.transform.name} is selected");
 	}
 
 	public override void Update(GameStateManager gameManager)
@@ -24,6 +23,25 @@ public class PlayerTurn : AnyState
 		{
 			SelectNextPlayer(gameManager);
 		}
+
+		if (Input.GetMouseButtonDown(0))
+		{
+			gameManager.selectedPlayer.CreateNewMoveAction();
+		}
+		if (Input.GetMouseButtonDown(1))
+		{
+			gameManager.selectedPlayer.CreateNewShootAction();
+		}
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			gameManager.selectedPlayer.CreateNewReloadAction();
+		}
+		if (Input.GetKeyDown(KeyCode.LeftShift))
+		{
+			gameManager.selectedPlayer.SelectNextEnemy();
+		}
+		gameManager.selectedPlayer.LockOnTarger();
+		gameManager.selectedPlayer.checkFlank(gameManager?.selectedEnemy?.currentPos);
 	}
 
 	public override void ExitState(GameStateManager gameManager)
@@ -37,14 +55,14 @@ public class PlayerTurn : AnyState
 
 	public void SelectNextPlayer(GameStateManager gameManager)
 	{
-		int nbPlayers = players.Count;
+		int nbPlayers = gameManager.players.Count;
 
 		if (gameManager != null)
 		{
 			gameManager.selectedPlayer.enabled = false;
-			int currentPlayerIndex = players.FindIndex(instance => instance == gameManager.selectedPlayer);
+			int currentPlayerIndex = gameManager.players.FindIndex(instance => instance == gameManager.selectedPlayer);
 
-			gameManager.selectedPlayer = players[(currentPlayerIndex + 1) % nbPlayers];
+			gameManager.selectedPlayer = gameManager.players[(currentPlayerIndex + 1) % nbPlayers];
 			gameManager.selectedPlayer.enabled = true;
 
 			Debug.Log($"Selected  {gameManager.selectedPlayer} ");
@@ -55,15 +73,16 @@ public class PlayerTurn : AnyState
 public class EnemyTurn : AnyState
 {
 	public string StateName = "Default";
-	public List<Enemy> enemies;
 
 	public override void EnterState(GameStateManager gameManager)
 	{
 		StateName = nameof(EnemyTurn);
-		enemies = gameManager.enemies.Select(el => el.GetComponent<Enemy>()).ToList();
-		gameManager.selectedPlayer = gameManager.players.Select(el => el.GetComponent<Player>()).ToList().First();
-		gameManager.selectedEnemy = enemies.First();
+
+		gameManager.selectedPlayer = gameManager.players.FirstOrDefault();
+		gameManager.selectedEnemy = gameManager.enemies.FirstOrDefault();
+
 		gameManager.selectedEnemy.enabled = true;
+		//Debug.Log($" EnemyTurn Start ,  {gameManager.selectedEnemy.transform.name} is selected");
 	}
 
 	public override void Update(GameStateManager gameManager)
@@ -72,7 +91,29 @@ public class EnemyTurn : AnyState
 		{
 			SelectNextEnemy(gameManager);
 		}
-		base.ExecuteInAnyState();
+
+		if (Input.GetKeyDown(KeyCode.LeftShift))
+		{
+			gameManager.selectedEnemy.SelectNextPlayer();
+		}
+
+		if (Input.GetMouseButtonDown(0))
+		{
+			Debug.Log($"mouse down");
+			gameManager.selectedEnemy.CreateNewMoveAction();
+		}
+		if (Input.GetMouseButtonDown(1))
+		{
+			gameManager.selectedEnemy.CreateNewShootAction();
+		}
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			gameManager.selectedEnemy.CreateNewReloadAction();
+		}
+		gameManager.selectedEnemy.LockOnTarger();
+		//gameManager.selectedEnemy.checkFlank(gameManager.selectedPlayer.currentPos);
+
+		ExecuteInAnyState();
 	}
 
 	public override void ExitState(GameStateManager gameManager)
@@ -86,17 +127,17 @@ public class EnemyTurn : AnyState
 
 	public void SelectNextEnemy(GameStateManager gameManager)
 	{
-		int nbEnemies = enemies.Count;
+		int nbEnemies = gameManager.enemies.Count;
 
 		if (gameManager != null)
 		{
 			gameManager.selectedEnemy.enabled = false;
-			int currentEnemyIndex = enemies.FindIndex(instance => instance == gameManager.selectedEnemy);
+			int currentEnemyIndex = gameManager.enemies.FindIndex(instance => instance == gameManager.selectedEnemy);
 
-			gameManager.selectedEnemy = enemies[(currentEnemyIndex + 1) % nbEnemies];
+			gameManager.selectedEnemy = gameManager.enemies[(currentEnemyIndex + 1) % nbEnemies];
 			gameManager.selectedEnemy.enabled = true;
 
-			Debug.Log($"Selected  {gameManager.selectedEnemy} ");
+			Debug.Log($" {gameManager.selectedEnemy.transform.name} is Selected  {gameManager.selectedEnemy} ");
 		}
 	}
 }

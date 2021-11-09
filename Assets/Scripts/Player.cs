@@ -14,18 +14,13 @@ public class BaseUnit : MonoBehaviour
 
 	protected Vector3[] turnPoints;
 	protected NodeGrid grid;
+
+	[SerializeField]
 	public Node currentPos;
 	public Node destination;
 	public bool processing = false;
 	public Weapon weapon;
-	private GameStateManager gameManager;
-
-	private void Start()
-	{
-		grid = FindObjectOfType<NodeGrid>();
-		path = new List<Node>();
-		turnPoints = new Vector3[0];
-	}
+	public Transform partToRotate;
 
 	public void MoveActionCallback(MoveAction actionInstance, Node start, Node end)
 	{
@@ -126,123 +121,183 @@ public class BaseUnit : MonoBehaviour
 	}
 }
 
-public class Player : BaseUnit
+public class Player : UnitAction
 {
-	private Enemy currentTarget;
-
 	private GameStateManager gameStateManager;
-
-	public Transform shootingPoint;
-
+	protected Enemy currentTarget;
+	public bool isFlanked;
 	public List<ActionBase> actions = new List<ActionBase>();
 
 	public Transform ActionHolder;
 	public GameObject Action_Prefab;
-	public Transform partToRotate;
 
-	public void getOnClickEvent(string ActionName)
+	//public Action getOnClickEvent(string ActionName)
+	//{
+	//	switch (ActionName)
+	//	{
+	//		case "Shoot":
+	//			return CreateNewShootAction;
+
+	// case "Reload": return CreateNewReloadAction;
+
+	//		default:
+	//			return () => { };
+	//	}
+	//}
+	private void OnDisable()
 	{
-		switch (ActionName)
-		{
-			case "Shoot":
-				CreateNewShootAction();
-				break;
-
-			case "Reload":
-				CreateNewReloadAction();
-				break;
-
-			default:
-				break;
-		}
+		grid = FindObjectOfType<NodeGrid>();
+		currentPos = grid.getNodeFromTransformPosition(transform);
 	}
 
 	private void Update()
 	{
 		currentPos = grid.getNodeFromTransformPosition(transform);
 
-		if (Input.GetMouseButtonDown(0))
-		{
-			CreateNewMoveAction();
-		}
-		if (Input.GetMouseButtonDown(1))
-		{
-			CreateNewShootAction();
-		}
-		if (Input.GetKeyDown(KeyCode.R))
-		{
-			CreateNewReloadAction();
-		}
-		if (Input.GetKeyDown(KeyCode.LeftShift))
-		{
-			SelectNextEnemy();
-		}
-
-		LockOnTarger();
-		checkFlank(currentTarget?.NodeCoord);
+		//if (Input.GetMouseButtonDown(0))
+		//{
+		//	CreateNewMoveAction();
+		//}
+		//if (Input.GetMouseButtonDown(1))
+		//{
+		//	CreateNewShootAction();
+		//}
+		//if (Input.GetKeyDown(KeyCode.R))
+		//{
+		//	CreateNewReloadAction();
+		//}
+		//if (Input.GetKeyDown(KeyCode.LeftShift))
+		//{
+		//	SelectNextEnemy();
+		//}
+		//LockOnTarger();
+		//checkFlank(currentTarget?.NodeCoord);
 	}
 
-	private void SelectNextEnemy()
+	private bool checkPointIfSameLineOrColumAsTarget(Vector3 target, Vector3 pointNode)
 	{
-		List<Transform> enemies = gameStateManager.enemies;
-		int nbEnemies = enemies.Count;
+		if (pointNode != null)
+		{
+			if (target.x == pointNode.x || target.z == pointNode.z)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
+	public void checkFlank(Node target)
+	{
+		if (currentPos == null || target == null) return;
+
+		Transform points = transform.Find("Points");
+		Vector3 selectedPointCood = Vector3.zero;
+		Vector3 selectedPoint;
+		if (target != null && points != null)
+		{
+			Dictionary<Vector3, float> ordredDictByMagnitude = new Dictionary<Vector3, float>();
+
+			for (int i = 0; i < points.childCount; i++)
+			{
+				Transform point = points.GetChild(i);
+				float mag = (target.coord - point.position).magnitude;
+				ordredDictByMagnitude.Add(point.position, mag);
+			}
+
+			ordredDictByMagnitude = ordredDictByMagnitude.OrderBy((item) => item.Value)
+									.ToDictionary(t => t.Key, t => t.Value);
+
+			// default node is the nearest one to the target (first one in the dict)
+			Vector3 defaultPoint = ordredDictByMagnitude.First().Key;
+			selectedPoint = defaultPoint;
+
+			bool foundPotentialPositionToFlank = false;
+			foreach (var item in ordredDictByMagnitude)
+			{
+				Vector3 point = item.Key;
+				if (checkPointIfSameLineOrColumAsTarget(target.coord, point))
+				{
+					foundPotentialPositionToFlank = true;
+					// update selected Point Coord
+					selectedPoint = point;
+					break;
+				}
+			}
+			if (foundPotentialPositionToFlank)
+			{
+				if (defaultPoint == selectedPoint)
+				{
+					selectedPoint = ordredDictByMagnitude.ElementAt(1).Key;
+				}
+				CheckForTargetWithRayCast(selectedPoint, target.coord);
+			}
+			else
+			{
+				CheckForTargetWithRayCast(defaultPoint, target.coord);
+			}
+		}
+	}
+
+	public void CheckForTargetWithRayCast(Vector3 pointPosition, Vector3 targetPosition)
+	{
+		RaycastHit hit;
+		Vector3 dir = targetPosition - pointPosition;
+		string[] collidableLayers = { "Unwalkable", "Enemy" };
+		int layerToCheck = LayerMask.GetMask(collidableLayers);
+		// if i can see the player directly without any Obstacle in between => im flanking
+		// it else if i see some thing other the enemy in the way => im not
+		/* note i dont understand why layer to check is not working properly, if the collidableLayers
+		// contain 2 layer, the raycast should detect only object with those layer, and the
+		// first object the ray hit it return that hit object, but it doesnot do i thought,
+		// when it found an "unwalckable" object the ray conteniou and detect the "Enemy".
+		// in my case since im always looking at the enemy the raycast always return True
+		// even if the obsacle is in front of the enemy
+		*/
+		if (Physics.Raycast(pointPosition, dir, out hit, layerToCheck))
+		{
+			// to compaire the layer of the object we hit to the "Enemy" layer.
+			// LayerMask return an bitMask int type different to the gameObject.layer
+			// int type => (index) convert index of the layer Enemy to the BitMast type
+			// to compair it
+			if ((LayerMask.GetMask("Enemy") & 1 << hit.transform.gameObject.layer) != 0)
+				currentTarget.isFlanked = true;
+			else
+				currentTarget.isFlanked = false;
+		}
+		else
+		{
+			currentTarget.isFlanked = false;
+		}
+		Debug.DrawRay(pointPosition, dir, Color.yellow);
+	}
+
+	public void LockOnTarger()
+	{
+		if (currentPos == null) return;
+		if (currentTarget == null) return;
+		if (currentPos != null && currentTarget.currentPos != null)
+		{
+			// handle rotation on axe Y
+			Vector3 dir = currentTarget.currentPos.coord - currentPos.coord;
+			Quaternion lookRotation = Quaternion.LookRotation(dir);
+			// smooth the rotation of the turrent
+			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,
+							lookRotation,
+							Time.deltaTime * 5f)
+							.eulerAngles;
+			partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+		}
+	}
+
+	public void SelectNextEnemy()
+	{
+		List<Enemy> enemies = gameStateManager.enemies;
+		int nbEnemies = enemies.Count;
 		if (currentTarget != null)
 		{
 			int currentTargetIndex = enemies.FindIndex(instance => instance == currentTarget);
-
-			currentTarget = enemies[(currentTargetIndex + 1) % nbEnemies].GetComponent<Enemy>();
-			Debug.Log($"Selected  {currentTarget}");
+			currentTarget = enemies[(currentTargetIndex + 1) % nbEnemies];
 		}
-	}
-
-	public void CreateNewMoveAction()
-	{
-		// cant have more that 2 actions
-
-		//int actionPoints = GetComponent<PlayerStats>().ActionPoint;
-		//if (actionPoints == 0 || (processing && queueOfActions.Count >= 1))
-		//{
-		//	Debug.Log($" No action point Left !!!");
-		//	return;
-		//}
-		Node oldDest = destination;
-		destination = grid.getNodeFromMousePosition();
-		//Debug.Log($"destination {destination} coord = {destination?.coord}");
-		if (destination != null)
-		{
-			if (oldDest == null || destination == currentPos)
-				oldDest = currentPos;
-			MoveAction move = new MoveAction(MoveActionCallback, "Move", oldDest, destination);
-			Enqueue(move);
-		}
-	}
-
-	public void CreateNewReloadAction()
-	{
-		// cant have more that 2 actions
-		//int actionPoints = GetComponent<PlayerStats>().ActionPoint;
-		//if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
-		//{
-		//	Debug.Log($" No action point Left !!!");
-		//	return;
-		//}
-		ReloadAction reload = new ReloadAction(ReloadActionCallBack, "Reload");
-		Enqueue(reload);
-	}
-
-	public void CreateNewShootAction()
-	{
-		// cant have more that 2 actions
-		//int actionPoints = GetComponent<PlayerStats>().ActionPoint;
-		//if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
-		//{
-		//	Debug.Log($" No action point Left !!!");
-		//	return;
-		//}
-
-		ShootAction shoot = new ShootAction(ShootActionCallBack, "Shoot");
-		Enqueue(shoot);
 	}
 
 	//public void checkforFlinkPosition(Node node)
@@ -344,120 +399,6 @@ public class Player : BaseUnit
 	//}
 	//}
 
-	private bool checkPointIfSameLineOrColumAsTarget(Vector3 target, Vector3 pointNode)
-	{
-		if (pointNode != null)
-		{
-			if (target.x == pointNode.x || target.z == pointNode.z)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void checkFlank(Node target)
-	{
-		if (currentPos == null) return;
-
-		Transform points = transform.Find("Points");
-		Vector3 selectedPointCood = Vector3.zero;
-		Vector3 selectedPoint;
-		if (target != null && points != null)
-		{
-			Dictionary<Vector3, float> ordredDictByMagnitude = new Dictionary<Vector3, float>();
-
-			for (int i = 0; i < points.childCount; i++)
-			{
-				Transform point = points.GetChild(i);
-				float mag = (target.coord - point.position).magnitude;
-				ordredDictByMagnitude.Add(point.position, mag);
-			}
-
-			ordredDictByMagnitude = ordredDictByMagnitude.OrderBy((item) => item.Value)
-									.ToDictionary(t => t.Key, t => t.Value);
-
-			// default node is the nearest one to the target (first one in the dict)
-			Vector3 defaultPoint = ordredDictByMagnitude.First().Key;
-			selectedPoint = defaultPoint;
-
-			bool foundPotentialPositionToFlank = false;
-			foreach (var item in ordredDictByMagnitude)
-			{
-				Vector3 point = item.Key;
-				if (checkPointIfSameLineOrColumAsTarget(target.coord, point))
-				{
-					foundPotentialPositionToFlank = true;
-					// update selected Point Coord
-					selectedPoint = point;
-					break;
-				}
-			}
-			if (foundPotentialPositionToFlank)
-			{
-				if (defaultPoint == selectedPoint)
-				{
-					selectedPoint = ordredDictByMagnitude.ElementAt(1).Key;
-				}
-				CheckForTargetWithRayCast(selectedPoint, target.coord);
-			}
-			else
-			{
-				CheckForTargetWithRayCast(defaultPoint, target.coord);
-			}
-		}
-	}
-
-	private void LockOnTarger()
-	{
-		if (currentPos != null && currentTarget?.NodeCoord != null)
-		{
-			// handle rotation on axe Y
-			Vector3 dir = currentTarget.NodeCoord.coord - currentPos.coord;
-			Quaternion lookRotation = Quaternion.LookRotation(dir);
-			// smooth the rotation of the turrent
-			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,
-							lookRotation,
-							Time.deltaTime * 5f)
-							.eulerAngles;
-			partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-		}
-	}
-
-	public void CheckForTargetWithRayCast(Vector3 pointPosition, Vector3 targetPosition)
-	{
-		if (currentPos == null) return;
-		RaycastHit hit;
-		Vector3 dir = targetPosition - pointPosition;
-		string[] collidableLayers = { "Unwalkable", "Enemy" };
-		int layerToCheck = LayerMask.GetMask(collidableLayers);
-		// if i can see the player directly without any Obstacle in between => im flanking
-		// it else if i see some thing other the enemy in the way => im not
-		/* note i dont understand why layer to check is not working properly, if the collidableLayers
-		// contain 2 layer, the raycast should detect only object with those layer, and the
-		// first object the ray hit it return that hit object, but it doesnot do i thought,
-		// when it found an "unwalckable" object the ray conteniou and detect the "Enemy".
-		// in my case since im always looking at the enemy the raycast always return True
-		// even if the obsacle is in front of the enemy
-		*/
-		if (Physics.Raycast(pointPosition, dir, out hit, layerToCheck))
-		{
-			// to compaire the layer of the object we hit to the "Enemy" layer.
-			// LayerMask return an bitMask int type different to the gameObject.layer
-			// int type => (index) convert index of the layer Enemy to the BitMast type
-			// to compair it
-			if ((LayerMask.GetMask("Enemy") & 1 << hit.transform.gameObject.layer) != 0)
-				currentTarget.isFlanked = true;
-			else
-				currentTarget.isFlanked = false;
-		}
-		else
-		{
-			currentTarget.isFlanked = false;
-		}
-		Debug.DrawRay(pointPosition, dir, Color.yellow);
-	}
-
 	public void OnDrawGizmos()
 	{
 		if (grid != null && grid.graph != null)
@@ -487,7 +428,7 @@ public class Player : BaseUnit
 
 				if (node == destination) { node.color = Color.black; }
 				if (node == currentPos) { node.color = Color.blue; }
-				if (node == currentTarget.NodeCoord) { node.color = currentTarget.isFlanked == false ? Color.magenta : Color.yellow; }
+				if (node == currentTarget?.currentPos) { node.color = currentTarget?.isFlanked == false ? Color.magenta : Color.yellow; }
 				Gizmos.color = node.color;
 
 				Gizmos.DrawCube(node.coord, new Vector3(grid.nodeSize - 0.1f, 0.1f, grid.nodeSize - 0.1f));
@@ -511,23 +452,29 @@ public class Player : BaseUnit
 
 	public void Start()
 	{
-		grid = FindObjectOfType<NodeGrid>();
+		queueOfActions = new Queue<ActionBase>();
 		path = new List<Node>();
 		turnPoints = new Vector3[0];
-		queueOfActions = new Queue<ActionBase>();
 		//actions = new ActionType[0];
 		//playerHeight = transform.GetComponent<Renderer>().bounds.size.y;
-		List<Transform> enemies = FindObjectOfType<GameStateManager>().enemies;
-		currentTarget = enemies.First().GetComponent<Enemy>();
+		currentPos = grid.getNodeFromTransformPosition(transform);
+		Debug.Log($"start player {currentPos}");
 		gameStateManager = FindObjectOfType<GameStateManager>();
+		currentTarget = gameStateManager.selectedEnemy;
 
+		foreach (Transform child in ActionHolder)
+		{
+			Destroy(child.gameObject);
+		}
 		foreach (ActionBase action in actions)
 		{
 			GameObject obj = Instantiate(Action_Prefab);
 			obj.transform.name = action.name + "_Action";
 			Button btn = obj.GetComponentInChildren<Button>();
 			btn.GetComponent<Image>().sprite = action.icon;
-			btn.onClick.AddListener(delegate { getOnClickEvent(action.name); });
+			//Action callBack = getOnClickEvent(action.name);
+
+			//btn.onClick.AddListener(() => CreateNewReloadAction());
 
 			obj.transform.SetParent(ActionHolder);
 		}
@@ -555,7 +502,7 @@ public class MoveAction : ActionBase
 
 	public override string ToString()
 	{
-		return $"{base.ToString() } moving from {start} to {end}";
+		return $" moving from {start} to {end}";
 	}
 }
 

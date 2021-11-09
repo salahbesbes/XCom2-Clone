@@ -25,7 +25,7 @@ public class Weapon : MonoBehaviour
 	public Transform startPoint;
 	private NodeGrid grid;
 	public Camera fps_Cam;
-	public Player player;
+	public UnitAction player;
 
 	public void Start()
 	{

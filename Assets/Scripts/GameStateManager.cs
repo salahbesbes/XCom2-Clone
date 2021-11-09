@@ -34,34 +34,34 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, GameBa
 	public Action<GameBaseState> EventListner { get; set; }
 
 	[SerializeField]
-	public List<Transform> enemies;
+	public List<Enemy> enemies;
 	public Enemy selectedEnemy;
 
 	[SerializeField]
-	public List<Transform> players;
+	public List<Player> players;
 	public Player selectedPlayer;
 
 	private void OnEnable()
 	{
-		enemies = enemies.Select(p =>
-		{
-			Enemy enemy = p.GetComponent<Enemy>();
-			enemy.enabled = false;
-			return p;
-		}).ToList();
+		//enemies = enemies.Select(p =>
+		//{
+		//	Enemy enemy = p.GetComponent<Enemy>();
+		//	enemy.enabled = false;
+		//	return p;
+		//}).ToList();
 
 		players = players.Select(p =>
 		{
-			Player player = p.GetComponent<Player>();
-			player.enabled = false;
+			p.enabled = false;
 			return p;
 		}).ToList();
 		// subscribe to the observer onEnable
+
 		stateObserverText.Subsribe(this);
 		SwitchState(playerTurn);
 	}
 
-	private void Start()
+	private void Awake()
 	{
 	}
 
