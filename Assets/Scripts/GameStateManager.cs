@@ -43,13 +43,11 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, GameBa
 
 	private void OnEnable()
 	{
-		//enemies = enemies.Select(p =>
-		//{
-		//	Enemy enemy = p.GetComponent<Enemy>();
-		//	enemy.enabled = false;
-		//	return p;
-		//}).ToList();
-
+		// todo: since im OnEnable, this code executes before every thing, and when i
+		// disable the Script Player i prevent the Player to execute Start or Awake Function
+		// that's why if i want to diable the move of the player i need to separate in a
+		// separate class, because other logic/classes need some properties which are
+		// initialized in Start/Awake
 		players = players.Select(p =>
 		{
 			p.enabled = false;
