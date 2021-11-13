@@ -17,9 +17,9 @@ public class PlayerStats : MonoBehaviour, ISubject<PlayerStats, PlayerStats>
 	}
 
 	[SerializeField]
-	public float _MoveRange = 10;
+	public int _MoveRange = 10;
 
-	public float MoveRange
+	public int MoveRange
 	{
 		get { return _MoveRange; }
 		set
@@ -62,22 +62,6 @@ public class PlayerStats : MonoBehaviour, ISubject<PlayerStats, PlayerStats>
 	public float MaxHealth = 20;
 
 	//private Dictionary<string, dynamic> dictProperties = new Dictionary<string, dynamic>()
-
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.G))
-		{
-			//List<object> localprops = new List<object>() { Health, MoveRange, MoveVision, ActionPoint };
-			Health -= 2;
-			MoveVision++;
-		}
-		if (Input.GetKeyDown(KeyCode.F))
-		{
-			//List<object> localprops = new List<object>() { Health, MoveRange, MoveVision, ActionPoint };
-			Health += 2;
-			MoveVision++;
-		}
-	}
 
 	private void OnEnable()
 	{

@@ -83,6 +83,7 @@ public class BaseUnit : MonoBehaviour
 
 	public void FinishAction(ActionBase action)
 	{
+		Debug.Log($"finish action");
 		processing = false;
 		// update the cost
 		GetComponent<PlayerStats>().ActionPoint -= action.cost;
@@ -101,14 +102,17 @@ public class BaseUnit : MonoBehaviour
 
 	public void Enqueue(ActionBase action)
 	{
+		Debug.Log($"Enque");
 		queueOfActions.Enqueue(action);
 		ExecuteActionInQueue();
 	}
 
 	public void ExecuteActionInQueue()
 	{
+		Debug.Log($"Exec");
 		if (processing == false && queueOfActions.Count > 0)
 		{
+			Debug.Log($"Exec proces = true");
 			processing = true;
 			ActionBase action = queueOfActions.Dequeue();
 			action.TryExecuteAction();
@@ -131,20 +135,13 @@ public class Player : UnitAction
 	public Transform ActionHolder;
 	public GameObject Action_Prefab;
 
-	//public Action getOnClickEvent(string ActionName)
+	//private void OnDisable()
 	//{
-	//	switch (ActionName)
-	//	{
-	//		case "Shoot":
-	//			return CreateNewShootAction;
-
-	// case "Reload": return CreateNewReloadAction;
-
-	//		default:
-	//			return () => { };
-	//	}
+	//	grid = FindObjectOfType<NodeGrid>();
+	//	currentPos = grid.getNodeFromTransformPosition(transform);
 	//}
-	private void OnDisable()
+
+	private void OnEnable()
 	{
 		grid = FindObjectOfType<NodeGrid>();
 		currentPos = grid.getNodeFromTransformPosition(transform);
@@ -414,18 +411,18 @@ public class Player : UnitAction
 				Collider[] hitColliders = Physics.OverlapSphere(node.coord, grid.nodeSize / 2, layerToCheck);
 				node.isObstacle = hitColliders.Length > 0 ? true : false;
 				node.color = node.isObstacle ? Color.red : node.inRange ? node.firstRange ? Color.yellow : Color.black : Color.cyan;
-				if (node.inRange && node.firstRange) node.color = Color.yellow;
+				//if (node.inRange && node.firstRange) node.color = Color.yellow;
 				if (path.Contains(node)) node.color = Color.gray;
+				if (turnPoints.Contains(node.coord)) node.color = Color.green;
 
 				foreach (var n in turnPoints)
 				{
-					if (n == node.coord)
+					if (node.coord.x == n.x && node.coord.z == n.z)
 					{
 						node.color = Color.green;
 						break;
 					}
 				}
-
 				if (node == destination) { node.color = Color.black; }
 				if (node == currentPos) { node.color = Color.blue; }
 				if (node == currentTarget?.currentPos) { node.color = currentTarget?.isFlanked == false ? Color.magenta : Color.yellow; }
@@ -472,9 +469,8 @@ public class Player : UnitAction
 			obj.transform.name = action.name + "_Action";
 			Button btn = obj.GetComponentInChildren<Button>();
 			btn.GetComponent<Image>().sprite = action.icon;
-			//Action callBack = getOnClickEvent(action.name);
 
-			//btn.onClick.AddListener(() => CreateNewReloadAction());
+			btn.onClick.AddListener(() => CreateNewReloadAction());
 
 			obj.transform.SetParent(ActionHolder);
 		}
