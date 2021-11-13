@@ -158,7 +158,7 @@ public class NodeGrid : MonoBehaviour
 
 	public void Update()
 	{
-		resetGrid();
+		//resetGrid();
 	}
 
 	//[HideInInspector]

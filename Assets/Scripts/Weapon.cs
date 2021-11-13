@@ -12,7 +12,7 @@ public class Weapon : MonoBehaviour
 	public int bulletLeft;
 	public int bulletsShot;
 	public int maxMagazine = 100;
-	public float bulletRange = 5;
+	public float bulletRange = 100;
 
 	[Range(0, 0.5f)]
 	public float spread = 1f;
@@ -59,6 +59,7 @@ public class Weapon : MonoBehaviour
 
 	public IEnumerator Reload(ReloadAction reload)
 	{
+		Debug.Log($"start reloading");
 		yield return new WaitForSeconds(2f);
 		bulletLeft = maxMagazine;
 		reloading = false;

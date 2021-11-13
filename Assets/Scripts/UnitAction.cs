@@ -33,6 +33,7 @@ public class UnitAction : otherAction, IBaseActions
 		//	Debug.Log($" No action point Left !!!");
 		//	return;
 		//}
+		Debug.Log($"enque reloading");
 		ReloadAction reload = new ReloadAction(ReloadActionCallBack, "Reload");
 		Enqueue(reload);
 	}
@@ -48,7 +49,6 @@ public class UnitAction : otherAction, IBaseActions
 		//}
 
 		ShootAction shoot = new ShootAction(ShootActionCallBack, "Shoot");
-		Debug.Log($"{shoot} action");
 		Enqueue(shoot);
 	}
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -132,7 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 80033}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: RightPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 7906103}
   - component: {fileID: 7906102}
   - component: {fileID: 7906101}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Player_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -259,7 +259,7 @@ GameObject:
   - component: {fileID: 53473287}
   - component: {fileID: 53473286}
   - component: {fileID: 53473285}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Ahmed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +320,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 53473284}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.5, y: 0.5, z: 1.5}
+  m_LocalPosition: {x: 7.5, y: 0.4, z: 1.5}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 1782823878}
@@ -341,7 +341,7 @@ GameObject:
   - component: {fileID: 80541494}
   - component: {fileID: 80541493}
   - component: {fileID: 80541492}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Player_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -436,7 +436,7 @@ GameObject:
   - component: {fileID: 88254780}
   - component: {fileID: 88254779}
   - component: {fileID: 88254778}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Player_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -528,7 +528,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 111256665}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: RightPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -559,7 +559,7 @@ GameObject:
   m_Component:
   - component: {fileID: 162329250}
   - component: {fileID: 162329251}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: fps_cam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -634,7 +634,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 180428840}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: startPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -664,19 +664,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8316114610913977163, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611144165022, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611343782233, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611764904255, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611791023846, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Pivot.x
@@ -768,19 +768,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611791023847, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611817909730, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114612335727380, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114612737278961, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
@@ -804,7 +804,7 @@ GameObject:
   m_Component:
   - component: {fileID: 232894140}
   - component: {fileID: 232894141}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: PlayerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -867,7 +867,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 282575727}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: TopPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -897,7 +897,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 283940486}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: 'LeftPoint '
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -930,7 +930,7 @@ GameObject:
   - component: {fileID: 298525809}
   - component: {fileID: 298525808}
   - component: {fileID: 298525807}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Weapon_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1022,7 +1022,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 314112169}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: BottomPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -1052,19 +1052,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8316114610913977163, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611144165022, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611343782233, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611764904255, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611791023846, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Pivot.x
@@ -1156,19 +1156,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611791023847, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611817909730, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114612335727380, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114612737278961, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
@@ -1186,7 +1186,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 394384699}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: TopPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -1217,7 +1217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 403125025}
   - component: {fileID: 403125026}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: RangerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1280,7 +1280,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 423441983}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Points
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1314,7 +1314,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 424296942}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: TopPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -1346,7 +1346,7 @@ GameObject:
   - component: {fileID: 434766380}
   - component: {fileID: 434766379}
   - component: {fileID: 434766378}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Ranger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1396,7 +1396,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 434766377}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.5, y: 0.5, z: -8.5}
+  m_LocalPosition: {x: 3.5, y: 0.4, z: -8.5}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 403125025}
@@ -1414,7 +1414,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 603710805}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1449,7 +1449,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 654613026}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: startPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1572,7 +1572,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 710523836}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: startPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1605,7 +1605,7 @@ GameObject:
   - component: {fileID: 736150536}
   - component: {fileID: 736150535}
   - component: {fileID: 736150534}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1697,7 +1697,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 758892392}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Points
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1734,7 +1734,7 @@ GameObject:
   - component: {fileID: 798162396}
   - component: {fileID: 798162395}
   - component: {fileID: 798162394}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1826,7 +1826,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 929563300}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: 'LeftPoint '
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -1859,7 +1859,7 @@ GameObject:
   - component: {fileID: 934393281}
   - component: {fileID: 934393280}
   - component: {fileID: 934393279}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Weapon_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1954,7 +1954,7 @@ GameObject:
   - component: {fileID: 939109562}
   - component: {fileID: 939109561}
   - component: {fileID: 939109560}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2046,7 +2046,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 940322799}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: 'LeftPoint '
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -2162,7 +2162,7 @@ GameObject:
   - component: {fileID: 967328130}
   - component: {fileID: 967328129}
   - component: {fileID: 967328128}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2320,19 +2320,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8316114610913977163, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611144165022, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611343782233, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611764904255, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611791023846, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Pivot.x
@@ -2424,19 +2424,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611791023847, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611817909730, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8316114612335727380, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8316114612737278961, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
@@ -2449,7 +2449,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1091793499}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: 'LeftPoint '
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -2482,7 +2482,7 @@ GameObject:
   - component: {fileID: 1128258354}
   - component: {fileID: 1128258353}
   - component: {fileID: 1128258352}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Player_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2574,7 +2574,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1135181096}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: TopPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -2605,7 +2605,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1184229620}
   - component: {fileID: 1184229622}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: fps_cam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2680,19 +2680,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8316114610913977163, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611144165022, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611343782233, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611764904255, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611791023846, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Pivot.x
@@ -2784,19 +2784,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611791023847, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611817909730, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114612335727380, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8316114612737278961, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
@@ -2817,7 +2817,7 @@ GameObject:
   - component: {fileID: 1202931062}
   - component: {fileID: 1202931061}
   - component: {fileID: 1202931060}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Weapon_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2911,7 +2911,7 @@ GameObject:
   - component: {fileID: 1214974210}
   - component: {fileID: 1214974212}
   - component: {fileID: 1214974211}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Salah
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2926,7 +2926,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1214974209}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 1.5, y: 0.4, z: 0.5}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 232894140}
@@ -2948,7 +2948,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Health: 0
-  _MoveRange: 10
+  _MoveRange: 8
   _MoveVision: 20
   _ActionPoint: 2
   healthBar: {fileID: 2076380250}
@@ -2990,19 +2990,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8316114610913977163, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611144165022, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611343782233, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611764904255, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611791023846, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Pivot.x
@@ -3094,19 +3094,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611791023847, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8316114611817909730, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8316114612335727380, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8316114612737278961, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee49f9f5c9b2b49469cdaa5af121b4ee, type: 3}
@@ -3282,7 +3282,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1360547155}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Points
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3316,7 +3316,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1369311083}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: startPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3346,7 +3346,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1369993782}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: RightPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -3376,7 +3376,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1431832283}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: BottomPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -3407,7 +3407,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1495905815}
   - component: {fileID: 1495905816}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: fps_cam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3482,7 +3482,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1504855338}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: RightPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -3503,51 +3503,6 @@ Transform:
   m_Father: {fileID: 1941165630}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1525644857
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1525644859}
-  - component: {fileID: 1525644858}
-  m_Layer: 0
-  m_Name: Inventary
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1525644858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1525644857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 126ad2cd1a6bd3d4aabc9ab2cd08539c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  items:
-  - {fileID: 11400000, guid: e81ceab8f0655cf45a4dc369ae84b2c9, type: 2}
---- !u!4 &1525644859
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1525644857}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1927713, y: -2.3767104, z: 0.10834934}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 18
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1539989694
 GameObject:
   m_ObjectHideFlags: 0
@@ -3558,7 +3513,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1539989695}
   - component: {fileID: 1539989696}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: fps_cam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3636,7 +3591,7 @@ GameObject:
   - component: {fileID: 1540364941}
   - component: {fileID: 1540364940}
   - component: {fileID: 1540364939}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Player_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3861,7 +3816,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1555843663}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: 'LeftPoint '
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -3892,7 +3847,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1570269659}
   - component: {fileID: 1570269660}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: SpecialistPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3958,7 +3913,7 @@ GameObject:
   - component: {fileID: 1601371987}
   - component: {fileID: 1601371986}
   - component: {fileID: 1601371985}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Weapon_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4058,7 +4013,7 @@ GameObject:
   - component: {fileID: 1699885884}
   - component: {fileID: 1699885883}
   - component: {fileID: 1699885882}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Weapon_Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4150,7 +4105,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1701179079}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: RightPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -4261,7 +4216,7 @@ GameObject:
   - component: {fileID: 1762837704}
   - component: {fileID: 1762837703}
   - component: {fileID: 1762837702}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Specialist
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4311,7 +4266,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1762837701}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.47, y: 0.5, z: -8.32}
+  m_LocalPosition: {x: 7.47, y: 0.4, z: -8.32}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 1570269659}
@@ -4330,7 +4285,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1782823878}
   - component: {fileID: 1782823879}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: PlayerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4397,7 +4352,7 @@ GameObject:
   - component: {fileID: 1803648059}
   - component: {fileID: 1803648058}
   - component: {fileID: 1803648062}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4602,7 +4557,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1870672283}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: BottomPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -4632,7 +4587,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1909529318}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: BottomPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -4664,7 +4619,7 @@ GameObject:
   - component: {fileID: 1915877646}
   - component: {fileID: 1915877645}
   - component: {fileID: 1915877644}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Assault
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4714,7 +4669,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1915877643}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.5, y: 0.5, z: -4.5}
+  m_LocalPosition: {x: -6.5, y: 0.4, z: -4.5}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 2094371069}
@@ -4732,7 +4687,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1933259643}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: TopPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -4762,7 +4717,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1941165630}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Points
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4796,7 +4751,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1998408718}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: BottomPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
@@ -4826,7 +4781,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2034495498}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Points
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4926,7 +4881,7 @@ GameObject:
   - component: {fileID: 2055236472}
   - component: {fileID: 2055236471}
   - component: {fileID: 2055236470}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5019,7 +4974,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2058562215}
   - component: {fileID: 2058562216}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: fps_cam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5100,7 +5055,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2094371069}
   - component: {fileID: 2094371070}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: AssaultPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5166,7 +5121,7 @@ GameObject:
   - component: {fileID: 2109072413}
   - component: {fileID: 2109072412}
   - component: {fileID: 2109072411}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5258,7 +5213,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2132888773}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: startPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

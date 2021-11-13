@@ -40,6 +40,9 @@ public class PlayerTurn : AnyState
 		{
 			gameManager.selectedPlayer.SelectNextEnemy();
 		}
+
+		gameManager.CheckMovementRange(gameManager.selectedPlayer);
+		base.ExecuteInAnyState(gameManager.selectedPlayer);
 		gameManager.selectedPlayer.LockOnTarger();
 		gameManager.selectedPlayer.checkFlank(gameManager?.selectedEnemy?.currentPos);
 	}
@@ -110,10 +113,12 @@ public class EnemyTurn : AnyState
 		{
 			gameManager.selectedEnemy.CreateNewReloadAction();
 		}
+
+		gameManager.CheckMovementRange(gameManager.selectedEnemy);
+		base.ExecuteInAnyState(gameManager.selectedEnemy);
+
 		gameManager.selectedEnemy.LockOnTarger();
 		//gameManager.selectedEnemy.checkFlank(gameManager.selectedPlayer.currentPos);
-
-		ExecuteInAnyState();
 	}
 
 	public override void ExitState(GameStateManager gameManager)
