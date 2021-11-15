@@ -196,6 +196,8 @@ public class Node
 	public Cover LeftCover;
 	public Cover RightCover;
 
+	public GameObject quad;
+
 	public Node(Vector3 coord, int x, int y)
 	{
 		this.coord = coord;

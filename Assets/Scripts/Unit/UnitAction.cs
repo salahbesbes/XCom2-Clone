@@ -12,8 +12,22 @@ public class UnitAction : otherAction, IBaseActions
 		//	Debug.Log($" No action point Left !!!");
 		//	return;
 		//}
+		Node res;
+		Camera fpsCam = transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>();
+		if (fpsCam.enabled)
+		{
+			res = grid.getNodeFromMousePosition(fpsCam);
+		}
+		else
+		{
+			res = grid.getNodeFromMousePosition();
+		}
 		Node oldDest = destination;
-		destination = grid.getNodeFromMousePosition();
+		if (res != null)
+		{
+			destination = res;
+		}
+
 		//Debug.Log($"destination {destination} coord = {destination?.coord}");
 		if (destination != null)
 		{
@@ -33,7 +47,6 @@ public class UnitAction : otherAction, IBaseActions
 		//	Debug.Log($" No action point Left !!!");
 		//	return;
 		//}
-		Debug.Log($"enque reloading");
 		ReloadAction reload = new ReloadAction(ReloadActionCallBack, "Reload");
 		Enqueue(reload);
 	}

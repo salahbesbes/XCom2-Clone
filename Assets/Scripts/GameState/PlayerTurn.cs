@@ -24,10 +24,8 @@ public class PlayerTurn : AnyState
 			SelectNextPlayer(gameManager);
 		}
 
-		if (Input.GetMouseButtonDown(0))
-		{
-			gameManager.selectedPlayer.CreateNewMoveAction();
-		}
+		gameManager.selectedPlayer.onNodeHover();
+
 		if (Input.GetMouseButtonDown(1))
 		{
 			gameManager.selectedPlayer.CreateNewShootAction();
@@ -40,7 +38,10 @@ public class PlayerTurn : AnyState
 		{
 			gameManager.selectedPlayer.SelectNextEnemy();
 		}
-
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			gameManager.selectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled = false;
+		}
 		gameManager.CheckMovementRange(gameManager.selectedPlayer);
 		base.ExecuteInAnyState(gameManager.selectedPlayer);
 		gameManager.selectedPlayer.LockOnTarger();
@@ -63,10 +64,13 @@ public class PlayerTurn : AnyState
 		if (gameManager != null)
 		{
 			gameManager.selectedPlayer.enabled = false;
+			gameManager.selectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled = false;
+
 			int currentPlayerIndex = gameManager.players.FindIndex(instance => instance == gameManager.selectedPlayer);
 
 			gameManager.selectedPlayer = gameManager.players[(currentPlayerIndex + 1) % nbPlayers];
 			gameManager.selectedPlayer.enabled = true;
+			gameManager.selectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled = true;
 
 			Debug.Log($"Selected  {gameManager.selectedPlayer} ");
 		}

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class NodeGrid : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class NodeGrid : MonoBehaviour
 	public int width, height;
 
 	public Vector2 wordSizeGrid;
+	public GameObject quadPrefab;
 
 	/// <summary>
 	/// move the unit toward the destination var sent from the grid to Gridpath var. this
@@ -85,11 +87,18 @@ public class NodeGrid : MonoBehaviour
 		return null;
 	}
 
-	public Node getNodeFromMousePosition()
+	public Node getNodeFromMousePosition(Camera cam = null)
 	{
+		if (EventSystem.current.IsPointerOverGameObject())
+		{
+			Debug.Log($" ui in the way  ");
+			return null;
+		}
 		Plane plane = new Plane(Vector3.up, 0);
 		float distance;
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+		if (cam == null) cam = Camera.main;
+		Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 		if (plane.Raycast(ray, out distance))
 		{
 			// todo: we get the position of the mouse toward the grid we create we need
@@ -149,7 +158,9 @@ public class NodeGrid : MonoBehaviour
 			node.g = float.PositiveInfinity;
 			node.parent = null;
 			//node.path = new List<Node>();
-			node.isObstacle = Physics.CheckSphere(node.coord, nodeSize / 2, Unwalkable);
+			string[] collidableLayers = { "Unwalkable", "Enemy" };
+			int layerToCheck = LayerMask.GetMask(collidableLayers);
+			node.isObstacle = Physics.CheckSphere(node.coord, nodeSize / 2, layerToCheck);
 			node.color = node.isObstacle ? Color.red : Color.cyan;
 			node.inRange = false;
 			node.firstRange = false;
@@ -212,6 +223,7 @@ public class NodeGrid : MonoBehaviour
 
 				Collider[] hitColliders = Physics.OverlapSphere(nodeCoord, nodeSize / 2, layerToCheck);
 				graph[x, y].isObstacle = hitColliders.Length > 0 ? true : false;
+				graph[x, y].quad = Instantiate(quadPrefab, nodeCoord, Quaternion.Euler(90, 0, 0));
 			}
 		}
 
