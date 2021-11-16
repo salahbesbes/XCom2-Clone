@@ -223,7 +223,6 @@ public class NodeGrid : MonoBehaviour
 
 				Collider[] hitColliders = Physics.OverlapSphere(nodeCoord, nodeSize / 2, layerToCheck);
 				graph[x, y].isObstacle = hitColliders.Length > 0 ? true : false;
-				graph[x, y].quad = Instantiate(quadPrefab, nodeCoord, Quaternion.Euler(90, 0, 0));
 			}
 		}
 

@@ -183,6 +183,9 @@ public class Player : UnitAction
 		{
 			List<Node> potentialPath = FindPath.AStarAlgo(currentPos, potentialDestination);
 			Vector3[] turns = FindPath.createWayPoint(potentialPath);
+
+			lineConponent.SetUpLine(turnPoints);
+
 			path = potentialPath;
 			turnPoints = turns;
 			if (Input.GetMouseButtonDown(0))
@@ -359,6 +362,8 @@ public class Player : UnitAction
 	{
 	}
 
+	public LineController lineConponent;
+
 	public void Start()
 	{
 		queueOfActions = new Queue<ActionBase>();
@@ -368,7 +373,9 @@ public class Player : UnitAction
 		//playerHeight = transform.GetComponent<Renderer>().bounds.size.y;
 		currentPos = grid.getNodeFromTransformPosition(transform);
 		gameStateManager = FindObjectOfType<GameStateManager>();
+		Debug.Log($"gamemanager {gameStateManager}");
 		currentTarget = gameStateManager.selectedEnemy;
+		Debug.Log($"seleted enemy {gameStateManager.selectedEnemy}");
 
 		foreach (Transform child in ActionHolder)
 		{
@@ -385,6 +392,10 @@ public class Player : UnitAction
 
 			obj.transform.SetParent(ActionHolder);
 		}
+
+		lineConponent = FindObjectOfType<LineController>();
+
+		lineConponent.SetUpLine(turnPoints);
 	}
 }
 
