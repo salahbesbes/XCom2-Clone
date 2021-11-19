@@ -18,6 +18,7 @@ public class BaseUnit : MonoBehaviour
 
 	[SerializeField]
 	public Node currentPos;
+
 	public Node destination;
 	public bool processing = false;
 	public Weapon weapon;
@@ -127,30 +128,21 @@ public class BaseUnit : MonoBehaviour
 
 public class Player : UnitAction
 {
-	private GameStateManager gameStateManager;
+	protected GameStateManager gameStateManager;
 	protected Enemy currentTarget;
 	public bool isFlanked;
 	public List<ActionBase> actions = new List<ActionBase>();
 
 	public Transform ActionHolder;
 	public GameObject Action_Prefab;
+	[SerializeField] private IntEvent onClick;
+	public LineController lineConponent;
 
 	//private void OnDisable()
 	//{
 	//	grid = FindObjectOfType<NodeGrid>();
 	//	currentPos = grid.getNodeFromTransformPosition(transform);
 	//}
-
-	private void OnEnable()
-	{
-		grid = FindObjectOfType<NodeGrid>();
-		currentPos = grid.getNodeFromTransformPosition(transform);
-	}
-
-	private void Update()
-	{
-		currentPos = grid.getNodeFromTransformPosition(transform);
-	}
 
 	private bool checkPointIfSameLineOrColumAsTarget(Vector3 target, Vector3 pointNode)
 	{
@@ -309,8 +301,6 @@ public class Player : UnitAction
 		}
 	}
 
-	[SerializeField] private IntEvent onClick;
-
 	public void OnDrawGizmos()
 	{
 		if (grid != null && grid.graph != null)
@@ -358,12 +348,6 @@ public class Player : UnitAction
 		}
 	}
 
-	public void Awake()
-	{
-	}
-
-	public LineController lineConponent;
-
 	public void Start()
 	{
 		queueOfActions = new Queue<ActionBase>();
@@ -395,7 +379,7 @@ public class Player : UnitAction
 
 		lineConponent = FindObjectOfType<LineController>();
 
-		lineConponent.SetUpLine(turnPoints);
+		//lineConponent.SetUpLine(turnPoints);
 	}
 }
 

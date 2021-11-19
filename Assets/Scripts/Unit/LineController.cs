@@ -8,6 +8,7 @@ public class LineController : MonoBehaviour
 	private void Start()
 	{
 		lr = GetComponent<LineRenderer>();
+		pointsToDrowLineWith = new Vector3[0];
 	}
 
 	private void Update()

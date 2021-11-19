@@ -1,18 +1,18 @@
 using UnityEngine;
 
-public class DoingAction : AnyState<PlayerStateManager>
+public class SelectingEnemy : AnyState<PlayerStateManager>
 {
 	public override void EnterState(PlayerStateManager player)
 	{
-		player.State.name = "doingAction";
+		player.State.name = "selecting Enemy";
 		Debug.Log($"current state : {player.State.name}");
 	}
 
 	public override void Update(PlayerStateManager player)
 	{
-		if (Input.GetKeyDown(KeyCode.LeftArrow))
+		if (Input.GetKeyDown(KeyCode.RightArrow))
 		{
-			player.SwitchState(player.idelState);
+			player.SwitchState(player.doingAction);
 		}
 	}
 
