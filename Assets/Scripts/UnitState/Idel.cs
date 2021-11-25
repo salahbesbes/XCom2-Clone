@@ -1,18 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Idel : MonoBehaviour
+public class Idel : AnyState<PlayerStateManager>
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public override void EnterState(PlayerStateManager player)
+	{
+		player.State.name = "Idel";
+		Debug.Log($"current state : {player.State.name}");
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public override void Update(PlayerStateManager player)
+	{
+		if (Input.GetKeyDown(KeyCode.UpArrow))
+		{
+			player.SwitchState(player.selectingEnemy);
+		}
+	}
+
+	public override void ExitState(PlayerStateManager player)
+	{
+	}
 }

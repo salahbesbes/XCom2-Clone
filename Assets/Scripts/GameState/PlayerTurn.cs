@@ -1,7 +1,7 @@
 using System.Linq;
 using UnityEngine;
 
-public class PlayerTurn : AnyState
+public class PlayerTurn : AnyState<GameStateManager>
 {
 	private Color InitColor;
 
@@ -43,7 +43,7 @@ public class PlayerTurn : AnyState
 			gameManager.selectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled = false;
 		}
 		gameManager.CheckMovementRange(gameManager.selectedPlayer);
-		base.ExecuteInAnyState(gameManager.selectedPlayer);
+		base.ExecuteInAnyGameState(gameManager.selectedPlayer);
 		gameManager.selectedPlayer.LockOnTarger();
 		gameManager.selectedPlayer.checkFlank(gameManager?.selectedEnemy?.currentPos);
 	}
@@ -61,23 +61,24 @@ public class PlayerTurn : AnyState
 	{
 		int nbPlayers = gameManager.players.Count;
 
-		if (gameManager != null)
-		{
-			gameManager.selectedPlayer.enabled = false;
-			gameManager.selectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled = false;
+		//if (gameManager != null)
+		//{
+		//	gameManager.selectedPlayer.enabled = false;
+		//	gameManager.selectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled = false;
 
-			int currentPlayerIndex = gameManager.players.FindIndex(instance => instance == gameManager.selectedPlayer);
+		// int currentPlayerIndex = gameManager.players.FindIndex(instance => instance == gameManager.selectedPlayer);
 
-			gameManager.selectedPlayer = gameManager.players[(currentPlayerIndex + 1) % nbPlayers];
-			gameManager.selectedPlayer.enabled = true;
-			gameManager.selectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled = true;
+		// gameManager.selectedPlayer = gameManager.players[(currentPlayerIndex + 1) %
+		// nbPlayers]; gameManager.selectedPlayer.enabled = true;
+		// gameManager.selectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled
+		// = true;
 
-			Debug.Log($"Selected  {gameManager.selectedPlayer} ");
-		}
+		//	Debug.Log($"Selected  {gameManager.selectedPlayer} ");
+		//}
 	}
 }
 
-public class EnemyTurn : AnyState
+public class EnemyTurn : AnyState<GameStateManager>
 {
 	public string StateName = "Default";
 
@@ -119,7 +120,7 @@ public class EnemyTurn : AnyState
 		}
 
 		gameManager.CheckMovementRange(gameManager.selectedEnemy);
-		base.ExecuteInAnyState(gameManager.selectedEnemy);
+		base.ExecuteInAnyGameState(gameManager.selectedEnemy);
 
 		gameManager.selectedEnemy.LockOnTarger();
 		//gameManager.selectedEnemy.checkFlank(gameManager.selectedPlayer.currentPos);

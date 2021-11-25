@@ -59,6 +59,7 @@ public class PlayerStats : MonoBehaviour, ISubject<PlayerStats, PlayerStats>
 
 	public Transform healthBar;
 	public GameObject Textprefab;
+
 	public float MaxHealth = 20;
 
 	//private Dictionary<string, dynamic> dictProperties = new Dictionary<string, dynamic>()

@@ -8,7 +8,7 @@ public interface ISubject<T, W>
 	public Action<W> EventListner { get; set; }
 }
 
-public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, GameBaseState>
+public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, BaseState<GameStateManager>>
 {
 	// Current state of the player, this script is attached to the object of interest the player
 	// object is accessible in this class and other children
@@ -17,11 +17,12 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, GameBa
 
 	// initialise 4 stat of the Player 4 instatnce that lives in this class
 	public PlayerTurn playerTurn = new PlayerTurn();
-	public EnemyTurn enemyTurn = new EnemyTurn();
-	public ObserverAbstraction<GameStateManager, GameBaseState> stateObserverText;
-	private GameBaseState _State;
 
-	public GameBaseState State
+	public EnemyTurn enemyTurn = new EnemyTurn();
+	public ObserverAbstraction<GameStateManager, BaseState<GameStateManager>> stateObserverText;
+	private BaseState<GameStateManager> _State;
+
+	public BaseState<GameStateManager> State
 	{
 		get => _State;
 		private set
@@ -31,14 +32,16 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, GameBa
 		}
 	}
 
-	public Action<GameBaseState> EventListner { get; set; }
+	public Action<BaseState<GameStateManager>> EventListner { get; set; }
 
 	[SerializeField]
 	public List<Enemy> enemies;
+
 	public Enemy selectedEnemy;
 
 	[SerializeField]
 	public List<Player> players;
+
 	public Player selectedPlayer;
 	private NodeGrid grid;
 
@@ -73,7 +76,7 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, GameBa
 		State.Update(this);
 	}
 
-	public void SwitchState(GameBaseState newState)
+	public void SwitchState(BaseState<GameStateManager> newState)
 	{
 		// change the current state and execute the start methode of that new State this is
 		// the only way to change the state
@@ -138,13 +141,15 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, GameBa
 	}
 }
 
-public abstract class GameBaseState
+public abstract class BaseState<T>
 {
-	public abstract void EnterState(GameStateManager playerContext);
+	public string name;
 
-	public abstract void Update(GameStateManager playerContext);
+	public abstract void EnterState(T playerContext);
 
-	public abstract void ExitState(GameStateManager playerContext);
+	public abstract void Update(T playerContext);
+
+	public abstract void ExitState(T playerContext);
 
 	public override string ToString()
 	{
@@ -154,20 +159,11 @@ public abstract class GameBaseState
 
 // this class inhirit from PlayerBaseState Class the role of this class is to share (execute) code
 // that all state execute it
-public abstract class AnyState : GameBaseState
+public abstract class AnyState<T> : BaseState<T>
 {
-	public override void EnterState(GameStateManager gameManager)
-	{
-		//gameManager.selectedPlayer = gameManager.players.FirstOrDefault();
-		//gameManager.selectedEnemy = gameManager.enemies.FirstOrDefault();
-
-		//gameManager.selectedPlayer.enabled = true;
-		//Debug.Log($" PlayerTurn Start ,  {gameManager.selectedPlayer.transform.name} is selected");
-	}
-
 	// if we want to execute code in all states in the update methode
 
-	public virtual void ExecuteInAnyState(UnitAction unit)
+	public virtual void ExecuteInAnyGameState(UnitAction unit)
 	{
 		if (Input.GetKeyDown(KeyCode.G))
 		{
@@ -181,6 +177,10 @@ public abstract class AnyState : GameBaseState
 			unit.GetComponent<PlayerStats>().Health += 2;
 			unit.GetComponent<PlayerStats>().MoveVision++;
 		}
+	}
+
+	public virtual void ExecuteInAnyPlayerState()
+	{
 	}
 
 	public virtual void OnEnableSubscriber()
