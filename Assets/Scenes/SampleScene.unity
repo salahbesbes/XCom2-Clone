@@ -139,6 +139,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c974701adb2579c4689ef8e31152fb39, type: 2}
+    - target: {fileID: 8583340695697658011, guid: e0d08523556a0ca4aaf06d15f3307204, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8583340695942099308, guid: e0d08523556a0ca4aaf06d15f3307204, type: 3}
       propertyPath: m_Name
       value: Ranger
@@ -577,6 +581,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: f35e56a11c199344ba2fa08458b427dd, type: 2}
+    - target: {fileID: 8583340695697658011, guid: e0d08523556a0ca4aaf06d15f3307204, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8583340695942099308, guid: e0d08523556a0ca4aaf06d15f3307204, type: 3}
       propertyPath: m_Name
       value: Specialist
@@ -1173,6 +1181,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1497790966}
+    - target: {fileID: 8583340695697658011, guid: e0d08523556a0ca4aaf06d15f3307204, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8583340695942099305, guid: e0d08523556a0ca4aaf06d15f3307204, type: 3}
       propertyPath: ActionHolder
       value: 
@@ -1281,6 +1293,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 60805cf50ef81b8428350cd177adb4e2, type: 2}
+    - target: {fileID: 8583340695697658011, guid: e0d08523556a0ca4aaf06d15f3307204, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8583340695942099305, guid: e0d08523556a0ca4aaf06d15f3307204, type: 3}
       propertyPath: ActionHolder
       value: 
