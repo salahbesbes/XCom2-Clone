@@ -8,7 +8,7 @@ public class Enemy : UnitAction
 	protected GameStateManager gameStateManager;
 	protected Player currentTarget;
 
-	private void Start()
+	private void Awake()
 	{
 		grid = FindObjectOfType<NodeGrid>();
 		queueOfActions = new Queue<ActionBase>();
@@ -166,6 +166,7 @@ public class Enemy : UnitAction
 	{
 		List<Player> players = gameStateManager.players;
 		int nbPlyaers = players.Count;
+		Debug.Log($"{nbPlyaers}");
 		if (currentTarget != null)
 		{
 			int currentTargetIndex = players.FindIndex(instance => instance == currentTarget);

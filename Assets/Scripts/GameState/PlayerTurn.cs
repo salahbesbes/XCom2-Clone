@@ -19,6 +19,9 @@ public class PlayerTurn : AnyState<GameStateManager>
 
 	public override void Update(GameStateManager gameManager)
 	{
+		//currentPos = grid.getNodeFromTransformPosition(transform);
+
+		gameManager.selectedPlayer.currentPos = gameManager.grid.getNodeFromTransformPosition(gameManager.selectedPlayer.transform);
 		if (Input.GetKeyDown(KeyCode.Tab))
 		{
 			SelectNextPlayer(gameManager);
@@ -26,6 +29,16 @@ public class PlayerTurn : AnyState<GameStateManager>
 
 		gameManager.selectedPlayer.onNodeHover();
 
+		if (Input.GetKeyDown(KeyCode.K))
+		{
+			handleHealthUnitBar healthBar = gameManager.selectedPlayer.HealthBarHolder.GetComponent<handleHealthUnitBar>();
+			healthBar.onHeal(6);
+		}
+		if (Input.GetKeyDown(KeyCode.L))
+		{
+			handleHealthUnitBar healthBar = gameManager.selectedPlayer.HealthBarHolder.GetComponent<handleHealthUnitBar>();
+			healthBar.onDamage(4);
+		}
 		if (Input.GetMouseButtonDown(1))
 		{
 			gameManager.selectedPlayer.CreateNewShootAction();
@@ -61,20 +74,21 @@ public class PlayerTurn : AnyState<GameStateManager>
 	{
 		int nbPlayers = gameManager.players.Count;
 
-		//if (gameManager != null)
-		//{
-		//	gameManager.selectedPlayer.enabled = false;
-		//	gameManager.selectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled = false;
+		if (gameManager != null)
+		{
+			gameManager.selectedPlayer.enabled = false;
+			gameManager.selectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled = false;
 
-		// int currentPlayerIndex = gameManager.players.FindIndex(instance => instance == gameManager.selectedPlayer);
+			int currentPlayerIndex = gameManager.players.FindIndex(instance => instance ==
+			gameManager.selectedPlayer);
 
-		// gameManager.selectedPlayer = gameManager.players[(currentPlayerIndex + 1) %
-		// nbPlayers]; gameManager.selectedPlayer.enabled = true;
-		// gameManager.selectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled
-		// = true;
+			gameManager.selectedPlayer = gameManager.players[(currentPlayerIndex + 1) %
+			nbPlayers]; gameManager.selectedPlayer.enabled = true;
+			gameManager.selectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled
+			= true;
 
-		//	Debug.Log($"Selected  {gameManager.selectedPlayer} ");
-		//}
+			Debug.Log($"Selected  {gameManager.selectedPlayer} ");
+		}
 	}
 }
 
@@ -97,17 +111,19 @@ public class EnemyTurn : AnyState<GameStateManager>
 	{
 		if (Input.GetKeyDown(KeyCode.Tab))
 		{
+			Debug.Log($"tab clicked");
 			SelectNextEnemy(gameManager);
 		}
 
 		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
+			Debug.Log($"shoft clicked");
+
 			gameManager.selectedEnemy.SelectNextPlayer();
 		}
 
 		if (Input.GetMouseButtonDown(0))
 		{
-			Debug.Log($"mouse down");
 			gameManager.selectedEnemy.CreateNewMoveAction();
 		}
 		if (Input.GetMouseButtonDown(1))

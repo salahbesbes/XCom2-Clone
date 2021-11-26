@@ -5,7 +5,7 @@ public class PlayerStateManager : MonoBehaviour
 	public SelectingEnemy selectingEnemy = new SelectingEnemy();
 	public Idel idelState = new Idel();
 	public DoingAction doingAction = new DoingAction();
-
+	public NodeGrid grid;
 	private BaseState<PlayerStateManager> _State;
 
 	public BaseState<PlayerStateManager> State
@@ -19,7 +19,7 @@ public class PlayerStateManager : MonoBehaviour
 
 	private void OnEnable()
 	{
-		//grid = FindObjectOfType<NodeGrid>();
+		grid = FindObjectOfType<NodeGrid>();
 		//currentPos = grid.getNodeFromTransformPosition(transform);
 	}
 

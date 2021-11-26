@@ -12,7 +12,6 @@ public class PlayerStats : MonoBehaviour, ISubject<PlayerStats, PlayerStats>
 		set
 		{
 			_Health = Mathf.Clamp(value, 0, MaxHealth);
-			EventListner.Invoke(this);
 		}
 	}
 
@@ -25,7 +24,6 @@ public class PlayerStats : MonoBehaviour, ISubject<PlayerStats, PlayerStats>
 		set
 		{
 			_MoveRange = value;
-			EventListner.Invoke(this);
 		}
 	}
 
@@ -38,7 +36,6 @@ public class PlayerStats : MonoBehaviour, ISubject<PlayerStats, PlayerStats>
 		set
 		{
 			_MoveVision = value;
-			EventListner.Invoke(this);
 		}
 	}
 
@@ -51,7 +48,6 @@ public class PlayerStats : MonoBehaviour, ISubject<PlayerStats, PlayerStats>
 		set
 		{
 			_ActionPoint = value;
-			EventListner.Invoke(this);
 		}
 	}
 
@@ -67,7 +63,7 @@ public class PlayerStats : MonoBehaviour, ISubject<PlayerStats, PlayerStats>
 	private void OnEnable()
 	{
 		// subscribe the observable to the this subscriaber
-		healthBar.GetComponent<ObserverAbstraction<PlayerStats, PlayerStats>>().Subsribe(this);
+		//healthBar.GetComponent<ObserverAbstraction<PlayerStats, PlayerStats>>().Subsribe(this);
 	}
 
 	public void Start()

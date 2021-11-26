@@ -43,7 +43,7 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, BaseSt
 	public List<Player> players;
 
 	public Player selectedPlayer;
-	private NodeGrid grid;
+	public NodeGrid grid;
 
 	private void OnEnable()
 	{

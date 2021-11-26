@@ -23,26 +23,31 @@ public class BaseUnit : MonoBehaviour
 	public bool processing = false;
 	public Weapon weapon;
 	public Transform partToRotate;
+	public Transform model;
+	private Animator animator;
+
+	private void Awake()
+	{
+		animator = model.GetComponent<Animator>();
+	}
 
 	public void MoveActionCallback(MoveAction actionInstance, Node start, Node end)
 	{
+		animator.SetBool("run", true);
 		StartCoroutine(move(actionInstance, turnPoints));
-		//if (end != null && start != null)
-		//{
-		//	if (end == start)
-		//	{
-		//		Debug.Log($" cant click on same Node  ");
-		//	}
-		//	end.color = Color.black;
+	}
 
-		// path = FindPath.getPathToDestination(start, end);
-
-		//	if (path.Count > 0)
-		//	{
-		//		turnPoints = FindPath.createWayPoint(path);
-		//		StartCoroutine(move(actionInstance, turnPoints));
-		//	}
-		//}
+	private void turnTheModel(Vector3 dir)
+	{
+		// handle rotation on axe Y
+		Quaternion lookRotation = Quaternion.LookRotation(dir);
+		// smooth the rotation of the turrent
+		Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,
+						lookRotation,
+						Time.deltaTime * 2
+						)
+						.eulerAngles;
+		partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 	}
 
 	public IEnumerator move(MoveAction moveInstance, Vector3[] turnPoints)
@@ -69,9 +74,15 @@ public class BaseUnit : MonoBehaviour
 
 						break;
 					}
+
+					//partToRotate.RotateAround(partToRotate.position, Vector3.up ,  )
 					currentPoint = turnPoints[index];
 				}
+
+				turnTheModel(currentPoint - partToRotate.position);
+
 				transform.position = Vector3.MoveTowards(transform.position, currentPoint, 5f * Time.deltaTime);
+
 				// this yield return null waits until the next frame reached ( dont
 				// exit the methode )
 				yield return null;
@@ -87,10 +98,14 @@ public class BaseUnit : MonoBehaviour
 	public void FinishAction(ActionBase action)
 	{
 		//todo: reset the grid
-		Debug.Log($"finish action {action}");
+
+		if (action is MoveAction)
+		{
+			animator.SetBool("run", false);
+		}
 		processing = false;
 		// update the cost
-		GetComponent<PlayerStats>().ActionPoint -= action.cost;
+		//GetComponent<PlayerStats>().ActionPoint -= action.cost;
 		ExecuteActionInQueue();
 	}
 
@@ -137,12 +152,58 @@ public class Player : UnitAction
 	public GameObject Action_Prefab;
 	[SerializeField] private IntEvent onClick;
 	public LineController lineConponent;
+	public Transform HealthBarHolder;
 
-	//private void OnDisable()
-	//{
-	//	grid = FindObjectOfType<NodeGrid>();
-	//	currentPos = grid.getNodeFromTransformPosition(transform);
-	//}
+	public void Start()
+	{
+		queueOfActions = new Queue<ActionBase>();
+		path = new List<Node>();
+		turnPoints = new Vector3[0];
+		grid = FindObjectOfType<NodeGrid>();
+		//actions = new ActionType[0];
+		//playerHeight = transform.GetComponent<Renderer>().bounds.size.y;
+		currentPos = grid.getNodeFromTransformPosition(transform);
+		gameStateManager = FindObjectOfType<GameStateManager>();
+		currentTarget = gameStateManager.selectedEnemy;
+
+		foreach (Transform child in ActionHolder)
+		{
+			Destroy(child.gameObject);
+		}
+		foreach (ActionBase action in actions)
+		{
+			GameObject obj = Instantiate(Action_Prefab);
+			obj.transform.name = action.name + "_Action";
+			Button btn = obj.GetComponentInChildren<Button>();
+			btn.GetComponent<Image>().sprite = action.icon;
+
+			btn.onClick.AddListener(() => getTheRightActionOnClick(action.name));
+
+			obj.transform.SetParent(ActionHolder);
+		}
+
+		lineConponent = FindObjectOfType<LineController>();
+
+		//lineConponent.SetUpLine(turnPoints);
+	}
+
+	private void getTheRightActionOnClick(string action)
+	{
+		switch (action)
+		{
+			case "Shoot":
+				CreateNewShootAction();
+				break;
+
+			case "Reload":
+				CreateNewReloadAction();
+				break;
+
+			default:
+				Debug.Log($"{action} action does not exist, Check Spelling");
+				break;
+		}
+	}
 
 	private bool checkPointIfSameLineOrColumAsTarget(Vector3 target, Vector3 pointNode)
 	{
@@ -274,12 +335,10 @@ public class Player : UnitAction
 
 	public void LockOnTarger()
 	{
-		if (currentPos == null) return;
-		if (currentTarget == null) return;
-		if (currentPos != null && currentTarget.currentPos != null)
-		{
-			// handle rotation on axe Y
-			Vector3 dir = currentTarget.currentPos.coord - currentPos.coord;
+		if (currentPos == null || destination == null) return;
+		if (currentTarget == null || currentPos.coord != destination.coord)
+		{// handle rotation on axe Y
+			Vector3 dir = destination.coord - currentPos.coord;
 			Quaternion lookRotation = Quaternion.LookRotation(dir);
 			// smooth the rotation of the turrent
 			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,
@@ -287,7 +346,19 @@ public class Player : UnitAction
 							Time.deltaTime * 5f)
 							.eulerAngles;
 			partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+			return;
 		}
+		if (currentPos != null && currentTarget.currentPos != null && currentPos.coord == destination.coord)
+		{
+			Vector3 dir = currentTarget.currentPos.coord - currentPos.coord;
+			Quaternion lookRotation = Quaternion.LookRotation(dir);
+			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * 5f).eulerAngles;
+			partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+		}
+	}
+
+	private void rotateToWard(Vector3 dir)
+	{
 	}
 
 	public void SelectNextEnemy()
@@ -346,40 +417,6 @@ public class Player : UnitAction
 			//	//Debug.Log($"{hit.transform.gameObject.layer == enemyLayer}");
 			//}
 		}
-	}
-
-	public void Start()
-	{
-		queueOfActions = new Queue<ActionBase>();
-		path = new List<Node>();
-		turnPoints = new Vector3[0];
-		//actions = new ActionType[0];
-		//playerHeight = transform.GetComponent<Renderer>().bounds.size.y;
-		currentPos = grid.getNodeFromTransformPosition(transform);
-		gameStateManager = FindObjectOfType<GameStateManager>();
-		Debug.Log($"gamemanager {gameStateManager}");
-		currentTarget = gameStateManager.selectedEnemy;
-		Debug.Log($"seleted enemy {gameStateManager.selectedEnemy}");
-
-		foreach (Transform child in ActionHolder)
-		{
-			Destroy(child.gameObject);
-		}
-		foreach (ActionBase action in actions)
-		{
-			GameObject obj = Instantiate(Action_Prefab);
-			obj.transform.name = action.name + "_Action";
-			Button btn = obj.GetComponentInChildren<Button>();
-			btn.GetComponent<Image>().sprite = action.icon;
-
-			btn.onClick.AddListener(() => CreateNewShootAction());
-
-			obj.transform.SetParent(ActionHolder);
-		}
-
-		lineConponent = FindObjectOfType<LineController>();
-
-		//lineConponent.SetUpLine(turnPoints);
 	}
 }
 

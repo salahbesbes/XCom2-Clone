@@ -2,15 +2,26 @@ using UnityEngine;
 
 public class handleHealthUnitBar : MonoBehaviour
 {
-	public int health = 20;
+	private int health = 20;
+
+	public int Health
+	{ get => health; set { health = Mathf.Clamp(value, 0, MaxHealth); } }
+
+	public int MaxHealth = 20;
 	public GameObject unitHealth;
 
 	private void Start()
 	{
-		float holderWidth = transform.GetComponent<RectTransform>().rect.width;
-		float unitwidth = holderWidth / health;
+		Health = MaxHealth;
+		updateHealthBar();
+	}
 
-		for (int i = 0; i < health; i++)
+	private void updateHealthBar()
+	{
+		float holderWidth = transform.GetComponent<RectTransform>().rect.width;
+		float unitwidth = holderWidth / Health;
+
+		for (int i = 0; i < Health; i++)
 		{
 			GameObject unit = Instantiate(unitHealth, transform);
 			unit.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(unitwidth, unit.transform.GetComponent<RectTransform>().sizeDelta.y);
@@ -18,8 +29,21 @@ public class handleHealthUnitBar : MonoBehaviour
 		}
 	}
 
-	// Update is called once per frame
-	private void Update()
+	public void onDamage(int damageValue)
 	{
+		Health -= damageValue;
+		for (int i = Health; i < Health + damageValue; i++)
+		{
+			transform.GetChild(i).GetComponent<Renderer>().material.color = Color.gray;
+		}
+	}
+
+	public void onHeal(int healVAlue)
+	{
+		Health += healVAlue;
+		for (int i = Health - 1; i >= Health - healVAlue; i--)
+		{
+			transform.GetChild(i).GetComponent<Renderer>().material.color = Color.red;
+		}
 	}
 }
