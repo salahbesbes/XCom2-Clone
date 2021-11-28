@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -30,6 +31,7 @@ public class NodeGrid : MonoBehaviour
 
 	public Vector2 wordSizeGrid;
 	public GameObject quadPrefab;
+	public List<Transform> tiles = new List<Transform>();
 
 	/// <summary>
 	/// move the unit toward the destination var sent from the grid to Gridpath var. this
@@ -164,6 +166,7 @@ public class NodeGrid : MonoBehaviour
 			node.color = node.isObstacle ? Color.red : Color.cyan;
 			node.inRange = false;
 			node.firstRange = false;
+			node.tile.GetComponent<Renderer>().material.color = Color.white;
 		}
 	}
 
@@ -215,6 +218,13 @@ public class NodeGrid : MonoBehaviour
 				Vector3 nodeCoord = buttonLeft + offset + Vector3.right * nodeSize * x + Vector3.forward * nodeSize * y;
 				// create node
 				graph[x, y] = new Node(nodeCoord, x, y);
+
+				// create Quad
+				GameObject quad = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Quad), graph[x, y].coord, Quaternion.Euler(90, 0, 0));
+				quad.GetComponent<Renderer>().material = (Material)Resources.Load("tile", typeof(Material));
+				tiles.Add(quad.transform);
+				graph[x, y].tile = quad.transform;
+
 				// project a sphere to check with the Layer Unwalkable if some thing
 				// with the layer Unwalkable above it
 				string[] collidableLayers = { "Unwalkable", "Enemy", "Player" };

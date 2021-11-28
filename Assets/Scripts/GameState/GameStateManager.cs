@@ -1,3 +1,4 @@
+using gameEventNameSpace;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, BaseSt
 
 	// initialise 4 stat of the Player 4 instatnce that lives in this class
 	public PlayerTurn playerTurn = new PlayerTurn();
+
+	public VoidEvent voidEvent;
 
 	public EnemyTurn enemyTurn = new EnemyTurn();
 	public ObserverAbstraction<GameStateManager, BaseState<GameStateManager>> stateObserverText;
@@ -59,7 +62,8 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, BaseSt
 		//}).ToList();
 		// subscribe to the observer onEnable
 
-		stateObserverText.Subsribe(this);
+		//stateObserverText.Subsribe(this);
+
 		SwitchState(playerTurn);
 	}
 
@@ -82,42 +86,48 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, BaseSt
 		// the only way to change the state
 		State = newState;
 		State.EnterState(this);
-		EventListner.Invoke(State);
+		//EventListner.Invoke(State);
 	}
 
-	public List<Node> CheckMovementRange(UnitAction unit)
+	public List<Node> CheckMovementRange(PlayerClass unit)
 	{
-		PlayerStats unitStats = unit.GetComponent<PlayerStats>();
-
 		// by default the first 4 neighbor are always in range
 		List<Node> lastLayerOfInrangeNeighbor = new List<Node>(unit.currentPos.neighbours);
 		List<Node> allAccceccibleNodes = new List<Node>();
 
-		int firstRange = unitStats.MoveRange / 2;
-		bool depassFirstRangeMovement = false;
+		int firstRange = 8 / 2;
+		bool depassMidDepth = true;
 		int depth = 0;
 
 		while (true)
 		{
 			allAccceccibleNodes.AddRange(lastLayerOfInrangeNeighbor);
-			if (depth >= firstRange) depassFirstRangeMovement = true;
+			if (depth >= firstRange) depassMidDepth = false;
 
-			lastLayerOfInrangeNeighbor = updateNeigbor(lastLayerOfInrangeNeighbor, unit.currentPos, depassFirstRangeMovement);
+			lastLayerOfInrangeNeighbor = updateNeigbor(lastLayerOfInrangeNeighbor, unit.currentPos, depassMidDepth);
 			depth++;
-			if (depth == unitStats.MoveRange) break;
+			if (depth == 8) break;
+		}
+
+		foreach (Node item in allAccceccibleNodes)
+		{
+			if (item.firstRange == true)
+				item.tile.GetComponent<Renderer>().material.color = Color.black;
+			else
+				item.tile.GetComponent<Renderer>().material.color = Color.yellow;
 		}
 
 		return allAccceccibleNodes;
 	}
 
-	public List<Node> updateNeigbor(List<Node> neighbors, Node origin, bool depassFirstRangeMovement)
+	public List<Node> updateNeigbor(List<Node> neighbors, Node origin, bool depassMidDepth)
 	{
 		List<Node> newLastLayer = new List<Node>();
 		// every neighbor is updated to inrage is true
 		foreach (Node node in neighbors)
 		{
 			node.inRange = true;
-			if (depassFirstRangeMovement == true) node.firstRange = true;
+			if (depassMidDepth == false) node.firstRange = true;
 		}
 
 		// loop again to create new list of neighbor which are adjacent to the old one
@@ -138,6 +148,7 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, BaseSt
 	{
 		if (State == playerTurn) SwitchState(enemyTurn);
 		else if (State == enemyTurn) SwitchState(playerTurn);
+		voidEvent.Raise();
 	}
 }
 
@@ -163,20 +174,8 @@ public abstract class AnyState<T> : BaseState<T>
 {
 	// if we want to execute code in all states in the update methode
 
-	public virtual void ExecuteInAnyGameState(UnitAction unit)
+	public virtual void ExecuteInAnyGameState(PlayerClass unit)
 	{
-		if (Input.GetKeyDown(KeyCode.G))
-		{
-			//List<object> localprops = new List<object>() { Health, MoveRange, MoveVision, ActionPoint };
-			unit.GetComponent<PlayerStats>().Health -= 2;
-			unit.GetComponent<PlayerStats>().MoveVision++;
-		}
-		if (Input.GetKeyDown(KeyCode.F))
-		{
-			//List<object> localprops = new List<object>() { Health, MoveRange, MoveVision, ActionPoint };
-			unit.GetComponent<PlayerStats>().Health += 2;
-			unit.GetComponent<PlayerStats>().MoveVision++;
-		}
 	}
 
 	public virtual void ExecuteInAnyPlayerState()

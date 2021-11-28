@@ -1,147 +1,11 @@
 using gameEventNameSpace;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BaseUnit : MonoBehaviour
-{
-	//public ActionType[] actions;
-	protected List<Node> path;
-
-	public Queue<ActionBase> queueOfActions;
-
-	protected Vector3[] turnPoints;
-	protected NodeGrid grid;
-
-	[SerializeField]
-	public Node currentPos;
-
-	public Node destination;
-	public bool processing = false;
-	public Weapon weapon;
-	public Transform partToRotate;
-	public Transform model;
-	private Animator animator;
-
-	private void Awake()
-	{
-		animator = model.GetComponent<Animator>();
-	}
-
-	public void MoveActionCallback(MoveAction actionInstance, Node start, Node end)
-	{
-		animator.SetBool("run", true);
-		StartCoroutine(move(actionInstance, turnPoints));
-	}
-
-	private void turnTheModel(Vector3 dir)
-	{
-		// handle rotation on axe Y
-		Quaternion lookRotation = Quaternion.LookRotation(dir);
-		// smooth the rotation of the turrent
-		Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,
-						lookRotation,
-						Time.deltaTime * 2
-						)
-						.eulerAngles;
-		partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-	}
-
-	public IEnumerator move(MoveAction moveInstance, Vector3[] turnPoints)
-	{
-		if (turnPoints.Length > 0)
-		{
-			for (int i = 0; i < turnPoints.Length; i++)
-			{
-				turnPoints[i].y = 0.5f;
-			}
-			//grid.path = path;
-			//grid.turnPoints = turnPoints;
-			Vector3 currentPoint = turnPoints[0];
-			int index = 0;
-			// this while loop simulate the update methode
-			while (true)
-			{
-				if (transform.position == currentPoint)
-				{
-					index++;
-					if (index >= turnPoints.Length)
-					{
-						//PathRequestManager.Instance.finishedProcessingPath();
-
-						break;
-					}
-
-					//partToRotate.RotateAround(partToRotate.position, Vector3.up ,  )
-					currentPoint = turnPoints[index];
-				}
-
-				turnTheModel(currentPoint - partToRotate.position);
-
-				transform.position = Vector3.MoveTowards(transform.position, currentPoint, 5f * Time.deltaTime);
-
-				// this yield return null waits until the next frame reached ( dont
-				// exit the methode )
-				yield return null;
-			}
-		}
-
-		//Debug.Log($"finish moving");
-		FinishAction(moveInstance);
-		//onActionFinish();
-		yield return null;
-	}
-
-	public void FinishAction(ActionBase action)
-	{
-		//todo: reset the grid
-
-		if (action is MoveAction)
-		{
-			animator.SetBool("run", false);
-		}
-		processing = false;
-		// update the cost
-		//GetComponent<PlayerStats>().ActionPoint -= action.cost;
-		ExecuteActionInQueue();
-	}
-
-	public void ReloadActionCallBack(ReloadAction reload)
-	{
-		StartCoroutine(weapon.Reload(reload));
-	}
-
-	public void ShootActionCallBack(ShootAction soot)
-	{
-		StartCoroutine(weapon.startShooting(soot));
-	}
-
-	public void Enqueue(ActionBase action)
-	{
-		queueOfActions.Enqueue(action);
-		ExecuteActionInQueue();
-	}
-
-	public void ExecuteActionInQueue()
-	{
-		if (processing == false && queueOfActions.Count > 0)
-		{
-			processing = true;
-			ActionBase action = queueOfActions.Dequeue();
-			action.TryExecuteAction();
-		}
-	}
-
-	public override string ToString()
-	{
-		return $" {GetType().Name} {transform.name} selected";
-	}
-}
-
-public class Player : UnitAction
+public class Player : PlayerClass
 {
 	protected GameStateManager gameStateManager;
 	protected Enemy currentTarget;
@@ -231,7 +95,6 @@ public class Player : UnitAction
 			res = grid.getNodeFromMousePosition();
 		}
 		Node potentialDestination = res;
-
 		if (potentialDestination != null && potentialDestination != destination && potentialDestination != currentPos)
 		{
 			List<Node> potentialPath = FindPath.AStarAlgo(currentPos, potentialDestination);
@@ -241,6 +104,17 @@ public class Player : UnitAction
 
 			path = potentialPath;
 			turnPoints = turns;
+			foreach (Node node in path)
+			{
+				if (turnPoints.Contains(node.coord))
+					node.tile.GetComponent<Renderer>().material.color = Color.green;
+				else
+				{
+					node.tile.GetComponent<Renderer>().material.color = Color.gray;
+				}
+			}
+			potentialDestination.tile.GetComponent<Renderer>().material.color = Color.blue;
+
 			if (Input.GetMouseButtonDown(0))
 			{
 				gameStateManager.selectedPlayer.CreateNewMoveAction();

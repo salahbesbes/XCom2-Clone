@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Enemy : UnitAction
+public class Enemy : PlayerClass
 {
 	public bool isFlanked = false;
 	protected GameStateManager gameStateManager;

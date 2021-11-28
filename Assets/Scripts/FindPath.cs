@@ -197,6 +197,7 @@ public class Node
 	public Cover RightCover;
 
 	public GameObject quad;
+	public Transform tile;
 
 	public Node(Vector3 coord, int x, int y)
 	{

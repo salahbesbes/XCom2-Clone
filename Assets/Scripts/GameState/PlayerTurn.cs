@@ -27,8 +27,6 @@ public class PlayerTurn : AnyState<GameStateManager>
 			SelectNextPlayer(gameManager);
 		}
 
-		gameManager.selectedPlayer.onNodeHover();
-
 		if (Input.GetKeyDown(KeyCode.K))
 		{
 			handleHealthUnitBar healthBar = gameManager.selectedPlayer.HealthBarHolder.GetComponent<handleHealthUnitBar>();
@@ -55,10 +53,11 @@ public class PlayerTurn : AnyState<GameStateManager>
 		{
 			gameManager.selectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled = false;
 		}
-		gameManager.CheckMovementRange(gameManager.selectedPlayer);
 		base.ExecuteInAnyGameState(gameManager.selectedPlayer);
 		gameManager.selectedPlayer.LockOnTarger();
 		gameManager.selectedPlayer.checkFlank(gameManager?.selectedEnemy?.currentPos);
+		gameManager.CheckMovementRange(gameManager.selectedPlayer);
+		gameManager.selectedPlayer.onNodeHover();
 	}
 
 	public override void ExitState(GameStateManager gameManager)

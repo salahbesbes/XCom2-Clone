@@ -1,9 +1,14 @@
-using UnityEngine.UI;
+using UnityEngine;
 
-public class StateObservable : ObserverAbstraction<GameStateManager, BaseState<GameStateManager>>
+[System.Serializable]
+public class StateObservable : MonoBehaviour
 {
-	public override void OnSubjectEventChanges(BaseState<GameStateManager> state)
+	public void SubjectEventChanges(BaseState<GameStateManager> state)
 	{
-		GetComponent<Text>().text = $"state : {state}";
+		//GetComponent<Text>().text = $"state : {state}";
+	}
+
+	public void test()
+	{
 	}
 }

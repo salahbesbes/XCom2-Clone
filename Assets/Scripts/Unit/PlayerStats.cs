@@ -1,79 +1,79 @@
-using System;
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour, ISubject<PlayerStats, PlayerStats>
+public class PlayerStats : MonoBehaviour
 {
-	[SerializeField]
-	private float _Health;
+	//[SerializeField]
 
-	public float Health
-	{
-		get { return _Health; }
-		set
-		{
-			_Health = Mathf.Clamp(value, 0, MaxHealth);
-		}
-	}
+	//private float _Health;
 
-	[SerializeField]
-	public int _MoveRange = 10;
+	//public float Health
+	//{
+	//	get { return _Health; }
+	//	set
+	//	{
+	//		_Health = Mathf.Clamp(value, 0, MaxHealth);
+	//	}
+	//}
 
-	public int MoveRange
-	{
-		get { return _MoveRange; }
-		set
-		{
-			_MoveRange = value;
-		}
-	}
+	//[SerializeField]
+	//public int _MoveRange = 10;
 
-	[SerializeField]
-	private float _MoveVision = 20;
+	//public int MoveRange
+	//{
+	//	get { return _MoveRange; }
+	//	set
+	//	{
+	//		_MoveRange = value;
+	//	}
+	//}
 
-	public float MoveVision
-	{
-		get { return _MoveVision; }
-		set
-		{
-			_MoveVision = value;
-		}
-	}
+	//[SerializeField]
+	//private float _MoveVision = 20;
 
-	[SerializeField]
-	public int _ActionPoint = 2;
+	//public float MoveVision
+	//{
+	//	get { return _MoveVision; }
+	//	set
+	//	{
+	//		_MoveVision = value;
+	//	}
+	//}
 
-	public int ActionPoint
-	{
-		get { return _ActionPoint; }
-		set
-		{
-			_ActionPoint = value;
-		}
-	}
+	//[SerializeField]
+	//public int _ActionPoint = 2;
 
-	public Action<PlayerStats> EventListner { get; set; }
+	//public int ActionPoint
+	//{
+	//	get { return _ActionPoint; }
+	//	set
+	//	{
+	//		_ActionPoint = value;
+	//	}
+	//}
 
-	public Transform healthBar;
-	public GameObject Textprefab;
+	//public Action<PlayerStats> EventListner { get; set; }
 
-	public float MaxHealth = 20;
+	//public Transform healthBar;
+	//public GameObject Textprefab;
 
-	//private Dictionary<string, dynamic> dictProperties = new Dictionary<string, dynamic>()
+	//public float MaxHealth = 20;
 
-	private void OnEnable()
-	{
-		// subscribe the observable to the this subscriaber
-		//healthBar.GetComponent<ObserverAbstraction<PlayerStats, PlayerStats>>().Subsribe(this);
-	}
+	////private Dictionary<string, dynamic> dictProperties = new Dictionary<string, dynamic>()
 
-	public void Start()
-	{
-		Health = MaxHealth;
-		ActionPoint = ActionPoint;
-	}
+	//private void OnEnable()
+	//{
+	//	// subscribe the observable to the this subscriaber
+	//	//healthBar.GetComponent<ObserverAbstraction<PlayerStats, PlayerStats>>().Subsribe(this);
+	//}
 
-	public override string ToString()
-	{
-		return String.Join(", ", $"Health: {Health}", $"MoveRange: {MoveRange}", $"MoveVision: {MoveVision}", $"ActionPoint: {ActionPoint}");
-	}
+	//public void Start()
+	//{
+	//	Health = MaxHealth;
+	//	ActionPoint = ActionPoint;
+	//}
+
+	//public override string ToString()
+	//{
+	//	return String.Join(", ", $"Health: {Health}", $"MoveRange: {MoveRange}", $"MoveVision: {MoveVision}", $"ActionPoint: {ActionPoint}");
+	//}
 }
