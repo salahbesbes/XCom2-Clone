@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerClass : AnyClass, IBaseActions
 {
+	public List<ActionData> actions = new List<ActionData>();
 }
 
 public class AnyClass : Unit

@@ -16,7 +16,7 @@ public class Enemy : PlayerClass
 		turnPoints = new Vector3[0];
 		Debug.Log($"start enemy {currentPos}");
 		gameStateManager = FindObjectOfType<GameStateManager>();
-		currentTarget = gameStateManager.selectedPlayer;
+		currentTarget = gameStateManager.SelectedPlayer;
 	}
 
 	private void Update()

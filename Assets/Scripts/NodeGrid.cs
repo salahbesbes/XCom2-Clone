@@ -23,15 +23,14 @@ public class NodeGrid : MonoBehaviour
 
 	public float nodeSize = 1;
 	private LayerMask playerLayer;
-	public Transform playerPrefab;
 	private LayerMask Unwalkable;
 
 	[HideInInspector]
 	public int width, height;
 
 	public Vector2 wordSizeGrid;
-	public GameObject quadPrefab;
-	public List<Transform> tiles = new List<Transform>();
+	private List<Transform> tiles = new List<Transform>();
+	public Transform quadHolder;
 
 	/// <summary>
 	/// move the unit toward the destination var sent from the grid to Gridpath var. this
@@ -220,7 +219,10 @@ public class NodeGrid : MonoBehaviour
 				graph[x, y] = new Node(nodeCoord, x, y);
 
 				// create Quad
-				GameObject quad = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Quad), graph[x, y].coord, Quaternion.Euler(90, 0, 0));
+				GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+				quad.transform.position = graph[x, y].coord;
+				quad.transform.rotation = Quaternion.Euler(90, 0, 0);
+				quad.transform.SetParent(quadHolder);
 				quad.GetComponent<Renderer>().material = (Material)Resources.Load("tile", typeof(Material));
 				tiles.Add(quad.transform);
 				graph[x, y].tile = quad.transform;

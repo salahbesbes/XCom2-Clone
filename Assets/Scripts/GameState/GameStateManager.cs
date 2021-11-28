@@ -1,4 +1,3 @@
-using gameEventNameSpace;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,7 @@ public interface ISubject<T, W>
 	public Action<W> EventListner { get; set; }
 }
 
-public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, BaseState<GameStateManager>>
+public class GameStateManager : GameManagerListner, ISubject<GameStateManager, BaseState<GameStateManager>>
 {
 	// Current state of the player, this script is attached to the object of interest the player
 	// object is accessible in this class and other children
@@ -19,10 +18,7 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, BaseSt
 	// initialise 4 stat of the Player 4 instatnce that lives in this class
 	public PlayerTurn playerTurn = new PlayerTurn();
 
-	public VoidEvent voidEvent;
-
 	public EnemyTurn enemyTurn = new EnemyTurn();
-	public ObserverAbstraction<GameStateManager, BaseState<GameStateManager>> stateObserverText;
 	private BaseState<GameStateManager> _State;
 
 	public BaseState<GameStateManager> State
@@ -40,12 +36,30 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, BaseSt
 	[SerializeField]
 	public List<Enemy> enemies;
 
-	public Enemy selectedEnemy;
+	private Enemy _selectedEnemy;
+
+	public Enemy SelectedEnemy
+	{
+		get => _selectedEnemy; set
+		{
+			_selectedEnemy = value;
+		}
+	}
 
 	[SerializeField]
 	public List<Player> players;
 
-	public Player selectedPlayer;
+	private Player _selectedPlayer;
+
+	public Player SelectedPlayer
+	{
+		get => _selectedPlayer; set
+		{
+			_selectedPlayer = value;
+		}
+	}
+
+	[HideInInspector]
 	public NodeGrid grid;
 
 	private void OnEnable()
@@ -70,6 +84,7 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, BaseSt
 	private void Awake()
 	{
 		grid = FindObjectOfType<NodeGrid>();
+
 	}
 
 	private void Update()
@@ -85,7 +100,7 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, BaseSt
 		// change the current state and execute the start methode of that new State this is
 		// the only way to change the state
 		State = newState;
-		State.EnterState(this);
+		PlayerClass selectedUnit = State.EnterState(this);
 		//EventListner.Invoke(State);
 	}
 
@@ -148,7 +163,6 @@ public class GameStateManager : MonoBehaviour, ISubject<GameStateManager, BaseSt
 	{
 		if (State == playerTurn) SwitchState(enemyTurn);
 		else if (State == enemyTurn) SwitchState(playerTurn);
-		voidEvent.Raise();
 	}
 }
 
@@ -156,7 +170,7 @@ public abstract class BaseState<T>
 {
 	public string name;
 
-	public abstract void EnterState(T playerContext);
+	public abstract PlayerClass EnterState(T playerContext);
 
 	public abstract void Update(T playerContext);
 

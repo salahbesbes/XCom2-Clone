@@ -6,9 +6,6 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerSubject : MonoBehaviour
 {
-	[SerializeField]
-	public Dictionary<string, int> testdict = new Dictionary<string, int>();
-
 	public List<ActionData> actions = new List<ActionData>();
 	private Animator animator;
 

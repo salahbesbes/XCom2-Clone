@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class SelectingEnemy : AnyState<PlayerStateManager>
 {
-	public override void EnterState(PlayerStateManager player)
+	public override PlayerClass EnterState(PlayerStateManager player)
 	{
 		player.State.name = "selecting Enemy";
 		Debug.Log($"current state : {player.State.name}");
+		return null;
 	}
 
 	public override void Update(PlayerStateManager player)

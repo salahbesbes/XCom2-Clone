@@ -1,20 +1,16 @@
-using gameEventNameSpace;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Player : PlayerClass
 {
 	protected GameStateManager gameStateManager;
 	protected Enemy currentTarget;
 	public bool isFlanked;
-	public List<ActionBase> actions = new List<ActionBase>();
 
 	public Transform ActionHolder;
 	public GameObject Action_Prefab;
-	[SerializeField] private IntEvent onClick;
 	public LineController lineConponent;
 	public Transform HealthBarHolder;
 
@@ -28,22 +24,11 @@ public class Player : PlayerClass
 		//playerHeight = transform.GetComponent<Renderer>().bounds.size.y;
 		currentPos = grid.getNodeFromTransformPosition(transform);
 		gameStateManager = FindObjectOfType<GameStateManager>();
-		currentTarget = gameStateManager.selectedEnemy;
+		currentTarget = gameStateManager.SelectedEnemy;
 
 		foreach (Transform child in ActionHolder)
 		{
 			Destroy(child.gameObject);
-		}
-		foreach (ActionBase action in actions)
-		{
-			GameObject obj = Instantiate(Action_Prefab);
-			obj.transform.name = action.name + "_Action";
-			Button btn = obj.GetComponentInChildren<Button>();
-			btn.GetComponent<Image>().sprite = action.icon;
-
-			btn.onClick.AddListener(() => getTheRightActionOnClick(action.name));
-
-			obj.transform.SetParent(ActionHolder);
 		}
 
 		lineConponent = FindObjectOfType<LineController>();
@@ -100,7 +85,7 @@ public class Player : PlayerClass
 			List<Node> potentialPath = FindPath.AStarAlgo(currentPos, potentialDestination);
 			Vector3[] turns = FindPath.createWayPoint(potentialPath);
 
-			lineConponent.SetUpLine(turnPoints);
+			//lineConponent.SetUpLine(turnPoints);
 
 			path = potentialPath;
 			turnPoints = turns;
@@ -117,7 +102,10 @@ public class Player : PlayerClass
 
 			if (Input.GetMouseButtonDown(0))
 			{
-				gameStateManager.selectedPlayer.CreateNewMoveAction();
+				ActionData move = actions.FirstOrDefault((el) => el is MovementAction);
+				Debug.Log($"move ");
+				move.Actionevent.Raise();
+				//gameStateManager.selectedPlayer.CreateNewMoveAction();
 			}
 		}
 	}

@@ -3,20 +3,28 @@ using UnityEngine.Events;
 
 public class PlayerEventListener : MonoBehaviour
 {
-	[SerializeField]
-	private PlayerEvent gameEvent;
 
 	[SerializeField]
-	private UnityEvent response;
+	public PlayerEvent GameEvent;
 
-	private void OnEnable()
+
+	[SerializeField]
+	public UnityEvent response;
+
+	//private void OnEnable()
+	//{
+	//	gameEvent.RegisterListener(this);
+	//}
+
+	public void register()
 	{
-		gameEvent.RegisterListener(this);
+		GameEvent.RegisterListener(this);
+
 	}
 
 	private void OnDisable()
 	{
-		gameEvent.UnregisterListener(this);
+		GameEvent.UnregisterListener(this);
 	}
 
 	public void OnEventRaised()

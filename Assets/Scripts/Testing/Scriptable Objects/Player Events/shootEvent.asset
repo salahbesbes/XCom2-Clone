@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f07addbfe41c444da67046685049d1a, type: 3}
-  m_Name: shootEvent
+  m_Script: {fileID: 11500000, guid: 7f564462a1b559a429ccc6f3c56f7275, type: 3}
+  m_Name: ShootEvent
   m_EditorClassIdentifier: 
