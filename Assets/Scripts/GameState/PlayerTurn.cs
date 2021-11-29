@@ -5,11 +5,8 @@ public class PlayerTurn : AnyState<GameStateManager>
 {
 	private Color InitColor;
 
-	public string StateName = "Default";
-
 	public override PlayerClass EnterState(GameStateManager gameManager)
 	{
-		StateName = nameof(PlayerTurn);
 		gameManager.SelectedPlayer = gameManager.players.FirstOrDefault();
 		gameManager.SelectedEnemy = gameManager.enemies.FirstOrDefault();
 
@@ -90,7 +87,6 @@ public class PlayerTurn : AnyState<GameStateManager>
 			gameManager.SelectedPlayer = gameManager.players[(currentPlayerIndex + 1) % nbPlayers]; gameManager.SelectedPlayer.enabled = true;
 			gameManager.SelectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled = true;
 
-
 			gameManager.UpdateSelectedPlayerResponse(gameManager.SelectedPlayer);
 
 			Debug.Log($"Selected  {gameManager.SelectedPlayer} ");
@@ -100,12 +96,8 @@ public class PlayerTurn : AnyState<GameStateManager>
 
 public class EnemyTurn : AnyState<GameStateManager>
 {
-	public string StateName = "Default";
-
 	public override PlayerClass EnterState(GameStateManager gameManager)
 	{
-		StateName = nameof(EnemyTurn);
-
 		gameManager.SelectedPlayer = gameManager.players.FirstOrDefault();
 		gameManager.SelectedEnemy = gameManager.enemies.FirstOrDefault();
 
@@ -172,7 +164,6 @@ public class EnemyTurn : AnyState<GameStateManager>
 
 			gameManager.SelectedEnemy = gameManager.enemies[(currentEnemyIndex + 1) % nbEnemies];
 			gameManager.SelectedEnemy.enabled = true;
-
 
 			gameManager.UpdateSelectedPlayerResponse(gameManager.SelectedEnemy);
 			Debug.Log($" {gameManager.SelectedEnemy.transform.name} is Selected  {gameManager.SelectedEnemy} ");

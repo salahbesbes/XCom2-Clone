@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   icon: {fileID: 21300000, guid: 2d2177ddfa3c51e4c859ca426b81f092, type: 3}
-  animationController: {fileID: 9100000, guid: 6cc513001c84c714baa94b6d24a332c4, type: 2}
   Actionevent: {fileID: 11400000, guid: 2ed77e578e3e1ea47b55c1d7198a356b, type: 2}

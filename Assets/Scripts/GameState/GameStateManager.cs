@@ -1,14 +1,10 @@
+using gameEventNameSpace;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public interface ISubject<T, W>
-{
-	public Action<W> EventListner { get; set; }
-}
-
-public class GameStateManager : GameManagerListner, ISubject<GameStateManager, BaseState<GameStateManager>>
+public class GameStateManager : GameManagerListner
 {
 	// Current state of the player, this script is attached to the object of interest the player
 	// object is accessible in this class and other children
@@ -51,6 +47,8 @@ public class GameStateManager : GameManagerListner, ISubject<GameStateManager, B
 
 	private Player _selectedPlayer;
 
+	public BaseStateEvent StateEventSubject;
+
 	public Player SelectedPlayer
 	{
 		get => _selectedPlayer; set
@@ -84,7 +82,6 @@ public class GameStateManager : GameManagerListner, ISubject<GameStateManager, B
 	private void Awake()
 	{
 		grid = FindObjectOfType<NodeGrid>();
-
 	}
 
 	private void Update()
@@ -107,6 +104,8 @@ public class GameStateManager : GameManagerListner, ISubject<GameStateManager, B
 	public List<Node> CheckMovementRange(PlayerClass unit)
 	{
 		// by default the first 4 neighbor are always in range
+
+		if (unit?.currentPos?.neighbours == null) return new List<Node>();
 		List<Node> lastLayerOfInrangeNeighbor = new List<Node>(unit.currentPos.neighbours);
 		List<Node> allAccceccibleNodes = new List<Node>();
 
@@ -163,7 +162,10 @@ public class GameStateManager : GameManagerListner, ISubject<GameStateManager, B
 	{
 		if (State == playerTurn) SwitchState(enemyTurn);
 		else if (State == enemyTurn) SwitchState(playerTurn);
+		StateEventSubject.Raise(State);
 	}
+
+
 }
 
 public abstract class BaseState<T>
@@ -187,6 +189,11 @@ public abstract class BaseState<T>
 public abstract class AnyState<T> : BaseState<T>
 {
 	// if we want to execute code in all states in the update methode
+
+	public AnyState()
+	{
+		name = GetType().Name;
+	}
 
 	public virtual void ExecuteInAnyGameState(PlayerClass unit)
 	{

@@ -1,4 +1,10 @@
+using System;
 using UnityEngine;
+
+public interface ISubject<T, W>
+{
+	public Action<W> EventListner { get; set; }
+}
 
 // this abstract class inhirit from Monobehaviour
 public abstract class ObserverAbstraction<T, W> : MonoBehaviour where T : ISubject<T, W>
@@ -18,7 +24,6 @@ public abstract class ObserverAbstraction<T, W> : MonoBehaviour where T : ISubje
 		Subject.EventListner += OnSubjectEventChanges;
 	}
 
-	// since each Observer will have a different logic implementation we use the keyWord
-	// abstract
+	// since each Observer will have a different logic implementation we use the keyWord abstract
 	public abstract void OnSubjectEventChanges(W Subject);
 }
