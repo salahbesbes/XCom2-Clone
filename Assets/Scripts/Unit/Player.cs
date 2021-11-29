@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Player : PlayerClass
@@ -34,6 +35,19 @@ public class Player : PlayerClass
 		lineConponent = FindObjectOfType<LineController>();
 
 		//lineConponent.SetUpLine(turnPoints);
+	}
+
+	public async Task OnTriggerEnter(Collider other)
+	{
+		if (LayerMask.LayerToName(other.gameObject.layer) == "LowObstacle")
+		{
+			PlayAnimation(AnimationType.jump);
+			speed = 1;
+			await Task.Delay(500);
+
+			PlayAnimation(AnimationType.run);
+			speed = 5;
+		}
 	}
 
 	private void getTheRightActionOnClick(string action)

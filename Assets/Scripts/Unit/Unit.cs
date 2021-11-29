@@ -23,7 +23,8 @@ public class Unit : MonoBehaviour
 	public Weapon weapon;
 	public Transform partToRotate;
 	public Transform model;
-	private Animator animator;
+	protected Animator animator;
+	public float speed = 5f;
 
 	private void Awake()
 	{
@@ -107,7 +108,7 @@ public class Unit : MonoBehaviour
 
 				turnTheModel(currentPoint - partToRotate.position);
 
-				transform.position = Vector3.MoveTowards(transform.position, currentPoint, 5f * Time.deltaTime);
+				transform.position = Vector3.MoveTowards(transform.position, currentPoint, speed * Time.deltaTime);
 
 				// this yield return null waits until the next frame reached ( dont
 				// exit the methode )

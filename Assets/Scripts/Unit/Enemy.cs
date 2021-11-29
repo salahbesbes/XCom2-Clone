@@ -14,7 +14,6 @@ public class Enemy : PlayerClass
 		queueOfActions = new Queue<ActionBase>();
 		path = new List<Node>();
 		turnPoints = new Vector3[0];
-		Debug.Log($"start enemy {currentPos}");
 		gameStateManager = FindObjectOfType<GameStateManager>();
 		currentTarget = gameStateManager.SelectedPlayer;
 	}
