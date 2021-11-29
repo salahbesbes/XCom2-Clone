@@ -103,7 +103,6 @@ public class Player : PlayerClass
 			if (Input.GetMouseButtonDown(0))
 			{
 				ActionData move = actions.FirstOrDefault((el) => el is MovementAction);
-				Debug.Log($"move ");
 				move.Actionevent.Raise();
 				//gameStateManager.selectedPlayer.CreateNewMoveAction();
 			}

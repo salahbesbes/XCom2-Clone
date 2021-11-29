@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ public class Unit : MonoBehaviour
 	public Queue<ActionBase> queueOfActions;
 
 	protected Vector3[] turnPoints;
+
+	[HideInInspector]
 	public NodeGrid grid;
 
 	[SerializeField]
@@ -29,8 +32,35 @@ public class Unit : MonoBehaviour
 
 	public void MoveActionCallback(MoveAction actionInstance, Node start, Node end)
 	{
-		animator.SetBool("run", true);
+		PlayAnimation(AnimationType.run);
 		StartCoroutine(move(actionInstance, turnPoints));
+	}
+
+	public void PlayAnimation(AnimationType anim)
+	{
+		foreach (AnimatorControllerParameter item in animator.parameters)
+		{
+			if (item.type is AnimatorControllerParameterType.Bool)
+			{
+				animator.SetBool(item.name, false);
+			}
+		}
+		string CorrespondNameOfTheAnimation = Enum.GetName(typeof(AnimationType), anim);
+
+		animator.SetBool(CorrespondNameOfTheAnimation, true);
+	}
+
+	public void PlayIdelAnimation()
+	{
+		foreach (AnimatorControllerParameter item in animator.parameters)
+		{
+			if (item.type is AnimatorControllerParameterType.Bool)
+			{
+				animator.SetBool(item.name, false);
+			}
+		}
+		string CorrespondNameOfTheAnimation = Enum.GetName(typeof(AnimationType), AnimationType.idel);
+		animator.SetBool(CorrespondNameOfTheAnimation, true);
 	}
 
 	private void turnTheModel(Vector3 dir)
@@ -95,10 +125,7 @@ public class Unit : MonoBehaviour
 	{
 		//todo: reset the grid
 
-		if (action is MoveAction)
-		{
-			animator.SetBool("run", false);
-		}
+		PlayIdelAnimation();
 		processing = false;
 		// update the cost
 		//GetComponent<PlayerStats>().ActionPoint -= action.cost;
@@ -112,6 +139,7 @@ public class Unit : MonoBehaviour
 
 	public void ShootActionCallBack(ShootAction soot)
 	{
+		PlayAnimation(AnimationType.jump);
 		StartCoroutine(weapon.startShooting(soot));
 	}
 

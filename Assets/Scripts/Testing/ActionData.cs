@@ -4,32 +4,17 @@
 [System.Serializable]
 public class ActionData : ScriptableObject
 {
-	[SerializeField]
-	private string cost;
+	public string cost;
 
-	[SerializeField]
-	private Sprite icon;
+	public Sprite icon;
 
-	[SerializeField]
-	private RuntimeAnimatorController animationController;
+	//public AnimationType animationType;
 
 	public string SwordName
 	{
 		get
 		{
 			return cost;
-		}
-	}
-
-	public RuntimeAnimatorController AnimationController
-	{
-		get
-		{
-			return animationController;
-		}
-		set
-		{
-			animationController = value;
 		}
 	}
 
@@ -42,4 +27,12 @@ public class ActionData : ScriptableObject
 	}
 
 	public PlayerEvent Actionevent;
+}
+
+public enum AnimationType
+{
+	run,
+	idel,
+	walk,
+	jump
 }

@@ -32,14 +32,11 @@ public class PlayerSubject : MonoBehaviour
 
 	public void startShooting()
 	{
-		animator.runtimeAnimatorController = actions[0].AnimationController;
 		StartCoroutine(Shoot());
 	}
 
 	public void startMoving()
 	{
-		animator.runtimeAnimatorController = actions[1].AnimationController;
-
 		StartCoroutine(Move());
 	}
 
