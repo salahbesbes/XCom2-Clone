@@ -24,6 +24,7 @@ public class GameStateManager : GameManagerListner
 		{
 			_State?.ExitState(this);
 			_State = value;
+			StateEventSubject.Raise(_State);
 		}
 	}
 
@@ -39,6 +40,7 @@ public class GameStateManager : GameManagerListner
 		get => _selectedEnemy; set
 		{
 			_selectedEnemy = value;
+			_selectedEnemy.updatePlayerActionUi();
 		}
 	}
 
@@ -54,6 +56,7 @@ public class GameStateManager : GameManagerListner
 		get => _selectedPlayer; set
 		{
 			_selectedPlayer = value;
+			_selectedPlayer.updatePlayerActionUi();
 		}
 	}
 
@@ -62,20 +65,6 @@ public class GameStateManager : GameManagerListner
 
 	private void OnEnable()
 	{
-		// todo: since im OnEnable, this code executes before every thing, and when i
-		// disable the Script Player i prevent the Player to execute Start or Awake Function
-		// that's why if i want to diable the move of the player i need to separate in a
-		// separate class, because other logic/classes need some properties which are
-		// initialized in Start/Awake
-		//players = players.Select(p =>
-		//{
-		//	p.enabled = false;
-		//	return p;
-		//}).ToList();
-		// subscribe to the observer onEnable
-
-		//stateObserverText.Subsribe(this);
-
 		SwitchState(playerTurn);
 	}
 
@@ -98,6 +87,7 @@ public class GameStateManager : GameManagerListner
 		// the only way to change the state
 		State = newState;
 		PlayerClass selectedUnit = State.EnterState(this);
+
 		//EventListner.Invoke(State);
 	}
 
@@ -162,10 +152,7 @@ public class GameStateManager : GameManagerListner
 	{
 		if (State == playerTurn) SwitchState(enemyTurn);
 		else if (State == enemyTurn) SwitchState(playerTurn);
-		StateEventSubject.Raise(State);
 	}
-
-
 }
 
 public abstract class BaseState<T>
@@ -193,17 +180,5 @@ public abstract class AnyState<T> : BaseState<T>
 	public AnyState()
 	{
 		name = GetType().Name;
-	}
-
-	public virtual void ExecuteInAnyGameState(PlayerClass unit)
-	{
-	}
-
-	public virtual void ExecuteInAnyPlayerState()
-	{
-	}
-
-	public virtual void OnEnableSubscriber()
-	{
 	}
 }

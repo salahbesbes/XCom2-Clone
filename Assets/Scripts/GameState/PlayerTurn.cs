@@ -56,7 +56,7 @@ public class PlayerTurn : AnyState<GameStateManager>
 		{
 			gameManager.SelectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled = false;
 		}
-		base.ExecuteInAnyGameState(gameManager.SelectedPlayer);
+
 		gameManager.SelectedPlayer.LockOnTarger();
 		gameManager.SelectedPlayer.checkFlank(gameManager?.SelectedEnemy?.currentPos);
 		gameManager.CheckMovementRange(gameManager.SelectedPlayer);
@@ -137,7 +137,6 @@ public class EnemyTurn : AnyState<GameStateManager>
 		}
 
 		gameManager.CheckMovementRange(gameManager.SelectedEnemy);
-		base.ExecuteInAnyGameState(gameManager.SelectedEnemy);
 
 		gameManager.SelectedEnemy.LockOnTarger();
 		//gameManager.selectedEnemy.checkFlank(gameManager.selectedPlayer.currentPos);

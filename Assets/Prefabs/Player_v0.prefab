@@ -843,9 +843,9 @@ MonoBehaviour:
   actions:
   - {fileID: 11400000, guid: 7601e2943867df44ab824c6a69d77f26, type: 2}
   - {fileID: 11400000, guid: 7fdc721c4f9522941a5d3c87d1ccb88f, type: 2}
-  isFlanked: 0
   ActionHolder: {fileID: 0}
-  Action_Prefab: {fileID: 3772431353336877934, guid: 249741e1a97650045a2f4cd623def421, type: 3}
+  Action_prefab: {fileID: 5356878571294043885, guid: 2da8bad2b03449540907bca690fcdc44, type: 3}
+  isFlanked: 0
   lineConponent: {fileID: 0}
   HealthBarHolder: {fileID: 8583340695184250804}
 --- !u!1 &8583340696093689634

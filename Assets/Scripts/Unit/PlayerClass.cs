@@ -1,9 +1,32 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerClass : AnyClass, IBaseActions
 {
 	public List<ActionData> actions = new List<ActionData>();
+	public Transform ActionHolder;
+	public GameObject Action_prefab;
+
+	public void updatePlayerActionUi()
+	{
+		foreach (Transform child in ActionHolder)
+		{
+			Destroy(child.gameObject);
+		}
+
+		foreach (ActionData action in actions)
+		{
+			GameObject actionUi = Instantiate(Action_prefab, ActionHolder);
+			actionUi.name = $"{action.name}_btn";
+			Button btn = actionUi.GetComponent<Button>();
+			btn.image.sprite = action.icon;
+			btn.onClick.AddListener(() =>
+			{
+				action?.Actionevent?.Raise();
+			});
+		}
+	}
 }
 
 public class AnyClass : Unit

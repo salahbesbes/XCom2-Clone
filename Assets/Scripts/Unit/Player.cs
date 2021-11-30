@@ -10,8 +10,6 @@ public class Player : PlayerClass
 	protected Enemy currentTarget;
 	public bool isFlanked;
 
-	public Transform ActionHolder;
-	public GameObject Action_Prefab;
 	public LineController lineConponent;
 	public Transform HealthBarHolder;
 
@@ -26,11 +24,6 @@ public class Player : PlayerClass
 		currentPos = grid.getNodeFromTransformPosition(transform);
 		gameStateManager = FindObjectOfType<GameStateManager>();
 		currentTarget = gameStateManager.SelectedEnemy;
-
-		foreach (Transform child in ActionHolder)
-		{
-			Destroy(child.gameObject);
-		}
 
 		lineConponent = FindObjectOfType<LineController>();
 
