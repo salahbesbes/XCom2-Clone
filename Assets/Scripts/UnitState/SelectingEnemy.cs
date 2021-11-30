@@ -1,23 +1,37 @@
+using System.Linq;
 using UnityEngine;
 
 public class SelectingEnemy : AnyState<PlayerStateManager>
 {
-	public override PlayerClass EnterState(PlayerStateManager player)
+	public override AnyClass EnterState(PlayerStateManager player)
 	{
-		player.State.name = "selecting Enemy";
 		Debug.Log($"current state : {player.State.name}");
+		player.fpsCam.enabled = false;
+		Camera.main.transform.LookAt(player.currentTarget.currentPos.coord);
 		return null;
 	}
 
 	public override void Update(PlayerStateManager player)
 	{
-		if (Input.GetKeyDown(KeyCode.RightArrow))
+		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
-			player.SwitchState(player.doingAction);
+			player.SelectNextTarget(player);
+			Camera.main.transform.LookAt(player.currentTarget.currentPos.coord);
+		}
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			player.SwitchState(player.idelState);
+		}
+
+		if (Input.GetMouseButtonDown(1))
+		{
+			ActionData shoot = player.actions.FirstOrDefault((el) => el is ShootingAction);
+			shoot?.Actionevent?.Raise();
 		}
 	}
 
 	public override void ExitState(PlayerStateManager player)
 	{
+		player.fpsCam.enabled = true;
 	}
 }

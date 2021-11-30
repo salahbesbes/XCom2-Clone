@@ -590,7 +590,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8583340695697658014}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -845,9 +845,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7fdc721c4f9522941a5d3c87d1ccb88f, type: 2}
   ActionHolder: {fileID: 0}
   Action_prefab: {fileID: 5356878571294043885, guid: 2da8bad2b03449540907bca690fcdc44, type: 3}
+  HealthBarHolder: {fileID: 8583340695184250804}
+  fpsCam: {fileID: 8583340695697658011}
+  currentTarget: {fileID: 0}
   isFlanked: 0
   lineConponent: {fileID: 0}
-  HealthBarHolder: {fileID: 8583340695184250804}
 --- !u!1 &8583340696093689634
 GameObject:
   m_ObjectHideFlags: 0

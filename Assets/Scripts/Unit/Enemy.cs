@@ -2,12 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Enemy : PlayerClass
+public class Enemy : PlayerStateManager
 {
-	public bool isFlanked = false;
-	protected GameStateManager gameStateManager;
-	protected Player currentTarget;
-
 	private void Awake()
 	{
 		grid = FindObjectOfType<NodeGrid>();

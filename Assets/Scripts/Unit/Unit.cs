@@ -26,11 +26,6 @@ public class Unit : MonoBehaviour
 	protected Animator animator;
 	public float speed = 5f;
 
-	private void Awake()
-	{
-		animator = model.GetComponent<Animator>();
-	}
-
 	public void MoveActionCallback(MoveAction actionInstance, Node start, Node end)
 	{
 		PlayAnimation(AnimationType.run);

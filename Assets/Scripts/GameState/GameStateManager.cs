@@ -1,7 +1,6 @@
 using gameEventNameSpace;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class GameStateManager : GameManagerListner
@@ -40,7 +39,9 @@ public class GameStateManager : GameManagerListner
 		get => _selectedEnemy; set
 		{
 			_selectedEnemy = value;
-			_selectedEnemy.updatePlayerActionUi();
+
+			if (State is EnemyTurn)
+				_selectedEnemy.updatePlayerActionUi();
 		}
 	}
 
@@ -56,7 +57,8 @@ public class GameStateManager : GameManagerListner
 		get => _selectedPlayer; set
 		{
 			_selectedPlayer = value;
-			_selectedPlayer.updatePlayerActionUi();
+			if (State is PlayerTurn)
+				_selectedPlayer.updatePlayerActionUi();
 		}
 	}
 
@@ -65,11 +67,11 @@ public class GameStateManager : GameManagerListner
 
 	private void OnEnable()
 	{
-		SwitchState(playerTurn);
 	}
 
 	private void Awake()
 	{
+		SwitchState(playerTurn);
 		grid = FindObjectOfType<NodeGrid>();
 	}
 
@@ -86,66 +88,9 @@ public class GameStateManager : GameManagerListner
 		// change the current state and execute the start methode of that new State this is
 		// the only way to change the state
 		State = newState;
-		PlayerClass selectedUnit = State.EnterState(this);
+		AnyClass selectedUnit = State.EnterState(this);
 
 		//EventListner.Invoke(State);
-	}
-
-	public List<Node> CheckMovementRange(PlayerClass unit)
-	{
-		// by default the first 4 neighbor are always in range
-
-		if (unit?.currentPos?.neighbours == null) return new List<Node>();
-		List<Node> lastLayerOfInrangeNeighbor = new List<Node>(unit.currentPos.neighbours);
-		List<Node> allAccceccibleNodes = new List<Node>();
-
-		int firstRange = 8 / 2;
-		bool depassMidDepth = true;
-		int depth = 0;
-
-		while (true)
-		{
-			allAccceccibleNodes.AddRange(lastLayerOfInrangeNeighbor);
-			if (depth >= firstRange) depassMidDepth = false;
-
-			lastLayerOfInrangeNeighbor = updateNeigbor(lastLayerOfInrangeNeighbor, unit.currentPos, depassMidDepth);
-			depth++;
-			if (depth == 8) break;
-		}
-
-		foreach (Node item in allAccceccibleNodes)
-		{
-			if (item.firstRange == true)
-				item.tile.GetComponent<Renderer>().material.color = Color.black;
-			else
-				item.tile.GetComponent<Renderer>().material.color = Color.yellow;
-		}
-
-		return allAccceccibleNodes;
-	}
-
-	public List<Node> updateNeigbor(List<Node> neighbors, Node origin, bool depassMidDepth)
-	{
-		List<Node> newLastLayer = new List<Node>();
-		// every neighbor is updated to inrage is true
-		foreach (Node node in neighbors)
-		{
-			node.inRange = true;
-			if (depassMidDepth == false) node.firstRange = true;
-		}
-
-		// loop again to create new list of neighbor which are adjacent to the old one
-		foreach (Node node in neighbors)
-		{
-			// for each node loop throw the neighbor which are not inRange and are not
-			// in the local newLastLayer list, if they are add them the newLastLayer
-			foreach (Node n in node.neighbours.Where((nei) => nei.inRange == false && nei != origin).ToList())
-			{
-				if (newLastLayer.Contains(n) == false)
-					newLastLayer.Add(n);
-			}
-		}
-		return newLastLayer;
 	}
 
 	public void ChangeState()
@@ -159,7 +104,7 @@ public abstract class BaseState<T>
 {
 	public string name;
 
-	public abstract PlayerClass EnterState(T playerContext);
+	public abstract AnyClass EnterState(T playerContext);
 
 	public abstract void Update(T playerContext);
 

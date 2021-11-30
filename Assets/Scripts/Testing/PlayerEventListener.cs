@@ -13,7 +13,7 @@ public class PlayerEventListener : MonoBehaviour
 
 	//private void OnEnable()
 	//{
-	//	gameEvent.RegisterListener(this);
+	//	GameEvent?.RegisterListener(this);
 	//}
 
 	public void register()
@@ -29,6 +29,8 @@ public class PlayerEventListener : MonoBehaviour
 
 	public void OnEventRaised()
 	{
-		response.Invoke();
+		if (response == null)
+			Debug.Log($"response is null suppose to crash the game");
+		response?.Invoke();
 	}
 }

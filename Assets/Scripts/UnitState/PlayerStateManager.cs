@@ -1,11 +1,14 @@
-using UnityEngine;
-
-public class PlayerStateManager : MonoBehaviour
+public class PlayerStateManager : AnyClass
 {
 	public SelectingEnemy selectingEnemy = new SelectingEnemy();
 	public Idel idelState = new Idel();
 	public DoingAction doingAction = new DoingAction();
-	public NodeGrid grid;
+
+	private void OnEnable()
+	{
+		SwitchState(idelState);
+	}
+
 	private BaseState<PlayerStateManager> _State;
 
 	public BaseState<PlayerStateManager> State
@@ -17,16 +20,9 @@ public class PlayerStateManager : MonoBehaviour
 		}
 	}
 
-	private void OnEnable()
-	{
-		grid = FindObjectOfType<NodeGrid>();
-		//currentPos = grid.getNodeFromTransformPosition(transform);
-	}
-
 	private void Awake()
 	{
-		State = idelState;
-		State.EnterState(this);
+		SwitchState(idelState);
 	}
 
 	private void Update()

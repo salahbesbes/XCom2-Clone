@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DoingAction : AnyState<PlayerStateManager>
 {
-	public override PlayerClass EnterState(PlayerStateManager player)
+	public override AnyClass EnterState(PlayerStateManager player)
 	{
 		player.State.name = "doingAction";
 		Debug.Log($"current state : {player.State.name}");

@@ -12,7 +12,7 @@ public class GameManagerListner : MonoBehaviour
 		}
 	}
 
-	public void UpdateSelectedPlayerResponse(PlayerClass unit)
+	public void UpdateSelectedPlayerResponse(AnyClass unit)
 	{
 		clearPreviousPlayerListners();
 		foreach (ActionData action in unit.actions)

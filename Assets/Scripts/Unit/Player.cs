@@ -4,14 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Player : PlayerClass
+public class Player : PlayerStateManager
 {
-	protected GameStateManager gameStateManager;
-	protected Enemy currentTarget;
-	public bool isFlanked;
-
 	public LineController lineConponent;
-	public Transform HealthBarHolder;
 
 	public void Start()
 	{
@@ -26,6 +21,7 @@ public class Player : PlayerClass
 		currentTarget = gameStateManager.SelectedEnemy;
 
 		lineConponent = FindObjectOfType<LineController>();
+		animator = model.GetComponent<Animator>();
 
 		//lineConponent.SetUpLine(turnPoints);
 	}
@@ -71,49 +67,6 @@ public class Player : PlayerClass
 			}
 		}
 		return false;
-	}
-
-	public void onNodeHover()
-	{
-		Node oldDestination = destination;
-		Node res;
-		Camera fpsCam = transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>();
-		if (fpsCam.enabled)
-		{
-			res = grid.getNodeFromMousePosition(fpsCam);
-		}
-		else
-		{
-			res = grid.getNodeFromMousePosition();
-		}
-		Node potentialDestination = res;
-		if (potentialDestination != null && potentialDestination != destination && potentialDestination != currentPos)
-		{
-			List<Node> potentialPath = FindPath.AStarAlgo(currentPos, potentialDestination);
-			Vector3[] turns = FindPath.createWayPoint(potentialPath);
-
-			//lineConponent.SetUpLine(turnPoints);
-
-			path = potentialPath;
-			turnPoints = turns;
-			foreach (Node node in path)
-			{
-				if (turnPoints.Contains(node.coord))
-					node.tile.GetComponent<Renderer>().material.color = Color.green;
-				else
-				{
-					node.tile.GetComponent<Renderer>().material.color = Color.gray;
-				}
-			}
-			potentialDestination.tile.GetComponent<Renderer>().material.color = Color.blue;
-
-			if (Input.GetMouseButtonDown(0))
-			{
-				ActionData move = actions.FirstOrDefault((el) => el is MovementAction);
-				move.Actionevent.Raise();
-				//gameStateManager.selectedPlayer.CreateNewMoveAction();
-			}
-		}
 	}
 
 	public void checkFlank(Node target)

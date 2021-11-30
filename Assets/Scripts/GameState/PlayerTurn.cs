@@ -5,12 +5,13 @@ public class PlayerTurn : AnyState<GameStateManager>
 {
 	private Color InitColor;
 
-	public override PlayerClass EnterState(GameStateManager gameManager)
+	public override AnyClass EnterState(GameStateManager gameManager)
 	{
 		gameManager.SelectedPlayer = gameManager.players.FirstOrDefault();
 		gameManager.SelectedEnemy = gameManager.enemies.FirstOrDefault();
 
 		gameManager.SelectedPlayer.enabled = true;
+		gameManager.SelectedPlayer.fpsCam.enabled = true;
 
 		//Debug.Log($" PlayerTurn Start ,  {gameManager.selectedPlayer.transform.name} is selected");
 		gameManager.UpdateSelectedPlayerResponse(gameManager.SelectedPlayer);
@@ -28,38 +29,14 @@ public class PlayerTurn : AnyState<GameStateManager>
 			SelectNextPlayer(gameManager);
 		}
 
-		if (Input.GetKeyDown(KeyCode.K))
-		{
-			handleHealthUnitBar healthBar = gameManager.SelectedPlayer.HealthBarHolder.GetComponent<handleHealthUnitBar>();
-			healthBar.onHeal(6);
-		}
-		if (Input.GetKeyDown(KeyCode.L))
-		{
-			handleHealthUnitBar healthBar = gameManager.SelectedPlayer.HealthBarHolder.GetComponent<handleHealthUnitBar>();
-			healthBar.onDamage(4);
-		}
-		if (Input.GetMouseButtonDown(1))
-		{
-			ActionData shoot = gameManager.SelectedPlayer.actions.FirstOrDefault((el) => el is ShootingAction);
-			Debug.Log($"raise event");
-			shoot?.Actionevent?.Raise();
-		}
-		if (Input.GetKeyDown(KeyCode.R))
-		{
-			gameManager.SelectedPlayer.CreateNewReloadAction();
-		}
-		if (Input.GetKeyDown(KeyCode.LeftShift))
-		{
-			gameManager.SelectedPlayer.SelectNextEnemy();
-		}
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			gameManager.SelectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled = false;
-		}
+
+
+
+
 
 		gameManager.SelectedPlayer.LockOnTarger();
 		gameManager.SelectedPlayer.checkFlank(gameManager?.SelectedEnemy?.currentPos);
-		gameManager.CheckMovementRange(gameManager.SelectedPlayer);
+		gameManager.SelectedPlayer.CheckMovementRange();
 		gameManager.SelectedPlayer.onNodeHover();
 	}
 
@@ -68,7 +45,7 @@ public class PlayerTurn : AnyState<GameStateManager>
 		if (gameManager.SelectedPlayer != null)
 		{
 			//gameManager.SelectedPlayer.enabled = false;
-			gameManager.SelectedPlayer = null;
+			//gameManager.SelectedPlayer = null;
 			Debug.Log($"exit State {nameof(PlayerTurn)}");
 		}
 	}
@@ -80,12 +57,12 @@ public class PlayerTurn : AnyState<GameStateManager>
 		if (gameManager != null)
 		{
 			gameManager.SelectedPlayer.enabled = false;
-			gameManager.SelectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled = false;
+			gameManager.SelectedPlayer.fpsCam.enabled = false;
 
 			int currentPlayerIndex = gameManager.players.FindIndex(instance => instance == gameManager.SelectedPlayer);
 
 			gameManager.SelectedPlayer = gameManager.players[(currentPlayerIndex + 1) % nbPlayers]; gameManager.SelectedPlayer.enabled = true;
-			gameManager.SelectedPlayer.transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>().enabled = true;
+			gameManager.SelectedPlayer.fpsCam.enabled = true;
 
 			gameManager.UpdateSelectedPlayerResponse(gameManager.SelectedPlayer);
 
@@ -96,7 +73,7 @@ public class PlayerTurn : AnyState<GameStateManager>
 
 public class EnemyTurn : AnyState<GameStateManager>
 {
-	public override PlayerClass EnterState(GameStateManager gameManager)
+	public override AnyClass EnterState(GameStateManager gameManager)
 	{
 		gameManager.SelectedPlayer = gameManager.players.FirstOrDefault();
 		gameManager.SelectedEnemy = gameManager.enemies.FirstOrDefault();
@@ -136,7 +113,7 @@ public class EnemyTurn : AnyState<GameStateManager>
 			gameManager.SelectedEnemy.CreateNewReloadAction();
 		}
 
-		gameManager.CheckMovementRange(gameManager.SelectedEnemy);
+		gameManager.SelectedEnemy.CheckMovementRange();
 
 		gameManager.SelectedEnemy.LockOnTarger();
 		//gameManager.selectedEnemy.checkFlank(gameManager.selectedPlayer.currentPos);
@@ -147,7 +124,7 @@ public class EnemyTurn : AnyState<GameStateManager>
 		if (gameManager.SelectedEnemy != null)
 		{
 			//gameManager.SelectedEnemy.enabled = false;
-			gameManager.SelectedEnemy = null;
+			//gameManager.SelectedEnemy = null;
 			Debug.Log($"exit State {nameof(EnemyTurn)}");
 		}
 	}
