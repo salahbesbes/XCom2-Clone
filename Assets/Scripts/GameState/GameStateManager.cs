@@ -38,6 +38,7 @@ public class GameStateManager : GameManagerListner
 	{
 		get => _selectedEnemy; set
 		{
+			_selectedEnemy?.SwitchState(_selectedEnemy?.idelState);
 			_selectedEnemy = value;
 
 			if (State is EnemyTurn)
@@ -56,6 +57,10 @@ public class GameStateManager : GameManagerListner
 	{
 		get => _selectedPlayer; set
 		{
+			// every time game manager want to switch player update the old selected one
+			// to idel state
+			_selectedPlayer?.SwitchState(_selectedPlayer?.idelState);
+
 			_selectedPlayer = value;
 			if (State is PlayerTurn)
 				_selectedPlayer.updatePlayerActionUi();

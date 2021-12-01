@@ -7,7 +7,8 @@ public class SelectingEnemy : AnyState<PlayerStateManager>
 	{
 		Debug.Log($"current state : {player.State.name}");
 		player.fpsCam.enabled = false;
-		Camera.main.transform.LookAt(player.currentTarget.currentPos.coord);
+		player.secondCam.gameObject.SetActive(true);
+		//player.secondCam.transform.LookAt(player.currentTarget.currentPos.coord);
 		return null;
 	}
 
@@ -16,7 +17,7 @@ public class SelectingEnemy : AnyState<PlayerStateManager>
 		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
 			player.SelectNextTarget(player);
-			Camera.main.transform.LookAt(player.currentTarget.currentPos.coord);
+			//player.SwitchState(player.idelState);
 		}
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
@@ -33,5 +34,9 @@ public class SelectingEnemy : AnyState<PlayerStateManager>
 	public override void ExitState(PlayerStateManager player)
 	{
 		player.fpsCam.enabled = true;
+		player.secondCam.gameObject.SetActive(false);
+		player.secondCam.transform.SetParent(player.transform);
+		player.secondCam.transform.position = player.fpsCam.transform.position;
+		player.secondCam.gameObject.SetActive(false);
 	}
 }

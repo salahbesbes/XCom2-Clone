@@ -34,13 +34,12 @@ public class Idel : AnyState<PlayerStateManager>
 		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
 			player.SelectNextTarget(player);
+			player.fpsCam.transform.LookAt(player.currentTarget.transform);
 		}
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			player.fpsCam.enabled = false;
 		}
-
-
 	}
 
 	public override void ExitState(PlayerStateManager player)

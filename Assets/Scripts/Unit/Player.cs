@@ -157,8 +157,10 @@ public class Player : PlayerStateManager
 	public void LockOnTarger()
 	{
 		if (currentPos == null || destination == null) return;
+
 		if (currentTarget == null || currentPos.coord != destination.coord)
 		{// handle rotation on axe Y
+			Debug.Log($"first ");
 			Vector3 dir = destination.coord - currentPos.coord;
 			Quaternion lookRotation = Quaternion.LookRotation(dir);
 			// smooth the rotation of the turrent
@@ -166,15 +168,19 @@ public class Player : PlayerStateManager
 							lookRotation,
 							Time.deltaTime * 5f)
 							.eulerAngles;
-			partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+			partToRotate.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
 			return;
 		}
-		if (currentPos != null && currentTarget.currentPos != null && currentPos.coord == destination.coord)
+		if (destination == null || (currentPos.coord == destination.coord))
 		{
+			Debug.Log($"second ");
+
 			Vector3 dir = currentTarget.currentPos.coord - currentPos.coord;
 			Quaternion lookRotation = Quaternion.LookRotation(dir);
 			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * 5f).eulerAngles;
-			partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+			partToRotate.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
+
+			return;
 		}
 	}
 
