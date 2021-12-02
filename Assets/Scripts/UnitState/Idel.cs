@@ -4,13 +4,15 @@ public class Idel : AnyState<PlayerStateManager>
 {
 	public override AnyClass EnterState(PlayerStateManager player)
 	{
-		Debug.Log($"current state : {player.State.name}");
+		Debug.Log($" {player.name}  state : {player.State.name}");
 
 		return null;
 	}
 
 	public override void Update(PlayerStateManager player)
 	{
+		player.grid.resetGrid();
+
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
 			player.SwitchState(player.selectingEnemy);
@@ -39,6 +41,9 @@ public class Idel : AnyState<PlayerStateManager>
 		{
 			player.fpsCam.enabled = false;
 		}
+
+		player.CheckMovementRange();
+		player.onNodeHover();
 
 
 	}

@@ -10,6 +10,7 @@ public class AnyClass : Unit, IBaseActions
 	public GameObject Action_prefab;
 	public Transform HealthBarHolder;
 	public Camera fpsCam;
+	public Camera secondCam;
 	protected GameStateManager gameStateManager;
 	public AnyClass currentTarget;
 	public bool isFlanked;

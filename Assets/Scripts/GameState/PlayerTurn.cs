@@ -36,8 +36,8 @@ public class PlayerTurn : AnyState<GameStateManager>
 
 		gameManager.SelectedPlayer.LockOnTarger();
 		gameManager.SelectedPlayer.checkFlank(gameManager?.SelectedEnemy?.currentPos);
-		gameManager.SelectedPlayer.CheckMovementRange();
-		gameManager.SelectedPlayer.onNodeHover();
+		//gameManager.SelectedPlayer.CheckMovementRange();
+		//gameManager.SelectedPlayer.onNodeHover();
 	}
 
 	public override void ExitState(GameStateManager gameManager)
@@ -57,12 +57,14 @@ public class PlayerTurn : AnyState<GameStateManager>
 		if (gameManager != null)
 		{
 			gameManager.SelectedPlayer.enabled = false;
+			gameManager.SelectedPlayer.SwitchState(gameManager.SelectedPlayer.idelState);
 			gameManager.SelectedPlayer.fpsCam.enabled = false;
-
 			int currentPlayerIndex = gameManager.players.FindIndex(instance => instance == gameManager.SelectedPlayer);
 
-			gameManager.SelectedPlayer = gameManager.players[(currentPlayerIndex + 1) % nbPlayers]; gameManager.SelectedPlayer.enabled = true;
+			gameManager.SelectedPlayer = gameManager.players[(currentPlayerIndex + 1) % nbPlayers];
+			gameManager.SelectedPlayer.enabled = true;
 			gameManager.SelectedPlayer.fpsCam.enabled = true;
+
 
 			gameManager.UpdateSelectedPlayerResponse(gameManager.SelectedPlayer);
 
