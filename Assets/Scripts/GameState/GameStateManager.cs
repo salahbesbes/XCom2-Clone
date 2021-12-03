@@ -82,7 +82,6 @@ public class GameStateManager : GameManagerListner
 
 	private void Update()
 	{
-		grid.resetGrid();
 		// for any state the player is in, we execute the update methode of that State
 		// change of the state is instant since this update executs every frame
 		State.Update(this);

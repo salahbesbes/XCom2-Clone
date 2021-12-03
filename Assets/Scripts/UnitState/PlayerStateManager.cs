@@ -33,6 +33,7 @@ public class PlayerStateManager : AnyClass
 
 	public void SwitchState(BaseState<PlayerStateManager> newState)
 	{
+
 		State?.ExitState(this);
 
 		State = newState;
