@@ -6,10 +6,8 @@ public class SecondCam : MonoBehaviour
 
 	private AnyClass currentTarget;
 	public float speed = 4;
-	private void Start()
-	{
-	}
 
+	private void Start()
 	{
 		switchTrarget();
 	}
@@ -17,7 +15,6 @@ public class SecondCam : MonoBehaviour
 	private void switchTrarget()
 	{
 		currentTarget = unit.currentTarget;
-		if (currentTarget != null)
 	}
 
 	private void turnTheModel(Vector3 target)
