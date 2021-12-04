@@ -1,9 +1,50 @@
+using gameEventNameSpace;
 using UnityEngine;
 
-public class UnitStats : MonoBehaviour
+[CreateAssetMenu(fileName = "New Stats", menuName = "unit Stats")]
+public class UnitStats : ScriptableObject
 {
 	private int maxHealth = 100;
 	private int _health;
+	public VoidEvent eventToListnTo;
+
+	private void Reset()
+	{
+		//Output the message to the Console
+		Debug.Log("Reset");
+		Health = maxHealth;
+
+		eventToListnTo = FindObjectOfType<VoidEvent>();
+		Debug.Log($"{eventToListnTo}");
+	}
+
+	private void Awake()
+	{
+		Health = maxHealth;
+		armor.Value = 0;
+		Debug.Log($"awake called");
+	}
+
+	private void OnEnable()
+	{
+		Debug.Log($"enabled");
+	}
+
+	private void OnDisable()
+	{
+		Debug.Log($"disabled");
+	}
+
+	private void OnDestroy()
+	{
+		Debug.Log($"destroyed");
+	}
+
+	private void OnValidate()
+	{
+		armor.Value = 5;
+		Debug.Log($"validate");
+	}
 
 	public int Health
 	{
@@ -19,41 +60,4 @@ public class UnitStats : MonoBehaviour
 
 	public Stat damage;
 	public Stat armor;
-
-	private void Start()
-	{
-		Health = maxHealth;
-		armor.Value = 0;
-	}
-
-	private void TakeDamage(int damage)
-	{
-		damage -= armor.Value;
-		Debug.Log($"armor is {armor.Value}");
-		Debug.Log($"damage is {damage}");
-		Health -= damage;
-		Debug.Log($"{Health}");
-		if (Health <= 0)
-		{
-			Die();
-		}
-	}
-
-	private void Die()
-	{
-		Debug.Log($"player died");
-	}
-
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.T))
-		{
-			TakeDamage(10);
-		}
-
-		if (Input.GetKeyDown(KeyCode.P))
-		{
-			armor.AddModifier(2);
-		}
-	}
 }
