@@ -15,18 +15,22 @@ public class UnitStats : ScriptableObject
 		Health = maxHealth;
 
 		eventToListnTo = FindObjectOfType<VoidEvent>();
-		Debug.Log($"{eventToListnTo}");
+
+		armor.modifiers.Clear();
+		damage.modifiers.Clear();
 	}
 
 	private void Awake()
 	{
 		Health = maxHealth;
-		armor.Value = 0;
 		Debug.Log($"awake called");
 	}
 
 	private void OnEnable()
 	{
+		Health = maxHealth;
+		armor.modifiers.Clear();
+		damage.modifiers.Clear();
 		Debug.Log($"enabled");
 	}
 
