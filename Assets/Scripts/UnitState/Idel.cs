@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Idel : AnyState<PlayerStateManager>
@@ -36,7 +37,8 @@ public class Idel : AnyState<PlayerStateManager>
 		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
 			player.SelectNextTarget(player);
-			player.fpsCam.transform.LookAt(player.currentTarget.transform);
+			//Vector3 direction = player.currentTarget.transform.position - player.transform.position;
+			//rotateTowardDirection(player, direction);
 		}
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
@@ -45,6 +47,24 @@ public class Idel : AnyState<PlayerStateManager>
 
 		player.CheckMovementRange();
 		player.onNodeHover();
+	}
+
+	public async void rotateTowardDirection(PlayerStateManager player, Vector3 dir)
+	{
+		float speed = 3;
+		float timeElapsed = 0;
+		Quaternion startRotation = player.transform.rotation;
+
+		//Quaternion targetRotation = player.transform.rotation * Quaternion.Euler(dir);
+		Quaternion targetRotation = Quaternion.LookRotation(dir);
+
+		while (player.transform.rotation != targetRotation)
+		{
+			player.transform.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed);
+			timeElapsed += (speed * Time.deltaTime);
+			await Task.Yield();
+		}
+		player.transform.rotation = targetRotation;
 	}
 
 	public override void ExitState(PlayerStateManager player)

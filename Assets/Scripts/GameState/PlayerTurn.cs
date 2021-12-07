@@ -29,11 +29,6 @@ public class PlayerTurn : AnyState<GameStateManager>
 			SelectNextPlayer(gameManager);
 		}
 
-
-
-
-
-
 		gameManager.SelectedPlayer.LockOnTarger();
 		gameManager.SelectedPlayer.checkFlank(gameManager?.SelectedEnemy?.currentPos);
 		//gameManager.SelectedPlayer.CheckMovementRange();
@@ -64,7 +59,6 @@ public class PlayerTurn : AnyState<GameStateManager>
 			gameManager.SelectedPlayer = gameManager.players[(currentPlayerIndex + 1) % nbPlayers];
 			gameManager.SelectedPlayer.enabled = true;
 			gameManager.SelectedPlayer.fpsCam.enabled = true;
-
 
 			gameManager.UpdateSelectedPlayerResponse(gameManager.SelectedPlayer);
 

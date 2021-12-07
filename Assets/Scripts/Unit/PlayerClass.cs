@@ -9,10 +9,12 @@ public class AnyClass : Unit, IBaseActions
 	public Transform ActionHolder;
 	public GameObject Action_prefab;
 	public Transform HealthBarHolder;
+
 	public Camera fpsCam;
 	public Camera secondCam;
 	protected GameStateManager gameStateManager;
 	public AnyClass currentTarget;
+	public Transform aimPoint;
 	public bool isFlanked;
 
 	public void updatePlayerActionUi()
@@ -43,6 +45,7 @@ public class AnyClass : Unit, IBaseActions
 			int nbPlyaers = players.Count;
 			int currentTargetIndex = players.FindIndex(instance => instance == currentTarget);
 			currentTarget = players[(currentTargetIndex + 1) % nbPlyaers];
+			rotateTowardDirection(this, currentTarget.aimPoint.position - aimPoint.position);
 		}
 		else if (currentUnit is Player)
 		{
@@ -50,6 +53,7 @@ public class AnyClass : Unit, IBaseActions
 			int nbEnemies = enemies.Count;
 			int currentTargetIndex = enemies.FindIndex(instance => instance == currentTarget);
 			currentTarget = enemies[(currentTargetIndex + 1) % nbEnemies];
+			rotateTowardDirection(this, currentTarget.aimPoint.position - aimPoint.position);
 		}
 	}
 

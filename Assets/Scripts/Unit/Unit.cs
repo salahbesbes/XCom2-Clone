@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
@@ -59,7 +60,28 @@ public class Unit : MonoBehaviour
 		animator.SetBool(CorrespondNameOfTheAnimation, true);
 	}
 
-	private void turnTheModel(Vector3 dir)
+	public async void rotateTowardDirection(Unit player, Vector3 dir)
+	{
+		float speed = 3;
+		float timeElapsed = 0, lerpDuration = 2;
+
+		if (player == null) return;
+		Quaternion startRotation = player.partToRotate.rotation;
+
+		//Quaternion targetRotation = player.transform.rotation * Quaternion.Euler(dir);
+		Quaternion targetRotation = Quaternion.LookRotation(dir);
+
+		while (timeElapsed < lerpDuration)
+		{
+			player.partToRotate.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / lerpDuration);
+			timeElapsed += (speed * Time.deltaTime);
+			Debug.Log($"rotating");
+			await Task.Yield();
+		}
+		player.partToRotate.rotation = targetRotation;
+	}
+
+	public void turnTheModel(Vector3 dir)
 	{
 		// handle rotation on axe Y
 		Quaternion lookRotation = Quaternion.LookRotation(dir);
@@ -101,8 +123,7 @@ public class Unit : MonoBehaviour
 					currentPoint = turnPoints[index];
 				}
 
-				turnTheModel(currentPoint - partToRotate.position);
-
+				rotateTowardDirection(this, currentPoint - partToRotate.position);
 				transform.position = Vector3.MoveTowards(transform.position, currentPoint, speed * Time.deltaTime);
 
 				// this yield return null waits until the next frame reached ( dont

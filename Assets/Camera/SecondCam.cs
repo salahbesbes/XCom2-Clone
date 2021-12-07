@@ -6,6 +6,9 @@ public class SecondCam : MonoBehaviour
 
 	private AnyClass currentTarget;
 	public float speed = 4;
+	public float angle;
+	public float radius = 2;
+	public float degreesPerSecond = 100;
 
 	private void Start()
 	{
@@ -14,7 +17,8 @@ public class SecondCam : MonoBehaviour
 
 	private void switchTrarget()
 	{
-		currentTarget = unit.currentTarget;
+		if (currentTarget == null) return;
+		turnTheModel(currentTarget.aimPoint.position);
 	}
 
 	private void turnTheModel(Vector3 target)
@@ -28,6 +32,32 @@ public class SecondCam : MonoBehaviour
 						Time.deltaTime * speed
 						)
 						.eulerAngles;
+
 		transform.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
+	}
+
+	private void rotateCam()
+	{
+		angle += degreesPerSecond * Time.deltaTime;
+
+		angle %= 360;
+
+		Vector3 orbit = (Vector3.forward + Vector3.up) * radius;
+		orbit = Quaternion.Euler(0, angle, 0) * orbit;
+
+		transform.position = unit.transform.position + orbit;
+	}
+
+	private void FixedUpdate()
+	{
+		// todo: create an event Listner
+		currentTarget = unit.currentTarget;
+		Vector3 dir = currentTarget.transform.position - unit.transform.position;
+		float distanceCam = (currentTarget.transform.position - transform.position).magnitude;
+		if (dir.magnitude + 2 > distanceCam)
+		{
+			rotateCam();
+		}
+		switchTrarget();
 	}
 }

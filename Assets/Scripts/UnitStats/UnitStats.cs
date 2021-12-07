@@ -11,7 +11,7 @@ public class UnitStats : ScriptableObject
 	private void Reset()
 	{
 		//Output the message to the Console
-		Debug.Log("Reset");
+		//Debug.Log("Reset");
 		Health = maxHealth;
 
 		eventToListnTo = FindObjectOfType<VoidEvent>();
@@ -23,7 +23,7 @@ public class UnitStats : ScriptableObject
 	private void Awake()
 	{
 		Health = maxHealth;
-		Debug.Log($"awake called");
+		//Debug.Log($"awake called");
 	}
 
 	private void OnEnable()
@@ -31,23 +31,23 @@ public class UnitStats : ScriptableObject
 		Health = maxHealth;
 		armor.modifiers.Clear();
 		damage.modifiers.Clear();
-		Debug.Log($"enabled");
+		//Debug.Log($"enabled");
 	}
 
 	private void OnDisable()
 	{
-		Debug.Log($"disabled");
+		//Debug.Log($"disabled");
 	}
 
 	private void OnDestroy()
 	{
-		Debug.Log($"destroyed");
+		//Debug.Log($"destroyed");
 	}
 
 	private void OnValidate()
 	{
-		armor.Value = 5;
-		Debug.Log($"validate");
+		//armor.Value = 5;
+		//Debug.Log($"validate");
 	}
 
 	public int Health

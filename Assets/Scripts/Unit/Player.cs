@@ -160,7 +160,6 @@ public class Player : PlayerStateManager
 
 		if (currentTarget == null || currentPos.coord != destination.coord)
 		{// handle rotation on axe Y
-			Debug.Log($"first ");
 			Vector3 dir = destination.coord - currentPos.coord;
 			Quaternion lookRotation = Quaternion.LookRotation(dir);
 			// smooth the rotation of the turrent
@@ -173,8 +172,6 @@ public class Player : PlayerStateManager
 		}
 		if (destination == null || (currentPos.coord == destination.coord))
 		{
-			Debug.Log($"second ");
-
 			Vector3 dir = currentTarget.currentPos.coord - currentPos.coord;
 			Quaternion lookRotation = Quaternion.LookRotation(dir);
 			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * 5f).eulerAngles;
