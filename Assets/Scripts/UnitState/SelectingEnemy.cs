@@ -9,6 +9,9 @@ public class SelectingEnemy : AnyState<PlayerStateManager>
 		player.fpsCam.enabled = false;
 		//player.secondCam.transform.LookAt(player.currentTarget.transform);
 		player.secondCam.gameObject.SetActive(true);
+
+		player.PlayAnimation(AnimationType.aim);
+
 		return null;
 	}
 
@@ -24,9 +27,11 @@ public class SelectingEnemy : AnyState<PlayerStateManager>
 			player.SwitchState(player.idelState);
 		}
 
-		if (Input.GetMouseButtonDown(1))
+		if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))
 		{
 			ActionData shoot = player.actions.FirstOrDefault((el) => el is ShootingAction);
+			player.currentActionAnimation = AnimationType.shoot;
+			player.SwitchState(player.doingAction);
 			shoot?.Actionevent?.Raise();
 		}
 	}

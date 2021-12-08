@@ -46,7 +46,7 @@ public class AnyClass : Unit, IBaseActions
 			int currentTargetIndex = players.FindIndex(instance => instance == currentTarget);
 			currentTarget = players[(currentTargetIndex + 1) % nbPlyaers];
 			rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
-			rotateTowardDirection(model, currentTarget.aimPoint.position - aimPoint.position);
+			//rotateTowardDirection(model, currentTarget.aimPoint.position - aimPoint.position);
 		}
 		else if (currentUnit is Player)
 		{
@@ -55,7 +55,7 @@ public class AnyClass : Unit, IBaseActions
 			int currentTargetIndex = enemies.FindIndex(instance => instance == currentTarget);
 			currentTarget = enemies[(currentTargetIndex + 1) % nbEnemies];
 			rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
-			rotateTowardDirection(model, currentTarget.aimPoint.position - aimPoint.position);
+			//rotateTowardDirection(model, currentTarget.transform.position - transform.position);
 		}
 	}
 

@@ -34,5 +34,7 @@ public enum AnimationType
 	run,
 	idel,
 	walk,
-	jump
+	jump,
+	shoot,
+	aim,
 }

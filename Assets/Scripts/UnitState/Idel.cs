@@ -37,8 +37,6 @@ public class Idel : AnyState<PlayerStateManager>
 		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
 			player.SelectNextTarget(player);
-			//Vector3 direction = player.currentTarget.transform.position - player.transform.position;
-			//rotateTowardDirection(player, direction);
 		}
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{

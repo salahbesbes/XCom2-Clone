@@ -73,12 +73,21 @@ public class Unit : MonoBehaviour
 
 		while (timeElapsed < lerpDuration)
 		{
-			partToRotate.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / lerpDuration);
+			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,
+						targetRotation,
+						 timeElapsed / lerpDuration
+						)
+						.eulerAngles;
+			//partToRotate.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / lerpDuration);
 			timeElapsed += (speed * Time.deltaTime);
 			Debug.Log($"rotating");
 			await Task.Yield();
+			partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 		}
-		partToRotate.rotation = targetRotation;
+
+		// smooth the rotation of the turrent
+
+		//partToRotate.rotation = targetRotation;
 	}
 
 	public void turnTheModel(Vector3 dir)
@@ -169,6 +178,8 @@ public class Unit : MonoBehaviour
 		//todo: reset the grid
 
 		PlayIdelAnimation();
+		Player player = (Player)this;
+		player.SwitchState(player.idelState);
 		rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - partToRotate.position);
 		processing = false;
 		// update the cost
@@ -184,7 +195,7 @@ public class Unit : MonoBehaviour
 
 	public void ShootActionCallBack(ShootAction soot)
 	{
-		PlayAnimation(AnimationType.jump);
+		//PlayAnimation(AnimationType.jump);
 		StartCoroutine(weapon.startShooting(soot));
 	}
 

@@ -3,6 +3,7 @@ public class PlayerStateManager : AnyClass
 	public SelectingEnemy selectingEnemy = new SelectingEnemy();
 	public Idel idelState = new Idel();
 	public DoingAction doingAction = new DoingAction();
+	public AnimationType currentActionAnimation = AnimationType.idel;
 
 	private void OnEnable()
 	{
@@ -31,11 +32,9 @@ public class PlayerStateManager : AnyClass
 		State.Update(this);
 	}
 
-	public void SwitchState(BaseState<PlayerStateManager> newState)
+	public void SwitchState(BaseState<PlayerStateManager> newState, AnimationType? anim = null)
 	{
-
 		State?.ExitState(this);
-
 		State = newState;
 		State.EnterState(this);
 	}

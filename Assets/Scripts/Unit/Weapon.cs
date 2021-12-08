@@ -37,8 +37,8 @@ public class Weapon : MonoBehaviour
 
 	public void Update()
 	{
-		Vector3 fwd = transform.TransformDirection(Vector3.forward);
-		Debug.DrawRay(startPoint.position, fwd * bulletRange, Color.green);
+		Vector3 dir = (player.currentTarget.aimPoint.position - player.aimPoint.position).normalized;
+		Debug.DrawRay(startPoint.position, dir * bulletRange, Color.green);
 	}
 
 	public void CheckForInput()
@@ -115,9 +115,10 @@ public class Weapon : MonoBehaviour
 			//{ }
 			//Ray ray = fps_Cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 			Vector3 fwd = transform.TransformDirection(Vector3.forward);
-			Debug.DrawRay(startPoint.position, fwd * bulletRange, Color.green);
+			Vector3 dir = (player.currentTarget.aimPoint.position - player.aimPoint.position).normalized;
+			Debug.DrawRay(startPoint.position, dir * bulletRange, Color.green);
 			RaycastHit hit;
-			if (Physics.Raycast(startPoint.position, fwd, out hit, bulletRange))
+			if (Physics.Raycast(startPoint.position, dir, out hit, bulletRange))
 			{
 				if (shutGun)
 				{
