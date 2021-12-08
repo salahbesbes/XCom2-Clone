@@ -29,7 +29,7 @@ public class PlayerTurn : AnyState<GameStateManager>
 			SelectNextPlayer(gameManager);
 		}
 
-		gameManager.SelectedPlayer.LockOnTarger();
+		//gameManager.SelectedPlayer.LockOnTarger();
 		gameManager.SelectedPlayer.checkFlank(gameManager?.SelectedEnemy?.currentPos);
 		//gameManager.SelectedPlayer.CheckMovementRange();
 		//gameManager.SelectedPlayer.onNodeHover();

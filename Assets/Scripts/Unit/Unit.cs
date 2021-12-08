@@ -18,7 +18,7 @@ public class Unit : MonoBehaviour
 
 	[SerializeField]
 	public Node currentPos;
-
+	public AnyClass currentTarget;
 	public Node destination;
 	public bool processing = false;
 	public Weapon weapon;
@@ -60,25 +60,25 @@ public class Unit : MonoBehaviour
 		animator.SetBool(CorrespondNameOfTheAnimation, true);
 	}
 
-	public async void rotateTowardDirection(Unit player, Vector3 dir)
+	public async void rotateTowardDirection(Transform partToRotate, Vector3 dir, float timeToSpentTurning = 2)
 	{
 		float speed = 3;
-		float timeElapsed = 0, lerpDuration = 2;
+		float timeElapsed = 0, lerpDuration = timeToSpentTurning;
 
-		if (player == null) return;
-		Quaternion startRotation = player.partToRotate.rotation;
+		if (partToRotate == null) return;
+		Quaternion startRotation = partToRotate.rotation;
 
 		//Quaternion targetRotation = player.transform.rotation * Quaternion.Euler(dir);
 		Quaternion targetRotation = Quaternion.LookRotation(dir);
 
 		while (timeElapsed < lerpDuration)
 		{
-			player.partToRotate.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / lerpDuration);
+			partToRotate.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / lerpDuration);
 			timeElapsed += (speed * Time.deltaTime);
 			Debug.Log($"rotating");
 			await Task.Yield();
 		}
-		player.partToRotate.rotation = targetRotation;
+		partToRotate.rotation = targetRotation;
 	}
 
 	public void turnTheModel(Vector3 dir)
@@ -100,7 +100,7 @@ public class Unit : MonoBehaviour
 		{
 			for (int i = 0; i < turnPoints.Length; i++)
 			{
-				turnPoints[i].y = 0.5f;
+				turnPoints[i].y = transform.position.y;
 			}
 			//grid.path = path;
 			//grid.turnPoints = turnPoints;
@@ -119,11 +119,10 @@ public class Unit : MonoBehaviour
 						break;
 					}
 
-					//partToRotate.RotateAround(partToRotate.position, Vector3.up ,  )
+					rotateTowardDirection(model, destination.coord - partToRotate.transform.position, 0.5f);
 					currentPoint = turnPoints[index];
 				}
 
-				rotateTowardDirection(this, currentPoint - partToRotate.position);
 				transform.position = Vector3.MoveTowards(transform.position, currentPoint, speed * Time.deltaTime);
 
 				// this yield return null waits until the next frame reached ( dont
@@ -138,14 +137,43 @@ public class Unit : MonoBehaviour
 		yield return null;
 	}
 
+	public void LockOnTarger()
+	{
+		if (currentPos == null || destination == null) return;
+
+		if (currentTarget == null || currentPos.coord != destination.coord)
+		{// handle rotation on axe Y
+			Vector3 dir = destination.coord - currentPos.coord;
+			Quaternion lookRotation = Quaternion.LookRotation(dir);
+			// smooth the rotation of the turrent
+			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,
+							lookRotation,
+							Time.deltaTime * 5f)
+							.eulerAngles;
+			partToRotate.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
+			return;
+		}
+		if (destination == null || (currentPos.coord == destination.coord))
+		{
+			Vector3 dir = currentTarget.aimPoint.position - transform.position;
+			Quaternion lookRotation = Quaternion.LookRotation(dir);
+			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * 5f).eulerAngles;
+			partToRotate.rotation = Quaternion.Euler(0, rotation.y, 0);
+
+			return;
+		}
+	}
+
 	public void FinishAction(ActionBase action)
 	{
 		//todo: reset the grid
 
 		PlayIdelAnimation();
+		rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - partToRotate.position);
 		processing = false;
 		// update the cost
 		//GetComponent<PlayerStats>().ActionPoint -= action.cost;
+
 		ExecuteActionInQueue();
 	}
 

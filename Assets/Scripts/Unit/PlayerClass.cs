@@ -13,7 +13,7 @@ public class AnyClass : Unit, IBaseActions
 	public Camera fpsCam;
 	public Camera secondCam;
 	protected GameStateManager gameStateManager;
-	public AnyClass currentTarget;
+
 	public Transform aimPoint;
 	public bool isFlanked;
 
@@ -45,7 +45,8 @@ public class AnyClass : Unit, IBaseActions
 			int nbPlyaers = players.Count;
 			int currentTargetIndex = players.FindIndex(instance => instance == currentTarget);
 			currentTarget = players[(currentTargetIndex + 1) % nbPlyaers];
-			rotateTowardDirection(this, currentTarget.aimPoint.position - aimPoint.position);
+			rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
+			rotateTowardDirection(model, currentTarget.aimPoint.position - aimPoint.position);
 		}
 		else if (currentUnit is Player)
 		{
@@ -53,7 +54,8 @@ public class AnyClass : Unit, IBaseActions
 			int nbEnemies = enemies.Count;
 			int currentTargetIndex = enemies.FindIndex(instance => instance == currentTarget);
 			currentTarget = enemies[(currentTargetIndex + 1) % nbEnemies];
-			rotateTowardDirection(this, currentTarget.aimPoint.position - aimPoint.position);
+			rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
+			rotateTowardDirection(model, currentTarget.aimPoint.position - aimPoint.position);
 		}
 	}
 

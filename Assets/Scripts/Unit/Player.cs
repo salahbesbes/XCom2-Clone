@@ -154,33 +154,6 @@ public class Player : PlayerStateManager
 		Debug.DrawRay(pointPosition, dir, Color.yellow);
 	}
 
-	public void LockOnTarger()
-	{
-		if (currentPos == null || destination == null) return;
-
-		if (currentTarget == null || currentPos.coord != destination.coord)
-		{// handle rotation on axe Y
-			Vector3 dir = destination.coord - currentPos.coord;
-			Quaternion lookRotation = Quaternion.LookRotation(dir);
-			// smooth the rotation of the turrent
-			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,
-							lookRotation,
-							Time.deltaTime * 5f)
-							.eulerAngles;
-			partToRotate.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
-			return;
-		}
-		if (destination == null || (currentPos.coord == destination.coord))
-		{
-			Vector3 dir = currentTarget.currentPos.coord - currentPos.coord;
-			Quaternion lookRotation = Quaternion.LookRotation(dir);
-			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * 5f).eulerAngles;
-			partToRotate.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
-
-			return;
-		}
-	}
-
 	private void rotateToWard(Vector3 dir)
 	{
 	}
