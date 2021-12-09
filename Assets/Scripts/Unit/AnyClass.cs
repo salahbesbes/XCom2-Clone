@@ -10,7 +10,7 @@ public class AnyClass : Unit, IBaseActions
 	public Transform ActionHolder;
 	public GameObject Action_prefab;
 	public Transform HealthBarHolder;
-
+	public GameObject listners;
 	public Camera fpsCam;
 	public Camera secondCam;
 	protected GameStateManager gameStateManager;
@@ -44,12 +44,12 @@ public class AnyClass : Unit, IBaseActions
 	{
 		if (currentUnit is Enemy)
 		{
-			WeaponListner[] oldTargetListners = currentTarget.GetComponents<WeaponListner>();
+			WeaponListner[] oldTargetListners = currentTarget?.GetComponents<WeaponListner>();
 			foreach (var item in oldTargetListners)
 			{
 				item.enabled = false;
 			}
-			VoidListner[] oldTargetVoidListners = currentTarget.GetComponents<VoidListner>();
+			VoidListner[] oldTargetVoidListners = currentTarget?.GetComponents<VoidListner>();
 			foreach (var item in oldTargetVoidListners)
 			{
 				item.enabled = false;
@@ -74,16 +74,7 @@ public class AnyClass : Unit, IBaseActions
 		}
 		else if (currentUnit is Player)
 		{
-			WeaponListner[] oldTargetListners = currentTarget?.GetComponents<WeaponListner>();
-			foreach (var item in oldTargetListners)
-			{
-				item.enabled = false;
-			}
-			VoidListner[] oldTargetVoidListners = currentTarget?.GetComponents<VoidListner>();
-			foreach (var item in oldTargetVoidListners)
-			{
-				item.enabled = false;
-			}
+			currentTarget.listners.SetActive(false);
 			List<Enemy> enemies = gameStateManager.enemies;
 			int nbEnemies = enemies.Count;
 			int currentTargetIndex = enemies.FindIndex(instance => instance == currentTarget);
@@ -91,17 +82,8 @@ public class AnyClass : Unit, IBaseActions
 			rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
 			//rotateTowardDirection(model, currentTarget.transform.position - transform.position);
 			WeaponListner[] newTargetListners = currentTarget.GetComponents<WeaponListner>();
-			foreach (var item in newTargetListners)
-			{
-				item.enabled = true;
-			}
-			VoidListner[] newTargetVoidListners = currentTarget.GetComponents<VoidListner>();
-			foreach (var item in newTargetVoidListners)
-			{
-				item.enabled = true;
-			}
+			currentTarget.listners.SetActive(true);
 			onChangeTarget.Raise();
-
 		}
 	}
 

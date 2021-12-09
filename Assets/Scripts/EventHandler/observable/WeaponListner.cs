@@ -12,7 +12,7 @@ namespace gameEventNameSpace
 
 		public void Start()
 		{
-			myStats = GetComponent<SalahStatsTest>().unit;
+			myStats = GetComponentInParent<SalahStatsTest>().unit;
 		}
 
 		public void TakeDamage(UnitStats triggerStats)

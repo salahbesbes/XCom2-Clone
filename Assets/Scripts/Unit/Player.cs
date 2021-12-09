@@ -22,7 +22,7 @@ public class Player : PlayerStateManager
 
 		lineConponent = FindObjectOfType<LineController>();
 		animator = model.GetComponent<Animator>();
-
+		//listners = transform.Find("listners").gameObject;
 		//lineConponent.SetUpLine(turnPoints);
 	}
 
