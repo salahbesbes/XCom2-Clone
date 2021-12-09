@@ -38,8 +38,18 @@ public class GameStateManager : GameManagerListner
 	{
 		get => _selectedEnemy; set
 		{
+			//ListnerGroups[] oldTargetListners = _selectedEnemy.GetComponent<ListnerGroups>();
+			//foreach (var item in oldTargetListners)
+			//{
+			//	item.enable = false;
+			//}
 			_selectedEnemy?.SwitchState(_selectedEnemy?.idelState);
 			_selectedEnemy = value;
+			//ListnerGroups[] newTargetListners = _selectedEnemy.GetComponent<ListnerGroups>();
+			//foreach (var item in newTargetListners)
+			//{
+			//	item.enable = false;
+			//}
 
 			if (State is EnemyTurn)
 				_selectedEnemy.updatePlayerActionUi();

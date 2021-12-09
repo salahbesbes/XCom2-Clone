@@ -4,9 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Stats", menuName = "unit Stats")]
 public class UnitStats : ScriptableObject
 {
+	public string myName;
 	private int maxHealth = 100;
 	private int _health;
-	public VoidEvent eventToListnTo;
+	public WeaponEvent eventToListnTo;
+	public Weapon weapon;
 
 	private void Reset()
 	{
@@ -14,7 +16,7 @@ public class UnitStats : ScriptableObject
 		//Debug.Log("Reset");
 		Health = maxHealth;
 
-		eventToListnTo = FindObjectOfType<VoidEvent>();
+		//eventToListnTo = FindObjectOfType<VoidEvent>();
 
 		armor.modifiers.Clear();
 		damage.modifiers.Clear();

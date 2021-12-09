@@ -37,8 +37,11 @@ public class Weapon : MonoBehaviour
 
 	public void Update()
 	{
-		Vector3 dir = (player.currentTarget.aimPoint.position - player.aimPoint.position).normalized;
-		Debug.DrawRay(startPoint.position, dir * bulletRange, Color.green);
+		if (player.currentTarget != null)
+		{
+			Vector3 dir = (player.currentTarget.aimPoint.position - player.aimPoint.position).normalized;
+			Debug.DrawRay(startPoint.position, dir * bulletRange, Color.green);
+		}
 	}
 
 	public void CheckForInput()
@@ -134,11 +137,15 @@ public class Weapon : MonoBehaviour
 					//todo: Replace this system by the cost Action point
 					float halfMagazine = maxMagazine / 2;
 					// fire until ( not required )
-					while (bulletLeft >= halfMagazine)
+
+					int bulletShot = 0;
+					while (bulletShot <= 20)
 					{
 						Shoot(hit);
+						bulletShot++;
 						yield return new WaitForSeconds(timeBetweenShooting);
 					}
+
 					//maxMagazine = 0;
 				}
 			}

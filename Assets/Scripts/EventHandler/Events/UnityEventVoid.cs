@@ -16,4 +16,9 @@ namespace gameEventNameSpace
 	public class UnityStateEvent : UnityEvent<BaseState<GameStateManager>>
 	{
 	}
+
+	[System.Serializable]
+	public class UnityWeaponEvent : UnityEvent<UnitStats>
+	{
+	}
 }

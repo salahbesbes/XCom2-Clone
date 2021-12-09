@@ -34,7 +34,7 @@ public class SecondCam : MonoBehaviour
 						.eulerAngles;
 
 		transform.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
-		unit.partToRotate.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
+		unit.model.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
 	}
 
 	private void rotateCam()

@@ -10,12 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d6dfdef4182a6740b4eaf7a58588334, type: 3}
-  m_Name: salahStats
+  m_Name: specialist
   m_EditorClassIdentifier: 
-  eventToListnTo: {fileID: 11400000, guid: 50bfb91831f1ebe4782f675608534473, type: 2}
+  myName: specialist khaled
+  eventToListnTo: {fileID: 11400000, guid: d5140af0486220a4f927c72bc67c455e, type: 2}
+  weapon: {fileID: 0}
   damage:
-    baseValue: 5
+    baseValue: 30
     modifiers: 
   armor:
-    baseValue: 5
+    baseValue: 3
     modifiers: 

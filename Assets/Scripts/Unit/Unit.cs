@@ -179,6 +179,13 @@ public class Unit : MonoBehaviour
 
 		PlayIdelAnimation();
 		Player player = (Player)this;
+		// triget event
+		if (action is ShootAction)
+		{
+			UnitStats stats = GetComponent<SalahStatsTest>().unit;
+			stats.eventToListnTo.Raise(stats);
+		}
+		// switch state
 		player.SwitchState(player.idelState);
 		rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - partToRotate.position);
 		processing = false;

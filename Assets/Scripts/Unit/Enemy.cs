@@ -1,9 +1,19 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class Enemy : PlayerStateManager
 {
+	private UnitStats myStats;
+	public TextMeshProUGUI UiText;
+	public TextMeshProUGUI MyName;
+
+	public void updateStats()
+	{
+		UiText.text = $"Health : {myStats.Health}";
+		MyName.text = $"{ myStats.myName }:";
+	}
 	private void Awake()
 	{
 		grid = FindObjectOfType<NodeGrid>();

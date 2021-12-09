@@ -1,3 +1,4 @@
+using gameEventNameSpace;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,6 +17,8 @@ public class AnyClass : Unit, IBaseActions
 
 	public Transform aimPoint;
 	public bool isFlanked;
+
+	public VoidEvent onChangeTarget;
 
 	public void updatePlayerActionUi()
 	{
@@ -41,21 +44,64 @@ public class AnyClass : Unit, IBaseActions
 	{
 		if (currentUnit is Enemy)
 		{
+			WeaponListner[] oldTargetListners = currentTarget.GetComponents<WeaponListner>();
+			foreach (var item in oldTargetListners)
+			{
+				item.enabled = false;
+			}
+			VoidListner[] oldTargetVoidListners = currentTarget.GetComponents<VoidListner>();
+			foreach (var item in oldTargetVoidListners)
+			{
+				item.enabled = false;
+			}
 			List<Player> players = gameStateManager.players;
 			int nbPlyaers = players.Count;
 			int currentTargetIndex = players.FindIndex(instance => instance == currentTarget);
 			currentTarget = players[(currentTargetIndex + 1) % nbPlyaers];
 			rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
 			//rotateTowardDirection(model, currentTarget.aimPoint.position - aimPoint.position);
+			WeaponListner[] newTargetListners = currentTarget.GetComponents<WeaponListner>();
+			foreach (var item in newTargetListners)
+			{
+				item.enabled = true;
+			}
+			VoidListner[] newTargetVoidListners = currentTarget.GetComponents<VoidListner>();
+			foreach (var item in newTargetVoidListners)
+			{
+				item.enabled = true;
+			}
+			onChangeTarget.Raise();
 		}
 		else if (currentUnit is Player)
 		{
+			WeaponListner[] oldTargetListners = currentTarget?.GetComponents<WeaponListner>();
+			foreach (var item in oldTargetListners)
+			{
+				item.enabled = false;
+			}
+			VoidListner[] oldTargetVoidListners = currentTarget?.GetComponents<VoidListner>();
+			foreach (var item in oldTargetVoidListners)
+			{
+				item.enabled = false;
+			}
 			List<Enemy> enemies = gameStateManager.enemies;
 			int nbEnemies = enemies.Count;
 			int currentTargetIndex = enemies.FindIndex(instance => instance == currentTarget);
 			currentTarget = enemies[(currentTargetIndex + 1) % nbEnemies];
 			rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
 			//rotateTowardDirection(model, currentTarget.transform.position - transform.position);
+			WeaponListner[] newTargetListners = currentTarget.GetComponents<WeaponListner>();
+			foreach (var item in newTargetListners)
+			{
+				item.enabled = true;
+			}
+			VoidListner[] newTargetVoidListners = currentTarget.GetComponents<VoidListner>();
+			foreach (var item in newTargetVoidListners)
+			{
+				item.enabled = true;
+			}
+			onChangeTarget.Raise();
+
 		}
 	}
 
