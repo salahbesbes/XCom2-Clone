@@ -1,5 +1,4 @@
 using gameEventNameSpace;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,8 +25,6 @@ public class GameStateManager : GameManagerListner
 			StateEventSubject.Raise(_State);
 		}
 	}
-
-	public Action<BaseState<GameStateManager>> EventListner { get; set; }
 
 	[SerializeField]
 	public List<Enemy> enemies;
@@ -103,8 +100,6 @@ public class GameStateManager : GameManagerListner
 		// the only way to change the state
 		State = newState;
 		AnyClass selectedUnit = State.EnterState(this);
-
-		//EventListner.Invoke(State);
 	}
 
 	public void ChangeState()

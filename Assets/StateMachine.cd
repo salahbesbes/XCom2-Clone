@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Comment CommentText="BaseState&lt;T&gt; is Generic Class Work with any StateManager">
+    <Position X="10.424" Y="2.099" Height="0.75" Width="1.7" />
+  </Comment>
+  <Class Name="GameStateManager">
+    <Position X="13.25" Y="2.75" Width="4" />
+    <Members>
+      <Field Name="_selectedEnemy" Hidden="true" />
+      <Field Name="_selectedPlayer" Hidden="true" />
+      <Field Name="_State" Hidden="true" />
+      <Method Name="ChangeState" Hidden="true" />
+      <Field Name="enemies" Hidden="true" />
+      <Field Name="grid" Hidden="true" />
+      <Method Name="OnEnable" Hidden="true" />
+      <Field Name="players" Hidden="true" />
+      <Property Name="SelectedEnemy" Hidden="true" />
+      <Property Name="SelectedPlayer" Hidden="true" />
+      <Field Name="StateEventSubject" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="GameManagerListner" FixedToPoint="true">
+      <Path>
+        <Point X="15.25" Y="1.925" />
+        <Point X="15.25" Y="2.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAIIBAAAIAgAAAAgAgFAAAgBIAAABCAACEA=</HashCode>
+      <FileName>Assets\Scripts\GameState\GameStateManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseState&lt;T&gt;">
+    <Position X="10" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAEAAAAAAAQAAAEAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GameState\GameStateManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnyState&lt;T&gt;">
+    <Position X="10.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GameState\GameStateManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameManagerListner">
+    <Position X="13.5" Y="0.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GameState\GameManagerListner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnyClass" Collapsed="true">
+    <Position X="5.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AMABAQQAAAE1ACAAyAAAACAECAAAAAEAAAAAAAAAABA=</HashCode>
+      <FileName>Assets\Scripts\Unit\AnyClass.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Unit" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RABAAAEAAAIAAKCEABAiAAAACDAoAwAAEACABAIMAAA=</HashCode>
+      <FileName>Assets\Scripts\Unit\Unit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerStateManager">
+    <Position X="3.75" Y="3" Width="5.5" />
+    <Members>
+      <Field Name="_State" Hidden="true" />
+      <Field Name="currentActionAnimation" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAEAAIAAAAAAAAAAAAACAAAAQBCIACEA=</HashCode>
+      <FileName>Assets\Scripts\UnitState\PlayerStateManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Enemy" Collapsed="true">
+    <Position X="4.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAQAAAAAgAAAAEAQAAAAAAEAABAAAIAAAAQIAEAEA=</HashCode>
+      <FileName>Assets\Scripts\Unit\Enemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player" Collapsed="true">
+    <Position X="6.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEQAAAACAAQAAAAUAAAEAABAAAAAAIQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Unit\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Idel" Collapsed="true">
+    <Position X="8.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAKAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UnitState\Idel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SelectingEnemy" Collapsed="true">
+    <Position X="10.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UnitState\SelectingEnemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DoingAction" Collapsed="true">
+    <Position X="12.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UnitState\DoingAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerTurn" Collapsed="true">
+    <Position X="12.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAgAgAAAAAAAAAAAAQAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GameState\PlayerTurn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EnemyTurn" Collapsed="true">
+    <Position X="12.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAEAAAAAQAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GameState\PlayerTurn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
