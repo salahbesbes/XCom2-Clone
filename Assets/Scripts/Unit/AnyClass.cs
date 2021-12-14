@@ -17,7 +17,7 @@ public class AnyClass : Unit, IBaseActions
 
 	public Transform aimPoint;
 	public bool isFlanked;
-
+	public Transform pointsRayCast;
 	public VoidEvent onChangeTarget;
 
 	public void updatePlayerActionUi()
@@ -80,6 +80,9 @@ public class AnyClass : Unit, IBaseActions
 			int currentTargetIndex = enemies.FindIndex(instance => instance == currentTarget);
 			currentTarget = enemies[(currentTargetIndex + 1) % nbEnemies];
 			rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
+			//currentTarget.transform.LookAt(transform.position);
+			rotateTowardDirection(currentTarget.partToRotate, aimPoint.position - currentTarget.aimPoint.position);
+
 			//rotateTowardDirection(model, currentTarget.transform.position - transform.position);
 			WeaponListner[] newTargetListners = currentTarget.GetComponents<WeaponListner>();
 			currentTarget.listners.SetActive(true);

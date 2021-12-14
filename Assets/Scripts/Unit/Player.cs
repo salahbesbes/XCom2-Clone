@@ -169,7 +169,7 @@ public class Player : PlayerStateManager
 		}
 	}
 
-	public void OnDrawGizmos()
+	public void OnDrawGizmosssss()
 	{
 		if (grid != null && grid.graph != null)
 		{
