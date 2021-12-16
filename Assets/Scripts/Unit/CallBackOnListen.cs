@@ -15,7 +15,7 @@ public class CallBackOnListen : MonoBehaviour
 
 	public void TakeDamage(UnitStats triggerStats)
 	{
-		Debug.Log($" trigger of event is  {triggerStats.name} has health  {triggerStats.Health}");
+		//Debug.Log($" trigger of event is  {triggerStats.name} has health  {triggerStats.Health}");
 		int damage = triggerStats.damage.Value;
 		damage -= myStats.armor.Value;
 		damage = Mathf.Clamp(damage, 0, int.MaxValue);

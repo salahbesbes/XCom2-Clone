@@ -91,10 +91,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit: {fileID: 8583340695942099305, guid: e0d08523556a0ca4aaf06d15f3307204, type: 3}
-  speed: 4
+  speed: 6
   angle: 0
   radius: 2
-  degreesPerSecond: 100
+  degreesPerSecond: 200
 --- !u!114 &6116489347921026707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1711,7 +1711,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 2225754711644898913, guid: 6b064e4c3a06afb4fb0ca0d45f8eeabc, type: 3}
   startPoint: {fileID: 2592952181343641410}
   fps_Cam: {fileID: 3546674337120238500}
-  player: {fileID: 8583340695942099305, guid: e0d08523556a0ca4aaf06d15f3307204, type: 3}
+  player: {fileID: 6116489348360755483}
 --- !u!136 &1773886668878651403
 CapsuleCollider:
   m_ObjectHideFlags: 0

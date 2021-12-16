@@ -80,7 +80,7 @@ public class Unit : MonoBehaviour
 						.eulerAngles;
 			//partToRotate.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / lerpDuration);
 			timeElapsed += (speed * Time.deltaTime);
-			Debug.Log($"rotating");
+			//Debug.Log($"rotating");
 			await Task.Yield();
 			partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 		}
@@ -178,7 +178,7 @@ public class Unit : MonoBehaviour
 		//todo: reset the grid
 
 		PlayIdelAnimation();
-		Player player = (Player)this;
+		PlayerStateManager player = (PlayerStateManager)this;
 		// triget event
 		if (action is ShootAction)
 		{
@@ -204,7 +204,6 @@ public class Unit : MonoBehaviour
 
 	public void ShootActionCallBack(ShootAction soot)
 	{
-		//PlayAnimation(AnimationType.jump);
 		StartCoroutine(weapon.startShooting(soot));
 	}
 

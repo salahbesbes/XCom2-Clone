@@ -47,6 +47,8 @@ public class GameManagerListner : MonoBehaviour
 
 	public void MakeOnlySelectedUnitListingToEventArgument(AnyClass unit, VoidEvent voidEvent)
 	{
+		if (voidEvent == null) Debug.Log($"void event is null");
+
 		if (unit == null || voidEvent == null) return;
 		VoidListner e = unit.listners.AddComponent<VoidListner>();
 		e.GameEvent = voidEvent;
@@ -80,6 +82,7 @@ public class GameManagerListner : MonoBehaviour
 
 	public void MakeOnlySelectedUnitListingToWeaponEvent(AnyClass unit, WeaponEvent weaponEvent)
 	{
+		if (weaponEvent == null) Debug.Log($"weapon event is null");
 		if (unit == null || weaponEvent == null) return;
 		WeaponListner e = unit.listners.AddComponent<WeaponListner>();
 		e.GameEvent = weaponEvent;

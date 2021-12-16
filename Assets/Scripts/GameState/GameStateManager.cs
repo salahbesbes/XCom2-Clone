@@ -77,6 +77,7 @@ public class GameStateManager : GameManagerListner
 			}
 			else if (State is EnemyTurn)
 			{
+
 				MakeOnlySelectedUnitListingToWeaponEvent(_selectedPlayer, SelectedEnemy?.GetComponent<Stats>()?.unit?.eventToListnTo);
 				MakeOnlySelectedUnitListingToEventArgument(_selectedPlayer, SelectedEnemy?.onChangeTarget);
 			}

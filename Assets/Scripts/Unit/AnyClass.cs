@@ -1,6 +1,7 @@
 using gameEventNameSpace;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,7 +21,18 @@ public class AnyClass : Unit, IBaseActions
 	public bool isFlanked;
 	public Transform pointsRayCast;
 	public VoidEvent onChangeTarget;
+	public async Task OnTriggerEnter(Collider other)
+	{
+		if (LayerMask.LayerToName(other.gameObject.layer) == "LowObstacle")
+		{
+			PlayAnimation(AnimationType.jump);
+			speed = 1;
+			await Task.Delay(500);
 
+			PlayAnimation(AnimationType.run);
+			speed = 5;
+		}
+	}
 	public void updatePlayerActionUi()
 	{
 		foreach (Transform child in ActionHolder)
@@ -45,45 +57,23 @@ public class AnyClass : Unit, IBaseActions
 	{
 		if (currentUnit is Enemy)
 		{
-			WeaponListner[] oldTargetListners = currentTarget?.GetComponents<WeaponListner>();
-			foreach (var item in oldTargetListners)
-			{
-				item.enabled = false;
-			}
-			VoidListner[] oldTargetVoidListners = currentTarget?.GetComponents<VoidListner>();
-			foreach (var item in oldTargetVoidListners)
-			{
-				item.enabled = false;
-			}
 			List<Player> players = gameStateManager.players;
 			int nbPlyaers = players.Count;
 			int currentTargetIndex = players.FindIndex(instance => instance == currentTarget);
 			currentTarget = players[(currentTargetIndex + 1) % nbPlyaers];
+			// todo: find an alternative this cast can cause problem i nthe future
+			gameStateManager.SelectedPlayer = (Player)currentTarget;
 			rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
-			//rotateTowardDirection(model, currentTarget.aimPoint.position - aimPoint.position);
-			WeaponListner[] newTargetListners = currentTarget.GetComponents<WeaponListner>();
-			foreach (var item in newTargetListners)
-			{
-				item.enabled = true;
-			}
-			VoidListner[] newTargetVoidListners = currentTarget.GetComponents<VoidListner>();
-			foreach (var item in newTargetVoidListners)
-			{
-				item.enabled = true;
-			}
 			onChangeTarget.Raise();
 		}
 		else if (currentUnit is Player)
 		{
 			List<Enemy> enemies = gameStateManager.enemies;
 			int currentTargetIndex = enemies.FindIndex(instance => instance == currentTarget);
-
 			currentTarget = enemies[(currentTargetIndex + 1) % enemies.Count];
 			// todo: find an alternative this cast can cause problem i nthe future
 			gameStateManager.SelectedEnemy = (Enemy)currentTarget;
 			rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
-			rotateTowardDirection(currentTarget.partToRotate, aimPoint.position - currentTarget.aimPoint.position);
-
 			onChangeTarget.Raise();
 		}
 	}

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class Player : PlayerStateManager
@@ -11,6 +10,9 @@ public class Player : PlayerStateManager
 
 		gameStateManager = FindObjectOfType<GameStateManager>();
 		currentTarget = gameStateManager.SelectedEnemy;
+		grid = FindObjectOfType<NodeGrid>();
+		currentPos = grid.getNodeFromTransformPosition(transform);
+
 
 	}
 
@@ -19,7 +21,6 @@ public class Player : PlayerStateManager
 		queueOfActions = new Queue<ActionBase>();
 		path = new List<Node>();
 		turnPoints = new Vector3[0];
-		grid = FindObjectOfType<NodeGrid>();
 		//actions = new ActionType[0];
 		//playerHeight = transform.GetComponent<Renderer>().bounds.size.y;
 		currentPos = grid.getNodeFromTransformPosition(transform);
@@ -28,18 +29,7 @@ public class Player : PlayerStateManager
 		//listners = transform.Find("listners").gameObject;
 		//lineConponent.SetUpLine(turnPoints);
 	}
-	public async Task OnTriggerEnter(Collider other)
-	{
-		if (LayerMask.LayerToName(other.gameObject.layer) == "LowObstacle")
-		{
-			PlayAnimation(AnimationType.jump);
-			speed = 1;
-			await Task.Delay(500);
 
-			PlayAnimation(AnimationType.run);
-			speed = 5;
-		}
-	}
 
 	private void getTheRightActionOnClick(string action)
 	{

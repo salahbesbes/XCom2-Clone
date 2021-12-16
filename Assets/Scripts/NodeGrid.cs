@@ -159,7 +159,7 @@ public class NodeGrid : MonoBehaviour
 			node.g = float.PositiveInfinity;
 			node.parent = null;
 			//node.path = new List<Node>();
-			string[] collidableLayers = { "Unwalkable", "Enemy" };
+			string[] collidableLayers = { "Unwalkable" };
 			int layerToCheck = LayerMask.GetMask(collidableLayers);
 			node.isObstacle = Physics.CheckSphere(node.coord, nodeSize / 2, layerToCheck);
 			node.color = node.isObstacle ? Color.red : Color.cyan;
