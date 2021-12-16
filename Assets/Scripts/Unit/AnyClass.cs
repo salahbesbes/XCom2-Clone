@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class AnyClass : Unit, IBaseActions
 {
@@ -21,6 +20,7 @@ public class AnyClass : Unit, IBaseActions
 	public bool isFlanked;
 	public Transform pointsRayCast;
 	public VoidEvent onChangeTarget;
+
 	public async Task OnTriggerEnter(Collider other)
 	{
 		if (LayerMask.LayerToName(other.gameObject.layer) == "LowObstacle")
@@ -31,25 +31,6 @@ public class AnyClass : Unit, IBaseActions
 
 			PlayAnimation(AnimationType.run);
 			speed = 5;
-		}
-	}
-	public void updatePlayerActionUi()
-	{
-		foreach (Transform child in ActionHolder)
-		{
-			Destroy(child.gameObject);
-		}
-
-		foreach (ActionData action in actions)
-		{
-			GameObject actionUi = Instantiate(Action_prefab, ActionHolder);
-			actionUi.name = $"{action.name}_btn";
-			Button btn = actionUi.GetComponent<Button>();
-			btn.image.sprite = action.icon;
-			btn.onClick.AddListener(() =>
-			{
-				action?.Actionevent?.Raise();
-			});
 		}
 	}
 

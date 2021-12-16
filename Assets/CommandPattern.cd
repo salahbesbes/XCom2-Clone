@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Unit">
+    <Position X="5.5" Y="4.5" Width="6.25" />
+    <Members>
+      <Field Name="animator" Hidden="true" />
+      <Field Name="currentPos" Hidden="true" />
+      <Field Name="currentTarget" Hidden="true" />
+      <Field Name="destination" Hidden="true" />
+      <Field Name="grid" Hidden="true" />
+      <Method Name="LockOnTarger" Hidden="true" />
+      <Field Name="model" Hidden="true" />
+      <Method Name="move" Hidden="true" />
+      <Method Name="MoveActionCallback" Hidden="true" />
+      <Field Name="partToRotate" Hidden="true" />
+      <Field Name="path" Hidden="true" />
+      <Method Name="PlayAnimation" Hidden="true" />
+      <Method Name="PlayIdelAnimation" Hidden="true" />
+      <Method Name="ReloadActionCallBack" Hidden="true" />
+      <Method Name="rotateTowardDirection" Hidden="true" />
+      <Method Name="ShootActionCallBack" Hidden="true" />
+      <Field Name="speed" Hidden="true" />
+      <Method Name="ToString" Hidden="true" />
+      <Field Name="turnPoints" Hidden="true" />
+      <Method Name="turnTheModel" Hidden="true" />
+      <Field Name="weapon" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>RABAAAEAAAIAAKCEABAiAAAACDAoAwAAEACABAIMAAA=</HashCode>
+      <FileName>Assets\Scripts\Unit\Unit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnyClass">
+    <Position X="5.75" Y="7.25" Width="5.75" />
+    <Members>
+      <Field Name="Action_prefab" Hidden="true" />
+      <Field Name="ActionHolder" Hidden="true" />
+      <Field Name="actions" Hidden="true" />
+      <Field Name="aimPoint" Hidden="true" />
+      <Method Name="CheckMovementRange" Hidden="true" />
+      <Field Name="fpsCam" Hidden="true" />
+      <Field Name="gameStateManager" Hidden="true" />
+      <Field Name="HealthBarHolder" Hidden="true" />
+      <Field Name="isFlanked" Hidden="true" />
+      <Field Name="listners" Hidden="true" />
+      <Field Name="onChangeTarget" Hidden="true" />
+      <Method Name="onNodeHover" Hidden="true" />
+      <Method Name="OnTriggerEnter" Hidden="true" />
+      <Field Name="pointsRayCast" Hidden="true" />
+      <Field Name="secondCam" Hidden="true" />
+      <Method Name="SelectNextTarget" Hidden="true" />
+      <Field Name="stats" Hidden="true" />
+      <Method Name="updateNeigbor" Hidden="true" />
+      <Method Name="updatePlayerActionUi" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AMABAQQQAAE1ACAAyAAAACAECAAAEAEAQAAAAAAAABA=</HashCode>
+      <FileName>Assets\Scripts\Unit\AnyClass.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MoveAction">
+    <Position X="5.5" Y="14" Width="6" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAACAAAEAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Unit\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ShootAction">
+    <Position X="12.5" Y="14" Width="4" />
+    <InheritanceLine Type="ActionBase" FixedFromPoint="true">
+      <Path>
+        <Point X="9" Y="12.824" />
+        <Point X="9" Y="13.625" />
+        <Point X="14.5" Y="13.625" />
+        <Point X="14.5" Y="14" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Unit\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReloadAction">
+    <Position X="0.5" Y="14" Width="4" />
+    <InheritanceLine Type="ActionBase" FixedFromPoint="true">
+      <Path>
+        <Point X="8" Y="12.824" />
+        <Point X="8" Y="13.625" />
+        <Point X="2.5" Y="13.625" />
+        <Point X="2.5" Y="14" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Unit\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ActionBase">
+    <Position X="7.5" Y="10.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAEAAAAAAAAAAAAAgAUAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Unit\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

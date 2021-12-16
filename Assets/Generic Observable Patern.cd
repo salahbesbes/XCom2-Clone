@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Comment CommentText="      E">
+    <Position X="9.601" Y="6.525" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="      E">
+    <Position X="5.877" Y="8.276" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="      E">
+    <Position X="2.979" Y="6.063" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="    UER">
+    <Position X="4.424" Y="3.063" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="    UER">
+    <Position X="6.205" Y="3.021" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="    UER">
+    <Position X="8.277" Y="3.053" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="      T">
+    <Position X="3.262" Y="4.163" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="      T">
+    <Position X="6.204" Y="4.138" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="      T">
+    <Position X="8.037" Y="4.255" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="Each Time i want to create an Event and pass a parametre of Type T in the Unity Event Response  I have to create new Class E and new Class UER, and then a new Class for the Listner of that Event where I pass in those 3 New Classes">
+    <Position X="12.864" Y="0.766" Height="0.761" Width="4.995" />
+  </Comment>
+  <Comment CommentText="      E">
+    <Position X="18.336" Y="6.863" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="      T">
+    <Position X="17.49" Y="6.863" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="    UER">
+    <Position X="19.219" Y="6.868" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="      T">
+    <Position X="17.82" Y="4.831" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="      E">
+    <Position X="18.666" Y="4.831" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="    UER">
+    <Position X="19.549" Y="4.836" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="      T">
+    <Position X="13.309" Y="8.581" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="      E">
+    <Position X="14.156" Y="8.581" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="    UER">
+    <Position X="15.039" Y="8.586" Height="0.291" Width="0.7" />
+  </Comment>
+  <Comment CommentText="When onEventRase(T parms) is executed it passes the params of Type T to the Unity Event Response dynamicly so that when I attach the Callback function it will get this params ( send by the Trigger of the event on the Raise(T item ) method) ">
+    <Position X="17.843" Y="2.833" Height="0.75" Width="3.731" />
+  </Comment>
+  <Class Name="gameEventNameSpace.BaseGameEventListner&lt;T, E, UER&gt;" BaseTypeListCollapsed="true">
+    <Position X="12.5" Y="4.25" Width="2.75" />
+    <InheritanceLine Type="UnityEngine.MonoBehaviour" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.438" Y="3.691" />
+        <Point X="14.438" Y="4.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAABAAABAAAEAAAAAAAAgAAACAABAAAIAAAAAgAACAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\EventListner\BaseGameEventListner.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.1" />
+  </Class>
+  <Class Name="gameEventNameSpace.Void" Collapsed="true">
+    <Position X="5.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\EventListner\BaseGameEventListner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gameEventNameSpace.StateListner">
+    <Position X="11.25" Y="8" Width="5" />
+    <Members>
+      <Field Name="UiText" Hidden="true" />
+      <Method Name="updateUiText" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="gameEventNameSpace.BaseGameEventListner&lt;T, E, UER&gt;" FixedFromPoint="true">
+      <Path>
+        <Point X="13.75" Y="7.54" />
+        <Point X="13.75" Y="8" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\observable\StateListner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gameEventNameSpace.VoidListner">
+    <Position X="16.75" Y="6.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\observable\VoidListner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gameEventNameSpace.WeaponListner">
+    <Position X="16.75" Y="4.25" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\observable\WeaponListner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gameEventNameSpace.BaseGameEvent&lt;T&gt;">
+    <Position X="4" Y="5.25" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAACAAAAEAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\Events\BaseGameEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gameEventNameSpace.BaseStateEvent" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\Events\BaseStateEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gameEventNameSpace.UnitSwitchAllyEvent">
+    <Position X="6" Y="9" Width="1.75" />
+    <InheritanceLine Type="gameEventNameSpace.VoidEvent" FixedToPoint="true">
+      <Path>
+        <Point X="5.5" Y="8.441" />
+        <Point X="5.5" Y="8.7" />
+        <Point X="7.021" Y="8.7" />
+        <Point X="7.021" Y="9" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\Events\UnitSwitchAllyEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gameEventNameSpace.UnitSwitchTargetEvent">
+    <Position X="3.25" Y="9" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\Events\UnitSwitchTargetEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gameEventNameSpace.UnityVoidEvent" Collapsed="true">
+    <Position X="5.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\Events\UnityEventVoid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gameEventNameSpace.UnityStateEvent" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\Events\UnityEventVoid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gameEventNameSpace.UnityWeaponEvent" Collapsed="true">
+    <Position X="7" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\Events\UnityEventVoid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gameEventNameSpace.VoidEvent" Collapsed="true">
+    <Position X="4.75" Y="7.75" Width="1.5" />
+    <InheritanceLine Type="gameEventNameSpace.BaseGameEvent&lt;T&gt;" FixedFromPoint="true">
+      <Path>
+        <Point X="5.5" Y="7.319" />
+        <Point X="5.5" Y="7.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\Events\VoidEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gameEventNameSpace.WeaponEvent" Collapsed="true">
+    <Position X="8.25" Y="6" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\Events\WeaponEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gameEventNameSpace.WeaponRelaodEvent" Collapsed="true">
+    <Position X="8.25" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\Events\WeaponRelaodEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gameEventNameSpace.WeaponShootEvent" Collapsed="true">
+    <Position X="8.25" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\Events\WeaponShootEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnitStats" Collapsed="true">
+    <Position X="7" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABCAAIAAEAhAAAAAFAAAAACAAAAAAIAAAAABAACEA=</HashCode>
+      <FileName>Assets\Scripts\UnitStats\UnitStats.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseState&lt;T&gt;" Collapsed="true">
+    <Position X="2.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAEAAAAAAAQAAAEAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GameState\GameStateManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityEngine.MonoBehaviour" Collapsed="true">
+    <Position X="13.25" Y="3" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="gameEventNameSpace.IGameEventListner&lt;T&gt;">
+    <Position X="15.5" Y="2.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\EventHandler\EventListner\IGameEventListner.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
