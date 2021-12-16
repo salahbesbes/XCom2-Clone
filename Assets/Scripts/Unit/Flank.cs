@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Flank : MonoBehaviour
@@ -13,6 +15,7 @@ public class Flank : MonoBehaviour
 	private Transform myRight;
 
 	public AnyClass thisPlayer;
+	bool foundOneMatch = false;
 
 	private void Start()
 	{
@@ -31,46 +34,59 @@ public class Flank : MonoBehaviour
 		// todo: to avoid wrong target collision when shooting we can make the model crouche when he is not being targeting, when he is he stand up
 		// or maybe  adding rb to the model and playing  with some config
 
+		//visibleTiles();
+
+
 	}
 
 	private void Update()
 	{
 		targetPoints = thisPlayer.currentTarget.pointsRayCast;
 		targetRight = targetPoints.Find("RightPoint");
-		targetLeft = targetPoints.Find("LeftPoint ");
+		targetLeft = targetPoints.Find("LeftPoint");
 		targetTop = targetPoints.Find("TopPoint");
-		int layer = ~LayerMask.GetMask("", "box");
+		int layer = ~LayerMask.GetMask("");
 		//Ray topPos = new Ray(child.position, Vector3.forward);
 		//Ray rightPos = new Ray(child.position, child.right);
 		//Ray leftPos = new Ray(child.position, -child.right);
 		RaycastHit hit;
+		foundOneMatch = false;
 		if (Physics.Raycast(myLeft.position, targetRight.position - myLeft.position, out hit, Mathf.Infinity, layer))
 		{
-			Debug.Log($"some thing");
 			if (hit.transform.tag == "point")
 			{
+				foundOneMatch = true;
 				Debug.DrawRay(myLeft.position, targetRight.position - myLeft.position, Color.red);
-				thisPlayer.currentTarget.currentPos.tile.GetComponent<Renderer>().material.color = Color.cyan;
+				//thisPlayer.currentTarget.currentPos.tile.GetComponent<Renderer>().material.color = Color.cyan;
 			}
-		};
+		}
+		if (foundOneMatch == false)
+			visibleTiles();
 		if (Physics.Raycast(myRight.position, targetLeft.position - myRight.position, out hit, Mathf.Infinity, layer))
 		{
 			if (hit.transform.tag == "point")
 			{
+				foundOneMatch = true;
 				Debug.DrawRay(myRight.position, targetLeft.position - myRight.position, Color.blue);
-				thisPlayer.currentTarget.currentPos.tile.GetComponent<Renderer>().material.color = Color.cyan;
+				//thisPlayer.currentTarget.currentPos.tile.GetComponent<Renderer>().material.color = Color.cyan;
 
 			}
-		};
+		}
+		if (foundOneMatch == false)
+			visibleTiles();
 		if (Physics.Raycast(myTop.position, targetTop.position - myTop.position, out hit, Mathf.Infinity, layer))
 		{
 			if (hit.transform.tag == "point")
 			{
+				foundOneMatch = true;
 				Debug.DrawRay(myTop.position, targetTop.position - myTop.position, Color.cyan);
-				thisPlayer.currentTarget.currentPos.tile.GetComponent<Renderer>().material.color = Color.cyan;
+				//thisPlayer.currentTarget.currentPos.tile.GetComponent<Renderer>().material.color = Color.cyan;
 
 			}
-		};
+		}
+		if (foundOneMatch == false)
+			visibleTiles();
+
 		//if (Physics.Raycast(rightPos, 10, layer))
 		//{
 		//	Debug.DrawRay(child.position, child.right, Color.blue);
@@ -120,6 +136,69 @@ public class Flank : MonoBehaviour
 		//	}
 		//}
 	}
+
+	void visibleTiles()
+	{
+		int layer = ~LayerMask.GetMask("", "box");
+
+		RaycastHit hit;
+		Debug.DrawRay(myTop.position, myTop.forward, Color.red);
+		if (Physics.Raycast(myTop.position, myTop.forward, out hit, int.MaxValue, layer))
+		{
+
+			NodeGrid grid = FindObjectOfType<NodeGrid>();
+			Node res = grid.getNodeFromTransformPosition(hit.transform);
+			res.tile.GetComponent<Renderer>().material.color = Color.cyan;
+
+			List<Node> groupOfObstacles = selectVisibleTiles(res, new List<Node>());
+
+
+
+
+
+			Node[] obstaclesEdges = groupOfObstacles.Where(el => lambda(el)).ToArray();
+
+			foreach (Node edge in obstaclesEdges)
+			{
+
+				foreach (var neibour in edge.neighbours)
+				{
+					if (!neibour.isObstacle)
+						neibour.tile.GetComponent<Renderer>().material.color = Color.yellow;
+
+				}
+
+			}
+		}
+
+	}
+	bool lambda(Node node)
+	{
+		int count = 0;
+		foreach (Node nei in node.neighbours)
+		{
+			if (!nei.isObstacle)
+				count++;
+		}
+		return count == 3;
+	}
+
+	List<Node> selectVisibleTiles(Node node, List<Node> obstacles)
+	{
+		obstacles.Add(node);
+		node.tile.GetComponent<Renderer>().material.color = Color.red;
+
+		foreach (Node neihbour in node.neighbours)
+		{
+			if (neihbour.isObstacle && !obstacles.Contains(neihbour))
+				selectVisibleTiles(neihbour, obstacles);
+			if (!neihbour.isObstacle)
+				neihbour.tile.GetComponent<Renderer>().material.color = Color.cyan;
+
+		}
+		return obstacles;
+	}
+
 
 	private void OnDrawGizmos()
 	{

@@ -5,7 +5,7 @@ public class Idel : AnyState<PlayerStateManager>
 {
 	public override AnyClass EnterState(PlayerStateManager player)
 	{
-		Debug.Log($" {player.name}  state : {player.State.name}");
+		//Debug.Log($" {player.name}  state : {player.State.name}");
 
 		return null;
 	}

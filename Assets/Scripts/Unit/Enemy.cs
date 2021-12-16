@@ -1,56 +1,29 @@
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 
 public class Enemy : PlayerStateManager
 {
-	private UnitStats myStats;
-	public TextMeshProUGUI UiText;
-	public TextMeshProUGUI MyName;
 
-	public void updateStats()
+	private void Start()
 	{
-		UiText.text = $"Health : {myStats.Health}";
-		MyName.text = $"{ myStats.myName }:";
-	}
-	private void Awake()
-	{
-		grid = FindObjectOfType<NodeGrid>();
+
 		queueOfActions = new Queue<ActionBase>();
 		path = new List<Node>();
 		turnPoints = new Vector3[0];
-		gameStateManager = FindObjectOfType<GameStateManager>();
-		currentTarget = gameStateManager.SelectedPlayer;
-	}
-
-	private void Update()
-	{
+		grid = FindObjectOfType<NodeGrid>();
 		currentPos = grid.getNodeFromTransformPosition(transform);
+		gameStateManager = FindObjectOfType<GameStateManager>();
+		animator = model.GetComponent<Animator>();
+		stats = GetComponent<Stats>();
+		currentTarget = gameStateManager.SelectedPlayer;
 
-		//NodeCoord = grid.getNodeFromTransformPosition(transform);
-		//if (Input.GetKeyDown(KeyCode.LeftShift))
-		//{
-		//	SelectNextPlayer();
-		//}
-		//currentPos = grid.getNodeFromTransformPosition(transform);
 
-		//if (Input.GetMouseButtonDown(0))
-		//{
-		//	Debug.Log($"mouse down");
-		//	CreateNewMoveAction();
-		//}
-		//if (Input.GetMouseButtonDown(1))
-		//{
-		//	CreateNewShootAction();
-		//}
-		//if (Input.GetKeyDown(KeyCode.R))
-		//{
-		//	CreateNewReloadAction();
-		//}
-		//LockOnTarger();
-		//checkFlank(currentTarget?.currentPos);
+
+
 	}
+
+
 
 	private bool checkPointIfSameLineOrColumAsTarget(Vector3 target, Vector3 pointNode)
 	{

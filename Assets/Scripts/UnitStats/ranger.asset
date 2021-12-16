@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ranger
   m_EditorClassIdentifier: 
   myName: Ranger Wael
-  eventToListnTo: {fileID: 11400000, guid: d5140af0486220a4f927c72bc67c455e, type: 2}
+  eventToListnTo: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
   weapon: {fileID: 0}
   damage:
     baseValue: 10

@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d6dfdef4182a6740b4eaf7a58588334, type: 3}
   m_Name: ahmedstats
   m_EditorClassIdentifier: 
-  myName: 
-  eventToListnTo: {fileID: 11400000, guid: d5140af0486220a4f927c72bc67c455e, type: 2}
+  myName: ahmed
+  eventToListnTo: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
   weapon: {fileID: 0}
   damage:
     baseValue: 15
     modifiers: 
   armor:
-    baseValue: 5
+    baseValue: 20
     modifiers: 

@@ -23,5 +23,6 @@ public class DoingAction : AnyState<PlayerStateManager>
 		player.secondCam.gameObject.SetActive(false);
 
 		player.fpsCam.enabled = true;
+
 	}
 }

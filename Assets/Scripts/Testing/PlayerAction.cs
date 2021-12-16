@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Action Event", menuName = "ActionEvent"), System.Serializable]
-public class PlayerEvent : ScriptableObject
+public class PlayerAction : ScriptableObject
 {
 	private List<PlayerEventListener> listeners = new List<PlayerEventListener>();
 

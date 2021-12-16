@@ -181,4 +181,9 @@ public class Weapon : MonoBehaviour
 			//}
 		}
 	}
+
+	public override string ToString()
+	{
+		return $"weapon: {this.name}";
+	}
 }

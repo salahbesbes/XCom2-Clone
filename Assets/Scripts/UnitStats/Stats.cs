@@ -1,8 +1,19 @@
+using TMPro;
 using UnityEngine;
 
-public class SalahStatsTest : MonoBehaviour
+public class Stats : MonoBehaviour
 {
 	public UnitStats unit;
+	public TextMeshProUGUI myHealth;
+	public TextMeshProUGUI MyName;
+	public TextMeshProUGUI myArmor;
+	public TextMeshProUGUI myDamage;
+
+	[Header("--------------------")]
+	public TextMeshProUGUI TargetHealth;
+	public TextMeshProUGUI TargetName;
+	public TextMeshProUGUI TargetArmor;
+	public TextMeshProUGUI TargetDamage;
 
 	private void Start()
 	{

@@ -35,21 +35,20 @@ public class GameStateManager : GameManagerListner
 	{
 		get => _selectedEnemy; set
 		{
-			//ListnerGroups[] oldTargetListners = _selectedEnemy.GetComponent<ListnerGroups>();
-			//foreach (var item in oldTargetListners)
-			//{
-			//	item.enable = false;
-			//}
 			_selectedEnemy?.SwitchState(_selectedEnemy?.idelState);
+			clearPreviousSelectedUnitFromAllVoidEvents(_selectedEnemy);
+			clearPreviousSelectedUnitFromAllWeaponEvent(_selectedEnemy);
 			_selectedEnemy = value;
-			//ListnerGroups[] newTargetListners = _selectedEnemy.GetComponent<ListnerGroups>();
-			//foreach (var item in newTargetListners)
-			//{
-			//	item.enable = false;
-			//}
-
-			if (State is EnemyTurn)
-				_selectedEnemy.updatePlayerActionUi();
+			if (State is PlayerTurn)
+			{
+				MakeOnlySelectedUnitListingToEventArgument(_selectedEnemy, SelectedPlayer?.onChangeTarget);
+				MakeOnlySelectedUnitListingToWeaponEvent(_selectedEnemy, SelectedPlayer?.GetComponent<Stats>()?.unit?.eventToListnTo);
+			}
+			else if (State is EnemyTurn)
+			{
+				MakeGAmeMAnagerListingToNewSelectedUnit(_selectedEnemy);
+				MakeOnlySelectedUnitListingToEventArgument(_selectedEnemy, PlayerChangeEvent);
+			}
 		}
 	}
 
@@ -59,6 +58,7 @@ public class GameStateManager : GameManagerListner
 	private Player _selectedPlayer;
 
 	public BaseStateEvent StateEventSubject;
+	public VoidEvent PlayerChangeEvent;
 
 	public Player SelectedPlayer
 	{
@@ -67,10 +67,19 @@ public class GameStateManager : GameManagerListner
 			// every time game manager want to switch player update the old selected one
 			// to idel state
 			_selectedPlayer?.SwitchState(_selectedPlayer?.idelState);
-
+			clearPreviousSelectedUnitFromAllVoidEvents(_selectedPlayer);
+			clearPreviousSelectedUnitFromAllWeaponEvent(_selectedPlayer);
 			_selectedPlayer = value;
 			if (State is PlayerTurn)
-				_selectedPlayer.updatePlayerActionUi();
+			{
+				MakeGAmeMAnagerListingToNewSelectedUnit(_selectedPlayer);
+				MakeOnlySelectedUnitListingToEventArgument(_selectedPlayer, PlayerChangeEvent);
+			}
+			else if (State is EnemyTurn)
+			{
+				MakeOnlySelectedUnitListingToWeaponEvent(_selectedPlayer, SelectedEnemy?.GetComponent<Stats>()?.unit?.eventToListnTo);
+				MakeOnlySelectedUnitListingToEventArgument(_selectedPlayer, SelectedEnemy?.onChangeTarget);
+			}
 		}
 	}
 
@@ -83,8 +92,22 @@ public class GameStateManager : GameManagerListner
 
 	private void Awake()
 	{
-		SwitchState(playerTurn);
+		SwitchState(enemyTurn);
 		grid = FindObjectOfType<NodeGrid>();
+	}
+
+	private void Start()
+	{
+		if (State is PlayerTurn)
+		{
+			PlayerChangeEvent.Raise();
+			SelectedPlayer.onChangeTarget.Raise();
+		}
+		else if (State is EnemyTurn)
+		{
+			PlayerChangeEvent.Raise();
+			SelectedEnemy.onChangeTarget.Raise();
+		}
 	}
 
 	private void Update()

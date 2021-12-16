@@ -1035,7 +1035,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameEvent: {fileID: 0}
-  unityEventResponse:
+  _unityEventResponse:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &8583340695942099308
@@ -1047,6 +1047,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8583340695942099311}
+  - component: {fileID: 8911552169138513503}
   - component: {fileID: 8583340695942099305}
   - component: {fileID: 8958433027333332021}
   m_Layer: 7
@@ -1075,6 +1076,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -50.99, z: 0}
+--- !u!114 &8911552169138513503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8583340695942099308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0abf8655e5551eb44888dd56851bb062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unit: {fileID: 0}
+  myHealth: {fileID: 0}
+  MyName: {fileID: 0}
+  myArmor: {fileID: 0}
+  myDamage: {fileID: 0}
+  TargetHealth: {fileID: 0}
+  TargetName: {fileID: 0}
+  TargetArmor: {fileID: 0}
+  TargetDamage: {fileID: 0}
 --- !u!114 &8583340695942099305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1096,6 +1118,7 @@ MonoBehaviour:
   speed: 5
   actions:
   - {fileID: 11400000, guid: 7601e2943867df44ab824c6a69d77f26, type: 2}
+  stats: {fileID: 8911552169138513503}
   ActionHolder: {fileID: 0}
   Action_prefab: {fileID: 5356878571294043885, guid: 2da8bad2b03449540907bca690fcdc44, type: 3}
   HealthBarHolder: {fileID: 8583340695184250804}

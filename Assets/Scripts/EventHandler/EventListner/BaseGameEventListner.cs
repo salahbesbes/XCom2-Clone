@@ -9,28 +9,49 @@ namespace gameEventNameSpace
 	{
 		[SerializeField] private E _gameEvent;
 		public E GameEvent { get => _gameEvent; set => _gameEvent = value; }
+		[SerializeField]
+		private UER _unityEventResponse;
 
-		[SerializeField] private UER unityEventResponse;
+		public UER UnityEventResponse { get => _unityEventResponse; set => _unityEventResponse = value; }
 
-		private void OnEnable()
+
+		public void OnEnable()
 		{
-			if (_gameEvent == null) return;
+
+			if (GameEvent == null) return;
 
 			GameEvent.RegisterListner(this);
 		}
 
 		private void OnDisable()
 		{
-			if (_gameEvent == null) return;
+			if (GameEvent == null) return;
+
+			GameEvent.UnRegisterListner(this);
+		}
+		private void OnDestroy()
+		{
+			if (GameEvent == null) return;
 
 			GameEvent.UnRegisterListner(this);
 		}
 
+
+
+		public void Register()
+		{
+
+			if (GameEvent == null) return;
+
+			GameEvent.RegisterListner(this);
+		}
+
 		public void OnEventRase(T item)
 		{
-			if (unityEventResponse != null)
+
+			if (UnityEventResponse != null)
 			{
-				unityEventResponse.Invoke(item);
+				UnityEventResponse.Invoke(item);
 			}
 		}
 	}

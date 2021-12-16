@@ -13,34 +13,26 @@ public class PlayerTurn : AnyState<GameStateManager>
 		gameManager.SelectedPlayer.enabled = true;
 		gameManager.SelectedPlayer.fpsCam.enabled = true;
 
-		//Debug.Log($" PlayerTurn Start ,  {gameManager.selectedPlayer.transform.name} is selected");
-		gameManager.UpdateSelectedPlayerResponse(gameManager.SelectedPlayer);
-
 		return gameManager.SelectedPlayer;
 	}
 
 	public override void Update(GameStateManager gameManager)
 	{
-		//currentPos = grid.getNodeFromTransformPosition(transform);
-
 		gameManager.SelectedPlayer.currentPos = gameManager.grid.getNodeFromTransformPosition(gameManager.SelectedPlayer.transform);
 		if (Input.GetKeyDown(KeyCode.Tab))
 		{
 			SelectNextPlayer(gameManager);
 		}
 
-		//gameManager.SelectedPlayer.LockOnTarger();
-		gameManager.SelectedPlayer.checkFlank(gameManager?.SelectedEnemy?.currentPos);
-		//gameManager.SelectedPlayer.CheckMovementRange();
-		//gameManager.SelectedPlayer.onNodeHover();
+		//gameManager.SelectedPlayer.checkFlank(gameManager?.SelectedEnemy?.currentPos);
 	}
 
 	public override void ExitState(GameStateManager gameManager)
 	{
 		if (gameManager.SelectedPlayer != null)
 		{
-			//gameManager.SelectedPlayer.enabled = false;
-			//gameManager.SelectedPlayer = null;
+			gameManager.SelectedPlayer.enabled = false;
+			gameManager.SelectedPlayer.fpsCam.enabled = false;
 			Debug.Log($"exit State {nameof(PlayerTurn)}");
 		}
 	}
@@ -55,13 +47,14 @@ public class PlayerTurn : AnyState<GameStateManager>
 			gameManager.SelectedPlayer.SwitchState(gameManager.SelectedPlayer.idelState);
 			gameManager.SelectedPlayer.fpsCam.enabled = false;
 			int currentPlayerIndex = gameManager.players.FindIndex(instance => instance == gameManager.SelectedPlayer);
-
 			gameManager.SelectedPlayer = gameManager.players[(currentPlayerIndex + 1) % nbPlayers];
+
 			gameManager.SelectedPlayer.enabled = true;
 			gameManager.SelectedPlayer.fpsCam.enabled = true;
 
-			gameManager.UpdateSelectedPlayerResponse(gameManager.SelectedPlayer);
+			//gameManager.MakeGAmeMAnagerListingToNewSelectedUnit(gameManager.SelectedPlayer);
 
+			gameManager.PlayerChangeEvent.Raise();
 			Debug.Log($"Selected  {gameManager.SelectedPlayer} ");
 		}
 	}
@@ -73,54 +66,32 @@ public class EnemyTurn : AnyState<GameStateManager>
 	{
 		gameManager.SelectedPlayer = gameManager.players.FirstOrDefault();
 		gameManager.SelectedEnemy = gameManager.enemies.FirstOrDefault();
+		//gameManager.SelectedEnemy.currentTarget = gameManager.SelectedPlayer;
+		//gameManager.SelectedEnemy.currentPos = gameManager.SelectedEnemy.grid.getNodeFromTransformPosition(gameManager.SelectedEnemy.transform);
 
 		gameManager.SelectedEnemy.enabled = true;
-		//Debug.Log($" EnemyTurn Start ,  {gameManager.selectedEnemy.transform.name} is selected");
+		gameManager.SelectedEnemy.fpsCam.enabled = true;
+
 		return gameManager.SelectedEnemy;
 	}
 
 	public override void Update(GameStateManager gameManager)
 	{
+		gameManager.SelectedEnemy.currentPos = gameManager.grid.getNodeFromTransformPosition(gameManager.SelectedEnemy.transform);
 		if (Input.GetKeyDown(KeyCode.Tab))
 		{
-			Debug.Log($"tab clicked");
 			SelectNextEnemy(gameManager);
 		}
 
-		if (Input.GetKeyDown(KeyCode.LeftShift))
-		{
-			Debug.Log($"shoft clicked");
-
-			gameManager.SelectedEnemy.SelectNextPlayer();
-		}
-
-		if (Input.GetMouseButtonDown(0))
-		{
-			//gameManager.selectedEnemy.CreateNewMoveAction();
-		}
-		if (Input.GetMouseButtonDown(1))
-		{
-			//gameManager.selectedEnemy.CreateNewShootAction();
-
-			gameManager.GetComponent<PlayerEventListener>();
-		}
-		if (Input.GetKeyDown(KeyCode.R))
-		{
-			gameManager.SelectedEnemy.CreateNewReloadAction();
-		}
-
-		gameManager.SelectedEnemy.CheckMovementRange();
-
-		gameManager.SelectedEnemy.LockOnTarger();
-		//gameManager.selectedEnemy.checkFlank(gameManager.selectedPlayer.currentPos);
+		//gameManager.SelectedPlayer.checkFlank(gameManager?.SelectedEnemy?.currentPos);
 	}
 
 	public override void ExitState(GameStateManager gameManager)
 	{
 		if (gameManager.SelectedEnemy != null)
 		{
-			//gameManager.SelectedEnemy.enabled = false;
-			//gameManager.SelectedEnemy = null;
+			gameManager.SelectedEnemy.enabled = false;
+			gameManager.SelectedEnemy.fpsCam.enabled = false;
 			Debug.Log($"exit State {nameof(EnemyTurn)}");
 		}
 	}
@@ -131,14 +102,21 @@ public class EnemyTurn : AnyState<GameStateManager>
 
 		if (gameManager != null)
 		{
+			int nbPlayers = gameManager.enemies.Count;
+
 			gameManager.SelectedEnemy.enabled = false;
-			int currentEnemyIndex = gameManager.enemies.FindIndex(instance => instance == gameManager.SelectedEnemy);
+			gameManager.SelectedEnemy.SwitchState(gameManager.SelectedEnemy.idelState);
+			gameManager.SelectedPlayer.fpsCam.enabled = false;
+			int currentPlayerIndex = gameManager.enemies.FindIndex(instance => instance == gameManager.SelectedEnemy);
+			gameManager.SelectedEnemy = gameManager.enemies[(currentPlayerIndex + 1) % nbPlayers];
 
-			gameManager.SelectedEnemy = gameManager.enemies[(currentEnemyIndex + 1) % nbEnemies];
 			gameManager.SelectedEnemy.enabled = true;
+			gameManager.SelectedEnemy.fpsCam.enabled = true;
 
-			gameManager.UpdateSelectedPlayerResponse(gameManager.SelectedEnemy);
-			Debug.Log($" {gameManager.SelectedEnemy.transform.name} is Selected  {gameManager.SelectedEnemy} ");
+			//gameManager.MakeGAmeMAnagerListingToNewSelectedUnit(gameManager.SelectedPlayer);
+
+			gameManager.PlayerChangeEvent.Raise();
+			Debug.Log($"Selected  {gameManager.SelectedEnemy} ");
 		}
 	}
 }

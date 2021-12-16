@@ -6,7 +6,13 @@ using UnityEngine;
 
 public class Player : PlayerStateManager
 {
-	public LineController lineConponent;
+	private void Awake()
+	{
+
+		gameStateManager = FindObjectOfType<GameStateManager>();
+		currentTarget = gameStateManager.SelectedEnemy;
+
+	}
 
 	public void Start()
 	{
@@ -17,15 +23,11 @@ public class Player : PlayerStateManager
 		//actions = new ActionType[0];
 		//playerHeight = transform.GetComponent<Renderer>().bounds.size.y;
 		currentPos = grid.getNodeFromTransformPosition(transform);
-		gameStateManager = FindObjectOfType<GameStateManager>();
-		currentTarget = gameStateManager.SelectedEnemy;
-
-		lineConponent = FindObjectOfType<LineController>();
 		animator = model.GetComponent<Animator>();
+		stats = GetComponent<Stats>();
 		//listners = transform.Find("listners").gameObject;
 		//lineConponent.SetUpLine(turnPoints);
 	}
-
 	public async Task OnTriggerEnter(Collider other)
 	{
 		if (LayerMask.LayerToName(other.gameObject.layer) == "LowObstacle")
@@ -169,7 +171,7 @@ public class Player : PlayerStateManager
 		}
 	}
 
-	public void OnDrawGizmosssss()
+	public void OnDrawGizmos()
 	{
 		if (grid != null && grid.graph != null)
 		{

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class AnyClass : Unit, IBaseActions
 {
 	public List<ActionData> actions = new List<ActionData>();
+	public Stats stats;
 	public Transform ActionHolder;
 	public GameObject Action_prefab;
 	public Transform HealthBarHolder;
@@ -74,18 +75,15 @@ public class AnyClass : Unit, IBaseActions
 		}
 		else if (currentUnit is Player)
 		{
-			currentTarget.listners.SetActive(false);
 			List<Enemy> enemies = gameStateManager.enemies;
-			int nbEnemies = enemies.Count;
 			int currentTargetIndex = enemies.FindIndex(instance => instance == currentTarget);
-			currentTarget = enemies[(currentTargetIndex + 1) % nbEnemies];
+
+			currentTarget = enemies[(currentTargetIndex + 1) % enemies.Count];
+			// todo: find an alternative this cast can cause problem i nthe future
+			gameStateManager.SelectedEnemy = (Enemy)currentTarget;
 			rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
-			//currentTarget.transform.LookAt(transform.position);
 			rotateTowardDirection(currentTarget.partToRotate, aimPoint.position - currentTarget.aimPoint.position);
 
-			//rotateTowardDirection(model, currentTarget.transform.position - transform.position);
-			WeaponListner[] newTargetListners = currentTarget.GetComponents<WeaponListner>();
-			currentTarget.listners.SetActive(true);
 			onChangeTarget.Raise();
 		}
 	}
@@ -94,18 +92,24 @@ public class AnyClass : Unit, IBaseActions
 	{
 		Node oldDestination = destination;
 		Node res;
+		if (grid == null)
+		{
+			grid = FindObjectOfType<NodeGrid>();
+			Debug.Log($" grid is null set it  ");
+		}
 		if (fpsCam.enabled)
 		{
-			res = grid?.getNodeFromMousePosition(fpsCam);
+			res = grid.getNodeFromMousePosition(fpsCam);
 		}
 		else
 		{
-			res = grid?.getNodeFromMousePosition();
+			res = grid.getNodeFromMousePosition();
 		}
 		Node potentialDestination = res;
 		if (potentialDestination != null && potentialDestination != destination && potentialDestination != currentPos)
 		{
 			List<Node> potentialPath = FindPath.AStarAlgo(currentPos, potentialDestination);
+			if (potentialPath.Count == 0) return;
 			Vector3[] turns = FindPath.createWayPoint(potentialPath);
 
 			//lineConponent.SetUpLine(turnPoints);

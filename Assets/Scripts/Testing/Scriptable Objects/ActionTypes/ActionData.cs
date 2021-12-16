@@ -26,7 +26,7 @@ public class ActionData : ScriptableObject
 		}
 	}
 
-	public PlayerEvent Actionevent;
+	public PlayerAction Actionevent;
 }
 
 public enum AnimationType

@@ -182,11 +182,13 @@ public class Unit : MonoBehaviour
 		// triget event
 		if (action is ShootAction)
 		{
-			UnitStats stats = GetComponent<SalahStatsTest>().unit;
+			UnitStats stats = GetComponent<Stats>().unit;
 			stats.eventToListnTo.Raise(stats);
 		}
 		// switch state
 		player.SwitchState(player.idelState);
+		Debug.Log($"{player.name} current state : {player.State.name}");
+
 		rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - partToRotate.position);
 		processing = false;
 		// update the cost
