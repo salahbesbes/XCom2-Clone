@@ -21,4 +21,9 @@ namespace gameEventNameSpace
 	public class UnityWeaponEvent : UnityEvent<UnitStats>
 	{
 	}
+
+	[System.Serializable]
+	public class UnityEquipementEvent : UnityEvent<EquipementData>
+	{
+	}
 }

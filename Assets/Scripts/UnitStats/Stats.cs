@@ -21,7 +21,7 @@ public class Stats : MonoBehaviour
 
 	public void triggerEvent()
 	{
-		unit.eventToListnTo.Raise(unit);
+		unit.ShootActionEvent.Raise(unit);
 	}
 
 	public void Die()
@@ -29,18 +29,10 @@ public class Stats : MonoBehaviour
 		Debug.Log($"player died");
 	}
 
-	public void addArmorModifier()
+	public void addArmorModifier(EquipementData equiment)
 	{
-		if (unit.damage.modifiers.Count != 0)
-
-		{
-			unit.armor.AddModifier(unit.damage.modifiers[unit.damage.modifiers.Count - 1] + 2);
-		}
-		else
-		{
-			unit.armor.AddModifier(7);
-		}
-		triggerEvent();
+		unit.armor.AddModifier(equiment.Value);
+		unit.EquipeEvent.Raise(equiment);
 	}
 
 	public void addDamageModifier()
@@ -54,12 +46,10 @@ public class Stats : MonoBehaviour
 		{
 			unit.damage.AddModifier(10);
 		}
-		triggerEvent();
 	}
 
 	public void heal(int healValue)
 	{
 		unit.Health = Mathf.Clamp(unit.Health += healValue, 0, int.MaxValue);
-		triggerEvent();
 	}
 }

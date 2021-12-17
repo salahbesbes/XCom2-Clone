@@ -7,7 +7,8 @@ public class UnitStats : ScriptableObject
 	public string myName;
 	private int maxHealth = 100;
 	private int _health;
-	public WeaponEvent eventToListnTo;
+	public WeaponEvent ShootActionEvent;
+	public EquipementEvent EquipeEvent;
 	public Weapon weapon;
 
 	private void Reset()

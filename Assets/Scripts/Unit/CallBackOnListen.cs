@@ -38,13 +38,19 @@ public class CallBackOnListen : MonoBehaviour
 
 	public void updateTargetUiStats()
 	{
-
 		myUiStats = GetComponentInParent<Stats>();
 		myStats = myUiStats.unit;
 		myUiStats.TargetHealth.text = $"Health : {myStats.Health}";
 		myUiStats.TargetName.text = $"{ myStats.myName }:";
 		myUiStats.TargetArmor.text = $"Armor: {myStats.armor.Value}";
 		myUiStats.TargetDamage.text = $"damage: {myStats.damage.Value}";
+	}
+
+	public void onEquipeEventTrigger(EquipementData equipement)
+	{
+		myUiStats = GetComponentInParent<Stats>();
+		Debug.Log($"{myStats.name} equiped {equipement.name} and update  UI");
+		updateMyUiStats();
 	}
 
 	public void onTargetChangeEventTrigger()

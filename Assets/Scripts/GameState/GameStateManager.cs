@@ -38,16 +38,18 @@ public class GameStateManager : GameManagerListner
 			_selectedEnemy?.SwitchState(_selectedEnemy?.idelState);
 			clearPreviousSelectedUnitFromAllVoidEvents(_selectedEnemy);
 			clearPreviousSelectedUnitFromAllWeaponEvent(_selectedEnemy);
+			clearPreviousSelectedUnitFromAlEquipementEvent(_selectedEnemy);
 			_selectedEnemy = value;
 			if (State is PlayerTurn)
 			{
 				MakeOnlySelectedUnitListingToEventArgument(_selectedEnemy, SelectedPlayer?.onChangeTarget);
-				MakeOnlySelectedUnitListingToWeaponEvent(_selectedEnemy, SelectedPlayer?.GetComponent<Stats>()?.unit?.eventToListnTo);
+				MakeOnlySelectedUnitListingToWeaponEvent(_selectedEnemy, SelectedPlayer?.GetComponent<Stats>()?.unit?.ShootActionEvent);
 			}
 			else if (State is EnemyTurn)
 			{
 				MakeGAmeMAnagerListingToNewSelectedUnit(_selectedEnemy);
 				MakeOnlySelectedUnitListingToEventArgument(_selectedEnemy, PlayerChangeEvent);
+				MakeOnlySelectedUnitListingToEquipeEvent(_selectedEnemy, _selectedEnemy.GetComponent<Stats>()?.unit?.EquipeEvent);
 			}
 		}
 	}
@@ -69,16 +71,19 @@ public class GameStateManager : GameManagerListner
 			_selectedPlayer?.SwitchState(_selectedPlayer?.idelState);
 			clearPreviousSelectedUnitFromAllVoidEvents(_selectedPlayer);
 			clearPreviousSelectedUnitFromAllWeaponEvent(_selectedPlayer);
+			clearPreviousSelectedUnitFromAlEquipementEvent(_selectedPlayer);
+
 			_selectedPlayer = value;
 			if (State is PlayerTurn)
 			{
 				MakeGAmeMAnagerListingToNewSelectedUnit(_selectedPlayer);
 				MakeOnlySelectedUnitListingToEventArgument(_selectedPlayer, PlayerChangeEvent);
+				MakeOnlySelectedUnitListingToEquipeEvent(_selectedPlayer, _selectedPlayer.GetComponent<Stats>()?.unit?.EquipeEvent);
+
 			}
 			else if (State is EnemyTurn)
 			{
-
-				MakeOnlySelectedUnitListingToWeaponEvent(_selectedPlayer, SelectedEnemy?.GetComponent<Stats>()?.unit?.eventToListnTo);
+				MakeOnlySelectedUnitListingToWeaponEvent(_selectedPlayer, SelectedEnemy?.GetComponent<Stats>()?.unit?.ShootActionEvent);
 				MakeOnlySelectedUnitListingToEventArgument(_selectedPlayer, SelectedEnemy?.onChangeTarget);
 			}
 		}
@@ -93,7 +98,7 @@ public class GameStateManager : GameManagerListner
 
 	private void Awake()
 	{
-		SwitchState(enemyTurn);
+		SwitchState(playerTurn);
 		grid = FindObjectOfType<NodeGrid>();
 	}
 

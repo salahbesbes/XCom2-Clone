@@ -7,13 +7,10 @@ public class Player : PlayerStateManager
 {
 	private void Awake()
 	{
-
 		gameStateManager = FindObjectOfType<GameStateManager>();
-		currentTarget = gameStateManager.SelectedEnemy;
+		//currentTarget = gameStateManager.SelectedEnemy;
 		grid = FindObjectOfType<NodeGrid>();
 		currentPos = grid.getNodeFromTransformPosition(transform);
-
-
 	}
 
 	public void Start()
@@ -29,7 +26,6 @@ public class Player : PlayerStateManager
 		//listners = transform.Find("listners").gameObject;
 		//lineConponent.SetUpLine(turnPoints);
 	}
-
 
 	private void getTheRightActionOnClick(string action)
 	{

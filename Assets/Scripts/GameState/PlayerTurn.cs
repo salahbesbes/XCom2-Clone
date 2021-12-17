@@ -51,6 +51,7 @@ public class PlayerTurn : AnyState<GameStateManager>
 
 			gameManager.SelectedPlayer.enabled = true;
 			gameManager.SelectedPlayer.fpsCam.enabled = true;
+			gameManager.SelectedPlayer.currentTarget = gameManager.SelectedEnemy;
 
 			//gameManager.MakeGAmeMAnagerListingToNewSelectedUnit(gameManager.SelectedPlayer);
 
@@ -112,6 +113,7 @@ public class EnemyTurn : AnyState<GameStateManager>
 
 			gameManager.SelectedEnemy.enabled = true;
 			gameManager.SelectedEnemy.fpsCam.enabled = true;
+			gameManager.SelectedEnemy.currentTarget = gameManager.SelectedPlayer;
 
 
 			gameManager.PlayerChangeEvent.Raise();

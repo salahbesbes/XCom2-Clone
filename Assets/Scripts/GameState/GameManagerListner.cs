@@ -16,6 +16,8 @@ public class GameManagerListner : MonoBehaviour
 	public void MakeGAmeMAnagerListingToNewSelectedUnit(AnyClass unit)
 	{
 		clearGameManagerFromPreviousSelectedUnit();
+		// the Subject (Trigger) is the GameManager and the listner is Current Selected Unit
+
 		foreach (ActionData action in unit.actions)
 		{
 			PlayerAction playerEvent = action.Actionevent;
@@ -47,6 +49,10 @@ public class GameManagerListner : MonoBehaviour
 
 	public void MakeOnlySelectedUnitListingToEventArgument(AnyClass unit, VoidEvent voidEvent)
 	{
+		// the Subject (Trigger) is the GameManager and the listner is Current Selected.currentTarget
+		// Or
+		// the Subject current Selected Unit listner is Current Selected.currentTarget
+
 		if (voidEvent == null) Debug.Log($"void event is null");
 
 		if (unit == null || voidEvent == null) return;
@@ -82,6 +88,7 @@ public class GameManagerListner : MonoBehaviour
 
 	public void MakeOnlySelectedUnitListingToWeaponEvent(AnyClass unit, WeaponEvent weaponEvent)
 	{
+		// the Subject (Trigger) is the current Selected Unit and the listner is Current Selected.currentTarget
 		if (weaponEvent == null) Debug.Log($"weapon event is null");
 		if (unit == null || weaponEvent == null) return;
 		WeaponListner e = unit.listners.AddComponent<WeaponListner>();
@@ -96,4 +103,33 @@ public class GameManagerListner : MonoBehaviour
 
 		e.Register();
 	}
+	public void clearPreviousSelectedUnitFromAlEquipementEvent(AnyClass unit)
+	{
+		if (unit == null) return;
+		EquipementListner[] listners = unit.listners.GetComponents<EquipementListner>();
+		//if (listners == null) return;
+		foreach (EquipementListner listner in listners)
+		{
+			Destroy(listner);
+		}
+	}
+
+	public void MakeOnlySelectedUnitListingToEquipeEvent(AnyClass unit, EquipementEvent equipeEvent)
+	{
+		// the Subject (Trigger) is the Equipement GAme Object in the scene and the listner is the Current Selected Unit
+		if (equipeEvent == null) Debug.Log($"weapon event is null");
+		if (unit == null || equipeEvent == null) return;
+		EquipementListner e = unit.listners.AddComponent<EquipementListner>();
+		e.GameEvent = equipeEvent;
+		e.UnityEventResponse = new UnityEquipementEvent();
+		e.UnityEventResponse.AddListener((EventArgument) =>
+		{
+			// EventArgument is what ever argument is passed when we trugger (raise the
+			// Event ) in this case its Weapon
+			unit.listners.GetComponent<CallBackOnListen>().onEquipeEventTrigger(EventArgument);
+		});
+
+		e.Register();
+	}
+
 }
