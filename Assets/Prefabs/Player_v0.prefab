@@ -1112,12 +1112,13 @@ MonoBehaviour:
   grid: {fileID: 0}
   currentTarget: {fileID: 0}
   processing: 0
-  weapon: {fileID: 8776068598594873616}
+  weapon: {fileID: 6302855536928208194}
   partToRotate: {fileID: 8583340694775715537}
   model: {fileID: 137193771590802712}
   speed: 5
   actions:
   - {fileID: 11400000, guid: 7601e2943867df44ab824c6a69d77f26, type: 2}
+  - {fileID: 11400000, guid: 7fdc721c4f9522941a5d3c87d1ccb88f, type: 2}
   stats: {fileID: 8911552169138513503}
   ActionHolder: {fileID: 0}
   Action_prefab: {fileID: 5356878571294043885, guid: 2da8bad2b03449540907bca690fcdc44, type: 3}
@@ -1130,7 +1131,6 @@ MonoBehaviour:
   pointsRayCast: {fileID: 8583340695477071443}
   onChangeTarget: {fileID: 11400000, guid: 60ef045d8ba28284aab58565562384ce, type: 2}
   currentActionAnimation: 1
-  lineConponent: {fileID: 0}
 --- !u!136 &8958433027333332021
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1253,14 +1253,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2a0d6ad798ee1644a86f78311559d2d, type: 3}
+--- !u!114 &6302855536928208194 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2931211862025393224, guid: f2a0d6ad798ee1644a86f78311559d2d, type: 3}
+  m_PrefabInstance: {fileID: 9211545822936359178}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c82d3029a127de4da008aa33678a39e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &463255582155841105 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8770809066722656091, guid: f2a0d6ad798ee1644a86f78311559d2d, type: 3}
-  m_PrefabInstance: {fileID: 9211545822936359178}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &463255582155585797 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8770809066722383887, guid: f2a0d6ad798ee1644a86f78311559d2d, type: 3}
   m_PrefabInstance: {fileID: 9211545822936359178}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6308412733655469979 stripped
@@ -1278,37 +1284,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8464873604351944360, guid: f2a0d6ad798ee1644a86f78311559d2d, type: 3}
   m_PrefabInstance: {fileID: 9211545822936359178}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8776068598594873616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 463255582155585797}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c82d3029a127de4da008aa33678a39e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  holdDownShooting: 1
-  shooting: 0
-  bulletSpeed: 100
-  bouncingForce: 0
-  readyToShoot: 1
-  reloading: 0
-  bulletLeft: 0
-  bulletsShot: 0
-  maxMagazine: 48
-  bulletRange: 100
-  spread: 0.128
-  timeBetweenShooting: 0.1
-  timeBetweenShots: 0.01
-  shutGun: 0
-  bulletInOneShot: 8
-  bulletPrefab: {fileID: 2225754711644898913, guid: 6b064e4c3a06afb4fb0ca0d45f8eeabc, type: 3}
-  startPoint: {fileID: 8583340695551620264}
-  fps_Cam: {fileID: 7339305137955295310}
-  player: {fileID: 8583340695942099305}
 --- !u!136 &5511348357099801569
 CapsuleCollider:
   m_ObjectHideFlags: 0

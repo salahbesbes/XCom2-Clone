@@ -1654,7 +1654,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2931211862025393224, guid: f2a0d6ad798ee1644a86f78311559d2d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f2a0d6ad798ee1644a86f78311559d2d, type: 3}
 --- !u!4 &6126386042919270130 stripped
 Transform:
@@ -1693,21 +1694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c82d3029a127de4da008aa33678a39e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdDownShooting: 1
-  shooting: 0
-  bulletSpeed: 100
-  bouncingForce: 0
-  readyToShoot: 1
-  reloading: 0
-  bulletLeft: 0
-  bulletsShot: 0
-  maxMagazine: 48
-  bulletRange: 100
-  spread: 0.128
-  timeBetweenShooting: 0.1
-  timeBetweenShots: 0.01
-  shutGun: 0
-  bulletInOneShot: 8
+  weaponType: {fileID: 0}
   bulletPrefab: {fileID: 2225754711644898913, guid: 6b064e4c3a06afb4fb0ca0d45f8eeabc, type: 3}
   startPoint: {fileID: 2592952181343641410}
   fps_Cam: {fileID: 3546674337120238500}

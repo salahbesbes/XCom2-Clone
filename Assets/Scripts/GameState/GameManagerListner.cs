@@ -113,7 +113,6 @@ public class GameManagerListner : MonoBehaviour
 			Destroy(listner);
 		}
 	}
-
 	public void MakeOnlySelectedUnitListingToEquipeEvent(AnyClass unit, EquipementEvent equipeEvent)
 	{
 		// the Subject (Trigger) is the Equipement GAme Object in the scene and the listner is the Current Selected Unit

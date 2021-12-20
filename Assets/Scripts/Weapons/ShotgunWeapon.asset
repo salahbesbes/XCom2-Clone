@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7763a7e051b811c45bc4475564fdde22, type: 3}
+  m_Name: ShotgunWeapon
+  m_EditorClassIdentifier: 
+  holdDownShooting: 1
+  shooting: 0
+  bulletSpeed: 100
+  bouncingForce: 0
+  readyToShoot: 1
+  reloading: 0
+  bulletLeft: 946
+  bulletsShot: 9
+  maxMagazine: 1000
+  bulletRange: 20
+  spread: 0.126
+  timeBetweenShooting: 0.2
+  timeBetweenShots: 0.06
+  shutGun: 0
+  bulletInOneShot: 8
+  Ammo: {fileID: 5940904161140941163, guid: e5327058d6dd0864d9c7260369387913, type: 3}
