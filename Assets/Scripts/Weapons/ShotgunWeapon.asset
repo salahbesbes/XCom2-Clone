@@ -14,17 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdDownShooting: 1
   shooting: 0
-  bulletSpeed: 100
-  bouncingForce: 0
   readyToShoot: 1
   reloading: 0
+  ammoSpeed: 259
+  bouncingForce: 0
   bulletLeft: 946
   bulletsShot: 9
   maxMagazine: 1000
-  bulletRange: 20
-  spread: 0.126
-  timeBetweenShooting: 0.2
-  timeBetweenShots: 0.06
+  bulletRange: 100
+  spread: 0.234
+  timeBetweenShooting: 0.001
+  timeBetweenShots: 0.2
   shutGun: 0
   bulletInOneShot: 8
-  Ammo: {fileID: 5940904161140941163, guid: e5327058d6dd0864d9c7260369387913, type: 3}
+  type: 1
+  Ammo: {fileID: 2072528743087058512, guid: 6b064e4c3a06afb4fb0ca0d45f8eeabc, type: 3}

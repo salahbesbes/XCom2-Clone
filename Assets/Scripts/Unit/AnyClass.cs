@@ -1,7 +1,6 @@
 using gameEventNameSpace;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class AnyClass : Unit, IBaseActions
@@ -20,19 +19,6 @@ public class AnyClass : Unit, IBaseActions
 	public bool isFlanked;
 	public Transform pointsRayCast;
 	public VoidEvent onChangeTarget;
-
-	public async Task OnTriggerEnter(Collider other)
-	{
-		if (LayerMask.LayerToName(other.gameObject.layer) == "LowObstacle")
-		{
-			PlayAnimation(AnimationType.jump);
-			speed = 1;
-			await Task.Delay(500);
-
-			PlayAnimation(AnimationType.run);
-			speed = 5;
-		}
-	}
 
 	public void SelectNextTarget(AnyClass currentUnit)
 	{
@@ -175,7 +161,7 @@ public class AnyClass : Unit, IBaseActions
 		//	return;
 		//}
 		Node res;
-		Camera fpsCam = transform.Find("PlayerPrefab").Find("fps_cam").GetComponent<Camera>();
+
 		if (fpsCam.enabled)
 		{
 			res = grid.getNodeFromMousePosition(fpsCam);

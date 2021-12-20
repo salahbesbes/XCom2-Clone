@@ -17,6 +17,7 @@ public class SelectingEnemy : AnyState<PlayerStateManager>
 
 	public override void Update(PlayerStateManager player)
 	{
+		player.grid.resetGrid();
 		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
 			player.SelectNextTarget(player);
@@ -34,6 +35,8 @@ public class SelectingEnemy : AnyState<PlayerStateManager>
 			player.SwitchState(player.doingAction);
 			shoot?.Actionevent?.Raise();
 		}
+
+		player.weapon.GetComponent<Weapon>().onHover();
 	}
 
 	public override void ExitState(PlayerStateManager player)

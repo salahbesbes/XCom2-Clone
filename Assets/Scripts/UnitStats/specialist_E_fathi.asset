@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d6dfdef4182a6740b4eaf7a58588334, type: 3}
+  m_Name: specialist_E_fathi
+  m_EditorClassIdentifier: 
+  myName: specialist Fathi
+  ShootActionEvent: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
+  EquipeEvent: {fileID: 11400000, guid: 6945a8e9d3763734096b06dc5a504f83, type: 2}
+  weapon: {fileID: 0}
+  damage:
+    baseValue: 5
+    modifiers: 
+  armor:
+    baseValue: 5
+    modifiers: 

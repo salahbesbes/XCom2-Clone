@@ -11,7 +11,8 @@ public class Grenade : Ammo
 	public void Init(Vector3 velocity, bool isGhost)
 	{
 		_isGhost = isGhost;
-		_rb.AddForce(velocity, ForceMode.Impulse);
+		//_rb.AddForce(velocity, ForceMode.Impulse);
+		_rb.velocity = velocity;
 	}
 
 	public void OnCollisionEnter(Collision col)

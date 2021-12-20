@@ -9,23 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89975eb6a1b5a0a46bc34e507de555e6, type: 3}
-  m_Name: automaticWeapon
+  m_Script: {fileID: 11500000, guid: 25cdd59191ebfd24d84d6f935b2d3b3a, type: 3}
+  m_Name: GrenadeLuncher
   m_EditorClassIdentifier: 
-  holdDownShooting: 1
+  holdDownShooting: 0
   shooting: 0
   readyToShoot: 1
   reloading: 0
-  ammoSpeed: 588
-  bouncingForce: 0
-  bulletLeft: 958
-  bulletsShot: 21
-  maxMagazine: 1000
-  bulletRange: 100
+  ammoSpeed: 100
+  bouncingForce: 5
+  bulletLeft: 5
+  bulletsShot: 2
+  maxMagazine: 5
+  bulletRange: 20
   spread: 0
-  timeBetweenShooting: 0.1
+  timeBetweenShooting: 0.2
   timeBetweenShots: 0.06
   shutGun: 0
-  bulletInOneShot: 20
-  type: 1
-  Ammo: {fileID: 2072528743087058512, guid: 6b064e4c3a06afb4fb0ca0d45f8eeabc, type: 3}
+  bulletInOneShot: 1
+  type: 2
+  Ammo: {fileID: 5940904161140941163, guid: e5327058d6dd0864d9c7260369387913, type: 3}

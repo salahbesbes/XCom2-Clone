@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 467766}
   - component: {fileID: 3339886}
   - component: {fileID: 2351398}
-  - component: {fileID: 5842837538518009893}
+  - component: {fileID: 642632081860650248}
   m_Layer: 0
-  m_Name: SciFiGunHeavyBlack
+  m_Name: Gun_ShootGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,14 +26,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 197730}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.456, y: 2.0295558, z: 6.629}
+  m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7142682077967009322}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
 --- !u!33 &3339886
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -84,7 +85,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5842837538518009893
+--- !u!114 &642632081860650248
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -93,11 +94,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 197730}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c82d3029a127de4da008aa33678a39e, type: 3}
+  m_Script: {fileID: 11500000, guid: 882557fd05df00f488e2ff83948d818c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: {fileID: 11400000, guid: a8d80d334974af144ba598170fcbc8dd, type: 2}
-  bulletPrefab: {fileID: 2225754711644898913, guid: 6b064e4c3a06afb4fb0ca0d45f8eeabc, type: 3}
-  startPoint: {fileID: 0}
+  weaponType: {fileID: 11400000, guid: e251c19419ae6094995047d0b06c06b5, type: 2}
+  startPoint: {fileID: 7142682077967009322}
   fps_Cam: {fileID: 0}
   player: {fileID: 0}
+  _projection: {fileID: 0}
+--- !u!1 &5910661443088652171
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7142682077967009322}
+  m_Layer: 0
+  m_Name: aimPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7142682077967009322
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5910661443088652171}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.045, z: 0.595}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 467766}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

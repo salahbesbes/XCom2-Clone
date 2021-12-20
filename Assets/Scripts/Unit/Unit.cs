@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -30,7 +29,7 @@ public class Unit : MonoBehaviour
 	public void MoveActionCallback(MoveAction actionInstance, Node start, Node end)
 	{
 		PlayAnimation(AnimationType.run);
-		StartCoroutine(move(actionInstance, turnPoints));
+		move(actionInstance, turnPoints);
 	}
 
 	public void PlayAnimation(AnimationType anim)
@@ -103,7 +102,7 @@ public class Unit : MonoBehaviour
 		partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 	}
 
-	public IEnumerator move(MoveAction moveInstance, Vector3[] turnPoints)
+	public async Task move(MoveAction moveInstance, Vector3[] turnPoints)
 	{
 		if (turnPoints.Length > 0)
 		{
@@ -136,14 +135,14 @@ public class Unit : MonoBehaviour
 
 				// this yield return null waits until the next frame reached ( dont
 				// exit the methode )
-				yield return null;
+				await Task.Yield();
 			}
 		}
 
 		//Debug.Log($"finish moving");
 		FinishAction(moveInstance);
 		//onActionFinish();
-		yield return null;
+		await Task.Yield();
 	}
 
 	public void LockOnTarger()
@@ -199,12 +198,12 @@ public class Unit : MonoBehaviour
 
 	public void ReloadActionCallBack(ReloadAction reload)
 	{
-		StartCoroutine(weapon.Reload(reload));
+		weapon.Reload(reload);
 	}
 
 	public void ShootActionCallBack(ShootAction soot)
 	{
-		StartCoroutine(weapon.startShooting(soot));
+		weapon.startShooting(soot);
 	}
 
 	public void Enqueue(ActionBase action)

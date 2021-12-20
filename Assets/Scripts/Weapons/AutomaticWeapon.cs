@@ -8,7 +8,7 @@ public class AutomaticWeapon : WeaponData
 		holdDownShooting = true;
 
 		shooting = false;
-		bulletSpeed = 100f;
+		ammoSpeed = 100f;
 		bouncingForce = 0f;
 		readyToShoot = true;
 		reloading = false;
@@ -19,6 +19,7 @@ public class AutomaticWeapon : WeaponData
 		shutGun = false;
 		bulletInOneShot = 8;
 		bulletLeft = maxMagazine;
+		type = WeaponType.automatic;
 	}
 
 	private void OnEnable()

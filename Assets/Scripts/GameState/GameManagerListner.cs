@@ -49,9 +49,9 @@ public class GameManagerListner : MonoBehaviour
 
 	public void MakeOnlySelectedUnitListingToEventArgument(AnyClass unit, VoidEvent voidEvent)
 	{
-		// the Subject (Trigger) is the GameManager and the listner is Current Selected.currentTarget
-		// Or
-		// the Subject current Selected Unit listner is Current Selected.currentTarget
+		// the Subject (Trigger) is the GameManager and the listner is Current
+		// Selected.currentTarget Or the Subject current Selected Unit listner is Current
+		// Selected.currentTarget
 
 		if (voidEvent == null) Debug.Log($"void event is null");
 
@@ -88,7 +88,8 @@ public class GameManagerListner : MonoBehaviour
 
 	public void MakeOnlySelectedUnitListingToWeaponEvent(AnyClass unit, WeaponEvent weaponEvent)
 	{
-		// the Subject (Trigger) is the current Selected Unit and the listner is Current Selected.currentTarget
+		// the Subject (Trigger) is the current Selected Unit and the listner is Current
+		// Selected.currentTarget
 		if (weaponEvent == null) Debug.Log($"weapon event is null");
 		if (unit == null || weaponEvent == null) return;
 		WeaponListner e = unit.listners.AddComponent<WeaponListner>();
@@ -103,6 +104,7 @@ public class GameManagerListner : MonoBehaviour
 
 		e.Register();
 	}
+
 	public void clearPreviousSelectedUnitFromAlEquipementEvent(AnyClass unit)
 	{
 		if (unit == null) return;
@@ -113,9 +115,11 @@ public class GameManagerListner : MonoBehaviour
 			Destroy(listner);
 		}
 	}
+
 	public void MakeOnlySelectedUnitListingToEquipeEvent(AnyClass unit, EquipementEvent equipeEvent)
 	{
-		// the Subject (Trigger) is the Equipement GAme Object in the scene and the listner is the Current Selected Unit
+		// the Subject (Trigger) is the Equipement GAme Object in the scene and the listner
+		// is the Current Selected Unit
 		if (equipeEvent == null) Debug.Log($"weapon event is null");
 		if (unit == null || equipeEvent == null) return;
 		EquipementListner e = unit.listners.AddComponent<EquipementListner>();
@@ -130,5 +134,4 @@ public class GameManagerListner : MonoBehaviour
 
 		e.Register();
 	}
-
 }

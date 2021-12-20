@@ -6,7 +6,7 @@ public class ShotgunWeapon : WeaponData
 	private void Awake()
 	{
 		shooting = false;
-		bulletSpeed = 100f;
+		ammoSpeed = 100f;
 		bouncingForce = 10f;
 		readyToShoot = true;
 		reloading = false;
@@ -18,6 +18,7 @@ public class ShotgunWeapon : WeaponData
 		bulletInOneShot = 8;
 		bulletLeft = maxMagazine;
 		holdDownShooting = true;
+		type = WeaponType.automatic;
 	}
 
 	private void OnEnable()
