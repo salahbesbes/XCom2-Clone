@@ -16,16 +16,16 @@ MonoBehaviour:
   shooting: 0
   readyToShoot: 1
   reloading: 0
-  ammoSpeed: 259
+  ammoSpeed: 182
   bouncingForce: 0
-  bulletLeft: 946
-  bulletsShot: 9
+  bulletLeft: 1000
+  bulletsShot: 21
   maxMagazine: 1000
-  bulletRange: 100
-  spread: 0.234
-  timeBetweenShooting: 0.001
-  timeBetweenShots: 0.2
+  bulletRange: 20
+  spread: 0.135
+  timeBetweenShooting: 0.01
+  timeBetweenShots: 0.1
   shutGun: 0
-  bulletInOneShot: 8
+  bulletInOneShot: 20
   type: 1
   Ammo: {fileID: 2072528743087058512, guid: 6b064e4c3a06afb4fb0ca0d45f8eeabc, type: 3}

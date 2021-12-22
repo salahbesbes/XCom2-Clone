@@ -16,15 +16,15 @@ MonoBehaviour:
   shooting: 0
   readyToShoot: 1
   reloading: 0
-  ammoSpeed: 588
+  ammoSpeed: 546
   bouncingForce: 0
-  bulletLeft: 958
+  bulletLeft: 1000
   bulletsShot: 21
   maxMagazine: 1000
   bulletRange: 100
   spread: 0
-  timeBetweenShooting: 0.1
-  timeBetweenShots: 0.06
+  timeBetweenShooting: 0.02
+  timeBetweenShots: 1
   shutGun: 0
   bulletInOneShot: 20
   type: 1

@@ -24,7 +24,7 @@ public class AutomaticWeaponType : Weapon
 	{
 		if (player.currentTarget != null)
 		{
-			Vector3 dir = (player.currentTarget.aimPoint.position - player.aimPoint.position).normalized;
+			Vector3 dir = (player.currentTarget.aimPoint.position - startPoint.position).normalized;
 			Debug.DrawRay(startPoint.position, dir * weaponType.bulletRange, Color.green);
 		}
 
@@ -52,10 +52,10 @@ public class AutomaticWeaponType : Weapon
 		}
 		// hi is always a point in the center of the fps_screen ( always have fixed height
 		// and width) we get the node exactly under that point
-		Node hitNode = grid.getNodeFromTransformPosition(null, hit.point);
-		Vector3 targetPoint = hitNode.coord;
+		//Node hitNode = grid.getNodeFromTransformPosition(null, hit.point);
+		//Vector3 targetPoint = hitNode.coord;
 		// this is the direction between the player node to the hit point node
-		Vector3 dir = targetPoint - player.currentPos.coord;
+		Vector3 dir = player.currentTarget.aimPoint.position - startPoint.position;
 
 		// sp to different direction around the target
 		float x = Random.Range(-weaponType.spread, weaponType.spread);
@@ -89,8 +89,8 @@ public class AutomaticWeaponType : Weapon
 
 		if (weaponType.readyToShoot && !weaponType.reloading && weaponType.bulletLeft > 0)
 		{
-			Vector3 dir = (player.currentTarget.aimPoint.position - player.aimPoint.position).normalized;
-			Debug.DrawRay(startPoint.position, dir * weaponType.bulletRange, Color.green);
+			Vector3 dir = (player.currentTarget.aimPoint.position - startPoint.position).normalized;
+			Debug.DrawRay(startPoint.position, dir * weaponType.bulletRange, Color.red);
 			RaycastHit hit;
 			if (Physics.Raycast(startPoint.position, dir, out hit, weaponType.bulletRange))
 			{
