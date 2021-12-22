@@ -4,6 +4,7 @@ public class PlayerStateManager : AnyClass
 	public Idel idelState = new Idel();
 	public DoingAction doingAction = new DoingAction();
 	public AnimationType currentActionAnimation = AnimationType.idel;
+	public bool TurnOnGizmos = false;
 
 	private void OnEnable()
 	{

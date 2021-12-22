@@ -8,12 +8,15 @@ public class HeavyWeapon : Weapon
 	public Camera fps_Cam;
 	public AnyClass player;
 	public int resolution = 30;
+	public LineRenderer lr;
 
 	private void Start()
 	{
 		//bulletLeft = maxMagazine;
 		Vector3 fwd = transform.TransformDirection(Vector3.forward);
 		Debug.DrawRay(startPoint.position, fwd, Color.green);
+		lr = GetComponent<LineRenderer>();
+		lr.positionCount = resolution;
 	}
 
 	public override async Task Reload(ReloadAction reload)
@@ -89,6 +92,7 @@ public class HeavyWeapon : Weapon
 			float simulationTime = i / (float)resolution * data.timeToTarget;
 			Vector3 displacement = data.initialVelocity * simulationTime + Physics.gravity * simulationTime * simulationTime / 2f;
 			Vector3 drowPoint = startPoint.position + displacement;
+			lr.SetPosition(i, drowPoint);
 			Debug.DrawLine(previousDrowPoint, drowPoint, Color.green);
 			previousDrowPoint = drowPoint;
 		}

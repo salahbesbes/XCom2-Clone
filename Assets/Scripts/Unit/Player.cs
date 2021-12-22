@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Player : PlayerStateManager
 {
+
 	private void Awake()
 	{
 		gameStateManager = FindObjectOfType<GameStateManager>();
@@ -161,7 +162,7 @@ public class Player : PlayerStateManager
 	{
 		if (grid != null && grid.graph != null)
 		{
-			if (currentPos == null) return;
+			if (currentPos == null && !TurnOnGizmos) return;
 
 			foreach (Node node in grid?.graph)
 			{
@@ -189,18 +190,8 @@ public class Player : PlayerStateManager
 				if (node == currentTarget?.currentPos) { node.color = currentTarget?.isFlanked == false ? Color.magenta : Color.yellow; }
 				Gizmos.color = node.color;
 
-				Gizmos.DrawCube(node.coord, new Vector3(grid.nodeSize - 0.1f, 0.1f, grid.nodeSize - 0.1f));
+				Gizmos.DrawCube(node.coord, new Vector3(grid.nodeSize - 0.1f, 0.02f, grid.nodeSize - 0.1f));
 			}
-
-			//Vector3 dir = enemy.position.coord + Vector3.up * 3 - actualPos.coord;
-			//LayerMask enemyLayer = LayerMask.GetMask("Enemy");
-			//Gizmos.DrawLine(enemy.position.coord, actualPos.coord);
-			//RaycastHit hit;
-			//if (Physics.Raycast(actualPos.coord, dir, out hit))
-			//{
-			//	//Debug.Log($"hit is tagged enemy {hit.transform.CompareTag("Enemy")}");
-			//	//Debug.Log($"{hit.transform.gameObject.layer == enemyLayer}");
-			//}
 		}
 	}
 }

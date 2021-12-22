@@ -12,4 +12,22 @@ public abstract class Weapon : MonoBehaviour
 	public virtual void onHover()
 	{
 	}
+
+	private void OnEnable()
+	{
+		LineRenderer lr = GetComponent<LineRenderer>();
+		if (lr != null)
+		{
+			lr.enabled = true;
+		}
+	}
+	private void OnDisable()
+	{
+		LineRenderer lr = GetComponent<LineRenderer>();
+		if (lr != null)
+		{
+			lr.enabled = false;
+		}
+
+	}
 }

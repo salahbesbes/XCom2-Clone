@@ -53,12 +53,13 @@ public class SecondCam : MonoBehaviour
 	{
 		// todo: create an event Listner
 		currentTarget = unit.currentTarget;
+		switchTrarget();
+		if (currentTarget == null) return;
 		Vector3 dir = currentTarget.transform.position - unit.transform.position;
 		float distanceCam = (currentTarget.transform.position - transform.position).magnitude;
 		if (dir.magnitude + 2 > distanceCam)
 		{
 			rotateCam();
 		}
-		switchTrarget();
 	}
 }

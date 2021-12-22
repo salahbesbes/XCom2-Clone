@@ -213,7 +213,7 @@ public class NodeGrid : MonoBehaviour
 		{
 			for (int y = 0; y < width; y++)
 			{
-				Vector3 offset = new Vector3(nodeSize / 2, 0.1f, nodeSize / 2);
+				Vector3 offset = new Vector3(nodeSize / 2, 0.01f, nodeSize / 2);
 				Vector3 nodeCoord = buttonLeft + offset + Vector3.right * nodeSize * x + Vector3.forward * nodeSize * y;
 				// create node
 				graph[x, y] = new Node(nodeCoord, x, y);
@@ -288,5 +288,22 @@ public class NodeGrid : MonoBehaviour
 		}
 	}
 
+	private void OnDrawGizmosSelected()
+	{
+	}
 
+	private void OnDrawGizmos()
+	{
+		float width = wordSizeGrid.x, height = wordSizeGrid.y;
+
+		buttonLeft = transform.position - (Vector3.right * wordSizeGrid.x / 2) - (Vector3.forward * wordSizeGrid.y / 2);
+		for (int x = 0; x < width; x++)
+		{
+			Debug.DrawLine(buttonLeft + new Vector3(0, 0.02f, x), new Vector3(width + buttonLeft.x, 0.02f, (x + buttonLeft.z)), Color.black);
+		}
+		for (int x = 0; x < height; x++)
+		{
+			Debug.DrawLine(buttonLeft + new Vector3(x, 0.02f, 0), new Vector3(x + buttonLeft.x, 0.02f, (height + buttonLeft.z)), Color.black);
+		}
+	}
 }

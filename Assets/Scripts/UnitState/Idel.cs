@@ -6,7 +6,7 @@ public class Idel : AnyState<PlayerStateManager>
 	public override AnyClass EnterState(PlayerStateManager player)
 	{
 		//Debug.Log($" {player.name}  state : {player.State.name}");
-
+		player.weapon.enabled = false;
 		return null;
 	}
 
@@ -68,5 +68,6 @@ public class Idel : AnyState<PlayerStateManager>
 
 	public override void ExitState(PlayerStateManager player)
 	{
+		player.weapon.enabled = true;
 	}
 }

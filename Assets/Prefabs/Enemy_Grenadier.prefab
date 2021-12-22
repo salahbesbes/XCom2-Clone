@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7726622484227f4a91a198151c04568, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unit: {fileID: 0}
+  unit: {fileID: 5387555271770916714}
   speed: 4
   angle: 0
   radius: 2
@@ -789,7 +789,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8583340695942099308}
   m_LocalRotation: {x: 0, y: -0.4304323, z: 0, w: 0.9026229}
-  m_LocalPosition: {x: 1.5, y: 0.1, z: 0.5}
+  m_LocalPosition: {x: 1.5, y: 0.01, z: 0.5}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -855,6 +855,7 @@ MonoBehaviour:
   pointsRayCast: {fileID: 8583340695477071443}
   onChangeTarget: {fileID: 11400000, guid: 94c3fca271f0a5840ad25cf123f548ac, type: 2}
   currentActionAnimation: 1
+  TurnOnGizmos: 0
 --- !u!1 &8583340696181751108
 GameObject:
   m_ObjectHideFlags: 0
