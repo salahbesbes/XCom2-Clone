@@ -82,6 +82,7 @@ public class Unit : MonoBehaviour
 			//Debug.Log($"rotating");
 			await Task.Yield();
 			partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+			//partToRotate.Rotate(Vector3.up, rotation.y);
 		}
 
 		// smooth the rotation of the turrent
@@ -189,6 +190,7 @@ public class Unit : MonoBehaviour
 		Debug.Log($"{player.name} current state : {player.State.name}");
 
 		rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - partToRotate.position);
+		rotateTowardDirection(model, currentTarget.aimPoint.position - partToRotate.position);
 		processing = false;
 		// update the cost
 		//GetComponent<PlayerStats>().ActionPoint -= action.cost;

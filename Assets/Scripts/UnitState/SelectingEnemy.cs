@@ -37,6 +37,7 @@ public class SelectingEnemy : AnyState<PlayerStateManager>
 		}
 
 		player.weapon.GetComponent<Weapon>().onHover();
+		Debug.DrawLine(player.currentTarget.aimPoint.position, player.weapon.startPoint.position, Color.red);
 	}
 
 	public override void ExitState(PlayerStateManager player)

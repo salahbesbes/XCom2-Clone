@@ -3,10 +3,6 @@ using UnityEngine;
 
 public class HeavyWeapon : Weapon
 {
-	public WeaponData weaponType;
-	public Transform startPoint;
-	public Camera fps_Cam;
-	public AnyClass player;
 	public int resolution = 30;
 	public LineRenderer lr;
 
@@ -100,21 +96,7 @@ public class HeavyWeapon : Weapon
 
 	public override async void onHover()
 	{
-		Debug.Log($"weapon grnade luncher selecting target");
-		Node res;
-		if (player.grid == null)
-		{
-			Debug.Log($" player.grid is null set it  ");
-		}
-		if (fps_Cam.enabled)
-		{
-			res = player.grid.getNodeFromMousePosition(fps_Cam);
-		}
-		else
-		{
-			res = player.grid.getNodeFromMousePosition();
-		}
-		Node potentialDestination = res;
+		Node potentialDestination = player.grid.getNodeFromMousePosition(player.secondCam);
 		if (potentialDestination != null && potentialDestination != player.destination && potentialDestination != player.currentPos)
 		{
 			//lineConponent.SetUpLine(turnPoints);

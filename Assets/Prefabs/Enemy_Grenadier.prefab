@@ -900,7 +900,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2433976513214381497, guid: 0455e876db478b140a5873e472078b64, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2433976513214381497, guid: 0455e876db478b140a5873e472078b64, type: 3}
       propertyPath: m_LocalPosition.y
@@ -908,7 +908,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2433976513214381497, guid: 0455e876db478b140a5873e472078b64, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 2433976513214381497, guid: 0455e876db478b140a5873e472078b64, type: 3}
       propertyPath: m_LocalRotation.w
@@ -973,6 +973,10 @@ PrefabInstance:
     - target: {fileID: 3848661302237492161, guid: 0455e876db478b140a5873e472078b64, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6414151300953488661, guid: 0455e876db478b140a5873e472078b64, type: 3}
+      propertyPath: m_Convex
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7554834078591818338, guid: 0455e876db478b140a5873e472078b64, type: 3}
       propertyPath: player

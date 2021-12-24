@@ -4,33 +4,6 @@ using UnityEngine;
 
 public class AutomaticWeaponType : Weapon
 {
-	public WeaponData weaponType;
-	public Transform startPoint;
-	private NodeGrid grid;
-	public Camera fps_Cam;
-	public AnyClass player;
-	public Projection _projection;
-	//public float power;
-
-	public void Start()
-	{
-		//bulletLeft = maxMagazine;
-		grid = FindObjectOfType<NodeGrid>();
-		Vector3 fwd = transform.TransformDirection(Vector3.forward);
-		Debug.DrawRay(startPoint.position, fwd, Color.green);
-	}
-
-	public void Update()
-	{
-		if (player.currentTarget != null)
-		{
-			Vector3 dir = (player.currentTarget.aimPoint.position - startPoint.position).normalized;
-			Debug.DrawRay(startPoint.position, dir * weaponType.bulletRange, Color.green);
-		}
-
-		//_projection.SimulateTrajectory(weaponType.Ammo, startPoint.position, startPoint.forward * weaponType.bouncingForce * Time.fixedDeltaTime);
-	}
-
 	public override async Task Reload(ReloadAction reload)
 	{
 		Debug.Log($"start reloading");
@@ -90,17 +63,25 @@ public class AutomaticWeaponType : Weapon
 		if (weaponType.readyToShoot && !weaponType.reloading && weaponType.bulletLeft > 0)
 		{
 			Vector3 dir = (player.currentTarget.aimPoint.position - startPoint.position).normalized;
-			Debug.DrawRay(startPoint.position, dir * weaponType.bulletRange, Color.red);
+			ParticleSystem effectObj = Instantiate(weaponType.Ammo.fireEffect, startPoint.position, player.partToRotate.rotation);
+			ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
+
+			var main = effect.main;
+			main.duration = weaponType.timeBetweenShooting;
+
 			RaycastHit hit;
 			if (Physics.Raycast(startPoint.position, dir, out hit, weaponType.bulletRange))
 			{
 				weaponType.bulletsShot = 0;
+				effect.Play(true);
+
 				while (weaponType.bulletsShot <= weaponType.bulletInOneShot)
 				{
 					Shoot(hit);
-					//yield return new WaitForSeconds(weaponType.timeBetweenShooting);
 					await Task.Delay((int)(weaponType.timeBetweenShooting * 1000));
 				}
+				effect.Stop(true);
+				Destroy(effect.gameObject);
 			}
 			else
 			{
@@ -115,23 +96,6 @@ public class AutomaticWeaponType : Weapon
 	{
 		yield return new WaitForSeconds(weaponType.timeBetweenShooting);
 		weaponType.readyToShoot = true;
-	}
-
-	public void OnDrawGizmos()
-	{
-		if (grid != null)
-		{
-			//Ray ray = fps_Cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-			//RaycastHit hit;
-			//Gizmos.color = Color.red;
-			//if (Physics.Raycast(ray, out hit))
-			//{
-			//	Node hitNode = grid.getNodeFromTransformPosition(null, hit.point);
-			//	Vector3 targetPoint = hitNode.coord;
-
-			//	//Gizmos.DrawLine(player.actualPos.coord, targetPoint);
-			//}
-		}
 	}
 
 	public override string ToString()

@@ -30,5 +30,6 @@ public enum WeaponType
 {
 	pistol,
 	automatic,
-	grenadeluncher
+	grenadeluncher,
+	shotGun
 }

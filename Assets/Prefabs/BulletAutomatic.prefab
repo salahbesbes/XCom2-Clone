@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 1011055582716978091}
   - component: {fileID: 2099745317451156214}
   - component: {fileID: 8371300584363915410}
+  - component: {fileID: 2072528743087058512}
   - component: {fileID: 4935568523958254575}
   - component: {fileID: 6693965318503978171}
-  - component: {fileID: 2072528743087058512}
   m_Layer: 10
-  m_Name: bullet
+  m_Name: BulletAutomatic
   m_TagString: bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86,6 +86,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2072528743087058512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2225754711644898913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e342037340c3dc4c8d0d3be98251496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireEffect: {fileID: 198000012944515248, guid: 9defeac88977c0d448aa4541073ee9e4, type: 3}
+  metalHitEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
+  waterLeakEffect: {fileID: 1000011439201316, guid: a60a75fdadab5de428529a5b8ef0426a, type: 3}
+  sandHitEffect: {fileID: 1000012142692022, guid: a475880e7da0e9548aa05cb7933752cd, type: 3}
+  stoneHitEffect: {fileID: 1000010844420130, guid: 4edabb1c0dde62743b137378c7d22980, type: 3}
+  woodHitEffect: {fileID: 1000011190285628, guid: beb3acff7ab73944fb8f470f24d74ed3, type: 3}
+  fleshHitEffect: {fileID: 1000013169864706, guid: e5a3d6da48298a0458c1990f58c27069, type: 3}
+  charachterHitEffect: {fileID: 1000010191825552, guid: 83e55d3418297934fab882559d009285, type: 3}
+  waterLeakExtinguishEffect: {fileID: 1277954026192068, guid: 8c0568c457f38824d8649f26f2363927, type: 3}
 --- !u!135 &4935568523958254575
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -115,15 +136,3 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &2072528743087058512
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2225754711644898913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e342037340c3dc4c8d0d3be98251496, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

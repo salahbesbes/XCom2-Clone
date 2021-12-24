@@ -6,7 +6,7 @@ public class GrenadeLuncher : WeaponData
 	private void Awake()
 	{
 		ammoSpeed = 100f;
-		bouncingForce = 0;
+		bouncingForce = 5;
 		maxMagazine = 5;
 		bulletRange = 20;
 		timeBetweenShooting = 0.2f;

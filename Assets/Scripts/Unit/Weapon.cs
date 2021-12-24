@@ -3,6 +3,10 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
+	public WeaponData weaponType;
+	public Transform startPoint;
+	public AnyClass player;
+
 	public virtual async Task Reload(ReloadAction reload)
 	{ }
 
@@ -21,6 +25,7 @@ public abstract class Weapon : MonoBehaviour
 			lr.enabled = true;
 		}
 	}
+
 	private void OnDisable()
 	{
 		LineRenderer lr = GetComponent<LineRenderer>();
@@ -28,6 +33,5 @@ public abstract class Weapon : MonoBehaviour
 		{
 			lr.enabled = false;
 		}
-
 	}
 }

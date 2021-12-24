@@ -8,15 +8,14 @@ public class AutomaticWeapon : WeaponData
 		holdDownShooting = true;
 
 		shooting = false;
-		ammoSpeed = 100f;
+		ammoSpeed = 600;
 		bouncingForce = 0f;
 		readyToShoot = true;
 		reloading = false;
 		maxMagazine = 1000;
 		bulletRange = 100;
-		timeBetweenShooting = 0.2f;
-		timeBetweenShots = 0.06f;
-		shutGun = false;
+		timeBetweenShooting = 0.1f;
+		timeBetweenShots = 1f;
 		bulletInOneShot = 8;
 		bulletLeft = maxMagazine;
 		type = WeaponType.automatic;

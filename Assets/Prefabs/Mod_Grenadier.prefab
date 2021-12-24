@@ -55,6 +55,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mod_Grenadier
       objectReference: {fileID: 0}
+    - target: {fileID: 5465940246521907071, guid: 7c29b0a42db6eb6459eef234556e3674, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465940246521907071, guid: 7c29b0a42db6eb6459eef234556e3674, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465940246521907071, guid: 7c29b0a42db6eb6459eef234556e3674, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 7c29b0a42db6eb6459eef234556e3674, type: 3}
       propertyPath: m_Controller
       value: 
@@ -85,22 +97,22 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 1
---- !u!136 &-1459495970503180224
+--- !u!136 &2261231532413095646
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3066080613283473155}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8843da9524c3cec4eaebc0bf81cc4e1a, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.53
-  m_Height: 2.1
+  m_Radius: 0.27
+  m_Height: 1.7789756
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 0.8894878, z: 0}
 --- !u!114 &8425894238559905369
 MonoBehaviour:
   m_ObjectHideFlags: 0
