@@ -1,11 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class Ammo : MonoBehaviour
+public class AutoAmmo : Ammo
 {
-	public ParticleSystem fireEffect;
-
 	//public ParticleSystem hittingEffect;
 	public GameObject metalHitEffect;
+
 	public GameObject waterLeakEffect;
 	public GameObject sandHitEffect;
 	public GameObject stoneHitEffect;
@@ -72,5 +71,6 @@ public class Ammo : MonoBehaviour
 		// spawn the Effect in the direction of the Collider loking
 		GameObject spawnedDecal = Instantiate(prefab, hit.contacts[0].point, hit.transform.rotation);
 		//spawnedDecal.transform.SetParent(hit.collider.transform);
+		Destroy(gameObject);
 	}
 }

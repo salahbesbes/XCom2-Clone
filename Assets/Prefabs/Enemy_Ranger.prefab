@@ -836,7 +836,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   currentTarget: {fileID: 0}
   processing: 0
-  weapon: {fileID: 3249426411873429356}
+  weapon: {fileID: 1385690930872528473}
   partToRotate: {fileID: 8583340694775715537}
   model: {fileID: 6222303333201824603}
   speed: 5
@@ -942,6 +942,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mod_Ranger
       objectReference: {fileID: 0}
+    - target: {fileID: 6035371429797223265, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: -7480697632699123317}
     - target: {fileID: 7280168554103624810, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -961,15 +965,15 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1630596857841368675, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
   m_PrefabInstance: {fileID: 4682341571523900728}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3249426411873429356 stripped
+--- !u!114 &1385690930872528473 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7918256970732474964, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6035371429797223265, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
   m_PrefabInstance: {fileID: 4682341571523900728}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 882557fd05df00f488e2ff83948d818c, type: 3}
+  m_Script: {fileID: 11500000, guid: d3e588b603e1cdd45949d493c5ccf0dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &6803989636456501582 stripped

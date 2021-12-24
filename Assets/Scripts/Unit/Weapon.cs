@@ -3,7 +3,9 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-	public WeaponData weaponType;
+	//private WeaponData _weaponData;
+	//public abstract WeaponData weaponType { get; set; }
+
 	public Transform startPoint;
 	public AnyClass player;
 

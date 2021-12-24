@@ -9,6 +9,7 @@ public class WeaponData : ScriptableObject
 
 	[Range(9.8f, 1000)]
 	public float ammoSpeed = 9.81f;
+
 	public float bouncingForce;
 	public int bulletLeft;
 	public int bulletsShot = 0;
@@ -23,7 +24,6 @@ public class WeaponData : ScriptableObject
 	public bool shutGun;
 	public int bulletInOneShot = 1;
 	public WeaponType type;
-	public Ammo Ammo;
 }
 
 public enum WeaponType

@@ -3,6 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Weapon / Shotgun")]
 public class ShotgunWeapon : WeaponData
 {
+	public AutoAmmo ammo;
+
 	private void Awake()
 	{
 		shooting = false;
@@ -12,7 +14,7 @@ public class ShotgunWeapon : WeaponData
 		reloading = false;
 		maxMagazine = 1000;
 		bulletRange = 50;
-		timeBetweenShooting = 0.02f;
+		timeBetweenShooting = 0f;
 		shutGun = false;
 		timeBetweenShots = 1f;
 		bulletInOneShot = 8;

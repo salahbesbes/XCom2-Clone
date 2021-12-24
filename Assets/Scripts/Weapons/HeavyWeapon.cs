@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class HeavyWeapon : Weapon
 {
-	public int resolution = 30;
+	public GrenadeLuncher weaponType;
 	public LineRenderer lr;
+	public int resolution = 30;
 
 	private void Start()
 	{
@@ -107,8 +108,8 @@ public class HeavyWeapon : Weapon
 			{
 				Quaternion Ori = transform.rotation;
 				await rotateWeaponAndLunch(transform, -10);
-				Grenade bullet = (Grenade)Instantiate(weaponType.Ammo, startPoint.position, Quaternion.identity);
-				Rigidbody rb = bullet.GetComponent<Rigidbody>();
+				Grenade grenade = Instantiate(weaponType.ammo, startPoint.position, Quaternion.identity);
+				Rigidbody rb = grenade.GetComponent<Rigidbody>();
 				lunchToWard(rb, potentialDestination.coord, weaponType.bouncingForce, weaponType.ammoSpeed);
 				transform.rotation = Ori;
 			}

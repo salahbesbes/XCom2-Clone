@@ -3,6 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Weapon / Grenade Luncher")]
 public class GrenadeLuncher : WeaponData
 {
+	public Grenade ammo;
+
 	private void Awake()
 	{
 		ammoSpeed = 100f;
