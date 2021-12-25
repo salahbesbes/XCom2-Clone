@@ -2,24 +2,14 @@ using UnityEngine;
 
 public class Grenade : Ammo
 {
+	[Range(0, 5)]
+	public float ExpodeIn = 1;
 	[SerializeField] private Rigidbody _rb;
-	[SerializeField] private AudioSource _source;
-	[SerializeField] private AudioClip[] _clips;
-	[SerializeField] private GameObject _poofPrefab;
-	private bool _isGhost;
 
-	public void Init(Vector3 velocity, bool isGhost)
+	public async void OnCollisionEnter(Collision col)
 	{
-		_isGhost = isGhost;
-		//_rb.AddForce(velocity, ForceMode.Impulse);
-		_rb.velocity = velocity;
-	}
-
-	public void OnCollisionEnter(Collision col)
-	{
-		if (_isGhost) return;
-		//Instantiate(_poofPrefab, col.contacts[0].point, Quaternion.Euler(col.contacts[0].normal));
-		//_source.clip = _clips[Random.Range(0, _clips.Length)];
-		//_source.Play();
+		_rb.isKinematic = true;
+		await System.Threading.Tasks.Task.Delay((int)(ExpodeIn * 1000));
+		SpawnDecal(col, fireEffect);
 	}
 }

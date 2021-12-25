@@ -250,41 +250,21 @@ public class NodeGrid : MonoBehaviour
 				if (x > 0)
 				{
 					currentNode.neighbours.Add(graph[x - 1, y]);
-					if (graph[x - 1, y].isObstacle == true)
-					{
-						currentNode.LeftCover = new Cover(true);
-						currentNode.flinkedLeft = false;
-					}
 				}
 				//X is not mapSizeX - 1, then we can add right (x + 1)
 				if (x < height - 1)
 				{
 					currentNode.neighbours.Add(graph[x + 1, y]);
-					if (graph[x + 1, y].isObstacle == true)
-					{
-						currentNode.RightCover = new Cover(true);
-						currentNode.flinkedRight = false;
-					}
 				}
 				//Y is not 0, then we can add downwards (y - 1 )
 				if (y > 0)
 				{
 					currentNode.neighbours.Add(graph[x, y - 1]);
-					if (graph[x, y - 1].isObstacle == true)
-					{
-						currentNode.DownCover = new Cover(true);
-						currentNode.flinkedDown = false;
-					}
 				}
 				//Y is not mapSizeY -1, then we can add upwards (y + 1)
 				if (y < width - 1)
 				{
 					currentNode.neighbours.Add(graph[x, y + 1]);
-					if (graph[x, y + 1].isObstacle == true)
-					{
-						currentNode.UpCover = new Cover(true);
-						currentNode.flinkedUp = false;
-					}
 				}
 			}
 		}

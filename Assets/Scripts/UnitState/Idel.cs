@@ -9,6 +9,7 @@ public class Idel : AnyState<PlayerStateManager>
 	{
 		//Debug.Log($" {player.name}  state : {player.State.name}");
 		player.weapon.enabled = false;
+		player.getCoversValueFromStandingNode();
 		return null;
 	}
 

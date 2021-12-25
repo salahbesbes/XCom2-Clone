@@ -2,7 +2,7 @@
 
 public class Ammo : MonoBehaviour
 {
-	public ParticleSystem fireEffect;
+	public GameObject fireEffect;
 
 	//public ParticleSystem hittingEffect;
 	public GameObject metalHitEffect;
@@ -67,10 +67,10 @@ public class Ammo : MonoBehaviour
 		}
 	}
 
-	public void SpawnDecal(Collision hit, GameObject prefab)
+	public void SpawnDecal(Collision hit, GameObject prefab, Quaternion? dir = null)
 	{
-		// spawn the Effect in the direction of the Collider loking
-		GameObject spawnedDecal = Instantiate(prefab, hit.contacts[0].point, hit.transform.rotation);
+		Quaternion direction = dir ?? hit.transform.rotation;
+		GameObject spawnedDecal = Instantiate(prefab, hit.contacts[0].point, direction);
 		//spawnedDecal.transform.SetParent(hit.collider.transform);
 	}
 }

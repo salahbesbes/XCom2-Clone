@@ -64,6 +64,7 @@ public class AnyClass : Unit, IBaseActions
 		}
 
 		Node potentialDestination = res;
+
 		if (potentialDestination != null && potentialDestination != destination && potentialDestination != currentPos)
 		{
 			List<Node> potentialPath = FindPath.AStarAlgo(currentPos, potentialDestination);
@@ -244,5 +245,24 @@ public class AnyClass : Unit, IBaseActions
 
 		ShootAction shoot = new ShootAction(ShootActionCallBack, "Shoot");
 		Enqueue(shoot);
+	}
+
+	public void getCoversValueFromStandingNode()
+	{
+		float myTotalCover = 0;
+		foreach (Cover cover in currentPos.tile.listOfActiveCover)
+		{
+			myTotalCover += cover.Value;
+		}
+		Debug.Log($"total cover = {myTotalCover}");
+	}
+
+	public void checkTargetCoverDirection(Node targetNode)
+	{
+		foreach (Cover cover in targetNode.tile.listOfActiveCover)
+		{
+			Vector3 dir = new Vector3(cover.coverObj.transform.position.x - targetNode.coord.x, 0, cover.coverObj.transform.position.z - targetNode.coord.z).normalized;
+			Debug.DrawRay(targetNode.coord + Vector3.up, dir);
+		}
 	}
 }
