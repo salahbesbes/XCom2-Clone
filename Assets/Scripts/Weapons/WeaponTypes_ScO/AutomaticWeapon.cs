@@ -3,6 +3,8 @@
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Weapon / AutomaticWeapon")]
 public class AutomaticWeapon : WeaponData
 {
+	public AutoAmmo ammo;
+
 	private void Awake()
 	{
 		holdDownShooting = true;

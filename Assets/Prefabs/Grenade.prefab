@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38359c16dbf7f9649bea07552b8a4677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireEffect: {fileID: 1000010254994808, guid: 9defeac88977c0d448aa4541073ee9e4, type: 3}
   _rb: {fileID: 6693965318503978171}
-  _source: {fileID: 0}
-  _clips: []
-  _poofPrefab: {fileID: 0}
+  ExplodeEffect: {fileID: 1000011797152326, guid: acf39d9f4addf294d93fa56fa373961b, type: 3}
+  ExplosionIn: 2

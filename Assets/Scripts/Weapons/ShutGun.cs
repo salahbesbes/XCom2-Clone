@@ -1,9 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class AutomaticWeaponType : Weapon
+public class ShutGun : Weapon
 {
+	public ShotgunWeapon weaponType;
+
 	public override async Task Reload(ReloadAction reload)
 	{
 		Debug.Log($"start reloading");
@@ -37,7 +39,7 @@ public class AutomaticWeaponType : Weapon
 		dir = dir + new Vector3(x, y, 0);
 		//Debug.Log($"hit point {hit.point}  node.coord {hitNode.coord} dir {dir}");
 
-		Ammo bullet = Instantiate(weaponType.Ammo, startPoint.position, Quaternion.identity);
+		Ammo bullet = Instantiate(weaponType.ammo, startPoint.position, Quaternion.identity);
 		// we orient the bullet to the direction created
 		bullet.transform.forward = dir.normalized;
 
@@ -63,12 +65,9 @@ public class AutomaticWeaponType : Weapon
 		if (weaponType.readyToShoot && !weaponType.reloading && weaponType.bulletLeft > 0)
 		{
 			Vector3 dir = (player.currentTarget.aimPoint.position - startPoint.position).normalized;
-			ParticleSystem effectObj = Instantiate(weaponType.Ammo.fireEffect, startPoint.position, player.partToRotate.rotation);
+			GameObject effectObj = Instantiate(weaponType.ammo.fireEffect, startPoint.position, player.partToRotate.rotation);
 			ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
-
-			var main = effect.main;
-			main.duration = weaponType.timeBetweenShooting;
-
+			Debug.Log($"{effectObj.name}");
 			RaycastHit hit;
 			if (Physics.Raycast(startPoint.position, dir, out hit, weaponType.bulletRange))
 			{
@@ -80,8 +79,8 @@ public class AutomaticWeaponType : Weapon
 					Shoot(hit);
 					await Task.Delay((int)(weaponType.timeBetweenShooting * 1000));
 				}
-				effect.Stop(true);
-				Destroy(effect.gameObject);
+				//effect.Stop(true);
+				//Destroy(effect.gameObject);
 			}
 			else
 			{

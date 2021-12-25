@@ -19,7 +19,7 @@ MonoBehaviour:
   ammoSpeed: 100
   bouncingForce: 5
   bulletLeft: 5
-  bulletsShot: 2
+  bulletsShot: 0
   maxMagazine: 5
   bulletRange: 20
   spread: 0
@@ -28,4 +28,4 @@ MonoBehaviour:
   shutGun: 0
   bulletInOneShot: 1
   type: 2
-  Ammo: {fileID: 5940904161140941163, guid: e5327058d6dd0864d9c7260369387913, type: 3}
+  ammo: {fileID: 5940904161140941163, guid: e5327058d6dd0864d9c7260369387913, type: 3}

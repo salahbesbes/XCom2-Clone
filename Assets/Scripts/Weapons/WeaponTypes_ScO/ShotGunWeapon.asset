@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7763a7e051b811c45bc4475564fdde22, type: 3}
-  m_Name: ShotgunWeapon
+  m_Name: ShotGunWeapon
   m_EditorClassIdentifier: 
   holdDownShooting: 1
   shooting: 0
   readyToShoot: 1
   reloading: 0
-  ammoSpeed: 596
+  ammoSpeed: 458
   bouncingForce: 0
-  bulletLeft: 910
+  bulletLeft: 856
   bulletsShot: 9
   maxMagazine: 1000
-  bulletRange: 20
-  spread: 0.062
-  timeBetweenShooting: 0.02
-  timeBetweenShots: 0.06
+  bulletRange: 50
+  spread: 0.332
+  timeBetweenShooting: 0
+  timeBetweenShots: 0.02
   shutGun: 0
   bulletInOneShot: 8
-  type: 1
-  Ammo: {fileID: 2072528743087058512, guid: 0425ee0449315da4cb2954b68413f046, type: 3}
+  type: 3
+  ammo: {fileID: -512833983232135524, guid: 0425ee0449315da4cb2954b68413f046, type: 3}

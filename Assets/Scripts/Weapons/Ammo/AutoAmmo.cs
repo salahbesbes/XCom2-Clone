@@ -1,11 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class Ammo : MonoBehaviour
+public class AutoAmmo : Ammo
 {
-	public GameObject fireEffect;
-
 	//public ParticleSystem hittingEffect;
 	public GameObject metalHitEffect;
+
 	public GameObject waterLeakEffect;
 	public GameObject sandHitEffect;
 	public GameObject stoneHitEffect;
@@ -72,5 +71,6 @@ public class Ammo : MonoBehaviour
 		Quaternion direction = dir ?? hit.transform.rotation;
 		GameObject spawnedDecal = Instantiate(prefab, hit.contacts[0].point, direction);
 		//spawnedDecal.transform.SetParent(hit.collider.transform);
+		Destroy(gameObject);
 	}
 }
