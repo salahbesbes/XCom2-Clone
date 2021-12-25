@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Idel : AnyState<PlayerStateManager>
 {
+	private Node oldDestination, potentialDest;
+
 	public override AnyClass EnterState(PlayerStateManager player)
 	{
 		//Debug.Log($" {player.name}  state : {player.State.name}");
@@ -37,7 +39,6 @@ public class Idel : AnyState<PlayerStateManager>
 		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
 			player.SelectNextTarget(player);
-
 		}
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
@@ -45,7 +46,8 @@ public class Idel : AnyState<PlayerStateManager>
 		}
 
 		player.CheckMovementRange();
-		player.onNodeHover();
+		oldDestination = potentialDest;
+		potentialDest = player.onNodeHover(oldDestination);
 	}
 
 	public async void rotateTowardDirection(PlayerStateManager player, Vector3 dir)

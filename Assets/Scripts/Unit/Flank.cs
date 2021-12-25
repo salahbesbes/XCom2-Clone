@@ -148,7 +148,7 @@ public class Flank : MonoBehaviour
 
 			NodeGrid grid = FindObjectOfType<NodeGrid>();
 			Node res = grid.getNodeFromTransformPosition(hit.transform);
-			res.tile.GetComponent<Renderer>().material.color = Color.cyan;
+			res.tile.obj.GetComponent<Renderer>().material.color = Color.cyan;
 
 			List<Node> groupOfObstacles = selectVisibleTiles(res, new List<Node>());
 
@@ -164,7 +164,7 @@ public class Flank : MonoBehaviour
 				foreach (var neibour in edge.neighbours)
 				{
 					if (!neibour.isObstacle)
-						neibour.tile.GetComponent<Renderer>().material.color = Color.yellow;
+						neibour.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
 
 				}
 
@@ -186,14 +186,14 @@ public class Flank : MonoBehaviour
 	List<Node> selectVisibleTiles(Node node, List<Node> obstacles)
 	{
 		obstacles.Add(node);
-		node.tile.GetComponent<Renderer>().material.color = Color.red;
+		node.tile.obj.GetComponent<Renderer>().material.color = Color.red;
 
 		foreach (Node neihbour in node.neighbours)
 		{
 			if (neihbour.isObstacle && !obstacles.Contains(neihbour))
 				selectVisibleTiles(neihbour, obstacles);
 			if (!neihbour.isObstacle)
-				neihbour.tile.GetComponent<Renderer>().material.color = Color.cyan;
+				neihbour.tile.obj.GetComponent<Renderer>().material.color = Color.cyan;
 
 		}
 		return obstacles;

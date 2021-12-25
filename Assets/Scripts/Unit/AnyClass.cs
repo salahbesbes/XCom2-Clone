@@ -45,9 +45,9 @@ public class AnyClass : Unit, IBaseActions
 		}
 	}
 
-	public void onNodeHover()
+	public Node onNodeHover(Node oldPotentialDest)
 	{
-		Node oldDestination = destination;
+		//Node oldDestination = destination;
 		Node res;
 		if (grid == null)
 		{
@@ -62,11 +62,12 @@ public class AnyClass : Unit, IBaseActions
 		{
 			res = grid.getNodeFromMousePosition();
 		}
+
 		Node potentialDestination = res;
 		if (potentialDestination != null && potentialDestination != destination && potentialDestination != currentPos)
 		{
 			List<Node> potentialPath = FindPath.AStarAlgo(currentPos, potentialDestination);
-			if (potentialPath.Count == 0) return;
+			if (potentialPath.Count == 0) return null;
 			Vector3[] turns = FindPath.createWayPoint(potentialPath);
 
 			//lineConponent.SetUpLine(turnPoints);
@@ -76,21 +77,53 @@ public class AnyClass : Unit, IBaseActions
 			foreach (Node node in path)
 			{
 				if (turnPoints.Contains(node.coord))
-					node.tile.GetComponent<Renderer>().material.color = Color.green;
+					node.tile.obj.GetComponent<Renderer>().material.color = Color.green;
 				else
 				{
-					node.tile.GetComponent<Renderer>().material.color = Color.gray;
+					node.tile.obj.GetComponent<Renderer>().material.color = Color.gray;
 				}
 			}
-			potentialDestination.tile.GetComponent<Renderer>().material.color = Color.blue;
+			potentialDestination.tile.obj.GetComponent<Renderer>().material.color = Color.blue;
+			checkForCover(potentialDestination);
 
 			if (Input.GetMouseButtonDown(0))
 			{
 				ActionData move = actions.FirstOrDefault((el) => el is MovementAction);
 				move.Actionevent.Raise();
-				//gameStateManager.selectedPlayer.CreateNewMoveAction();
+			}
+
+			if (oldPotentialDest != null && oldPotentialDest != potentialDestination)
+			{
+				oldPotentialDest.tile.destroyAllActiveCover();
+				oldPotentialDest.tile.mouseOnTile = false;
+			}
+			return potentialDestination;
+		}
+		// if potentialDestination is null(hover over some unwalckabale) we return the
+		// oldDestination
+		return oldPotentialDest;
+	}
+
+	private void checkForCover(Node potentialDestination)
+	{
+		if (potentialDestination.tile.mouseOnTile == true) return;
+		foreach (Node neighbour in potentialDestination.neighbours)
+		{
+			if (neighbour.isObstacle == true)
+			{
+				Vector3 side = (neighbour.coord - potentialDestination.coord).normalized;
+
+				if (side == Vector3.right)
+					potentialDestination.tile.createRightCover();
+				else if (side == Vector3.left)
+					potentialDestination.tile.createLeftCover();
+				else if (side == Vector3.forward)
+					potentialDestination.tile.createForwardCover();
+				else if (side == Vector3.back)
+					potentialDestination.tile.createBackCover();
 			}
 		}
+		potentialDestination.tile.mouseOnTile = true;
 	}
 
 	public List<Node> CheckMovementRange()
@@ -118,9 +151,9 @@ public class AnyClass : Unit, IBaseActions
 		foreach (Node item in allAccceccibleNodes)
 		{
 			if (item.firstRange == true)
-				item.tile.GetComponent<Renderer>().material.color = Color.black;
+				item.tile.obj.GetComponent<Renderer>().material.color = Color.black;
 			else
-				item.tile.GetComponent<Renderer>().material.color = Color.yellow;
+				item.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
 		}
 
 		return allAccceccibleNodes;

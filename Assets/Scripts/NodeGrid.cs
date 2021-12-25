@@ -29,7 +29,7 @@ public class NodeGrid : MonoBehaviour
 	public int width, height;
 
 	public Vector2 wordSizeGrid;
-	private List<Transform> tiles = new List<Transform>();
+	private List<Tile> tiles = new List<Tile>();
 	public Transform quadHolder;
 
 	/// <summary>
@@ -165,7 +165,7 @@ public class NodeGrid : MonoBehaviour
 			node.color = node.isObstacle ? Color.red : Color.cyan;
 			node.inRange = false;
 			node.firstRange = false;
-			node.tile.GetComponent<Renderer>().material.color = Color.white;
+			node.tile.obj.GetComponent<Renderer>().material.color = Color.white;
 		}
 	}
 
@@ -219,13 +219,15 @@ public class NodeGrid : MonoBehaviour
 				graph[x, y] = new Node(nodeCoord, x, y);
 
 				// create Quad
-				GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-				quad.transform.position = graph[x, y].coord;
-				quad.transform.rotation = Quaternion.Euler(90, 0, 0);
-				quad.transform.SetParent(quadHolder);
-				quad.GetComponent<Renderer>().material = (Material)Resources.Load("tile", typeof(Material));
-				tiles.Add(quad.transform);
-				graph[x, y].tile = quad.transform;
+				//GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+				//quad.transform.position = graph[x, y].coord;
+				//quad.transform.rotation = Quaternion.Euler(90, 0, 0);
+				//quad.transform.SetParent(quadHolder);
+				//quad.GetComponent<Renderer>().material = (Material)Resources.Load("tile", typeof(Material));
+				//tiles.Add(quad.transform);
+				//graph[x, y].tile = quad.transform;
+
+				new Tile(graph[x, y], quadHolder, tiles);
 
 				// project a sphere to check with the Layer Unwalkable if some thing
 				// with the layer Unwalkable above it
