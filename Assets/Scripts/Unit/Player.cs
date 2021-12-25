@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Player : PlayerStateManager
 {
-
 	private void Awake()
 	{
 		gameStateManager = FindObjectOfType<GameStateManager>();
@@ -192,6 +191,11 @@ public class Player : PlayerStateManager
 
 				Gizmos.DrawCube(node.coord, new Vector3(grid.nodeSize - 0.1f, 0.02f, grid.nodeSize - 0.1f));
 			}
+		}
+
+		if (currentTarget != null)
+		{
+			Debug.DrawRay(new Vector3(currentTarget.partToRotate.transform.position.x, 0.5f, currentTarget.partToRotate.transform.position.z), currentTarget.partToRotate.forward * 2, Color.cyan);
 		}
 	}
 }

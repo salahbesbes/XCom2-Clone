@@ -31,6 +31,13 @@ public class AnyClass : Unit, IBaseActions
 			// todo: find an alternative this cast can cause problem i nthe future
 			gameStateManager.SelectedPlayer = (Player)currentTarget;
 			rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
+			rotateTowardDirection(currentTarget.partToRotate, aimPoint.position - currentTarget.aimPoint.position);
+			Vector3 ori = new Vector3(currentTarget.partToRotate.transform.position.x, 0.5f, currentTarget.partToRotate.transform.position.z);
+			RaycastHit hit;
+			if (Physics.Raycast(ori, currentTarget.partToRotate.forward, out hit, Vector3.forward.magnitude * 2))
+			{
+				Debug.Log($" target have some obstacle =>  {hit.collider.name}");
+			}
 			onChangeTarget.Raise();
 		}
 		else if (currentUnit is Player)
@@ -41,6 +48,15 @@ public class AnyClass : Unit, IBaseActions
 			// todo: find an alternative this cast can cause problem i nthe future
 			gameStateManager.SelectedEnemy = (Enemy)currentTarget;
 			rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
+			rotateTowardDirection(currentTarget.partToRotate, aimPoint.position - currentTarget.aimPoint.position);
+			Vector3 ori = new Vector3(currentTarget.partToRotate.transform.position.x, 0.5f, currentTarget.partToRotate.transform.position.z);
+
+			RaycastHit hit;
+			Debug.DrawRay(ori, currentTarget.partToRotate.forward);
+			if (Physics.Raycast(ori, currentTarget.partToRotate.forward, out hit, Vector3.forward.magnitude * 2))
+			{
+				Debug.Log($" target have some obstacle =>  {hit.collider.name}");
+			}
 			onChangeTarget.Raise();
 		}
 	}
@@ -105,7 +121,7 @@ public class AnyClass : Unit, IBaseActions
 		return oldPotentialDest;
 	}
 
-	private void checkForCover(Node potentialDestination)
+	public void checkForCover(Node potentialDestination)
 	{
 		if (potentialDestination.tile.mouseOnTile == true) return;
 		foreach (Node neighbour in potentialDestination.neighbours)
@@ -249,12 +265,12 @@ public class AnyClass : Unit, IBaseActions
 
 	public void getCoversValueFromStandingNode()
 	{
-		float myTotalCover = 0;
-		foreach (Cover cover in currentPos.tile.listOfActiveCover)
-		{
-			myTotalCover += cover.Value;
-		}
-		Debug.Log($"total cover = {myTotalCover}");
+		//float myTotalCover = 0;
+		//foreach (Cover cover in currentPos.tile.listOfActiveCover)
+		//{
+		//	myTotalCover += cover.Value;
+		//}
+		//Debug.Log($"total cover = {myTotalCover}");
 	}
 
 	public void checkTargetCoverDirection(Node targetNode)

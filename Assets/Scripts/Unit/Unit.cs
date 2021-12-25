@@ -185,6 +185,17 @@ public class Unit : MonoBehaviour
 			UnitStats stats = GetComponent<Stats>().unit;
 			stats.ShootActionEvent.Raise(stats);
 		}
+		if (action is MoveAction)
+		{
+			rotateTowardDirection(currentTarget.partToRotate, transform.position - currentTarget.aimPoint.position);
+			Vector3 ori = new Vector3(currentTarget.partToRotate.transform.position.x, 0.5f, currentTarget.partToRotate.transform.position.z);
+
+			RaycastHit hit;
+			if (Physics.Raycast(ori, currentTarget.partToRotate.forward * 2, out hit, Vector3.forward.magnitude * 2))
+			{
+				Debug.Log($"target have some obstacle => {hit.collider.name}");
+			}
+		}
 		// switch state
 		player.SwitchState(player.idelState);
 		Debug.Log($"{player.name} current state : {player.State.name}");
