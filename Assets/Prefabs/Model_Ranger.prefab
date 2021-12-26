@@ -2300,6 +2300,7 @@ GameObject:
   - component: {fileID: 6817077485094259687}
   - component: {fileID: 7284011784439240003}
   - component: {fileID: 8169982562370719129}
+  - component: {fileID: 6727964834552782436}
   m_Layer: 0
   m_Name: Model_Ranger
   m_TagString: Untagged
@@ -2387,6 +2388,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 341a1090eb1e7a74a8b6276054457f70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6727964834552782436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8464873604351944360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42d977294acd97c4191f1f7619d61199, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sportPoint:
+  - {fileID: 3018964920320526529}
+  - {fileID: 3097797801250555132}
+  - {fileID: 1911372207468576036}
+  - {fileID: 3871679147173565731}
+  - {fileID: 2908771111842819729}
 --- !u!1 &8556044331735811571
 GameObject:
   m_ObjectHideFlags: 0

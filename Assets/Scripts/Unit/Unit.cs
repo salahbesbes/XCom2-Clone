@@ -32,6 +32,11 @@ public class Unit : MonoBehaviour
 		move(actionInstance, turnPoints);
 	}
 
+	//private void Start()
+	//{
+	//	grid = NodeGrid.Instance;
+	//}
+
 	public void PlayAnimation(AnimationType anim)
 	{
 		foreach (AnimatorControllerParameter item in animator.parameters)

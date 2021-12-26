@@ -18,7 +18,7 @@ public class PlayerTurn : AnyState<GameStateManager>
 
 	public override void Update(GameStateManager gameManager)
 	{
-		gameManager.SelectedPlayer.currentPos = gameManager.grid.getNodeFromTransformPosition(gameManager.SelectedPlayer.transform);
+		gameManager.SelectedPlayer.currentPos = NodeGrid.Instance.getNodeFromTransformPosition(gameManager.SelectedPlayer.transform);
 		if (Input.GetKeyDown(KeyCode.Tab))
 		{
 			SelectNextPlayer(gameManager);
@@ -78,7 +78,7 @@ public class EnemyTurn : AnyState<GameStateManager>
 
 	public override void Update(GameStateManager gameManager)
 	{
-		gameManager.SelectedEnemy.currentPos = gameManager.grid.getNodeFromTransformPosition(gameManager.SelectedEnemy.transform);
+		gameManager.SelectedEnemy.currentPos = NodeGrid.Instance.getNodeFromTransformPosition(gameManager.SelectedEnemy.transform);
 		if (Input.GetKeyDown(KeyCode.Tab))
 		{
 			SelectNextEnemy(gameManager);
@@ -114,7 +114,6 @@ public class EnemyTurn : AnyState<GameStateManager>
 			gameManager.SelectedEnemy.enabled = true;
 			gameManager.SelectedEnemy.fpsCam.enabled = true;
 			gameManager.SelectedEnemy.currentTarget = gameManager.SelectedPlayer;
-
 
 			gameManager.PlayerChangeEvent.Raise();
 		}

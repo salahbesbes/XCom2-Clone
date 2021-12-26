@@ -79,7 +79,6 @@ public class GameStateManager : GameManagerListner
 				MakeGAmeMAnagerListingToNewSelectedUnit(_selectedPlayer);
 				MakeOnlySelectedUnitListingToEventArgument(_selectedPlayer, PlayerChangeEvent);
 				MakeOnlySelectedUnitListingToEquipeEvent(_selectedPlayer, _selectedPlayer.GetComponent<Stats>()?.unit?.EquipeEvent);
-
 			}
 			else if (State is EnemyTurn)
 			{
@@ -99,7 +98,7 @@ public class GameStateManager : GameManagerListner
 	private void Awake()
 	{
 		SwitchState(playerTurn);
-		grid = FindObjectOfType<NodeGrid>();
+		grid = NodeGrid.Instance;
 	}
 
 	private void Start()
@@ -120,7 +119,7 @@ public class GameStateManager : GameManagerListner
 	{
 		// for any state the player is in, we execute the update methode of that State
 		// change of the state is instant since this update executs every frame
-		State.Update(this);
+		State?.Update(this);
 	}
 
 	public void SwitchState(BaseState<GameStateManager> newState)

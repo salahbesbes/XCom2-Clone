@@ -36,4 +36,9 @@ public abstract class Weapon : MonoBehaviour
 			lr.enabled = false;
 		}
 	}
+
+	public virtual float howMuchVisibleTheTArgetIs()
+	{
+		return 1;
+	}
 }

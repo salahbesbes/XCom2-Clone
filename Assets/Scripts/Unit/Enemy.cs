@@ -4,26 +4,20 @@ using UnityEngine;
 
 public class Enemy : PlayerStateManager
 {
-
 	private void Start()
 	{
-
 		queueOfActions = new Queue<ActionBase>();
 		path = new List<Node>();
 		turnPoints = new Vector3[0];
-		grid = FindObjectOfType<NodeGrid>();
+		grid = NodeGrid.Instance;
 		currentPos = grid.getNodeFromTransformPosition(transform);
 		gameStateManager = FindObjectOfType<GameStateManager>();
 		animator = model.GetComponent<Animator>();
 		stats = GetComponent<Stats>();
 		currentTarget = gameStateManager.SelectedPlayer;
 
-
-
-
+		//sportPoints.AddRange(model.GetComponent<SpotPoints>().sportPoint);
 	}
-
-
 
 	private bool checkPointIfSameLineOrColumAsTarget(Vector3 target, Vector3 pointNode)
 	{

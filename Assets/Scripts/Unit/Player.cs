@@ -5,16 +5,13 @@ using UnityEngine;
 
 public class Player : PlayerStateManager
 {
-	private void Awake()
-	{
-		gameStateManager = FindObjectOfType<GameStateManager>();
-		//currentTarget = gameStateManager.SelectedEnemy;
-		grid = FindObjectOfType<NodeGrid>();
-		currentPos = grid.getNodeFromTransformPosition(transform);
-	}
-
 	public void Start()
 	{
+		grid = NodeGrid.Instance;
+		gameStateManager = FindObjectOfType<GameStateManager>();
+		//currentTarget = gameStateManager.SelectedEnemy;
+
+		currentPos = grid.getNodeFromTransformPosition(transform);
 		queueOfActions = new Queue<ActionBase>();
 		path = new List<Node>();
 		turnPoints = new Vector3[0];
@@ -23,6 +20,9 @@ public class Player : PlayerStateManager
 		currentPos = grid.getNodeFromTransformPosition(transform);
 		animator = model.GetComponent<Animator>();
 		stats = GetComponent<Stats>();
+		Debug.Log($"my sport are {sportPoints.Count}");
+		//sportPoints.AddRange(model.GetComponent<SpotPoints>().sportPoint);
+
 		//listners = transform.Find("listners").gameObject;
 		//lineConponent.SetUpLine(turnPoints);
 	}
@@ -157,10 +157,11 @@ public class Player : PlayerStateManager
 		}
 	}
 
-	public void OnDrawGizmos()
+	public void OnDrawGizmossss()
 	{
 		if (grid != null && grid.graph != null)
 		{
+			Debug.Log($"{currentPos == null && !TurnOnGizmos}");
 			if (currentPos == null && !TurnOnGizmos) return;
 
 			foreach (Node node in grid?.graph)

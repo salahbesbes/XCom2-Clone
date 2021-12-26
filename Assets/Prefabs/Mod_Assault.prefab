@@ -66,6 +66,31 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c7404f67aae92b847a7238f29679158e, type: 3}
   m_PrefabInstance: {fileID: 1877412322755553619}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &8733405511535923086 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -2072040086291044643, guid: c7404f67aae92b847a7238f29679158e, type: 3}
+  m_PrefabInstance: {fileID: 1877412322755553619}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6201231579108288393 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3746190272939815206, guid: c7404f67aae92b847a7238f29679158e, type: 3}
+  m_PrefabInstance: {fileID: 1877412322755553619}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5354850833704712811 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3432401550182100168, guid: c7404f67aae92b847a7238f29679158e, type: 3}
+  m_PrefabInstance: {fileID: 1877412322755553619}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5470680602631035963 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3321919801592875672, guid: c7404f67aae92b847a7238f29679158e, type: 3}
+  m_PrefabInstance: {fileID: 1877412322755553619}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5280560998472283734 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6000407479487422213, guid: c7404f67aae92b847a7238f29679158e, type: 3}
+  m_PrefabInstance: {fileID: 1877412322755553619}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &268039244388423323 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: c7404f67aae92b847a7238f29679158e, type: 3}
@@ -113,6 +138,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 341a1090eb1e7a74a8b6276054457f70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4653381317448014760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642830206534423554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42d977294acd97c4191f1f7619d61199, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sportPoint:
+  - {fileID: 5354850833704712811}
+  - {fileID: 5280560998472283734}
+  - {fileID: 8733405511535923086}
+  - {fileID: 6201231579108288393}
+  - {fileID: 5470680602631035963}
 --- !u!1001 &8614678144860619313
 PrefabInstance:
   m_ObjectHideFlags: 0

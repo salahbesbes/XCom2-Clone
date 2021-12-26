@@ -153,7 +153,8 @@ public class NodeGrid : MonoBehaviour
 
 	public void resetGrid()
 	{
-		foreach (Node node in graph)
+		if (Instance?.graph == null) return;
+		foreach (Node node in Instance.graph)
 		{
 			node.h = float.PositiveInfinity;
 			node.g = float.PositiveInfinity;
@@ -184,18 +185,17 @@ public class NodeGrid : MonoBehaviour
 	{
 		if (Instance == null)
 		{
-			Instance = this;
 			//turnPoints = new Vector3[0];
-
+			Instance = this;
 			nodeRadius = nodeSize / 2;
 			height = Mathf.RoundToInt(wordSizeGrid.x / nodeSize);
 			width = Mathf.RoundToInt(wordSizeGrid.y / nodeSize);
-
+			graph = new Node[width, height];
 			buttonLeft = transform.position - (Vector3.right * wordSizeGrid.x / 2) - (Vector3.forward * wordSizeGrid.y / 2);
 			generateGrid();
 			//start = graph[0, 0];
 
-			DontDestroyOnLoad(gameObject);
+			//DontDestroyOnLoad(gameObject);
 			transform.localScale = new Vector3((float)width / 10, 1, (float)height / 10);
 			FindObjectOfType<Camera>().transform.position += new Vector3(0, 45 * (width / 50), 0);
 
@@ -207,7 +207,6 @@ public class NodeGrid : MonoBehaviour
 
 	private void generateGrid()
 	{
-		graph = new Node[width, height];
 		//initialize graph
 		for (int x = 0; x < height; x++)
 		{

@@ -9,7 +9,7 @@ public class DragObject : MonoBehaviour
 
 	private void Awake()
 	{
-		grid = FindObjectOfType<NodeGrid>();
+		grid = NodeGrid.Instance;
 	}
 
 	private void OnMouseDown()

@@ -17,7 +17,9 @@ public class AnyClass : Unit, IBaseActions
 
 	public Transform aimPoint;
 	public bool isFlanked;
-	public Transform pointsRayCast;
+
+	[HideInInspector]
+	public List<Transform> sportPoints;
 	public VoidEvent onChangeTarget;
 
 	public void SelectNextTarget(AnyClass currentUnit)
@@ -67,16 +69,16 @@ public class AnyClass : Unit, IBaseActions
 		Node res;
 		if (grid == null)
 		{
-			grid = FindObjectOfType<NodeGrid>();
+			grid = NodeGrid.Instance;
 			Debug.Log($" grid is null set it  ");
 		}
 		if (fpsCam.enabled)
 		{
-			res = grid.getNodeFromMousePosition(fpsCam);
+			res = NodeGrid.Instance.getNodeFromMousePosition(fpsCam);
 		}
 		else
 		{
-			res = grid.getNodeFromMousePosition();
+			res = NodeGrid.Instance.getNodeFromMousePosition();
 		}
 
 		Node potentialDestination = res;

@@ -78,6 +78,31 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7c29b0a42db6eb6459eef234556e3674, type: 3}
   m_PrefabInstance: {fileID: 2760004822432488018}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &5004382395620965519 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -2072040086291044643, guid: 7c29b0a42db6eb6459eef234556e3674, type: 3}
+  m_PrefabInstance: {fileID: 2760004822432488018}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7660440484993701000 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3746190272939815206, guid: 7c29b0a42db6eb6459eef234556e3674, type: 3}
+  m_PrefabInstance: {fileID: 2760004822432488018}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8507345027361491306 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3432401550182100168, guid: 7c29b0a42db6eb6459eef234556e3674, type: 3}
+  m_PrefabInstance: {fileID: 2760004822432488018}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8623173142691213114 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3321919801592875672, guid: 7c29b0a42db6eb6459eef234556e3674, type: 3}
+  m_PrefabInstance: {fileID: 2760004822432488018}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8433055228886369623 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6000407479487422213, guid: 7c29b0a42db6eb6459eef234556e3674, type: 3}
+  m_PrefabInstance: {fileID: 2760004822432488018}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4609483735327303066 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 7c29b0a42db6eb6459eef234556e3674, type: 3}
@@ -113,6 +138,24 @@ CapsuleCollider:
   m_Height: 1.7789756
   m_Direction: 1
   m_Center: {x: 0, y: 0.8894878, z: 0}
+--- !u!114 &995044995468903929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3066080613283473155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42d977294acd97c4191f1f7619d61199, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sportPoint:
+  - {fileID: 8507345027361491306}
+  - {fileID: 8433055228886369623}
+  - {fileID: 5004382395620965519}
+  - {fileID: 7660440484993701000}
+  - {fileID: 8623173142691213114}
 --- !u!114 &8425894238559905369
 MonoBehaviour:
   m_ObjectHideFlags: 0
