@@ -110,24 +110,24 @@ public class Ak47 : Weapon
 	public override float howMuchVisibleTheTArgetIs()
 	{
 		Vector3 ori = startPoint.position;
-		float spotValue = 1 / player.currentTarget.sportPoints.Count;
-		Debug.Log($" sport value {spotValue}");
+		float spotValue = 1.0f / player.currentTarget.sportPoints.Count;
 		float percent = 0;
-		string[] collidableLayers = { "Enemy" };
+		string[] collidableLayers = { "Enemy", "Unwalkable" };
 		int layerToCheck = LayerMask.GetMask(collidableLayers);
 		RaycastHit hit;
+
 		foreach (Transform spot in player.currentTarget.sportPoints)
 		{
 			Vector3 dir = (spot.position - ori).normalized;
 			Debug.DrawRay(ori, dir * weaponType.bulletRange, Color.cyan);
 			if (Physics.Raycast(ori, dir, out hit, weaponType.bulletRange, layerToCheck))
 			{
-				Debug.Log($" hit {hit.collider.name}");
-				percent += spotValue;
-				Debug.Log($"{percent}");
+				if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Enemy")
+				{
+					percent += spotValue;
+				}
 			}
 		}
-		Debug.Log($"{percent}");
 		return percent;
 	}
 }

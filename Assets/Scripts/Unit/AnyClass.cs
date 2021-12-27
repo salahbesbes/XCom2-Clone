@@ -21,8 +21,19 @@ public class AnyClass : Unit, IBaseActions
 	[HideInInspector]
 	public List<Transform> sportPoints;
 	public VoidEvent onChangeTarget;
+	private float _targetAimValue;
 
-	public void SelectNextTarget(AnyClass currentUnit)
+	public float TargetAimValue
+	{
+		get => _targetAimValue;
+		set
+		{
+			_targetAimValue = value;
+			//Mathf.Clamp(TargetAimValue, 0, int.MaxValue);
+		}
+	}
+
+	public async void SelectNextTarget(AnyClass currentUnit)
 	{
 		if (currentUnit is Enemy)
 		{
@@ -32,14 +43,15 @@ public class AnyClass : Unit, IBaseActions
 			currentTarget = players[(currentTargetIndex + 1) % nbPlyaers];
 			// todo: find an alternative this cast can cause problem i nthe future
 			gameStateManager.SelectedPlayer = (Player)currentTarget;
-			rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
-			rotateTowardDirection(currentTarget.partToRotate, aimPoint.position - currentTarget.aimPoint.position);
+			await rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
+			await rotateTowardDirection(currentTarget.partToRotate, aimPoint.position - currentTarget.aimPoint.position);
 			Vector3 ori = new Vector3(currentTarget.partToRotate.transform.position.x, 0.5f, currentTarget.partToRotate.transform.position.z);
 			RaycastHit hit;
 			if (Physics.Raycast(ori, currentTarget.partToRotate.forward, out hit, Vector3.forward.magnitude * 2))
 			{
 				Debug.Log($" target have some obstacle =>  {hit.collider.name}");
 			}
+
 			onChangeTarget.Raise();
 		}
 		else if (currentUnit is Player)
@@ -49,18 +61,31 @@ public class AnyClass : Unit, IBaseActions
 			currentTarget = enemies[(currentTargetIndex + 1) % enemies.Count];
 			// todo: find an alternative this cast can cause problem i nthe future
 			gameStateManager.SelectedEnemy = (Enemy)currentTarget;
-			rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
-			rotateTowardDirection(currentTarget.partToRotate, aimPoint.position - currentTarget.aimPoint.position);
-			Vector3 ori = new Vector3(currentTarget.partToRotate.transform.position.x, 0.5f, currentTarget.partToRotate.transform.position.z);
+			await rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - aimPoint.position);
+			await rotateTowardDirection(currentTarget.partToRotate, aimPoint.position - currentTarget.aimPoint.position);
 
-			RaycastHit hit;
-			Debug.DrawRay(ori, currentTarget.partToRotate.forward);
-			if (Physics.Raycast(ori, currentTarget.partToRotate.forward, out hit, Vector3.forward.magnitude * 2))
-			{
-				Debug.Log($" target have some obstacle =>  {hit.collider.name}");
-			}
+			TargetAimValue = 0;
+			float percentVisibility = weapon.howMuchVisibleTheTArgetIs();
+			TargetAimValue = percentVisibility;
+
+			float coverValue = howMuchCoverTheCurrentTArgetHave();
+			TargetAimValue = TargetAimValue - (coverValue / 100f);
+			Debug.Log($"{TargetAimValue}");
 			onChangeTarget.Raise();
 		}
+	}
+
+	private float howMuchCoverTheCurrentTArgetHave()
+	{
+		Vector3 ori = new Vector3(currentTarget.partToRotate.transform.position.x, 0.5f, currentTarget.partToRotate.transform.position.z);
+		RaycastHit hit;
+		Debug.DrawRay(ori, currentTarget.partToRotate.forward);
+		if (Physics.Raycast(ori, currentTarget.partToRotate.forward, out hit, Vector3.forward.magnitude * 2))
+		{
+			Debug.Log($" target have some obstacle =>  {hit.collider.name}");
+			return 20.2f;
+		}
+		return 0;
 	}
 
 	public Node onNodeHover(Node oldPotentialDest)

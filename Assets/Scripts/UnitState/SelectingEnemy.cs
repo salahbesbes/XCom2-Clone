@@ -37,7 +37,8 @@ public class SelectingEnemy : AnyState<PlayerStateManager>
 		}
 
 		player.weapon.GetComponent<Weapon>().onHover();
-		player.weapon.howMuchVisibleTheTArgetIs();
+		//float percentVisibility = player.weapon.howMuchVisibleTheTArgetIs();
+
 		//Debug.DrawLine(player.currentTarget.aimPoint.position, player.weapon.startPoint.position, Color.red);
 	}
 

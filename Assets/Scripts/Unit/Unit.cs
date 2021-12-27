@@ -64,7 +64,7 @@ public class Unit : MonoBehaviour
 		animator.SetBool(CorrespondNameOfTheAnimation, true);
 	}
 
-	public async void rotateTowardDirection(Transform partToRotate, Vector3 dir, float timeToSpentTurning = 2)
+	public async Task rotateTowardDirection(Transform partToRotate, Vector3 dir, float timeToSpentTurning = 2)
 	{
 		float speed = 3;
 		float timeElapsed = 0, lerpDuration = timeToSpentTurning;

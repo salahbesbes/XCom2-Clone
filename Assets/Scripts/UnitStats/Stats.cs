@@ -15,6 +15,9 @@ public class Stats : MonoBehaviour
 	public TextMeshProUGUI TargetArmor;
 	public TextMeshProUGUI TargetDamage;
 
+	[Header("--------------------")]
+	public TextMeshProUGUI AimChance;
+
 	private void Start()
 	{
 	}
