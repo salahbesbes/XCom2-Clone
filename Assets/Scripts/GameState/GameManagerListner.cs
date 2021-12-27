@@ -37,10 +37,11 @@ public class GameManagerListner : MonoBehaviour
 		}
 	}
 
-	public void clearPreviousSelectedUnitFromAllVoidEvents(AnyClass unit)
+	public void clearPreviousSelectedUnitFromAllVoidEvents(AnyClass? unit)
 	{
 		if (unit == null) return;
 		VoidListner[] listners = unit.listners.GetComponents<VoidListner>();
+		if (listners == null) return;
 		foreach (VoidListner listner in listners)
 		{
 			Destroy(listner);
@@ -53,7 +54,7 @@ public class GameManagerListner : MonoBehaviour
 		// Selected.currentTarget Or the Subject current Selected Unit listner is Current
 		// Selected.currentTarget
 
-		if (voidEvent == null) Debug.Log($"void event is null");
+		if (voidEvent == null || unit == null) Debug.Log($" unit OR void event is null");
 
 		if (unit == null || voidEvent == null) return;
 		VoidListner e = unit.listners.AddComponent<VoidListner>();

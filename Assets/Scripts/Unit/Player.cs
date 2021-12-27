@@ -8,7 +8,7 @@ public class Player : PlayerStateManager
 	public void Start()
 	{
 		grid = NodeGrid.Instance;
-		gameStateManager = FindObjectOfType<GameStateManager>();
+		//gameStateManager = FindObjectOfType<GameStateManager>();
 		//currentTarget = gameStateManager.SelectedEnemy;
 
 		currentPos = grid.getNodeFromTransformPosition(transform);
@@ -20,7 +20,7 @@ public class Player : PlayerStateManager
 		currentPos = grid.getNodeFromTransformPosition(transform);
 		animator = model.GetComponent<Animator>();
 		stats = GetComponent<Stats>();
-		Debug.Log($"my sport are {sportPoints.Count}");
+		gameStateManager = GameStateManager.Instance;
 		//sportPoints.AddRange(model.GetComponent<SpotPoints>().sportPoint);
 
 		//listners = transform.Find("listners").gameObject;
@@ -131,13 +131,13 @@ public class Player : PlayerStateManager
 			// int type => (index) convert index of the layer Enemy to the BitMast type
 			// to compair it
 			if ((LayerMask.GetMask("Enemy") & 1 << hit.transform.gameObject.layer) != 0)
-				currentTarget.isFlanked = true;
+				CurrentTarget.isFlanked = true;
 			else
-				currentTarget.isFlanked = false;
+				CurrentTarget.isFlanked = false;
 		}
 		else
 		{
-			currentTarget.isFlanked = false;
+			CurrentTarget.isFlanked = false;
 		}
 		Debug.DrawRay(pointPosition, dir, Color.yellow);
 	}
@@ -150,10 +150,10 @@ public class Player : PlayerStateManager
 	{
 		List<Enemy> enemies = gameStateManager.enemies;
 		int nbEnemies = enemies.Count;
-		if (currentTarget != null)
+		if (CurrentTarget != null)
 		{
-			int currentTargetIndex = enemies.FindIndex(instance => instance == currentTarget);
-			currentTarget = enemies[(currentTargetIndex + 1) % nbEnemies];
+			int currentTargetIndex = enemies.FindIndex(instance => instance == CurrentTarget);
+			CurrentTarget = enemies[(currentTargetIndex + 1) % nbEnemies];
 		}
 	}
 
@@ -187,16 +187,16 @@ public class Player : PlayerStateManager
 				}
 				if (node == destination) { node.color = Color.black; }
 				if (node == currentPos) { node.color = Color.blue; }
-				if (node == currentTarget?.currentPos) { node.color = currentTarget?.isFlanked == false ? Color.magenta : Color.yellow; }
+				if (node == CurrentTarget?.currentPos) { node.color = CurrentTarget?.isFlanked == false ? Color.magenta : Color.yellow; }
 				Gizmos.color = node.color;
 
 				Gizmos.DrawCube(node.coord, new Vector3(grid.nodeSize - 0.1f, 0.02f, grid.nodeSize - 0.1f));
 			}
 		}
 
-		if (currentTarget != null)
+		if (CurrentTarget != null)
 		{
-			Debug.DrawRay(new Vector3(currentTarget.partToRotate.transform.position.x, 0.5f, currentTarget.partToRotate.transform.position.z), currentTarget.partToRotate.forward * 2, Color.cyan);
+			Debug.DrawRay(new Vector3(CurrentTarget.partToRotate.transform.position.x, 0.5f, CurrentTarget.partToRotate.transform.position.z), CurrentTarget.partToRotate.forward * 2, Color.cyan);
 		}
 	}
 }

@@ -51,7 +51,7 @@ public class SecondCam : MonoBehaviour
 	private void FixedUpdate()
 	{
 		// todo: create an event Listner
-		currentTarget = unit.currentTarget;
+		currentTarget = unit.CurrentTarget;
 		switchTrarget();
 		if (currentTarget == null) return;
 		Vector3 dir = currentTarget.transform.position - unit.transform.position;

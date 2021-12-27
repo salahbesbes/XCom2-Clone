@@ -30,7 +30,7 @@ public class ShutGun : Weapon
 		//Node hitNode = grid.getNodeFromTransformPosition(null, hit.point);
 		//Vector3 targetPoint = hitNode.coord;
 		// this is the direction between the player node to the hit point node
-		Vector3 dir = player.currentTarget.aimPoint.position - startPoint.position;
+		Vector3 dir = player.CurrentTarget.aimPoint.position - startPoint.position;
 
 		// sp to different direction around the target
 		float x = Random.Range(-weaponType.spread, weaponType.spread);
@@ -64,7 +64,7 @@ public class ShutGun : Weapon
 
 		if (weaponType.readyToShoot && !weaponType.reloading && weaponType.bulletLeft > 0)
 		{
-			Vector3 dir = (player.currentTarget.aimPoint.position - startPoint.position).normalized;
+			Vector3 dir = (player.CurrentTarget.aimPoint.position - startPoint.position).normalized;
 			GameObject effectObj = Instantiate(weaponType.ammo.fireEffect, startPoint.position, player.partToRotate.rotation);
 			ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
 			Debug.Log($"{effectObj.name}");

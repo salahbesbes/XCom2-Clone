@@ -47,7 +47,7 @@ public class Tile
 		quad.GetComponent<Renderer>().material.color = Color.red;
 		rightCover = new Cover(quad);
 		listOfActiveCover.Add(rightCover);
-		Debug.Log($"create right Cover");
+		//Debug.Log($"create right Cover");
 	}
 
 	public void createLeftCover()
@@ -63,7 +63,7 @@ public class Tile
 		quad.GetComponent<Renderer>().material.color = Color.green;
 		leftCover = new Cover(quad);
 		listOfActiveCover.Add(leftCover);
-		Debug.Log($"create left Cover");
+		//Debug.Log($"create left Cover");
 	}
 
 	public void createForwardCover()
@@ -79,7 +79,7 @@ public class Tile
 		quad.GetComponent<Renderer>().material.color = Color.gray;
 		forwardCover = new Cover(quad);
 		listOfActiveCover.Add(forwardCover);
-		Debug.Log($"create forward Cover");
+		//Debug.Log($"create forward Cover");
 	}
 
 	public void createBackCover()
@@ -95,7 +95,7 @@ public class Tile
 		quad.GetComponent<Renderer>().material.color = Color.yellow;
 		backCover = new Cover(quad);
 		listOfActiveCover.Add(backCover);
-		Debug.Log($"create Back Cover");
+		//Debug.Log($"create Back Cover");
 	}
 
 	public void destroyAllActiveCover()
@@ -105,7 +105,7 @@ public class Tile
 		{
 			GameObject.Destroy(cover.coverObj);
 		}
-		Debug.Log($"destroy");
+		//Debug.Log($"destroy");
 		listOfActiveCover.Clear();
 	}
 }

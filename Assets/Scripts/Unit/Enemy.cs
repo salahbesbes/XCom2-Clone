@@ -11,10 +11,10 @@ public class Enemy : PlayerStateManager
 		turnPoints = new Vector3[0];
 		grid = NodeGrid.Instance;
 		currentPos = grid.getNodeFromTransformPosition(transform);
-		gameStateManager = FindObjectOfType<GameStateManager>();
+		gameStateManager = GameStateManager.Instance;
 		animator = model.GetComponent<Animator>();
 		stats = GetComponent<Stats>();
-		currentTarget = gameStateManager.SelectedPlayer;
+		//currentTarget = gameStateManager.SelectedPlayer;
 
 		//sportPoints.AddRange(model.GetComponent<SpotPoints>().sportPoint);
 	}
@@ -105,13 +105,13 @@ public class Enemy : PlayerStateManager
 			// int type => (index) convert index of the layer Enemy to the BitMast type
 			// to compair it
 			if ((LayerMask.GetMask("Enemy") & 1 << hit.transform.gameObject.layer) != 0)
-				currentTarget.isFlanked = true;
+				CurrentTarget.isFlanked = true;
 			else
-				currentTarget.isFlanked = false;
+				CurrentTarget.isFlanked = false;
 		}
 		else
 		{
-			currentTarget.isFlanked = false;
+			CurrentTarget.isFlanked = false;
 		}
 		Debug.DrawRay(pointPosition, dir, Color.yellow);
 	}
@@ -119,11 +119,11 @@ public class Enemy : PlayerStateManager
 	public void LockOnTarger()
 	{
 		if (currentPos == null) return;
-		if (currentTarget == null) return;
-		if (currentPos != null && currentTarget?.currentPos != null)
+		if (CurrentTarget == null) return;
+		if (currentPos != null && CurrentTarget?.currentPos != null)
 		{
 			// handle rotation on axe Y
-			Vector3 dir = currentTarget.currentPos.coord - currentPos.coord;
+			Vector3 dir = CurrentTarget.currentPos.coord - currentPos.coord;
 			Quaternion lookRotation = Quaternion.LookRotation(dir);
 			// smooth the rotation of the turrent
 			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,
@@ -139,10 +139,10 @@ public class Enemy : PlayerStateManager
 		List<Player> players = gameStateManager.players;
 		int nbPlyaers = players.Count;
 		Debug.Log($"{nbPlyaers}");
-		if (currentTarget != null)
+		if (CurrentTarget != null)
 		{
-			int currentTargetIndex = players.FindIndex(instance => instance == currentTarget);
-			currentTarget = players[(currentTargetIndex + 1) % nbPlyaers];
+			int currentTargetIndex = players.FindIndex(instance => instance == CurrentTarget);
+			CurrentTarget = players[(currentTargetIndex + 1) % nbPlyaers];
 		}
 	}
 

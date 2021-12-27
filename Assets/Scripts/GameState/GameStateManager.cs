@@ -29,90 +29,91 @@ public class GameStateManager : GameManagerListner
 	[SerializeField]
 	public List<Enemy> enemies;
 
-	private Enemy _selectedEnemy;
-
-	public Enemy SelectedEnemy
-	{
-		get => _selectedEnemy; set
-		{
-			_selectedEnemy?.SwitchState(_selectedEnemy?.idelState);
-			clearPreviousSelectedUnitFromAllVoidEvents(_selectedEnemy);
-			clearPreviousSelectedUnitFromAllWeaponEvent(_selectedEnemy);
-			clearPreviousSelectedUnitFromAlEquipementEvent(_selectedEnemy);
-			_selectedEnemy = value;
-			if (State is PlayerTurn)
-			{
-				MakeOnlySelectedUnitListingToEventArgument(_selectedEnemy, SelectedPlayer?.onChangeTarget);
-				MakeOnlySelectedUnitListingToWeaponEvent(_selectedEnemy, SelectedPlayer?.GetComponent<Stats>()?.unit?.ShootActionEvent);
-			}
-			else if (State is EnemyTurn)
-			{
-				MakeGAmeMAnagerListingToNewSelectedUnit(_selectedEnemy);
-				MakeOnlySelectedUnitListingToEventArgument(_selectedEnemy, PlayerChangeEvent);
-				MakeOnlySelectedUnitListingToEquipeEvent(_selectedEnemy, _selectedEnemy.GetComponent<Stats>()?.unit?.EquipeEvent);
-			}
-		}
-	}
-
 	[SerializeField]
 	public List<Player> players;
-
-	private Player _selectedPlayer;
 
 	public BaseStateEvent StateEventSubject;
 	public VoidEvent PlayerChangeEvent;
 
-	public Player SelectedPlayer
-	{
-		get => _selectedPlayer; set
-		{
-			// every time game manager want to switch player update the old selected one
-			// to idel state
-			_selectedPlayer?.SwitchState(_selectedPlayer?.idelState);
-			clearPreviousSelectedUnitFromAllVoidEvents(_selectedPlayer);
-			clearPreviousSelectedUnitFromAllWeaponEvent(_selectedPlayer);
-			clearPreviousSelectedUnitFromAlEquipementEvent(_selectedPlayer);
+	private PlayerStateManager _selectedUnit;
 
-			_selectedPlayer = value;
-			if (State is PlayerTurn)
-			{
-				MakeGAmeMAnagerListingToNewSelectedUnit(_selectedPlayer);
-				MakeOnlySelectedUnitListingToEventArgument(_selectedPlayer, PlayerChangeEvent);
-				MakeOnlySelectedUnitListingToEquipeEvent(_selectedPlayer, _selectedPlayer.GetComponent<Stats>()?.unit?.EquipeEvent);
-			}
-			else if (State is EnemyTurn)
-			{
-				MakeOnlySelectedUnitListingToWeaponEvent(_selectedPlayer, SelectedEnemy?.GetComponent<Stats>()?.unit?.ShootActionEvent);
-				MakeOnlySelectedUnitListingToEventArgument(_selectedPlayer, SelectedEnemy?.onChangeTarget);
-			}
+	public PlayerStateManager SelectedUnit
+	{
+		get => _selectedUnit; set
+		{
+			//every time game manager want to switch player update the old selected one
+			// to idel state
+			_selectedUnit?.SwitchState(_selectedUnit?.idelState);
+			clearPreviousSelectedUnitFromAllVoidEvents(_selectedUnit);
+			//clearPreviousSelectedUnitFromAllWeaponEvent(_selectedUnit);
+			//clearPreviousSelectedUnitFromAlEquipementEvent(_selectedUnit);
+
+			_selectedUnit = value;
+			Debug.Log($"Selected  {SelectedUnit} ");
+
+			MakeGAmeMAnagerListingToNewSelectedUnit(_selectedUnit);
+			MakeOnlySelectedUnitListingToEventArgument(_selectedUnit, PlayerChangeEvent);
+
+			//MakeOnlySelectedUnitListingToEquipeEvent(_selectedUnit, _selectedUnit.GetComponent<Stats>()?.unit?.EquipeEvent);
 		}
 	}
+
+	//public Player SelectedPlayer
+	//{
+	//	get => _selectedPlayer; set
+	//	{
+	//		// every time game manager want to switch player update the old selected one
+	//		// to idel state
+	//		_selectedPlayer?.SwitchState(_selectedPlayer?.idelState);
+	//		clearPreviousSelectedUnitFromAllVoidEvents(_selectedPlayer);
+	//		clearPreviousSelectedUnitFromAllWeaponEvent(_selectedPlayer);
+	//		clearPreviousSelectedUnitFromAlEquipementEvent(_selectedPlayer);
+
+	//		_selectedPlayer = value;
+	//		if (State is PlayerTurn)
+	//		{
+	//			MakeGAmeMAnagerListingToNewSelectedUnit(_selectedPlayer);
+	//			MakeOnlySelectedUnitListingToEventArgument(_selectedPlayer, PlayerChangeEvent);
+	//			MakeOnlySelectedUnitListingToEquipeEvent(_selectedPlayer, _selectedPlayer.GetComponent<Stats>()?.unit?.EquipeEvent);
+	//		}
+	//		else if (State is EnemyTurn)
+	//		{
+	//			MakeOnlySelectedUnitListingToWeaponEvent(_selectedPlayer, SelectedEnemy?.GetComponent<Stats>()?.unit?.ShootActionEvent);
+	//			MakeOnlySelectedUnitListingToEventArgument(_selectedPlayer, SelectedEnemy?.onChangeTarget);
+	//		}
+	//	}
+	//}
 
 	[HideInInspector]
 	public NodeGrid grid;
 
-	private void OnEnable()
-	{
-	}
+	public static GameStateManager Instance;
 
 	private void Awake()
 	{
-		SwitchState(playerTurn);
-		grid = NodeGrid.Instance;
+		if (Instance == null)
+		{
+			Instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
 	}
 
 	private void Start()
 	{
-		if (State is PlayerTurn)
-		{
-			PlayerChangeEvent.Raise();
-			SelectedPlayer.onChangeTarget.Raise();
-		}
-		else if (State is EnemyTurn)
-		{
-			PlayerChangeEvent.Raise();
-			SelectedEnemy.onChangeTarget.Raise();
-		}
+		SwitchState(playerTurn);
+		grid = NodeGrid.Instance;
+
+		//if (State is PlayerTurn)
+		//{
+		//}
+		//else if (State is EnemyTurn)
+		//{
+		//	PlayerChangeEvent.Raise();
+		//	SelectedEnemy.onChangeTarget.Raise();
+		//}
 	}
 
 	private void Update()

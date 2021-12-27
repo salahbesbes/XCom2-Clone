@@ -17,7 +17,18 @@ public class Unit : MonoBehaviour
 
 	[SerializeField]
 	public Node currentPos;
-	public AnyClass currentTarget;
+	protected AnyClass _currentTarger;
+
+	//public AnyClass _currentTarger
+	//{
+	//	get => _currentTarger;
+	//	set
+	//	{
+	//		_currentTarger = value;
+
+	//	}
+	//}
+
 	public Node destination;
 	public bool processing = false;
 	public Weapon weapon;
@@ -155,7 +166,7 @@ public class Unit : MonoBehaviour
 	{
 		if (currentPos == null || destination == null) return;
 
-		if (currentTarget == null || currentPos.coord != destination.coord)
+		if (_currentTarger == null || currentPos.coord != destination.coord)
 		{// handle rotation on axe Y
 			Vector3 dir = destination.coord - currentPos.coord;
 			Quaternion lookRotation = Quaternion.LookRotation(dir);
@@ -169,7 +180,7 @@ public class Unit : MonoBehaviour
 		}
 		if (destination == null || (currentPos.coord == destination.coord))
 		{
-			Vector3 dir = currentTarget.aimPoint.position - transform.position;
+			Vector3 dir = _currentTarger.aimPoint.position - transform.position;
 			Quaternion lookRotation = Quaternion.LookRotation(dir);
 			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * 5f).eulerAngles;
 			partToRotate.rotation = Quaternion.Euler(0, rotation.y, 0);
@@ -192,11 +203,11 @@ public class Unit : MonoBehaviour
 		}
 		if (action is MoveAction)
 		{
-			rotateTowardDirection(currentTarget.partToRotate, transform.position - currentTarget.aimPoint.position);
-			Vector3 ori = new Vector3(currentTarget.partToRotate.transform.position.x, 0.5f, currentTarget.partToRotate.transform.position.z);
+			rotateTowardDirection(_currentTarger.partToRotate, transform.position - _currentTarger.aimPoint.position);
+			Vector3 ori = new Vector3(_currentTarger.partToRotate.transform.position.x, 0.5f, _currentTarger.partToRotate.transform.position.z);
 
 			RaycastHit hit;
-			if (Physics.Raycast(ori, currentTarget.partToRotate.forward * 2, out hit, Vector3.forward.magnitude * 2))
+			if (Physics.Raycast(ori, _currentTarger.partToRotate.forward * 2, out hit, Vector3.forward.magnitude * 2))
 			{
 				Debug.Log($"target have some obstacle => {hit.collider.name}");
 			}
@@ -205,8 +216,8 @@ public class Unit : MonoBehaviour
 		player.SwitchState(player.idelState);
 		Debug.Log($"{player.name} current state : {player.State.name}");
 
-		rotateTowardDirection(partToRotate, currentTarget.aimPoint.position - partToRotate.position);
-		rotateTowardDirection(model, currentTarget.aimPoint.position - partToRotate.position);
+		rotateTowardDirection(partToRotate, _currentTarger.aimPoint.position - partToRotate.position);
+		rotateTowardDirection(model, _currentTarger.aimPoint.position - partToRotate.position);
 		processing = false;
 		// update the cost
 		//GetComponent<PlayerStats>().ActionPoint -= action.cost;

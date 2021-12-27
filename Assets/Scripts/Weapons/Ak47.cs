@@ -31,7 +31,7 @@ public class Ak47 : Weapon
 		//Node hitNode = grid.getNodeFromTransformPosition(null, hit.point);
 		//Vector3 targetPoint = hitNode.coord;
 		// this is the direction between the player node to the hit point node
-		Vector3 dir = player.currentTarget.aimPoint.position - startPoint.position;
+		Vector3 dir = player.CurrentTarget.aimPoint.position - startPoint.position;
 
 		// sp to different direction around the target
 		float x = Random.Range(-weaponType.spread, weaponType.spread);
@@ -65,7 +65,7 @@ public class Ak47 : Weapon
 
 		if (weaponType.readyToShoot && !weaponType.reloading && weaponType.bulletLeft > 0)
 		{
-			Vector3 dir = (player.currentTarget.aimPoint.position - startPoint.position).normalized;
+			Vector3 dir = (player.CurrentTarget.aimPoint.position - startPoint.position).normalized;
 			GameObject effectObj = Instantiate(weaponType.ammo.fireEffect, startPoint.position, player.partToRotate.rotation);
 			ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
 
@@ -110,13 +110,13 @@ public class Ak47 : Weapon
 	public override float howMuchVisibleTheTArgetIs()
 	{
 		Vector3 ori = startPoint.position;
-		float spotValue = 1.0f / player.currentTarget.sportPoints.Count;
+		float spotValue = 1.0f / player.CurrentTarget.sportPoints.Count;
 		float percent = 0;
 		string[] collidableLayers = { "Enemy", "Unwalkable" };
 		int layerToCheck = LayerMask.GetMask(collidableLayers);
 		RaycastHit hit;
 
-		foreach (Transform spot in player.currentTarget.sportPoints)
+		foreach (Transform spot in player.CurrentTarget.sportPoints)
 		{
 			Vector3 dir = (spot.position - ori).normalized;
 			Debug.DrawRay(ori, dir * weaponType.bulletRange, Color.cyan);

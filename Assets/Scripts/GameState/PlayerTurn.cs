@@ -7,18 +7,20 @@ public class PlayerTurn : AnyState<GameStateManager>
 
 	public override AnyClass EnterState(GameStateManager gameManager)
 	{
-		gameManager.SelectedPlayer = gameManager.players.FirstOrDefault();
-		gameManager.SelectedEnemy = gameManager.enemies.FirstOrDefault();
-		gameManager.SelectedPlayer.currentTarget = gameManager.SelectedEnemy;
-		gameManager.SelectedPlayer.enabled = true;
-		gameManager.SelectedPlayer.fpsCam.enabled = true;
+		gameManager.clearPreviousSelectedUnitFromAllVoidEvents(gameManager.SelectedUnit?.CurrentTarget);
+		gameManager.SelectedUnit = gameManager.players.FirstOrDefault();
+		gameManager.SelectedUnit.CurrentTarget = gameManager.enemies.FirstOrDefault();
 
-		return gameManager.SelectedPlayer;
+		gameManager.SelectedUnit.enabled = true;
+		gameManager.SelectedUnit.fpsCam.enabled = true;
+		gameManager.PlayerChangeEvent.Raise();
+		gameManager.SelectedUnit.onChangeTarget.Raise();
+		return gameManager.SelectedUnit;
 	}
 
 	public override void Update(GameStateManager gameManager)
 	{
-		gameManager.SelectedPlayer.currentPos = NodeGrid.Instance.getNodeFromTransformPosition(gameManager.SelectedPlayer.transform);
+		gameManager.SelectedUnit.currentPos = NodeGrid.Instance.getNodeFromTransformPosition(gameManager.SelectedUnit.transform);
 		if (Input.GetKeyDown(KeyCode.Tab))
 		{
 			SelectNextPlayer(gameManager);
@@ -29,10 +31,10 @@ public class PlayerTurn : AnyState<GameStateManager>
 
 	public override void ExitState(GameStateManager gameManager)
 	{
-		if (gameManager.SelectedPlayer != null)
+		if (gameManager.SelectedUnit != null)
 		{
-			gameManager.SelectedPlayer.enabled = false;
-			gameManager.SelectedPlayer.fpsCam.enabled = false;
+			gameManager.SelectedUnit.enabled = false;
+			gameManager.SelectedUnit.fpsCam.enabled = false;
 			Debug.Log($"exit State {nameof(PlayerTurn)}");
 		}
 	}
@@ -43,20 +45,19 @@ public class PlayerTurn : AnyState<GameStateManager>
 
 		if (gameManager != null)
 		{
-			gameManager.SelectedPlayer.enabled = false;
-			gameManager.SelectedPlayer.SwitchState(gameManager.SelectedPlayer.idelState);
-			gameManager.SelectedPlayer.fpsCam.enabled = false;
-			int currentPlayerIndex = gameManager.players.FindIndex(instance => instance == gameManager.SelectedPlayer);
-			gameManager.SelectedPlayer = gameManager.players[(currentPlayerIndex + 1) % nbPlayers];
+			gameManager.SelectedUnit.enabled = false;
+			gameManager.SelectedUnit.SwitchState(gameManager.SelectedUnit.idelState);
+			gameManager.SelectedUnit.fpsCam.enabled = false;
+			int currentPlayerIndex = gameManager.players.FindIndex(instance => instance == gameManager.SelectedUnit);
+			gameManager.SelectedUnit = gameManager.players[(currentPlayerIndex + 1) % nbPlayers];
 
-			gameManager.SelectedPlayer.enabled = true;
-			gameManager.SelectedPlayer.fpsCam.enabled = true;
-			gameManager.SelectedPlayer.currentTarget = gameManager.SelectedEnemy;
+			gameManager.SelectedUnit.enabled = true;
+			gameManager.SelectedUnit.fpsCam.enabled = true;
+			gameManager.SelectedUnit.CurrentTarget = gameManager.enemies.FirstOrDefault();
 
 			//gameManager.MakeGAmeMAnagerListingToNewSelectedUnit(gameManager.SelectedPlayer);
 
 			gameManager.PlayerChangeEvent.Raise();
-			Debug.Log($"Selected  {gameManager.SelectedPlayer} ");
 		}
 	}
 }
@@ -65,20 +66,23 @@ public class EnemyTurn : AnyState<GameStateManager>
 {
 	public override AnyClass EnterState(GameStateManager gameManager)
 	{
-		gameManager.SelectedEnemy = gameManager.enemies.FirstOrDefault();
-		gameManager.SelectedPlayer = gameManager.players.FirstOrDefault();
-		gameManager.SelectedEnemy.currentTarget = gameManager.SelectedPlayer;
+		gameManager.clearPreviousSelectedUnitFromAllVoidEvents(gameManager.SelectedUnit?.CurrentTarget);
+		gameManager.SelectedUnit = gameManager.enemies.FirstOrDefault();
+		gameManager.SelectedUnit.CurrentTarget = gameManager.players.FirstOrDefault();
 		//gameManager.SelectedEnemy.currentPos = gameManager.SelectedEnemy.grid.getNodeFromTransformPosition(gameManager.SelectedEnemy.transform);
 
-		gameManager.SelectedEnemy.enabled = true;
-		gameManager.SelectedEnemy.fpsCam.enabled = true;
+		gameManager.SelectedUnit.enabled = true;
+		gameManager.SelectedUnit.fpsCam.enabled = true;
 
-		return gameManager.SelectedEnemy;
+		gameManager.PlayerChangeEvent.Raise();
+		gameManager.SelectedUnit.onChangeTarget.Raise();
+
+		return gameManager.SelectedUnit;
 	}
 
 	public override void Update(GameStateManager gameManager)
 	{
-		gameManager.SelectedEnemy.currentPos = NodeGrid.Instance.getNodeFromTransformPosition(gameManager.SelectedEnemy.transform);
+		gameManager.SelectedUnit.currentPos = NodeGrid.Instance.getNodeFromTransformPosition(gameManager.SelectedUnit.transform);
 		if (Input.GetKeyDown(KeyCode.Tab))
 		{
 			SelectNextEnemy(gameManager);
@@ -89,10 +93,10 @@ public class EnemyTurn : AnyState<GameStateManager>
 
 	public override void ExitState(GameStateManager gameManager)
 	{
-		if (gameManager.SelectedEnemy != null)
+		if (gameManager.SelectedUnit != null)
 		{
-			gameManager.SelectedEnemy.enabled = false;
-			gameManager.SelectedEnemy.fpsCam.enabled = false;
+			gameManager.SelectedUnit.enabled = false;
+			gameManager.SelectedUnit.fpsCam.enabled = false;
 			Debug.Log($"exit State {nameof(EnemyTurn)}");
 		}
 	}
@@ -105,15 +109,15 @@ public class EnemyTurn : AnyState<GameStateManager>
 		{
 			int nbPlayers = gameManager.enemies.Count;
 
-			gameManager.SelectedEnemy.enabled = false;
-			gameManager.SelectedEnemy.SwitchState(gameManager.SelectedEnemy.idelState);
-			gameManager.SelectedEnemy.fpsCam.enabled = false;
-			int currentPlayerIndex = gameManager.enemies.FindIndex(instance => instance == gameManager.SelectedEnemy);
-			gameManager.SelectedEnemy = gameManager.enemies[(currentPlayerIndex + 1) % nbPlayers];
+			gameManager.SelectedUnit.enabled = false;
+			gameManager.SelectedUnit.SwitchState(gameManager.SelectedUnit.idelState);
+			gameManager.SelectedUnit.fpsCam.enabled = false;
+			int currentPlayerIndex = gameManager.enemies.FindIndex(instance => instance == gameManager.SelectedUnit);
+			gameManager.SelectedUnit = gameManager.enemies[(currentPlayerIndex + 1) % nbPlayers];
 
-			gameManager.SelectedEnemy.enabled = true;
-			gameManager.SelectedEnemy.fpsCam.enabled = true;
-			gameManager.SelectedEnemy.currentTarget = gameManager.SelectedPlayer;
+			gameManager.SelectedUnit.enabled = true;
+			gameManager.SelectedUnit.fpsCam.enabled = true;
+			gameManager.SelectedUnit.CurrentTarget = gameManager.players.FirstOrDefault(); ;
 
 			gameManager.PlayerChangeEvent.Raise();
 		}

@@ -21,7 +21,7 @@ public class SelectingEnemy : AnyState<PlayerStateManager>
 		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
 			player.SelectNextTarget(player);
-			Camera.main.transform.LookAt(player.currentTarget.aimPoint);
+			Camera.main.transform.LookAt(player.CurrentTarget.aimPoint);
 		}
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{

@@ -39,6 +39,7 @@ public class CallBackOnListen : MonoBehaviour
 	{
 		targetUiStats = GetComponentInParent<Stats>();
 		targetStats = targetUiStats.unit;
+		//Debug.Log($" target {targetStats.name}");
 		targetUiStats.TargetHealth.text = $"Health : {targetStats.Health}";
 		targetUiStats.TargetName.text = $"{ targetStats.myName }:";
 		targetUiStats.TargetArmor.text = $"Armor: {targetStats.armor.Value}";
@@ -67,7 +68,7 @@ public class CallBackOnListen : MonoBehaviour
 		//targetStats = targetUiStats.unit;
 		//Debug.Log($"  oncallback  {thisUnit.transform.name}");
 		TextMeshProUGUI thisTextUi = GetComponent<TextMeshProUGUI>();
-		thisTextUi.text = $"Aim = {manager.SelectedPlayer.TargetAimValue} %";
+		thisTextUi.text = $"Aim = {manager.SelectedUnit.TargetAimValue} %";
 	}
 
 	public void onPlayerChangeEventTrigger()
