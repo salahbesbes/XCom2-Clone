@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -204,6 +204,10 @@ PrefabInstance:
     - target: {fileID: 1000010214624054, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
       propertyPath: m_Name
       value: Closed Sack (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010214624054, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4000013255371892, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
       propertyPath: m_RootOrder
@@ -651,6 +655,10 @@ PrefabInstance:
     - target: {fileID: 1000011433437920, guid: b9194464b029e4b478d5ca5d068b5179, type: 3}
       propertyPath: m_Name
       value: Chopped Wood Pile
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011433437920, guid: b9194464b029e4b478d5ca5d068b5179, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4000012425729926, guid: b9194464b029e4b478d5ca5d068b5179, type: 3}
       propertyPath: m_RootOrder
@@ -1255,6 +1263,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Closed Sack (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010214624054, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013255371892, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
       propertyPath: m_RootOrder
       value: 20
@@ -1439,6 +1451,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Closed Sack (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010214624054, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013255371892, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
       propertyPath: m_RootOrder
       value: 18
@@ -1595,6 +1611,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wooden Bucket (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000012448015446, guid: a67b6fa6c6d5e404f9f9944f5b9978c9, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013860992590, guid: a67b6fa6c6d5e404f9f9944f5b9978c9, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -1667,6 +1687,10 @@ PrefabInstance:
     - target: {fileID: 1000010214624054, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
       propertyPath: m_Name
       value: Closed Sack (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010214624054, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4000013255371892, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
       propertyPath: m_RootOrder
@@ -1852,6 +1876,10 @@ PrefabInstance:
     - target: {fileID: 1000010214624054, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
       propertyPath: m_Name
       value: Closed Sack (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010214624054, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4000013255371892, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
       propertyPath: m_RootOrder
@@ -2166,6 +2194,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4183542500039884897, guid: 6be6cf83a551a5f4a931b9e04293e742, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 1304456836}
     - target: {fileID: 4183542500039884897, guid: 6be6cf83a551a5f4a931b9e04293e742, type: 3}
       propertyPath: thisUnit
       value: 
@@ -2567,6 +2599,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4000012425729926, guid: b9194464b029e4b478d5ca5d068b5179, type: 3}
   m_PrefabInstance: {fileID: 903907735}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &958472455 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8031930567246983256, guid: 7b46d13df8992a7448d6d10b011ba016, type: 3}
+  m_PrefabInstance: {fileID: 1034577646}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &958472457 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3039252924827444227, guid: 7b46d13df8992a7448d6d10b011ba016, type: 3}
+  m_PrefabInstance: {fileID: 1034577646}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958472455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6332337e2782135498cfaa6696eedc57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &958472458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958472455}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8333b2aee637b545b4b170976e532d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameEvent: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
+  _unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 958472457}
+        m_TargetAssemblyTypeName: CallBackOnListen, Assembly-CSharp
+        m_MethodName: onWeaponShootEventTrigger
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -2751,6 +2827,10 @@ PrefabInstance:
     - target: {fileID: 1000010214624054, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
       propertyPath: m_Name
       value: Closed Sack
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010214624054, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4000013255371892, guid: 55ae3db7710ab1948b1038d6747bfb61, type: 3}
       propertyPath: m_RootOrder
@@ -2996,6 +3076,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 3039252924827444227, guid: 7b46d13df8992a7448d6d10b011ba016, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 1304456836}
     - target: {fileID: 3039252924827444227, guid: 7b46d13df8992a7448d6d10b011ba016, type: 3}
       propertyPath: thisUnit
       value: 
@@ -3393,6 +3477,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4000013860992590, guid: a67b6fa6c6d5e404f9f9944f5b9978c9, type: 3}
   m_PrefabInstance: {fileID: 1036047427}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1052288881 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2963302685692049402, guid: 353307903f8f69a428199892551e3f66, type: 3}
+  m_PrefabInstance: {fileID: 1853155070}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1052288883 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4183542500039884897, guid: 353307903f8f69a428199892551e3f66, type: 3}
+  m_PrefabInstance: {fileID: 1853155070}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052288881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6332337e2782135498cfaa6696eedc57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1052288884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052288881}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8333b2aee637b545b4b170976e532d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameEvent: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
+  _unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1052288883}
+        m_TargetAssemblyTypeName: CallBackOnListen, Assembly-CSharp
+        m_MethodName: onWeaponShootEventTrigger
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1059417894 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -7480697632699123317, guid: 6be6cf83a551a5f4a931b9e04293e742, type: 3}
@@ -3532,6 +3660,10 @@ PrefabInstance:
     - target: {fileID: 1000011275823026, guid: c4fa03dde2a5a52439028e5fba052e5c, type: 3}
       propertyPath: m_Name
       value: Wooden Crate (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011275823026, guid: c4fa03dde2a5a52439028e5fba052e5c, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4000011311866092, guid: c4fa03dde2a5a52439028e5fba052e5c, type: 3}
       propertyPath: m_RootOrder
@@ -4232,15 +4364,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000012920175052, guid: 4b3eaa042a32a5d46a5b7a1a20aa15e3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.863
+      value: 1.873
       objectReference: {fileID: 0}
     - target: {fileID: 4000012920175052, guid: 4b3eaa042a32a5d46a5b7a1a20aa15e3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.142
+      value: 0.254
       objectReference: {fileID: 0}
     - target: {fileID: 4000012920175052, guid: 4b3eaa042a32a5d46a5b7a1a20aa15e3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.483
+      value: -4.454
       objectReference: {fileID: 0}
     - target: {fileID: 4000012920175052, guid: 4b3eaa042a32a5d46a5b7a1a20aa15e3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5651,6 +5783,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4183542500039884897, guid: 353307903f8f69a428199892551e3f66, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 1304456836}
+    - target: {fileID: 4183542500039884897, guid: 353307903f8f69a428199892551e3f66, type: 3}
       propertyPath: thisUnit
       value: 
       objectReference: {fileID: 1853155072}
@@ -6168,6 +6304,50 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4fa03dde2a5a52439028e5fba052e5c, type: 3}
+--- !u!1 &1967373370 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2963302685692049402, guid: 6be6cf83a551a5f4a931b9e04293e742, type: 3}
+  m_PrefabInstance: {fileID: 822077792}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1967373372 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4183542500039884897, guid: 6be6cf83a551a5f4a931b9e04293e742, type: 3}
+  m_PrefabInstance: {fileID: 822077792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1967373370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6332337e2782135498cfaa6696eedc57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1967373373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1967373370}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8333b2aee637b545b4b170976e532d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameEvent: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
+  _unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1967373372}
+        m_TargetAssemblyTypeName: CallBackOnListen, Assembly-CSharp
+        m_MethodName: onWeaponShootEventTrigger
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1977610584
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6793,6 +6973,34 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2074283981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2021212534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8333b2aee637b545b4b170976e532d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameEvent: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
+  _unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2074283976}
+        m_TargetAssemblyTypeName: CallBackOnListen, Assembly-CSharp
+        m_MethodName: onWeaponShootEventTrigger
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &2107661146
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6866,6 +7074,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Milk Churn
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010647037668, guid: 4b3eaa042a32a5d46a5b7a1a20aa15e3, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4000012920175052, guid: 4b3eaa042a32a5d46a5b7a1a20aa15e3, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -6876,7 +7088,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000012920175052, guid: 4b3eaa042a32a5d46a5b7a1a20aa15e3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.142
+      value: 0.188
       objectReference: {fileID: 0}
     - target: {fileID: 4000012920175052, guid: 4b3eaa042a32a5d46a5b7a1a20aa15e3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7156,6 +7368,10 @@ PrefabInstance:
     - target: {fileID: 1000012391726282, guid: 24ca497e7d0e3174886a521b0176c8a7, type: 3}
       propertyPath: m_Name
       value: Wooden Barrel
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012391726282, guid: 24ca497e7d0e3174886a521b0176c8a7, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4000011401001550, guid: 24ca497e7d0e3174886a521b0176c8a7, type: 3}
       propertyPath: m_RootOrder

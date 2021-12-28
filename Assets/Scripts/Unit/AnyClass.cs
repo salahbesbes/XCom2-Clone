@@ -20,6 +20,7 @@ public class AnyClass : Unit, IBaseActions
 
 	[HideInInspector]
 	public List<Transform> sportPoints;
+
 	public VoidEvent onChangeTarget;
 	private float _targetAimValue;
 
@@ -45,7 +46,11 @@ public class AnyClass : Unit, IBaseActions
 		{
 			if (GameStateManager.Instance == null) Debug.Log($"gamemanager is null");
 			//GameStateManager.Instance.clearPreviousSelectedUnitFromAllVoidEvents(_currentTarger);
+			//GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(_currentTarger);
+			//GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(this);
 			_currentTarger = value;
+			//GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.unit?.ShootActionEvent);
+			//GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(this, stats?.unit?.ShootActionEvent);
 			//GameStateManager.Instance.MakeOnlySelectedUnitListingToEventArgument(_currentTarger, _currentTarger.onChangeTarget);
 		}
 	}
@@ -161,8 +166,7 @@ public class AnyClass : Unit, IBaseActions
 			}
 			return potentialDestination;
 		}
-		// if potentialDestination is null(hover over some unwalckabale) we return the
-		// oldDestination
+		// if potentialDestination is null(hover over some unwalckabale) we return the oldDestination
 		return oldPotentialDest;
 	}
 
@@ -318,12 +322,12 @@ public class AnyClass : Unit, IBaseActions
 		//Debug.Log($"total cover = {myTotalCover}");
 	}
 
-	public void checkTargetCoverDirection(Node targetNode)
-	{
-		foreach (Cover cover in targetNode.tile.listOfActiveCover)
-		{
-			Vector3 dir = new Vector3(cover.coverObj.transform.position.x - targetNode.coord.x, 0, cover.coverObj.transform.position.z - targetNode.coord.z).normalized;
-			Debug.DrawRay(targetNode.coord + Vector3.up, dir);
-		}
-	}
+	//public void checkTargetCoverDirection(Node targetNode)
+	//{
+	//	foreach (Cover cover in targetNode.tile.listOfActiveCover)
+	//	{
+	//		Vector3 dir = new Vector3(cover.coverObj.transform.position.x - targetNode.coord.x, 0, cover.coverObj.transform.position.z - targetNode.coord.z).normalized;
+	//		Debug.DrawRay(targetNode.coord + Vector3.up, dir);
+	//	}
+	//}
 }

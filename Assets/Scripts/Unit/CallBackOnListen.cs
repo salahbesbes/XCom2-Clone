@@ -1,21 +1,20 @@
 using TMPro;
 using UnityEngine;
 
-public class CallBackOnListen : MonoBehaviour
+public partial class CallBackOnListen : MonoBehaviour
 {
-	public GameStateManager manager;
-
-	//private UnitStats targetStats;
-	//private Stats targetUiStats;
+	private GameStateManager manager;
 
 	[Header("--------------------")]
 	public TextMeshProUGUI myHealth;
+
 	public TextMeshProUGUI MyName;
 	public TextMeshProUGUI myArmor;
 	public TextMeshProUGUI myDamage;
 
 	[Header("--------------------")]
 	public TextMeshProUGUI TargetHealth;
+
 	public TextMeshProUGUI TargetName;
 	public TextMeshProUGUI TargetArmor;
 	public TextMeshProUGUI TargetDamage;
@@ -25,36 +24,28 @@ public class CallBackOnListen : MonoBehaviour
 
 	private void Start()
 	{
-	}
-
-	public void TakeDamage(UnitStats triggerStats)
-	{
-		//Debug.Log($" trigger of event is  {triggerStats.name} has health  {triggerStats.Health}");
-		int damage = triggerStats.damage.Value;
-		damage -= manager.SelectedUnit.CurrentTarget.stats.unit.armor.Value;
-		damage = Mathf.Clamp(damage, 0, int.MaxValue);
-		manager.SelectedUnit.CurrentTarget.stats.unit.Health -= damage;
-		if (manager.SelectedUnit.CurrentTarget.stats.unit.Health <= 0)
-		{
-			Debug.Log($"{ manager.SelectedUnit.CurrentTarget.stats.unit.name} killed by {triggerStats.name}");
-		}
+		manager = GameStateManager.Instance;
 	}
 
 	public void updateMyUiStats()
 	{
-		myHealth.text = $"Health : {manager.SelectedUnit.stats.unit.Health}";
-		MyName.text = $"{  manager.SelectedUnit.stats.unit.myName }:";
-		myArmor.text = $"Armor: { manager.SelectedUnit.stats.unit.armor.Value}";
-		myDamage.text = $"damage: { manager.SelectedUnit.stats.unit.damage.Value}";
+		UnitStats thisUnit = manager.SelectedUnit.stats.unit;
+
+		myHealth.text = $"Health : {thisUnit.Health}";
+		MyName.text = $"{  thisUnit.myName }:";
+		myArmor.text = $"Armor: { thisUnit.armor.Value}";
+		myDamage.text = $"damage: { thisUnit.damage.Value}";
 	}
 
 	public void updateTargetUiStats()
 	{
+		UnitStats currentTargetSelected = manager.SelectedUnit.CurrentTarget.stats.unit;
+
 		//Debug.Log($" target { manager.SelectedUnit.stats.unit.name}");
-		TargetHealth.text = $"Health : { manager.SelectedUnit.CurrentTarget.stats.unit.Health}";
-		TargetName.text = $"{  manager.SelectedUnit.CurrentTarget.stats.unit.myName }:";
-		TargetArmor.text = $"Armor: { manager.SelectedUnit.CurrentTarget.stats.unit.armor.Value}";
-		TargetDamage.text = $"damage: { manager.SelectedUnit.CurrentTarget.stats.unit.damage.Value}";
+		TargetHealth.text = $"Health : { currentTargetSelected.Health}";
+		TargetName.text = $"{  currentTargetSelected.myName }:";
+		TargetArmor.text = $"Armor: { currentTargetSelected.armor.Value}";
+		TargetDamage.text = $"damage: { currentTargetSelected.damage.Value}";
 	}
 
 	public void onEquipeEventTrigger(EquipementData equipement)
@@ -75,6 +66,7 @@ public class CallBackOnListen : MonoBehaviour
 		//targetUiStats = GetComponentInParent<Stats>();
 		//targetStats = unit;
 		//Debug.Log($"  oncallback  {thisUnit.transform.name}");
+
 		AimChance.text = $"Aim : {manager.SelectedUnit.TargetAimPercent} %";
 	}
 
@@ -87,11 +79,5 @@ public class CallBackOnListen : MonoBehaviour
 	public void onStatsChange()
 	{
 		updateMyUiStats();
-	}
-
-	public void onWeaponShootEventTrigger(UnitStats triggerStats)
-	{
-		TakeDamage(triggerStats);
-		updateTargetUiStats();
 	}
 }

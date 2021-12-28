@@ -17,6 +17,7 @@ public class Unit : MonoBehaviour
 
 	[SerializeField]
 	public Node currentPos;
+
 	protected AnyClass _currentTarger;
 
 	//public AnyClass _currentTarger

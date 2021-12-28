@@ -51,8 +51,7 @@ public class GameManagerListner : MonoBehaviour
 	public void MakeOnlySelectedUnitListingToEventArgument(AnyClass unit, VoidEvent voidEvent)
 	{
 		// the Subject (Trigger) is the GameManager and the listner is Current
-		// Selected.currentTarget Or the Subject current Selected Unit listner is Current
-		// Selected.currentTarget
+		// Selected.currentTarget Or the Subject current Selected Unit listner is Current Selected.currentTarget
 
 		if (voidEvent == null || unit == null) Debug.Log($" unit OR void event is null");
 
@@ -89,9 +88,8 @@ public class GameManagerListner : MonoBehaviour
 
 	public void MakeOnlySelectedUnitListingToWeaponEvent(AnyClass unit, WeaponEvent weaponEvent)
 	{
-		// the Subject (Trigger) is the current Selected Unit and the listner is Current
-		// Selected.currentTarget
-		if (weaponEvent == null) Debug.Log($"weapon event is null");
+		// the Subject (Trigger) is the current Selected Unit and the listner is Current Selected.currentTarget
+		if (weaponEvent == null || unit == null) Debug.Log($"  unit OR weapon event is null");
 		if (unit == null || weaponEvent == null) return;
 		WeaponListner e = unit.listners.AddComponent<WeaponListner>();
 		e.GameEvent = weaponEvent;
