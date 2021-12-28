@@ -115,7 +115,6 @@ public class Ak47 : Weapon
 		string[] collidableLayers = { "Enemy", "Unwalkable" };
 		int layerToCheck = LayerMask.GetMask(collidableLayers);
 		RaycastHit hit;
-
 		foreach (Transform spot in player.CurrentTarget.sportPoints)
 		{
 			Vector3 dir = (spot.position - ori).normalized;
@@ -126,8 +125,12 @@ public class Ak47 : Weapon
 				{
 					percent += spotValue;
 				}
+				else if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Player")
+				{
+					percent += spotValue;
+				}
 			}
 		}
-		return percent;
+		return percent * 100;
 	}
 }

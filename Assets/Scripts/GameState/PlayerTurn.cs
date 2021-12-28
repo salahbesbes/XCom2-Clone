@@ -35,7 +35,7 @@ public class PlayerTurn : AnyState<GameStateManager>
 		{
 			gameManager.SelectedUnit.enabled = false;
 			gameManager.SelectedUnit.fpsCam.enabled = false;
-			Debug.Log($"exit State {nameof(PlayerTurn)}");
+			//Debug.Log($"exit State {nameof(PlayerTurn)}");
 		}
 	}
 
@@ -97,7 +97,7 @@ public class EnemyTurn : AnyState<GameStateManager>
 		{
 			gameManager.SelectedUnit.enabled = false;
 			gameManager.SelectedUnit.fpsCam.enabled = false;
-			Debug.Log($"exit State {nameof(EnemyTurn)}");
+			//Debug.Log($"exit State {nameof(EnemyTurn)}");
 		}
 	}
 

@@ -2166,6 +2166,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4183542500039884897, guid: 6be6cf83a551a5f4a931b9e04293e742, type: 3}
+      propertyPath: thisUnit
+      value: 
+      objectReference: {fileID: 1059417894}
     - target: {fileID: 4267018937504557680, guid: 6be6cf83a551a5f4a931b9e04293e742, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -2992,6 +2996,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 3039252924827444227, guid: 7b46d13df8992a7448d6d10b011ba016, type: 3}
+      propertyPath: thisUnit
+      value: 
+      objectReference: {fileID: 1224204854}
     - target: {fileID: 3224432348329122296, guid: 7b46d13df8992a7448d6d10b011ba016, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -3199,6 +3207,22 @@ PrefabInstance:
     - target: {fileID: 8573554083543642351, guid: 7b46d13df8992a7448d6d10b011ba016, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8583340694775715537, guid: 7b46d13df8992a7448d6d10b011ba016, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.5885037
+      objectReference: {fileID: 0}
+    - target: {fileID: 8583340694775715537, guid: 7b46d13df8992a7448d6d10b011ba016, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8583340694775715537, guid: 7b46d13df8992a7448d6d10b011ba016, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.8084945
+      objectReference: {fileID: 0}
+    - target: {fileID: 8583340694775715537, guid: 7b46d13df8992a7448d6d10b011ba016, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8583340695942099308, guid: 7b46d13df8992a7448d6d10b011ba016, type: 3}
       propertyPath: m_Name
@@ -3590,13 +3614,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemies:
+  - {fileID: 1224204854}
   - {fileID: 1853155072}
   - {fileID: 1059417894}
-  - {fileID: 1224204854}
   players:
+  - {fileID: 1767674760}
   - {fileID: 680089611}
   - {fileID: 1831615824}
-  - {fileID: 1767674760}
   StateEventSubject: {fileID: 11400000, guid: 1ac34df37cf023046a92cd4864226e13, type: 2}
   PlayerChangeEvent: {fileID: 11400000, guid: 3c14d500b60f7c741bce877247bd5c16, type: 2}
   grid: {fileID: 0}
@@ -4157,7 +4181,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -5626,6 +5650,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4183542500039884897, guid: 353307903f8f69a428199892551e3f66, type: 3}
+      propertyPath: thisUnit
+      value: 
+      objectReference: {fileID: 1853155072}
     - target: {fileID: 4299712582027606815, guid: 353307903f8f69a428199892551e3f66, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -6521,6 +6549,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 200b29ef3cc7cdc43ae8bdda3a9fd652, type: 3}
+--- !u!1 &2021212534 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1104257459618855421, guid: 6ac3c208415a54544a9723d10b5ef97b, type: 3}
+  m_PrefabInstance: {fileID: 147963813}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2027011923 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1000010647037668, guid: 4b3eaa042a32a5d46a5b7a1a20aa15e3, type: 3}
@@ -6682,6 +6715,84 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1104257459618855417, guid: 6ac3c208415a54544a9723d10b5ef97b, type: 3}
   m_PrefabInstance: {fileID: 147963813}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2074283975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2021212534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63a55eb887a77e246b50099ef257bd2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameEvent: {fileID: 11400000, guid: 94c3fca271f0a5840ad25cf123f548ac, type: 2}
+  _unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2074283976}
+        m_TargetAssemblyTypeName: CallBackOnListen, Assembly-CSharp
+        m_MethodName: onTargetChangeEventTrigger
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2074283976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2021212534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6332337e2782135498cfaa6696eedc57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 1304456836}
+  myHealth: {fileID: 1864501238}
+  MyName: {fileID: 747411402}
+  myArmor: {fileID: 1674985544}
+  myDamage: {fileID: 435681789}
+  TargetHealth: {fileID: 853775109}
+  TargetName: {fileID: 459199929}
+  TargetArmor: {fileID: 428194656}
+  TargetDamage: {fileID: 1510134032}
+  AimChance: {fileID: 1414501661}
+--- !u!114 &2074283977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2021212534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63a55eb887a77e246b50099ef257bd2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameEvent: {fileID: 11400000, guid: 3c14d500b60f7c741bce877247bd5c16, type: 2}
+  _unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2074283976}
+        m_TargetAssemblyTypeName: CallBackOnListen, Assembly-CSharp
+        m_MethodName: onPlayerChangeEventTrigger
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &2107661146
 PrefabInstance:
   m_ObjectHideFlags: 0

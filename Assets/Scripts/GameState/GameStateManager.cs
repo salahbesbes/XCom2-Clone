@@ -52,7 +52,7 @@ public class GameStateManager : GameManagerListner
 			Debug.Log($"Selected  {SelectedUnit} ");
 
 			MakeGAmeMAnagerListingToNewSelectedUnit(_selectedUnit);
-			MakeOnlySelectedUnitListingToEventArgument(_selectedUnit, PlayerChangeEvent);
+			//MakeOnlySelectedUnitListingToEventArgument(_selectedUnit, PlayerChangeEvent);
 
 			//MakeOnlySelectedUnitListingToEquipeEvent(_selectedUnit, _selectedUnit.GetComponent<Stats>()?.unit?.EquipeEvent);
 		}

@@ -28,13 +28,13 @@ public class AnyClass : Unit, IBaseActions
 		//gameStateManager = GameStateManager.Instance;
 	}
 
-	public float TargetAimValue
+	public float TargetAimPercent
 	{
 		get => _targetAimValue;
 		set
 		{
+			value = Mathf.Clamp(value, 0, int.MaxValue);
 			_targetAimValue = value;
-			//Mathf.Clamp(TargetAimValue, 0, int.MaxValue);
 		}
 	}
 
@@ -44,9 +44,9 @@ public class AnyClass : Unit, IBaseActions
 		set
 		{
 			if (GameStateManager.Instance == null) Debug.Log($"gamemanager is null");
-			GameStateManager.Instance.clearPreviousSelectedUnitFromAllVoidEvents(_currentTarger);
+			//GameStateManager.Instance.clearPreviousSelectedUnitFromAllVoidEvents(_currentTarger);
 			_currentTarger = value;
-			GameStateManager.Instance.MakeOnlySelectedUnitListingToEventArgument(_currentTarger, _currentTarger.onChangeTarget);
+			//GameStateManager.Instance.MakeOnlySelectedUnitListingToEventArgument(_currentTarger, _currentTarger.onChangeTarget);
 		}
 	}
 
@@ -62,12 +62,13 @@ public class AnyClass : Unit, IBaseActions
 			//gameStateManager.SelectedPlayer = (Player)currentTarget;
 			rotateTowardDirection(partToRotate, CurrentTarget.aimPoint.position - aimPoint.position);
 			rotateTowardDirection(CurrentTarget.partToRotate, aimPoint.position - CurrentTarget.aimPoint.position);
-			Vector3 ori = new Vector3(CurrentTarget.partToRotate.transform.position.x, 0.5f, CurrentTarget.partToRotate.transform.position.z);
-			RaycastHit hit;
-			if (Physics.Raycast(ori, CurrentTarget.partToRotate.forward, out hit, Vector3.forward.magnitude * 2))
-			{
-				//Debug.Log($" target have some obstacle =>  {hit.collider.name}");
-			}
+
+			TargetAimPercent = 0;
+			float percentVisibility = weapon.howMuchVisibleTheTArgetIs();
+			TargetAimPercent = percentVisibility;
+
+			float coverValue = howMuchCoverTheCurrentTArgetHave();
+			TargetAimPercent = TargetAimPercent - coverValue;
 
 			onChangeTarget.Raise();
 		}
@@ -81,13 +82,13 @@ public class AnyClass : Unit, IBaseActions
 			rotateTowardDirection(partToRotate, CurrentTarget.aimPoint.position - aimPoint.position);
 			rotateTowardDirection(CurrentTarget.partToRotate, aimPoint.position - CurrentTarget.aimPoint.position);
 
-			TargetAimValue = 0;
+			TargetAimPercent = 0;
 			float percentVisibility = weapon.howMuchVisibleTheTArgetIs();
-			TargetAimValue = percentVisibility;
+			TargetAimPercent = percentVisibility;
 
 			float coverValue = howMuchCoverTheCurrentTArgetHave();
-			TargetAimValue = TargetAimValue - (coverValue / 100f);
-			Debug.Log($"{TargetAimValue}");
+			TargetAimPercent = TargetAimPercent - coverValue;
+			//Debug.Log($"{TargetAimPercent}");
 			onChangeTarget.Raise();
 		}
 	}

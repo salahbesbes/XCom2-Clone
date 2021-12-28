@@ -209,7 +209,7 @@ public class Unit : MonoBehaviour
 			RaycastHit hit;
 			if (Physics.Raycast(ori, _currentTarger.partToRotate.forward * 2, out hit, Vector3.forward.magnitude * 2))
 			{
-				Debug.Log($"target have some obstacle => {hit.collider.name}");
+				//Debug.Log($"target have some obstacle => {hit.collider.name}");
 			}
 		}
 		// switch state

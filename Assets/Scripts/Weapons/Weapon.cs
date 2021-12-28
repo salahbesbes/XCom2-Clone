@@ -39,6 +39,6 @@ public abstract class Weapon : MonoBehaviour
 
 	public virtual float howMuchVisibleTheTArgetIs()
 	{
-		return 1;
+		return 100;
 	}
 }

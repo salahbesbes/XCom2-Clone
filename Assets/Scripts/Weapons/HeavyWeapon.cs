@@ -116,6 +116,30 @@ public class HeavyWeapon : Weapon
 		}
 	}
 
+	public override float howMuchVisibleTheTArgetIs()
+	{
+		Vector3 ori = startPoint.position;
+		float spotValue = 1.0f / player.CurrentTarget.sportPoints.Count;
+		float percent = 0;
+		string[] collidableLayers = { "Enemy", "Unwalkable" };
+		int layerToCheck = LayerMask.GetMask(collidableLayers);
+		RaycastHit hit;
+
+		foreach (Transform spot in player.CurrentTarget.sportPoints)
+		{
+			Vector3 dir = (spot.position - ori).normalized;
+			Debug.DrawRay(ori, dir * weaponType.bulletRange, Color.cyan);
+			if (Physics.Raycast(ori, dir, out hit, weaponType.bulletRange, layerToCheck))
+			{
+				if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Enemy")
+				{
+					percent += spotValue;
+				}
+			}
+		}
+		return percent * 100;
+	}
+
 	public struct LunchData
 	{
 		public readonly Vector3 initialVelocity;
