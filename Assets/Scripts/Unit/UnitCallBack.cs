@@ -2,7 +2,7 @@
 
 public class UnitCallBack : MonoBehaviour
 {
-	public GameStateManager manager;
+	private GameStateManager manager;
 
 	private void Start()
 	{
@@ -25,6 +25,6 @@ public class UnitCallBack : MonoBehaviour
 	public void onWeaponShootEventTrigger(UnitStats triggerStats)
 	{
 		TakeDamage(triggerStats);
-		updateTargetUiStats();
+		manager.SelectedUnit.onChangeTarget.Raise();
 	}
 }

@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1680672783386194810}
-  - component: {fileID: 4183542500039884897}
   m_Layer: 6
   m_Name: listners
   m_TagString: Untagged
@@ -32,19 +31,6 @@ Transform:
   m_Father: {fileID: 8583340695942099311}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4183542500039884897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2963302685692049402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6332337e2782135498cfaa6696eedc57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  thisUnit: {fileID: 0}
 --- !u!1 &4802993163770995523
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,6 +807,7 @@ MonoBehaviour:
   TargetName: {fileID: 0}
   TargetArmor: {fileID: 0}
   TargetDamage: {fileID: 0}
+  AimChance: {fileID: 0}
 --- !u!114 &-7480697632699123317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -834,7 +821,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 0}
-  currentTarget: {fileID: 0}
   processing: 0
   weapon: {fileID: 1385690930872528473}
   partToRotate: {fileID: 8583340694775715537}
@@ -852,7 +838,7 @@ MonoBehaviour:
   secondCam: {fileID: 7339305137955295310}
   aimPoint: {fileID: 6803989636456501582}
   isFlanked: 0
-  pointsRayCast: {fileID: 8583340695477071443}
+  sportPoints: []
   onChangeTarget: {fileID: 11400000, guid: 94c3fca271f0a5840ad25cf123f548ac, type: 2}
   currentActionAnimation: 1
   TurnOnGizmos: 0
@@ -960,11 +946,6 @@ PrefabInstance:
       objectReference: {fileID: 7339305137955295310}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
---- !u!4 &6222303333201824603 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1630596857841368675, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
-  m_PrefabInstance: {fileID: 4682341571523900728}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1385690930872528473 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6035371429797223265, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
@@ -979,5 +960,10 @@ MonoBehaviour:
 --- !u!4 &6803989636456501582 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2204411273231475830, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
+  m_PrefabInstance: {fileID: 4682341571523900728}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6222303333201824603 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1630596857841368675, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
   m_PrefabInstance: {fileID: 4682341571523900728}
   m_PrefabAsset: {fileID: 0}

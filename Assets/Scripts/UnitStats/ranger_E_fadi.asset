@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: ranger_E_fadi
   m_EditorClassIdentifier: 
   myName: ranger Fadi
-  ShootActionEvent: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
+  _health: 100
+  onWeaponFinishShooting: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
   EquipeEvent: {fileID: 11400000, guid: 6945a8e9d3763734096b06dc5a504f83, type: 2}
   weapon: {fileID: 0}
   damage:
-    baseValue: 5
+    baseValue: 30
     modifiers: 
   armor:
     baseValue: 5
     modifiers: 
+  maxHealth: 100

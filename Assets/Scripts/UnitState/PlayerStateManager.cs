@@ -33,10 +33,17 @@ public class PlayerStateManager : AnyClass
 		State.Update(this);
 	}
 
+
+
+
 	public void SwitchState(BaseState<PlayerStateManager> newState, AnimationType? anim = null)
 	{
 		State?.ExitState(this);
 		State = newState;
 		State.EnterState(this);
 	}
+
+
+
+
 }

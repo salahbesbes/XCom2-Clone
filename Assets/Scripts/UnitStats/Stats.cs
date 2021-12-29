@@ -1,22 +1,8 @@
-using TMPro;
 using UnityEngine;
 
 public class Stats : MonoBehaviour
 {
 	public UnitStats unit;
-	public TextMeshProUGUI myHealth;
-	public TextMeshProUGUI MyName;
-	public TextMeshProUGUI myArmor;
-	public TextMeshProUGUI myDamage;
-
-	[Header("--------------------")]
-	public TextMeshProUGUI TargetHealth;
-	public TextMeshProUGUI TargetName;
-	public TextMeshProUGUI TargetArmor;
-	public TextMeshProUGUI TargetDamage;
-
-	[Header("--------------------")]
-	public TextMeshProUGUI AimChance;
 
 	private void Start()
 	{
@@ -24,7 +10,7 @@ public class Stats : MonoBehaviour
 
 	public void triggerEvent()
 	{
-		unit.ShootActionEvent.Raise(unit);
+		unit.onWeaponFinishShooting.Raise(unit);
 	}
 
 	public void Die()

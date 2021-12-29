@@ -67,7 +67,6 @@ public class ShutGun : Weapon
 			Vector3 dir = (player.CurrentTarget.aimPoint.position - startPoint.position).normalized;
 			GameObject effectObj = Instantiate(weaponType.ammo.fireEffect, startPoint.position, player.partToRotate.rotation);
 			ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
-			Debug.Log($"{effectObj.name}");
 			RaycastHit hit;
 			if (Physics.Raycast(startPoint.position, dir, out hit, weaponType.bulletRange))
 			{

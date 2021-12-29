@@ -98,7 +98,7 @@ public class GameManagerListner : MonoBehaviour
 		{
 			// EventArgument is what ever argument is passed when we trugger (raise the
 			// Event ) in this case its Weapon
-			unit.listners.GetComponent<CallBackOnListen>().onWeaponShootEventTrigger(EventArgument);
+			unit.listners.GetComponent<UnitCallBack>().onWeaponShootEventTrigger(EventArgument);
 		});
 
 		e.Register();

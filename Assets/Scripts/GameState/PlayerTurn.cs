@@ -7,7 +7,6 @@ public class PlayerTurn : AnyState<GameStateManager>
 
 	public override AnyClass EnterState(GameStateManager gameManager)
 	{
-		gameManager.clearPreviousSelectedUnitFromAllVoidEvents(gameManager.SelectedUnit?.CurrentTarget);
 		gameManager.SelectedUnit = gameManager.players.FirstOrDefault();
 		gameManager.SelectedUnit.CurrentTarget = gameManager.enemies.FirstOrDefault();
 
@@ -36,6 +35,8 @@ public class PlayerTurn : AnyState<GameStateManager>
 			gameManager.SelectedUnit.enabled = false;
 			gameManager.SelectedUnit.fpsCam.enabled = false;
 			//Debug.Log($"exit State {nameof(PlayerTurn)}");
+			gameManager.clearPreviousSelectedUnitFromAllWeaponEvent(gameManager.SelectedUnit?.CurrentTarget);
+
 		}
 	}
 
@@ -66,7 +67,6 @@ public class EnemyTurn : AnyState<GameStateManager>
 {
 	public override AnyClass EnterState(GameStateManager gameManager)
 	{
-		gameManager.clearPreviousSelectedUnitFromAllVoidEvents(gameManager.SelectedUnit?.CurrentTarget);
 		gameManager.SelectedUnit = gameManager.enemies.FirstOrDefault();
 		gameManager.SelectedUnit.CurrentTarget = gameManager.players.FirstOrDefault();
 		//gameManager.SelectedEnemy.currentPos = gameManager.SelectedEnemy.grid.getNodeFromTransformPosition(gameManager.SelectedEnemy.transform);
@@ -97,7 +97,7 @@ public class EnemyTurn : AnyState<GameStateManager>
 		{
 			gameManager.SelectedUnit.enabled = false;
 			gameManager.SelectedUnit.fpsCam.enabled = false;
-			//Debug.Log($"exit State {nameof(EnemyTurn)}");
+			gameManager.clearPreviousSelectedUnitFromAllWeaponEvent(gameManager.SelectedUnit?.CurrentTarget);
 		}
 	}
 

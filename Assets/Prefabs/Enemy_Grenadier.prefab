@@ -204,7 +204,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1003920037410417868}
-  - component: {fileID: 3039252924827444227}
   m_Layer: 6
   m_Name: listners
   m_TagString: Untagged
@@ -227,19 +226,6 @@ Transform:
   m_Father: {fileID: 8583340695942099311}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3039252924827444227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8031930567246983256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6332337e2782135498cfaa6696eedc57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  thisUnit: {fileID: 0}
 --- !u!1 &8573554083543642351
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,6 +807,7 @@ MonoBehaviour:
   TargetName: {fileID: 0}
   TargetArmor: {fileID: 0}
   TargetDamage: {fileID: 0}
+  AimChance: {fileID: 0}
 --- !u!114 &5387555271770916714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -834,7 +821,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 0}
-  currentTarget: {fileID: 0}
   processing: 0
   weapon: {fileID: 5022143809430657989}
   partToRotate: {fileID: 8583340694775715537}
@@ -852,7 +838,7 @@ MonoBehaviour:
   secondCam: {fileID: 7339305137955295310}
   aimPoint: {fileID: 6539718105168211613}
   isFlanked: 0
-  pointsRayCast: {fileID: 8583340695477071443}
+  sportPoints: []
   onChangeTarget: {fileID: 11400000, guid: 94c3fca271f0a5840ad25cf123f548ac, type: 2}
   currentActionAnimation: 1
   TurnOnGizmos: 0
@@ -1020,11 +1006,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0455e876db478b140a5873e472078b64, type: 3}
---- !u!4 &913434680869059614 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2433976513214381497, guid: 0455e876db478b140a5873e472078b64, type: 3}
-  m_PrefabInstance: {fileID: 3272450888122335655}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5022143809430657989 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7554834078591818338, guid: 0455e876db478b140a5873e472078b64, type: 3}
@@ -1039,5 +1020,10 @@ MonoBehaviour:
 --- !u!4 &6539718105168211613 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8623173142691213114, guid: 0455e876db478b140a5873e472078b64, type: 3}
+  m_PrefabInstance: {fileID: 3272450888122335655}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &913434680869059614 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2433976513214381497, guid: 0455e876db478b140a5873e472078b64, type: 3}
   m_PrefabInstance: {fileID: 3272450888122335655}
   m_PrefabAsset: {fileID: 0}

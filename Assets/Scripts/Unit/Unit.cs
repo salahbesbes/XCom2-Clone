@@ -200,7 +200,7 @@ public class Unit : MonoBehaviour
 		if (action is ShootAction)
 		{
 			UnitStats stats = GetComponent<Stats>().unit;
-			stats.ShootActionEvent.Raise(stats);
+			stats.onWeaponFinishShooting.Raise(stats);
 		}
 		if (action is MoveAction)
 		{

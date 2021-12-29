@@ -22,7 +22,7 @@ public partial class CallBackOnListen : MonoBehaviour
 	[Header("--------------------")]
 	public TextMeshProUGUI AimChance;
 
-	private void Start()
+	private void Awake()
 	{
 		manager = GameStateManager.Instance;
 	}

@@ -24,9 +24,20 @@ public class AnyClass : Unit, IBaseActions
 	public VoidEvent onChangeTarget;
 	private float _targetAimValue;
 
-	private void Start()
+
+
+	public void Start()
 	{
-		//gameStateManager = GameStateManager.Instance;
+		grid = NodeGrid.Instance;
+		gameStateManager = GameStateManager.Instance;
+
+		currentPos = grid.getNodeFromTransformPosition(transform);
+		queueOfActions = new Queue<ActionBase>();
+		path = new List<Node>();
+		turnPoints = new Vector3[0];
+		currentPos = grid.getNodeFromTransformPosition(transform);
+		animator = model.GetComponent<Animator>();
+		stats = GetComponent<Stats>();
 	}
 
 	public float TargetAimPercent
@@ -45,13 +56,9 @@ public class AnyClass : Unit, IBaseActions
 		set
 		{
 			if (GameStateManager.Instance == null) Debug.Log($"gamemanager is null");
-			//GameStateManager.Instance.clearPreviousSelectedUnitFromAllVoidEvents(_currentTarger);
-			//GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(_currentTarger);
-			//GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(this);
+			GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(_currentTarger);
 			_currentTarger = value;
-			//GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.unit?.ShootActionEvent);
-			//GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(this, stats?.unit?.ShootActionEvent);
-			//GameStateManager.Instance.MakeOnlySelectedUnitListingToEventArgument(_currentTarger, _currentTarger.onChangeTarget);
+			GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.unit?.onWeaponFinishShooting);
 		}
 	}
 
