@@ -52,6 +52,8 @@ public class GameStateManager : GameManagerListner
 			Debug.Log($"Selected  {SelectedUnit} ");
 
 			MakeGAmeMAnagerListingToNewSelectedUnit(_selectedUnit);
+
+
 			//MakeOnlySelectedUnitListingToEventArgument(_selectedUnit, PlayerChangeEvent);
 
 			//MakeOnlySelectedUnitListingToEquipeEvent(_selectedUnit, _selectedUnit.GetComponent<Stats>()?.unit?.EquipeEvent);
@@ -128,6 +130,7 @@ public class GameStateManager : GameManagerListner
 		// change the current state and execute the start methode of that new State this is
 		// the only way to change the state
 		State = newState;
+		clearPreviousSelectedUnitFromAllWeaponEvent(SelectedUnit?.CurrentTarget);
 		AnyClass selectedUnit = State.EnterState(this);
 	}
 

@@ -1,49 +1,57 @@
 using UnityEngine;
-
 public class handleHealthUnitBar : MonoBehaviour
 {
-	private int health = 20;
 
-	public int Health
-	{ get => health; set { health = Mathf.Clamp(value, 0, MaxHealth); } }
+	private int healthBeforeShoot;
 
-	public int MaxHealth = 20;
+
 	public GameObject unitHealth;
+	private AnyClass thisUnit;
+	private Transform HealthHolder;
 
 	private void Start()
 	{
-		Health = MaxHealth;
+		thisUnit = GetComponentInParent<AnyClass>();
+		//tmpHealth = thisUnit.stats.unit.Health;
+		HealthHolder = transform.Find("HealthHolder");
 		updateHealthBar();
 	}
 
+
+
+
+
 	private void updateHealthBar()
 	{
-		float holderWidth = transform.GetComponent<RectTransform>().rect.width;
-		float unitwidth = holderWidth / Health;
-
-		for (int i = 0; i < Health; i++)
+		float holderWidth = HealthHolder.GetComponent<RectTransform>().rect.width;
+		healthBeforeShoot = thisUnit.stats.unit.Health;
+		float unitwidth = holderWidth / healthBeforeShoot;
+		for (int i = 0; i < healthBeforeShoot; i++)
 		{
-			GameObject unit = Instantiate(unitHealth, transform);
+			GameObject unit = Instantiate(unitHealth, HealthHolder);
 			unit.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(unitwidth, unit.transform.GetComponent<RectTransform>().sizeDelta.y);
 			unit.transform.localScale = new Vector3(unitwidth, unit.transform.localScale.y, unit.transform.localScale.z);
 		}
 	}
 
-	public void onDamage(int damageValue)
+	public void onDamage()
 	{
-		Health -= damageValue;
-		for (int i = Health; i < Health + damageValue; i++)
+		for (int i = healthBeforeShoot - 1; i >= thisUnit.stats.unit.Health; i--)
 		{
-			transform.GetChild(i).GetComponent<Renderer>().material.color = Color.gray;
+			HealthHolder.GetChild(i).GetComponent<Renderer>().material.color = Color.gray;
 		}
+		healthBeforeShoot = thisUnit.stats.unit.Health;
+
 	}
 
-	public void onHeal(int healVAlue)
+	public void onHeal()
 	{
-		Health += healVAlue;
-		for (int i = Health - 1; i >= Health - healVAlue; i--)
+
+		for (int i = healthBeforeShoot; i < thisUnit.stats.unit.Health; i++)
 		{
-			transform.GetChild(i).GetComponent<Renderer>().material.color = Color.red;
+			HealthHolder.GetChild(i).GetComponent<Renderer>().material.color = Color.red;
 		}
+		healthBeforeShoot = thisUnit.stats.unit.Health;
+
 	}
 }

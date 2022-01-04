@@ -22,16 +22,7 @@ public class Idel : AnyState<PlayerStateManager>
 			player.SwitchState(player.selectingEnemy);
 		}
 
-		if (Input.GetKeyDown(KeyCode.K))
-		{
-			handleHealthUnitBar healthBar = player.HealthBarHolder.GetComponent<handleHealthUnitBar>();
-			healthBar.onHeal(6);
-		}
-		if (Input.GetKeyDown(KeyCode.L))
-		{
-			handleHealthUnitBar healthBar = player.HealthBarHolder.GetComponent<handleHealthUnitBar>();
-			healthBar.onDamage(4);
-		}
+
 		if (Input.GetKeyDown(KeyCode.R))
 		{
 			player.CreateNewReloadAction();
