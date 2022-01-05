@@ -27,7 +27,8 @@ public class Tile
 		quad.transform.position = node.coord;
 		quad.transform.rotation = Quaternion.Euler(90, 0, 0);
 		quad.transform.SetParent(parent);
-		quad.transform.localScale = new Vector3(size, size, 1);
+		quad.transform.localScale = new Vector3(size, size, size);
+
 		quad.GetComponent<Renderer>().material = (Material)Resources.Load("tile", typeof(Material));
 		listTiles.Add(this);
 		node.tile = this;

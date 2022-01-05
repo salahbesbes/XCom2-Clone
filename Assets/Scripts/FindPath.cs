@@ -14,15 +14,72 @@ public static class FindPath
 	public static List<Node> AStarAlgo(Node startNode, Node destination)
 	{
 		startNode.g = 0;
-		List<Node> QueueNotTested = new List<Node>();
+		startNode.h = CalcH(startNode, destination);
+		startNode.f = startNode.g + startNode.h;
+		List<Node> openList = new List<Node>() { startNode };
+		List<Node> closedLsit = new List<Node>();
+		Node current;
+		List<Node> res = new List<Node>();
+		while (openList.Count > 0)
+		{
+			// first sort the list by nodeCost then by the h value (distance to the destination)
+			// this give us the shortest path and not expansive 
+			openList = openList.OrderBy(item => item.nodeCost).OrderBy(item => item.h).ToList();
+			current = openList[0];
+
+
+			if (current == destination)
+			{
+				res = getThePath(startNode, current);
+				return res;
+			}
+
+
+			openList.Remove(current);
+			closedLsit.Add(current);
+
+			foreach (Node neighbour in current.neighbours)
+			{
+				if (closedLsit.Contains(neighbour) || neighbour.isObstacle) continue;
+
+				float tmpG = current.g + CalcG(current, neighbour);
+				// if the tmpG is less then the current G on the neighbour node
+				if (neighbour.g > tmpG)
+				{
+					neighbour.g = tmpG;
+					neighbour.parent = current;
+					neighbour.h = CalcH(neighbour, destination);
+					neighbour.f = neighbour.g + neighbour.h + neighbour.nodeCost;
+					if (!openList.Contains(neighbour))
+						openList.Add(neighbour);
+				}
+			}
+
+
+		}
+
+		Debug.Log($"cant find path in the map ");
+		return res;
+
+	}
+
+
+	/*
+	 startNode.g = 0;
+		Queue<Node> QueueNotTested = new Queue<Node>();
 		List<Node> result = new List<Node>();
 		bool success = false;
 
-		QueueNotTested.Insert(0, startNode);
+		QueueNotTested.Enqueue(startNode);
+
 		while (QueueNotTested.Count >= 0)
 		{
 			// sort the list in acending order by the heuretic value
-			QueueNotTested = QueueNotTested.OrderBy(item => item.h).ToList();
+			QueueNotTested = new Queue<Node>(QueueNotTested.OrderBy(item => item.h).OrderBy(item => item.nodeCost));
+
+			//var queue = new Queue<string>(myStringList);
+
+
 			//we can loop throw an empty list in that case we are sure we didnt
 			//find any path
 			if (QueueNotTested.Count == 0)
@@ -34,11 +91,12 @@ public static class FindPath
 
 			// select the first node of the list which have the less value of the
 			// heuritic value
-			Node current = QueueNotTested[0];
+			//Node current = QueueNotTested[0];
+			//if (queueOfSameHValue.Count > 0) Debug.Log($"{cur},  {current}");
+			//remove it from the rhe list
+			Node current = QueueNotTested.Dequeue();
 			// make it visited
 			current.visited = true;
-			//remove it from the rhe list
-			QueueNotTested.RemoveAt(0);
 
 			// if the current == end we find the en point
 			if (current == destination)
@@ -75,7 +133,7 @@ public static class FindPath
 						neighbor.g = tempG;
 						neighbor.h = neighbor.g + CalcH(neighbor, destination);
 						// update the list we are worrking on
-						QueueNotTested.Add(neighbor);
+						QueueNotTested.Enqueue(neighbor);
 					}
 				}
 			}
@@ -84,8 +142,10 @@ public static class FindPath
 		// we pass the result var to the get methode and we set the gridPath any way (empty
 		// or full)
 		return result;
-	}
-
+	 
+	 
+	 
+	 */
 	public static float CalcG(Node a, Node b)
 	{
 		return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
@@ -123,9 +183,12 @@ public static class FindPath
 		// delete previous path
 		List<Node> path = new List<Node>();
 		startNode.path = new List<Node>();
+
+		int pathCost = 0;
 		while (tmp.parent != null)
 		{
 			// fill the path variable
+			pathCost += tmp.nodeCost;
 			path.Add(tmp);
 			tmp = tmp.parent;
 			tmp.color = Color.green;
@@ -134,7 +197,7 @@ public static class FindPath
 		path.Reverse();
 
 		startNode.path = path;
-
+		//Debug.Log($"path Cost {pathCost}");
 		return path;
 	}
 
@@ -176,6 +239,8 @@ public class Node
 	public bool firstRange = false;
 	public float g = float.PositiveInfinity;
 	public float h = float.PositiveInfinity;
+	public float f = float.PositiveInfinity;
+	public int nodeCost = 0;
 	public bool inRange = false;
 	public bool isObstacle = false;
 	public List<Node> neighbours;
@@ -199,6 +264,6 @@ public class Node
 
 	public override string ToString()
 	{
-		return $" ({x}, {y}) ";
+		return $" node ({x}, {y}) ";
 	}
 }

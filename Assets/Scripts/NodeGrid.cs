@@ -202,6 +202,10 @@ public class NodeGrid : MonoBehaviour
 			//nodeLayer = LayerMask.GetMask("Node");
 			playerLayer = LayerMask.GetMask("Player");
 			Unwalkable = LayerMask.GetMask("Unwalkable");
+
+
+
+
 		}
 	}
 
@@ -217,25 +221,25 @@ public class NodeGrid : MonoBehaviour
 				// create node
 				graph[x, y] = new Node(nodeCoord, x, y);
 
-				// create Quad
-				//GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-				//quad.transform.position = graph[x, y].coord;
-				//quad.transform.rotation = Quaternion.Euler(90, 0, 0);
-				//quad.transform.SetParent(quadHolder);
-				//quad.GetComponent<Renderer>().material = (Material)Resources.Load("tile", typeof(Material));
-				//tiles.Add(quad.transform);
-				//graph[x, y].tile = quad.transform;
-
 				new Tile(graph[x, y], quadHolder, tiles);
 
 				// project a sphere to check with the Layer Unwalkable if some thing
 				// with the layer Unwalkable above it
-				string[] collidableLayers = { "Unwalkable", "Enemy", "Player" };
+				string[] collidableLayers = { "Unwalkable", "Enemy", "Player", "Default" };
 				int layerToCheck = LayerMask.GetMask(collidableLayers);
 				//graph[x, y].isObstacle = Physics.CheckSphere(nodeCoord, nodeSize / 2, layerToCheck);
 
 				Collider[] hitColliders = Physics.OverlapSphere(nodeCoord, nodeSize / 2, layerToCheck);
-				graph[x, y].isObstacle = hitColliders.Length > 0 ? true : false;
+
+				foreach (var item in hitColliders)
+				{
+					if (item.CompareTag("mug")) graph[x, y].nodeCost = 10;
+					else if (item.CompareTag("grass")) graph[x, y].nodeCost = 5;
+					else graph[x, y].isObstacle = true;
+				}
+
+				//graph[x, y].isObstacle = hitColliders.Length > 0 ? true : false;
+
 			}
 		}
 
@@ -287,4 +291,8 @@ public class NodeGrid : MonoBehaviour
 			Debug.DrawLine(buttonLeft + new Vector3(x, 0.02f, 0), new Vector3(x + buttonLeft.x, 0.02f, (height + buttonLeft.z)), Color.black);
 		}
 	}
+
+
+
+
 }
