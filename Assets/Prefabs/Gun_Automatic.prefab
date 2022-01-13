@@ -97,11 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 882557fd05df00f488e2ff83948d818c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: {fileID: 11400000, guid: a8d80d334974af144ba598170fcbc8dd, type: 2}
   startPoint: {fileID: 7142682077967009322}
-  fps_Cam: {fileID: 0}
   player: {fileID: 0}
-  _projection: {fileID: 0}
+  weaponType: {fileID: 11400000, guid: a8d80d334974af144ba598170fcbc8dd, type: 2}
 --- !u!1 &5910661443088652171
 GameObject:
   m_ObjectHideFlags: 0

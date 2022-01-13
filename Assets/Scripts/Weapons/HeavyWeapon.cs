@@ -109,6 +109,7 @@ public class HeavyWeapon : Weapon
 				Quaternion Ori = transform.rotation;
 				await rotateWeaponAndLunch(transform, -10);
 				Grenade grenade = Instantiate(weaponType.ammo, startPoint.position, Quaternion.identity);
+				grenade.unitStats = player.stats.unit;
 				Rigidbody rb = grenade.GetComponent<Rigidbody>();
 				lunchToWard(rb, potentialDestination.coord, weaponType.bouncingForce, weaponType.ammoSpeed);
 				transform.rotation = Ori;

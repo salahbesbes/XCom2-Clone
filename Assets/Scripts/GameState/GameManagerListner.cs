@@ -78,6 +78,7 @@ public class GameManagerListner : MonoBehaviour
 
 	public void clearPreviousSelectedUnitFromAllWeaponEvent(AnyClass unit)
 	{
+
 		if (unit == null) return;
 		WeaponListner[] listners = unit.listners.GetComponents<WeaponListner>();
 		foreach (WeaponListner listner in listners)

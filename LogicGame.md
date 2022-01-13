@@ -90,7 +90,7 @@ the constructor of the Action do all the calculation and save the start and dest
 
 
 
-# State Machine
+# State Machine Pattern
 ![State Machine](StateMachine.png)
 # Observable Pattern
 ![Observable Pattern](ObservablePattern.png)

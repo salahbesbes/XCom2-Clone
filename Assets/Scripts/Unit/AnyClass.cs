@@ -26,6 +26,7 @@ public class AnyClass : Unit, IBaseActions
 
 
 
+
 	public void Start()
 	{
 		grid = NodeGrid.Instance;
@@ -121,12 +122,9 @@ public class AnyClass : Unit, IBaseActions
 	public Node onNodeHover(Node oldPotentialDest)
 	{
 		//Node oldDestination = destination;
+		if (NodeGrid.Instance == null) return null;
 		Node res;
-		if (grid == null)
-		{
-			grid = NodeGrid.Instance;
-			Debug.Log($" grid is null set it  ");
-		}
+
 		if (fpsCam.enabled)
 		{
 			res = NodeGrid.Instance.getNodeFromMousePosition(fpsCam);

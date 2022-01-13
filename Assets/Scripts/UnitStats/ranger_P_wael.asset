@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ranger_P_wael
   m_EditorClassIdentifier: 
   myName: Ranger Wael
-  _health: 100
+  _health: 15
   onWeaponFinishShooting: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
   EquipeEvent: {fileID: 11400000, guid: 6945a8e9d3763734096b06dc5a504f83, type: 2}
   weapon: {fileID: 0}
@@ -23,4 +23,4 @@ MonoBehaviour:
   armor:
     baseValue: 5
     modifiers: 
-  maxHealth: 100
+  maxHealth: 30

@@ -76,11 +76,11 @@ public class NodeGrid : MonoBehaviour
 		{
 			for (int y = 0; y < width; y++)
 			{
-				if (Instance.graph != null)
+				if (graph != null)
 				{
-					if (Instance.graph[x, y].coord.x == i && Instance.graph[x, y].coord.z == j)
+					if (graph[x, y].coord.x == i && graph[x, y].coord.z == j)
 					{
-						return Instance.graph[x, y];
+						return graph[x, y];
 					}
 				}
 			}
@@ -111,7 +111,7 @@ public class NodeGrid : MonoBehaviour
 				float roundX = Mathf.Floor(worldPosition.x) + nodeRadius;
 				float roundY = Mathf.Floor(worldPosition.z) + nodeRadius;
 				Node selectedNode = GetNode(roundX, roundY);
-				if (selectedNode.isObstacle == true) return null;
+				if (selectedNode != null && selectedNode.isObstacle == true) return null;
 				else return selectedNode;
 			}
 		}
@@ -154,7 +154,7 @@ public class NodeGrid : MonoBehaviour
 	public void resetGrid()
 	{
 		if (Instance?.graph == null) return;
-		foreach (Node node in Instance.graph)
+		foreach (Node node in graph)
 		{
 			node.h = float.PositiveInfinity;
 			node.g = float.PositiveInfinity;
@@ -293,6 +293,17 @@ public class NodeGrid : MonoBehaviour
 	}
 
 
+
+
+
+	public Node getNode(int x, int y)
+	{
+		if (x >= 0 && y >= 0 && x < height && y < width)
+		{
+			return graph[x, y];
+		}
+		return null;
+	}
 
 
 }

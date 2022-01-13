@@ -36,7 +36,6 @@ public class PlayerTurn : AnyState<GameStateManager>
 			gameManager.SelectedUnit.fpsCam.enabled = false;
 			//Debug.Log($"exit State {nameof(PlayerTurn)}");
 			gameManager.clearPreviousSelectedUnitFromAllWeaponEvent(gameManager.SelectedUnit?.CurrentTarget);
-
 		}
 	}
 

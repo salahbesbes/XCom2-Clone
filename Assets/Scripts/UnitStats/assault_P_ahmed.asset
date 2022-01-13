@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: assault_P_ahmed
   m_EditorClassIdentifier: 
   myName: assault ahmed
-  _health: 100
+  _health: 30
   onWeaponFinishShooting: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
   EquipeEvent: {fileID: 11400000, guid: 6945a8e9d3763734096b06dc5a504f83, type: 2}
   weapon: {fileID: 0}
@@ -23,4 +23,4 @@ MonoBehaviour:
   armor:
     baseValue: 20
     modifiers: 
-  maxHealth: 100
+  maxHealth: 30

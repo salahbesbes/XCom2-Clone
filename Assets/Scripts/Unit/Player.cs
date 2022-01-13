@@ -6,7 +6,6 @@ public class Player : PlayerStateManager
 
 
 
-
 	//public void OnDrawGizmossss()
 	//{
 	//	if (grid != null && grid.graph != null)
