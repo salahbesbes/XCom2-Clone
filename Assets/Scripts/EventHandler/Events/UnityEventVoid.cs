@@ -26,4 +26,11 @@ namespace gameEventNameSpace
 	public class UnityEquipementEvent : UnityEvent<EquipementData>
 	{
 	}
+
+
+	[System.Serializable]
+	public class UnityNotifyGameManagerEvent : UnityEvent<PlayerStateManager>
+	{
+	}
+
 }

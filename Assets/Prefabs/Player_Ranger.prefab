@@ -472,7 +472,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4aa45ebeba01674eaf74ad4f46cbd2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid: {fileID: 0}
   processing: 0
   weapon: {fileID: 1274939285097724838}
   partToRotate: {fileID: 8583340694775715537}
@@ -492,8 +491,8 @@ MonoBehaviour:
   isFlanked: 0
   sportPoints: []
   onChangeTarget: {fileID: 11400000, guid: 94c3fca271f0a5840ad25cf123f548ac, type: 2}
+  notifyGameManagerEvent: {fileID: 11400000, guid: 1d69433eabc8c3a4a94a59d28589f794, type: 2}
   currentActionAnimation: 1
-  TurnOnGizmos: 0
 --- !u!1001 &1778977498967863906
 PrefabInstance:
   m_ObjectHideFlags: 0

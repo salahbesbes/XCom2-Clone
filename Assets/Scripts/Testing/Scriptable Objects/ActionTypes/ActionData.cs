@@ -37,4 +37,5 @@ public enum AnimationType
 	jump,
 	shoot,
 	aim,
+	die,
 }

@@ -12,22 +12,23 @@ public class UnitCallBack : MonoBehaviour
 	public void TakeDamage(UnitStats triggerStats)
 	{
 
-		AnyClass thisUnit = GetComponentInParent<AnyClass>();
-		Debug.Log($" trigger of event is  {triggerStats.name} target is   {thisUnit.stats.unit.name}");
+		PlayerStateManager thisUnit = GetComponentInParent<PlayerStateManager>();
 		int damage = triggerStats.damage.Value;
-		Debug.Log($"trigger damage {damage}");
 		damage -= thisUnit.stats.unit.armor.Value;
 		damage = Mathf.Clamp(damage, 0, int.MaxValue);
-		Debug.Log($"after hit {damage}");
-		Debug.Log($"target health {thisUnit.stats.unit.Health}");
 
 		thisUnit.stats.unit.Health -= damage;
 
 		Debug.Log($"health after hit {thisUnit.stats.unit.Health}");
-
-		if (manager.SelectedUnit.CurrentTarget.stats.unit.Health <= 0)
+		if (thisUnit.stats.unit.Health <= 0)
 		{
 			Debug.Log($"{ thisUnit.stats.unit.name} killed by {triggerStats.name}");
+
+			thisUnit.SwitchState(thisUnit.dead);
+			//thisUnit.model.GetComponent<Animator>().SetBool("idel", false);
+			//thisUnit.model.GetComponent<Animator>().SetBool("die", true);
+
+
 		}
 	}
 

@@ -1,4 +1,5 @@
 using gameEventNameSpace;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -134,4 +135,52 @@ public class GameManagerListner : MonoBehaviour
 
 		e.Register();
 	}
+
+
+
+	public void PlayerDied(PlayerStateManager player)
+	{
+		if (didGameEnd() == false)
+		{
+			checkIfselectedUnitDied(player);
+		}
+
+	}
+
+
+	private void checkIfselectedUnitDied(PlayerStateManager unit)
+	{
+		GameStateManager manager = GameStateManager.Instance;
+
+		if (manager.SelectedUnit == unit)
+		{
+			if (manager.State is PlayerTurn)
+			{
+				manager.SelectedUnit = manager.players.FirstOrDefault();
+			}
+			else if (manager.State is EnemyTurn)
+			{
+				manager.SelectedUnit = manager.enemies.FirstOrDefault();
+
+			}
+		}
+	}
+
+	private bool didGameEnd()
+	{
+		GameStateManager manager = GameStateManager.Instance;
+
+		if (manager.enemies.Where(unit => unit.State is Dead).Count() == manager.enemies.Count)
+		{
+			Debug.LogError("PLAYER WINS CONGRADUATION");
+			return true;
+		}
+		if (manager.players.Where(unit => unit.State is Dead).Count() == manager.players.Count)
+		{
+			Debug.LogError("ENEMIES WINS CONGRADUATION");
+			return true;
+		}
+		return false;
+	}
+
 }

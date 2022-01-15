@@ -3,9 +3,20 @@ public class PlayerStateManager : AnyClass
 	public SelectingEnemy selectingEnemy = new SelectingEnemy();
 	public Idel idelState = new Idel();
 	public DoingAction doingAction = new DoingAction();
-	public AnimationType currentActionAnimation = AnimationType.idel;
-	public bool TurnOnGizmos = false;
+	public Dead dead = new Dead();
 
+
+	public AnimationType currentActionAnimation = AnimationType.idel;
+
+
+	//private void Awake()
+	//{
+	//	//unit = GetComponent<AnyClass>();
+	//	SwitchState(idelState);
+
+	//	//Debug.Log($"start of player state manager ");
+
+	//}
 	private void OnEnable()
 	{
 		SwitchState(idelState);
@@ -24,7 +35,6 @@ public class PlayerStateManager : AnyClass
 
 	private void Awake()
 	{
-		SwitchState(idelState);
 	}
 
 	private void Update()

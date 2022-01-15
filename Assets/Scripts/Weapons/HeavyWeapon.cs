@@ -97,7 +97,7 @@ public class HeavyWeapon : Weapon
 
 	public override async void onHover()
 	{
-		Node potentialDestination = player.grid.getNodeFromMousePosition(player.secondCam);
+		Node potentialDestination = NodeGrid.Instance.getNodeFromMousePosition(player.secondCam);
 		if (potentialDestination != null && potentialDestination != player.destination && potentialDestination != player.currentPos)
 		{
 			//lineConponent.SetUpLine(turnPoints);

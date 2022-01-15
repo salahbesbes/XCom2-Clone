@@ -8,7 +8,7 @@ public class PlayerTurn : AnyState<GameStateManager>
 	public override AnyClass EnterState(GameStateManager gameManager)
 	{
 		gameManager.SelectedUnit = gameManager.players.FirstOrDefault();
-		gameManager.SelectedUnit.CurrentTarget = gameManager.enemies.FirstOrDefault();
+		gameManager.SelectedUnit.CurrentTarget = gameManager.enemies.FirstOrDefault(unit => unit.State is Idel);
 
 		gameManager.SelectedUnit.enabled = true;
 		gameManager.SelectedUnit.fpsCam.enabled = true;
@@ -53,7 +53,7 @@ public class PlayerTurn : AnyState<GameStateManager>
 
 			gameManager.SelectedUnit.enabled = true;
 			gameManager.SelectedUnit.fpsCam.enabled = true;
-			gameManager.SelectedUnit.CurrentTarget = gameManager.enemies.FirstOrDefault();
+			gameManager.SelectedUnit.CurrentTarget = gameManager.enemies.FirstOrDefault(unit => unit.State is Idel);
 
 			//gameManager.MakeGAmeMAnagerListingToNewSelectedUnit(gameManager.SelectedPlayer);
 
@@ -75,7 +75,6 @@ public class EnemyTurn : AnyState<GameStateManager>
 
 		gameManager.PlayerChangeEvent.Raise();
 		gameManager.SelectedUnit.onChangeTarget.Raise();
-
 		return gameManager.SelectedUnit;
 	}
 

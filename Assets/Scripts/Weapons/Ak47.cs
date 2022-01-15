@@ -72,7 +72,6 @@ public class Ak47 : Weapon
 			var main = effect.main;
 			main.duration = weaponType.timeBetweenShooting;
 
-			Debug.Log($"{effectObj.name}");
 			RaycastHit hit;
 			if (Physics.Raycast(startPoint.position, dir, out hit, weaponType.bulletRange))
 			{

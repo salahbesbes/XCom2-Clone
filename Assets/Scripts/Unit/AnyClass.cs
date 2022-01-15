@@ -22,15 +22,21 @@ public class AnyClass : Unit, IBaseActions
 	public List<Transform> sportPoints;
 
 	public VoidEvent onChangeTarget;
+	public NotifyGameManagerEvent notifyGameManagerEvent;
 	private float _targetAimValue;
 
-
+	private void OnEnable()
+	{
+		Debug.Log($"enable {this}");
+	}
 
 
 	public void Start()
 	{
 		grid = NodeGrid.Instance;
 		gameStateManager = GameStateManager.Instance;
+		Debug.Log($"{this} start()  is selected In GameManager {this == gameStateManager.SelectedUnit}");
+
 
 		currentPos = grid.getNodeFromTransformPosition(transform);
 		queueOfActions = new Queue<ActionBase>();
@@ -39,6 +45,9 @@ public class AnyClass : Unit, IBaseActions
 		currentPos = grid.getNodeFromTransformPosition(transform);
 		animator = model.GetComponent<Animator>();
 		stats = GetComponent<Stats>();
+		//stateManager = GetComponent<PlayerStateManager>();
+		//Debug.Log($"start of any class ");
+		enabled = this == gameStateManager.SelectedUnit ? true : false;
 	}
 
 	public float TargetAimPercent
@@ -56,7 +65,6 @@ public class AnyClass : Unit, IBaseActions
 		get => _currentTarger;
 		set
 		{
-			if (GameStateManager.Instance == null) Debug.Log($"gamemanager is null");
 			GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(_currentTarger);
 			_currentTarger = value;
 			GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.unit?.onWeaponFinishShooting);
@@ -68,8 +76,14 @@ public class AnyClass : Unit, IBaseActions
 		if (currentUnit is Enemy)
 		{
 			List<Player> players = gameStateManager.players;
+			players = players.Where(unit => unit.State is Idel).ToList();
 			int nbPlyaers = players.Count;
 			int currentTargetIndex = players.FindIndex(instance => instance == CurrentTarget);
+			if (players.Count == 0)
+			{
+				Debug.Log($" No More Targets All Dead  ");
+				return;
+			}
 			CurrentTarget = players[(currentTargetIndex + 1) % nbPlyaers];
 			// todo: find an alternative this cast can cause problem i nthe future
 			//gameStateManager.SelectedPlayer = (Player)currentTarget;
@@ -88,8 +102,19 @@ public class AnyClass : Unit, IBaseActions
 		else if (currentUnit is Player)
 		{
 			List<Enemy> enemies = gameStateManager.enemies;
+			enemies = enemies.Where(unit => unit.State == unit.idelState).ToList();
+
+			Debug.Log($"enemies count is {enemies.Count} target isi => {enemies.FirstOrDefault()}");
+
+			if (enemies.Count == 0)
+			{
+				Debug.Log($" No More Targets All Dead  ");
+				return;
+			}
 			int currentTargetIndex = enemies.FindIndex(instance => instance == CurrentTarget);
 			CurrentTarget = enemies[(currentTargetIndex + 1) % enemies.Count];
+
+			Debug.Log($"switch to target {CurrentTarget}, enemies idel {enemies.Count}");
 			// todo: find an alternative this cast can cause problem i nthe future
 			//gameStateManager.SelectedEnemy = (Enemy)currentTarget;
 			rotateTowardDirection(partToRotate, CurrentTarget.aimPoint.position - aimPoint.position);
@@ -105,7 +130,10 @@ public class AnyClass : Unit, IBaseActions
 			onChangeTarget.Raise();
 		}
 	}
-
+	private void OnValidate()
+	{
+		Debug.Log($"validate execute");
+	}
 	private float howMuchCoverTheCurrentTArgetHave()
 	{
 		Vector3 ori = new Vector3(CurrentTarget.partToRotate.transform.position.x, 0.5f, CurrentTarget.partToRotate.transform.position.z);
@@ -268,11 +296,11 @@ public class AnyClass : Unit, IBaseActions
 
 		if (fpsCam.enabled)
 		{
-			res = grid.getNodeFromMousePosition(fpsCam);
+			res = NodeGrid.Instance.getNodeFromMousePosition(fpsCam);
 		}
 		else
 		{
-			res = grid.getNodeFromMousePosition();
+			res = NodeGrid.Instance.getNodeFromMousePosition();
 		}
 		Node oldDest = destination;
 		if (res != null)

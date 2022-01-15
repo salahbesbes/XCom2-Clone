@@ -13,6 +13,8 @@ public class GameStateManager : GameManagerListner
 	public PlayerTurn playerTurn = new PlayerTurn();
 
 	public EnemyTurn enemyTurn = new EnemyTurn();
+
+	[SerializeField]
 	private BaseState<GameStateManager> _State;
 
 	public BaseState<GameStateManager> State

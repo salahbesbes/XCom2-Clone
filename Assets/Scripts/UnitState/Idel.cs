@@ -15,7 +15,7 @@ public class Idel : AnyState<PlayerStateManager>
 
 	public override void Update(PlayerStateManager player)
 	{
-		player.grid.resetGrid();
+		NodeGrid.Instance.resetGrid();
 
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{

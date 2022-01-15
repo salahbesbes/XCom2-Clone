@@ -13,7 +13,7 @@ public class Unit : MonoBehaviour
 	protected Vector3[] turnPoints;
 
 	[HideInInspector]
-	public NodeGrid grid;
+	protected NodeGrid grid;
 
 	[SerializeField]
 	public Node currentPos;
@@ -51,6 +51,7 @@ public class Unit : MonoBehaviour
 
 	public void PlayAnimation(AnimationType anim)
 	{
+		animator = model.GetComponent<Animator>();
 		foreach (AnimatorControllerParameter item in animator.parameters)
 		{
 			if (item.type is AnimatorControllerParameterType.Bool)
@@ -58,22 +59,15 @@ public class Unit : MonoBehaviour
 				animator.SetBool(item.name, false);
 			}
 		}
+		PlayerStateManager thisPlayer = (PlayerStateManager)this;
+		thisPlayer.currentActionAnimation = anim;
 		string CorrespondNameOfTheAnimation = Enum.GetName(typeof(AnimationType), anim);
-
 		animator.SetBool(CorrespondNameOfTheAnimation, true);
 	}
 
 	public void PlayIdelAnimation()
 	{
-		foreach (AnimatorControllerParameter item in animator.parameters)
-		{
-			if (item.type is AnimatorControllerParameterType.Bool)
-			{
-				animator.SetBool(item.name, false);
-			}
-		}
-		string CorrespondNameOfTheAnimation = Enum.GetName(typeof(AnimationType), AnimationType.idel);
-		animator.SetBool(CorrespondNameOfTheAnimation, true);
+		PlayAnimation(AnimationType.idel);
 	}
 
 	public async Task rotateTowardDirection(Transform partToRotate, Vector3 dir, float timeToSpentTurning = 2)
