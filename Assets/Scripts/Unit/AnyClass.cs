@@ -25,18 +25,10 @@ public class AnyClass : Unit, IBaseActions
 	public NotifyGameManagerEvent notifyGameManagerEvent;
 	private float _targetAimValue;
 
-	private void OnEnable()
-	{
-		Debug.Log($"enable {this}");
-	}
-
-
 	public void Start()
 	{
 		grid = NodeGrid.Instance;
 		gameStateManager = GameStateManager.Instance;
-		Debug.Log($"{this} start()  is selected In GameManager {this == gameStateManager.SelectedUnit}");
-
 
 		currentPos = grid.getNodeFromTransformPosition(transform);
 		queueOfActions = new Queue<ActionBase>();
@@ -65,7 +57,7 @@ public class AnyClass : Unit, IBaseActions
 		get => _currentTarger;
 		set
 		{
-			GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(_currentTarger);
+			GameStateManager.Instance.께께께께께께께께�(_currentTarger);
 			_currentTarger = value;
 			GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.unit?.onWeaponFinishShooting);
 		}
@@ -130,10 +122,12 @@ public class AnyClass : Unit, IBaseActions
 			onChangeTarget.Raise();
 		}
 	}
+
 	private void OnValidate()
 	{
-		Debug.Log($"validate execute");
+		//Debug.Log($"validate execute");
 	}
+
 	private float howMuchCoverTheCurrentTArgetHave()
 	{
 		Vector3 ori = new Vector3(CurrentTarget.partToRotate.transform.position.x, 0.5f, CurrentTarget.partToRotate.transform.position.z);
@@ -199,7 +193,8 @@ public class AnyClass : Unit, IBaseActions
 			}
 			return potentialDestination;
 		}
-		// if potentialDestination is null(hover over some unwalckabale) we return the oldDestination
+		// if potentialDestination is null(hover over some unwalckabale) we return the
+		// oldDestination
 		return oldPotentialDest;
 	}
 

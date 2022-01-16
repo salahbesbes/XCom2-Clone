@@ -92,7 +92,7 @@ public class NodeGrid : MonoBehaviour
 	{
 		if (EventSystem.current.IsPointerOverGameObject())
 		{
-			Debug.Log($" ui in the way  ");
+			//Debug.Log($" ui in the way  ");
 			return null;
 		}
 		Plane plane = new Plane(Vector3.up, 0);
@@ -202,10 +202,6 @@ public class NodeGrid : MonoBehaviour
 			//nodeLayer = LayerMask.GetMask("Node");
 			playerLayer = LayerMask.GetMask("Player");
 			Unwalkable = LayerMask.GetMask("Unwalkable");
-
-
-
-
 		}
 	}
 
@@ -239,7 +235,6 @@ public class NodeGrid : MonoBehaviour
 				}
 
 				//graph[x, y].isObstacle = hitColliders.Length > 0 ? true : false;
-
 			}
 		}
 
@@ -292,10 +287,6 @@ public class NodeGrid : MonoBehaviour
 		}
 	}
 
-
-
-
-
 	public Node getNode(int x, int y)
 	{
 		if (x >= 0 && y >= 0 && x < height && y < width)
@@ -304,6 +295,4 @@ public class NodeGrid : MonoBehaviour
 		}
 		return null;
 	}
-
-
 }

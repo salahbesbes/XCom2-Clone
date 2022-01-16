@@ -51,10 +51,9 @@ public class GameStateManager : GameManagerListner
 			//clearPreviousSelectedUnitFromAlEquipementEvent(_selectedUnit);
 
 			_selectedUnit = value;
-			Debug.Log($"Selected  {SelectedUnit} ");
+			//Debug.Log($"Selected  {SelectedUnit} ");
 
 			MakeGAmeMAnagerListingToNewSelectedUnit(_selectedUnit);
-
 
 			//MakeOnlySelectedUnitListingToEventArgument(_selectedUnit, PlayerChangeEvent);
 
