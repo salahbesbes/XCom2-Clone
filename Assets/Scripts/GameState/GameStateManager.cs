@@ -29,10 +29,10 @@ public class GameStateManager : GameManagerListner
 	}
 
 	[SerializeField]
-	public List<Enemy> enemies;
+	public List<PlayerStateManager> enemies;
 
 	[SerializeField]
-	public List<Player> players;
+	public List<PlayerStateManager> players;
 
 	public BaseStateEvent StateEventSubject;
 	public VoidEvent PlayerChangeEvent;

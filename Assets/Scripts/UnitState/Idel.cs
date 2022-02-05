@@ -7,7 +7,7 @@ public class Idel : AnyState<PlayerStateManager>
 
 	public override AnyClass EnterState(PlayerStateManager player)
 	{
-		Debug.Log($" {player.name}  state : {player.State.name}");
+		//Debug.Log($" {player.name}  state : {player.State.name}");
 		player.weapon.enabled = false;
 		player.getCoversValueFromStandingNode();
 		return null;

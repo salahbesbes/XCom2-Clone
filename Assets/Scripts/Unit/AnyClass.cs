@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class AnyClass : Unit, IBaseActions
+public class AnyClass : Unit
 {
 	public List<ActionData> actions = new List<ActionData>();
+	public Team team;
 	public Stats stats;
 	public Transform ActionHolder;
 	public GameObject Action_prefab;
@@ -24,23 +25,7 @@ public class AnyClass : Unit, IBaseActions
 	public VoidEvent onChangeTarget;
 	public NotifyGameManagerEvent notifyGameManagerEvent;
 	private float _targetAimValue;
-
-	public void Start()
-	{
-		grid = NodeGrid.Instance;
-		gameStateManager = GameStateManager.Instance;
-
-		currentPos = grid.getNodeFromTransformPosition(transform);
-		queueOfActions = new Queue<ActionBase>();
-		path = new List<Node>();
-		turnPoints = new Vector3[0];
-		currentPos = grid.getNodeFromTransformPosition(transform);
-		animator = model.GetComponent<Animator>();
-		stats = GetComponent<Stats>();
-		//stateManager = GetComponent<PlayerStateManager>();
-		//Debug.Log($"start of any class ");
-		enabled = this == gameStateManager.SelectedUnit ? true : false;
-	}
+	public Weapon weapon;
 
 	public float TargetAimPercent
 	{
@@ -57,17 +42,17 @@ public class AnyClass : Unit, IBaseActions
 		get => _currentTarger;
 		set
 		{
-			GameStateManager.Instance.께께께께께께께께�(_currentTarger);
+			GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(_currentTarger);
 			_currentTarger = value;
-			GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.unit?.onWeaponFinishShooting);
+			GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.onWeaponFinishShooting);
 		}
 	}
 
-	public async void SelectNextTarget(AnyClass currentUnit)
+	public void SelectNextTarget(AnyClass currentUnit)
 	{
-		if (currentUnit is Enemy)
+		if (team is RedTeam)
 		{
-			List<Player> players = gameStateManager.players;
+			List<PlayerStateManager> players = gameStateManager.players;
 			players = players.Where(unit => unit.State is Idel).ToList();
 			int nbPlyaers = players.Count;
 			int currentTargetIndex = players.FindIndex(instance => instance == CurrentTarget);
@@ -91,12 +76,10 @@ public class AnyClass : Unit, IBaseActions
 
 			onChangeTarget.Raise();
 		}
-		else if (currentUnit is Player)
+		else if (team is GreanTeam)
 		{
-			List<Enemy> enemies = gameStateManager.enemies;
+			List<PlayerStateManager> enemies = gameStateManager.enemies;
 			enemies = enemies.Where(unit => unit.State == unit.idelState).ToList();
-
-			Debug.Log($"enemies count is {enemies.Count} target isi => {enemies.FirstOrDefault()}");
 
 			if (enemies.Count == 0)
 			{
@@ -313,33 +296,6 @@ public class AnyClass : Unit, IBaseActions
 		}
 	}
 
-	public void CreateNewReloadAction()
-	{
-		// cant have more that 2 actions
-		//int actionPoints = GetComponent<PlayerStats>().ActionPoint;
-		//if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
-		//{
-		//	Debug.Log($" No action point Left !!!");
-		//	return;
-		//}
-		ReloadAction reload = new ReloadAction(ReloadActionCallBack, "Reload");
-		Enqueue(reload);
-	}
-
-	public void CreateNewShootAction()
-	{
-		// cant have more that 2 actions
-		//int actionPoints = GetComponent<PlayerStats>().ActionPoint;
-		//if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
-		//{
-		//	Debug.Log($" No action point Left !!!");
-		//	return;
-		//}
-
-		ShootAction shoot = new ShootAction(ShootActionCallBack, "Shoot");
-		Enqueue(shoot);
-	}
-
 	public void getCoversValueFromStandingNode()
 	{
 		//float myTotalCover = 0;
@@ -358,4 +314,43 @@ public class AnyClass : Unit, IBaseActions
 	//		Debug.DrawRay(targetNode.coord + Vector3.up, dir);
 	//	}
 	//}
+	public void CreateNewReloadAction()
+	{
+		// cant have more that 2 actions
+		//int actionPoints = GetComponent<PlayerStats>().ActionPoint;
+		//if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
+		//{
+		//	Debug.Log($" No action point Left !!!");
+		//	return;
+		//}
+		ReloadAction reload = new ReloadAction(ReloadActionCallBack, "Reload");
+		Enqueue(reload);
+	}
+
+	public void ReloadActionCallBack(ReloadAction reload)
+	{
+		weapon.Reload(reload);
+	}
+
+	public void CreateNewShootAction()
+	{
+		// cant have more that 2 actions
+		//int actionPoints = GetComponent<PlayerStats>().ActionPoint;
+		//if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
+		//{
+		//	Debug.Log($" No action point Left !!!");
+		//	return;
+		//}
+
+		ShootAction shoot = new ShootAction(ShootActionCallBack, "Shoot");
+		Enqueue(shoot);
+	}
+
+	public void ShootActionCallBack(ShootAction soot)
+	{
+		weapon.startShooting(soot);
+	}
+
+	public virtual void onHover()
+	{ }
 }

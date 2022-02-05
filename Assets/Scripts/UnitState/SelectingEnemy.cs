@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 
 public class SelectingEnemy : AnyState<PlayerStateManager>
@@ -28,15 +27,7 @@ public class SelectingEnemy : AnyState<PlayerStateManager>
 			player.SwitchState(player.idelState);
 		}
 
-		if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))
-		{
-			ActionData shoot = player.actions.FirstOrDefault((el) => el is ShootingAction);
-			player.currentActionAnimation = AnimationType.shoot;
-			player.SwitchState(player.doingAction);
-			shoot?.Actionevent?.Raise();
-		}
-
-		player.weapon.GetComponent<Weapon>().onHover();
+		player.customUpdate();
 	}
 
 	public override void ExitState(PlayerStateManager player)

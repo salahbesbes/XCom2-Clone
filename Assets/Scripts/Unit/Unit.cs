@@ -32,7 +32,8 @@ public class Unit : MonoBehaviour
 
 	public Node destination;
 	public bool processing = false;
-	public Weapon weapon;
+
+	//public Weapon weapon;
 	public Transform partToRotate;
 	public Transform model;
 	protected Animator animator;
@@ -191,25 +192,34 @@ public class Unit : MonoBehaviour
 		PlayIdelAnimation();
 		PlayerStateManager player = (PlayerStateManager)this;
 		// triget event
-		if (action is ShootAction)
-		{
-			UnitStats stats = GetComponent<Stats>().unit;
-			stats.onWeaponFinishShooting.Raise(stats);
-		}
-		if (action is MoveAction)
-		{
-			rotateTowardDirection(_currentTarger.partToRotate, transform.position - _currentTarger.aimPoint.position);
-			Vector3 ori = new Vector3(_currentTarger.partToRotate.transform.position.x, 0.5f, _currentTarger.partToRotate.transform.position.z);
 
-			RaycastHit hit;
-			if (Physics.Raycast(ori, _currentTarger.partToRotate.forward * 2, out hit, Vector3.forward.magnitude * 2))
-			{
-				//Debug.Log($"target have some obstacle => {hit.collider.name}");
-			}
+		switch (action)
+		{
+			case ShootAction:
+				player.stats.onWeaponFinishShooting.Raise(player.stats.unit);
+				break;
+
+			case LunchGrenadeAction:
+				Debug.Log($"  Grenade Lunched ..!!!!!!! explosion in 1 Sec");
+				//player.stats.onWeaponFinishShooting.Raise(player.stats.unit);
+				break;
+
+			case MoveAction:
+				rotateTowardDirection(_currentTarger.partToRotate, transform.position - _currentTarger.aimPoint.position);
+				Vector3 ori = new Vector3(_currentTarger.partToRotate.transform.position.x, 0.5f, _currentTarger.partToRotate.transform.position.z);
+
+				RaycastHit hit;
+				if (Physics.Raycast(ori, _currentTarger.partToRotate.forward * 2, out hit, Vector3.forward.magnitude * 2))
+				{
+					//Debug.Log($"target have some obstacle => {hit.collider.name}");
+				}
+				break;
+
+			default:
+				Debug.Log($" action  {action} NOT FOUND");
+				break;
 		}
-		// switch state
 		player.SwitchState(player.idelState);
-		Debug.Log($"{player.name} current state : {player.State.name}");
 
 		rotateTowardDirection(partToRotate, _currentTarger.aimPoint.position - partToRotate.position);
 		rotateTowardDirection(model, _currentTarger.aimPoint.position - partToRotate.position);
@@ -218,16 +228,6 @@ public class Unit : MonoBehaviour
 		//GetComponent<PlayerStats>().ActionPoint -= action.cost;
 
 		ExecuteActionInQueue();
-	}
-
-	public void ReloadActionCallBack(ReloadAction reload)
-	{
-		weapon.Reload(reload);
-	}
-
-	public void ShootActionCallBack(ShootAction soot)
-	{
-		weapon.startShooting(soot);
 	}
 
 	public void Enqueue(ActionBase action)
@@ -248,6 +248,6 @@ public class Unit : MonoBehaviour
 
 	public override string ToString()
 	{
-		return $" {GetType().Name} {transform.name} selected";
+		return $" {transform.name}";
 	}
 }

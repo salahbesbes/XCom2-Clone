@@ -1,8 +1,12 @@
+using gameEventNameSpace;
 using UnityEngine;
 
 public class Stats : MonoBehaviour
 {
 	public UnitStats unit;
+
+	public WeaponEvent onWeaponFinishShooting;
+	public StatsChangeEvent onStatsChange;
 
 	private void Start()
 	{
@@ -10,7 +14,7 @@ public class Stats : MonoBehaviour
 
 	public void triggerEvent()
 	{
-		unit.onWeaponFinishShooting.Raise(unit);
+		onWeaponFinishShooting.Raise(unit);
 	}
 
 	public void Die()

@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviour
 {
 	//private WeaponData _weaponData;
 	//public abstract WeaponData weaponType { get; set; }
@@ -14,10 +14,6 @@ public abstract class Weapon : MonoBehaviour
 
 	public virtual async Task startShooting(ShootAction shoot)
 	{ }
-
-	public virtual void onHover()
-	{
-	}
 
 	private void OnEnable()
 	{

@@ -79,7 +79,7 @@ public class HeavyWeapon : Weapon
 		}
 	}
 
-	private void DrowTrajectory(Vector3 targetPos)
+	public void DrowTrajectory(Vector3 targetPos)
 	{
 		Physics.gravity = -Vector3.up * weaponType.ammoSpeed;
 		LunchData data = calculateLunchVelocity(targetPos, weaponType.bouncingForce, Physics.gravity.y);
@@ -95,26 +95,15 @@ public class HeavyWeapon : Weapon
 		}
 	}
 
-	public override async void onHover()
+	public async void lunchGrenade(LunchGrenadeAction action, Node dest)
 	{
-		Node potentialDestination = NodeGrid.Instance.getNodeFromMousePosition(player.secondCam);
-		if (potentialDestination != null && potentialDestination != player.destination && potentialDestination != player.currentPos)
-		{
-			//lineConponent.SetUpLine(turnPoints);
-
-			potentialDestination.tile.obj.GetComponent<Renderer>().material.color = Color.blue;
-			DrowTrajectory(potentialDestination.coord);
-			if (Input.GetMouseButtonDown(0))
-			{
-				Quaternion Ori = transform.rotation;
-				await rotateWeaponAndLunch(transform, -10);
-				Grenade grenade = Instantiate(weaponType.ammo, startPoint.position, Quaternion.identity);
-				grenade.unitStats = player.stats.unit;
-				Rigidbody rb = grenade.GetComponent<Rigidbody>();
-				lunchToWard(rb, potentialDestination.coord, weaponType.bouncingForce, weaponType.ammoSpeed);
-				transform.rotation = Ori;
-			}
-		}
+		Quaternion Ori = transform.rotation;
+		await rotateWeaponAndLunch(transform, -10);
+		Grenade grenade = Instantiate(weaponType.ammo, startPoint.position, Quaternion.identity);
+		Rigidbody rb = grenade.GetComponent<Rigidbody>();
+		lunchToWard(rb, dest.coord, weaponType.bouncingForce, weaponType.ammoSpeed);
+		transform.rotation = Ori;
+		player.FinishAction(action);
 	}
 
 	public override float howMuchVisibleTheTArgetIs()

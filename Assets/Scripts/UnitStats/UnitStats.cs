@@ -5,15 +5,17 @@ using UnityEngine;
 public class UnitStats : ScriptableObject
 {
 	public string myName;
+
 	[SerializeField]
 	private int _health;
-	public WeaponEvent onWeaponFinishShooting;
 	public EquipementEvent EquipeEvent;
 	public Weapon weapon;
 	public Stat damage;
 	public Stat armor;
+
 	[SerializeField]
 	private int maxHealth = 100;
+
 	private void Reset()
 	{
 		//Output the message to the Console
@@ -67,6 +69,4 @@ public class UnitStats : ScriptableObject
 			_health = Mathf.Clamp(value, 0, maxHealth);
 		}
 	}
-
-
 }

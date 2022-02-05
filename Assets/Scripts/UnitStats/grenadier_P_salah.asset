@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: grenadier_P_salah
   m_EditorClassIdentifier: 
   myName: grenadier salah
-  _health: 15
-  onWeaponFinishShooting: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
+  _health: 30
   EquipeEvent: {fileID: 11400000, guid: 6945a8e9d3763734096b06dc5a504f83, type: 2}
   weapon: {fileID: 0}
   damage:
-    baseValue: 25
+    baseValue: 5
     modifiers: 
   armor:
     baseValue: 5
