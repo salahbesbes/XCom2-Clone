@@ -40,6 +40,8 @@ public class UnitCallBack : MonoBehaviour
 	public void onGrenadeExplodes(UnitStats triggerStats)
 	{
 		TakeDamage(triggerStats);
+		updateTopCanvas();
+		updateTargetHealthBar();
 	}
 
 	private void updateTopCanvas()

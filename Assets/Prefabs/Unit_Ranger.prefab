@@ -396,6 +396,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit: {fileID: 11400000, guid: ce9772e8864f3ee42aabcf3799f1ae0a, type: 2}
+  onWeaponFinishShooting: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
+  onStatsChange: {fileID: 11400000, guid: a07400bccbadf4a4cb35eec674d69f9f, type: 2}
 --- !u!114 &3469807228968737752
 MonoBehaviour:
   m_ObjectHideFlags: 0

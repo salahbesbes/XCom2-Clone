@@ -17,7 +17,7 @@ MonoBehaviour:
   EquipeEvent: {fileID: 11400000, guid: 6945a8e9d3763734096b06dc5a504f83, type: 2}
   weapon: {fileID: 0}
   damage:
-    baseValue: 5
+    baseValue: 20
     modifiers: 
   armor:
     baseValue: 5

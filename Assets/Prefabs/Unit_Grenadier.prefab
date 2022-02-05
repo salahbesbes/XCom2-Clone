@@ -201,6 +201,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit: {fileID: 11400000, guid: 13b6c9a71cd249548b698e2406cb74b8, type: 2}
+  onWeaponFinishShooting: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
+  onStatsChange: {fileID: 11400000, guid: a07400bccbadf4a4cb35eec674d69f9f, type: 2}
 --- !u!114 &4472647041185635904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,6 +222,7 @@ MonoBehaviour:
   actions:
   - {fileID: 11400000, guid: 7fdc721c4f9522941a5d3c87d1ccb88f, type: 2}
   - {fileID: 11400000, guid: 7601e2943867df44ab824c6a69d77f26, type: 2}
+  - {fileID: 11400000, guid: 72dbc769b41b64646bf0d892d1c78690, type: 2}
   team: {fileID: 11400000, guid: 54fb32d86b4d94d4aac9e4723b72c90f, type: 2}
   stats: {fileID: 5025517671010048162}
   ActionHolder: {fileID: 0}
@@ -401,7 +404,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7726622484227f4a91a198151c04568, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unit: {fileID: 4472647041185635904}
   speed: 4
   angle: 0
   radius: 2

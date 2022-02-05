@@ -165,8 +165,10 @@ public class AnyClass : Unit
 
 			if (Input.GetMouseButtonDown(0))
 			{
-				ActionData move = actions.FirstOrDefault((el) => el is MovementAction);
-				move.Actionevent.Raise();
+				Debug.Log($"  from idel state you pressed mouse 0");
+				//ActionData move = actions.FirstOrDefault((el) => el is MovementAction);
+				//move.Actionevent.Raise();
+				CreateNewMoveAction();
 			}
 
 			if (oldPotentialDest != null && oldPotentialDest != potentialDestination)
@@ -292,6 +294,8 @@ public class AnyClass : Unit
 			if (oldDest == null || destination == currentPos)
 				oldDest = currentPos;
 			MoveAction move = new MoveAction(MoveActionCallback, "Move", oldDest, destination);
+			PlayerStateManager thisUnit = (PlayerStateManager)this;
+			thisUnit.SwitchState(thisUnit.doingAction);
 			Enqueue(move);
 		}
 	}

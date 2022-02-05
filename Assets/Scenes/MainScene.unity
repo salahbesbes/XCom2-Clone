@@ -322,6 +322,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4503208852317000755}
     - target: {fileID: 3469807228968737753, guid: 257c171bf1dc3c343940c86d08366b11, type: 3}
+      propertyPath: onStatsChange
+      value: 
+      objectReference: {fileID: 11400000, guid: a07400bccbadf4a4cb35eec674d69f9f, type: 2}
+    - target: {fileID: 3469807228968737753, guid: 257c171bf1dc3c343940c86d08366b11, type: 3}
       propertyPath: onWeaponFinishShooting
       value: 
       objectReference: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
@@ -4332,7 +4336,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1415554614}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SecondEnemies
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6276,7 +6280,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2216809912561688554, guid: 7b762cd269936754aa55b9c7b58cba97, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.880178
+      value: 4.884
       objectReference: {fileID: 0}
     - target: {fileID: 2216809912561688554, guid: 7b762cd269936754aa55b9c7b58cba97, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6284,7 +6288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2216809912561688554, guid: 7b762cd269936754aa55b9c7b58cba97, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.721429
+      value: -9.704
       objectReference: {fileID: 0}
     - target: {fileID: 2216809912561688554, guid: 7b762cd269936754aa55b9c7b58cba97, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7900,7 +7904,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2102919388}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SecondPlayers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8075,7 +8079,11 @@ PrefabInstance:
     - target: {fileID: 4472647041185635904, guid: 9739009157c859a43805a363a0229d26, type: 3}
       propertyPath: actions.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: 7601e2943867df44ab824c6a69d77f26, type: 2}
+      objectReference: {fileID: 11400000, guid: 72dbc769b41b64646bf0d892d1c78690, type: 2}
+    - target: {fileID: 4514551618692365984, guid: 9739009157c859a43805a363a0229d26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5263632829259190161, guid: 9739009157c859a43805a363a0229d26, type: 3}
       propertyPath: m_Name
       value: Grenadier_Green
@@ -8086,7 +8094,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5263632829259190162, guid: 9739009157c859a43805a363a0229d26, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.84
+      value: 0.863
       objectReference: {fileID: 0}
     - target: {fileID: 5263632829259190162, guid: 9739009157c859a43805a363a0229d26, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8094,7 +8102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5263632829259190162, guid: 9739009157c859a43805a363a0229d26, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.52
+      value: -5.726
       objectReference: {fileID: 0}
     - target: {fileID: 5263632829259190162, guid: 9739009157c859a43805a363a0229d26, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8123,6 +8131,10 @@ PrefabInstance:
     - target: {fileID: 5263632829259190162, guid: 9739009157c859a43805a363a0229d26, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827268809751014729, guid: 9739009157c859a43805a363a0229d26, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5025517671010048162, guid: 9739009157c859a43805a363a0229d26, type: 3}
@@ -8372,6 +8384,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4503208852317000755}
     - target: {fileID: 3469807228968737753, guid: 257c171bf1dc3c343940c86d08366b11, type: 3}
+      propertyPath: onStatsChange
+      value: 
+      objectReference: {fileID: 11400000, guid: a07400bccbadf4a4cb35eec674d69f9f, type: 2}
+    - target: {fileID: 3469807228968737753, guid: 257c171bf1dc3c343940c86d08366b11, type: 3}
       propertyPath: onWeaponFinishShooting
       value: 
       objectReference: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
@@ -8558,6 +8574,14 @@ PrefabInstance:
       propertyPath: unit
       value: 
       objectReference: {fileID: 8911552168932465496}
+    - target: {fileID: 5141909743562238813, guid: 7b762cd269936754aa55b9c7b58cba97, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.175
+      objectReference: {fileID: 0}
+    - target: {fileID: 5141909743562238813, guid: 7b762cd269936754aa55b9c7b58cba97, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.259
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b762cd269936754aa55b9c7b58cba97, type: 3}
 --- !u!4 &8583340694090810543 stripped
@@ -8579,6 +8603,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 11400000, guid: 13b6c9a71cd249548b698e2406cb74b8, type: 2}
   onWeaponFinishShooting: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
+  onStatsChange: {fileID: 11400000, guid: a07400bccbadf4a4cb35eec674d69f9f, type: 2}
   grenadeLancherEvent: {fileID: 11400000, guid: 35b58e83a63140b459bfde1bdc9433a9, type: 2}
 --- !u!4 &8583340695098475350 stripped
 Transform:
