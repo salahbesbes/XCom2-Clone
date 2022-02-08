@@ -44,6 +44,8 @@ public class AnyClass : Unit
 		{
 			GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(_currentTarger);
 			_currentTarger = value;
+			rotateTowardDirection(partToRotate, _currentTarger.aimPoint.position - transform.position);
+
 			GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.onWeaponFinishShooting);
 		}
 	}
