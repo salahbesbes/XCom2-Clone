@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: assault_P_ahmed
   m_EditorClassIdentifier: 
   myName: assault ahmed
-  _health: 30
+  _health: 100
   EquipeEvent: {fileID: 11400000, guid: 6945a8e9d3763734096b06dc5a504f83, type: 2}
   weapon: {fileID: 0}
   damage:
     baseValue: 15
     modifiers: 
   armor:
-    baseValue: 5
+    baseValue: 4
     modifiers: 
-  maxHealth: 30
+  _maxHealth: 25

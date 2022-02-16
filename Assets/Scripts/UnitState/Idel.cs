@@ -37,8 +37,10 @@ public class Idel : AnyState<PlayerStateManager>
 		}
 
 		player.CheckMovementRange();
+
 		oldDestination = potentialDest;
 		potentialDest = player.onNodeHover(oldDestination);
+		//player.updateNeighbourCover();
 	}
 
 	public async void rotateTowardDirection(PlayerStateManager player, Vector3 dir)

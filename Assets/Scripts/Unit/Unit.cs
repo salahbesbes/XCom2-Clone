@@ -6,6 +6,16 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
 	//public ActionType[] actions;
+	private float _rotateBy = 0;
+
+	public float rotateBy
+	{
+		get => _rotateBy; set
+		{
+			_rotateBy = value;
+		}
+	}
+
 	protected List<Node> path;
 
 	public Queue<ActionBase> queueOfActions;
@@ -71,7 +81,7 @@ public class Unit : MonoBehaviour
 		PlayAnimation(AnimationType.idel);
 	}
 
-	public async Task rotateTowardDirection(Transform partToRotate, Vector3 dir, float timeToSpentTurning = 2)
+	public async Task originalRotation(Transform partToRotate, Vector3 dir, float timeToSpentTurning = 2)
 	{
 		float speed = 3;
 		float timeElapsed = 0, lerpDuration = timeToSpentTurning;
@@ -96,10 +106,32 @@ public class Unit : MonoBehaviour
 			partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 			//partToRotate.Rotate(Vector3.up, rotation.y);
 		}
+		rotateBy = Quaternion.Angle(startRotation, this.partToRotate.rotation);
+	}
 
-		// smooth the rotation of the turrent
+	public async Task rotateTowardDirection(Transform partToRotate, Vector3 dir, float timeToSpentTurning = 2)
+	{
+		float speed = 3;
+		float timeElapsed = 0, lerpDuration = timeToSpentTurning;
 
-		//partToRotate.rotation = targetRotation;
+		if (partToRotate == null) return;
+		Quaternion startRotation = partToRotate.rotation;
+
+		Quaternion targetRotation = Quaternion.LookRotation(dir);
+
+		while (timeElapsed < lerpDuration)
+		{
+			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,
+				    targetRotation,
+				     timeElapsed / lerpDuration
+				    )
+				    .eulerAngles;
+			//partToRotate.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / lerpDuration);
+			timeElapsed += (speed * Time.deltaTime);
+			await Task.Yield();
+			partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+		}
+		rotateBy = Quaternion.Angle(startRotation, this.partToRotate.rotation);
 	}
 
 	public void turnTheModel(Vector3 dir)
@@ -221,13 +253,58 @@ public class Unit : MonoBehaviour
 		}
 		player.SwitchState(player.idelState);
 
-		rotateTowardDirection(partToRotate, _currentTarger.aimPoint.position - partToRotate.position);
 		rotateTowardDirection(model, _currentTarger.aimPoint.position - partToRotate.position);
+		rotateTowardDirection(partToRotate, _currentTarger.aimPoint.position - partToRotate.position);
 		processing = false;
+		Transform points = partToRotate.Find("points");
+
 		// update the cost
 		//GetComponent<PlayerStats>().ActionPoint -= action.cost;
+		//if (partToRotate.transform.rotation.eulerAngles)
+		//	between - 23.4 29.95
+		//	between 34.8 59
+		//	between 112 152
 
 		ExecuteActionInQueue();
+	}
+
+	public void updateNeighbourCover()
+	{
+		Transform points = partToRotate.Find("points");
+		Utils utils = points.GetComponent<Utils>();
+		Node front, back, right, left;
+
+		//Vector3 backCoord = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+		front = NodeGrid.Instance.getNodeFromTransformPosition(null, points.transform.localPosition);
+		front.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
+
+		//utils.updateCoversNode();
+
+		//float[] floatvalues = new float[4];
+		//Dictionary<float, Transform> dict = new Dictionary<float, Transform>();
+		//for (int i = 0; i < 4; i++)
+		//{
+		//	float distance = Vector3.Distance(points.GetChild(i).position, _currentTarger.transform.position);
+		//	floatvalues[i] = distance;
+		//	dict.Add(distance, points.GetChild(i));
+		//}
+
+		//float minDist = Mathf.Min(floatvalues);
+		//front = NodeGrid.Instance.getNodeFromTransformPosition(dict[minDist]);
+		//front.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
+
+		//Vector3 backCoord = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
+		//back = NodeGrid.Instance.getNodeFromTransformPosition(null, backCoord);
+		//back.tile.obj.GetComponent<Renderer>().material.color = Color.white;
+
+		//Vector3 rightCoord = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
+		//right = NodeGrid.Instance.getNodeFromTransformPosition(null, rightCoord);
+		//right.tile.obj.GetComponent<Renderer>().material.color = Color.gray;
+
+		//Vector3 leftCoord = new Vector3(transform.position.x - 1, transform.position.y, transform.position.z);
+		//left = NodeGrid.Instance.getNodeFromTransformPosition(null, leftCoord);
+		//left.tile.obj.GetComponent<Renderer>().material.color = Color.red;
+		//Debug.Log($"front {front} back {back}");
 	}
 
 	public void Enqueue(ActionBase action)

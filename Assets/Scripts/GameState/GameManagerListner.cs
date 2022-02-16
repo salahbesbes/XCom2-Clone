@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class GameManagerListner : MonoBehaviour
 {
+	public VoidEvent GameEndedEvent;
+
 	private void clearGameManagerFromPreviousSelectedUnit()
 	{
 		PlayerEventListener[] listners = gameObject.GetComponents<PlayerEventListener>();
@@ -212,11 +214,13 @@ public class GameManagerListner : MonoBehaviour
 		if (manager.enemies.Where(unit => unit.State is Dead).Count() == manager.enemies.Count)
 		{
 			Debug.LogError("PLAYER WINS CONGRADUATION");
+			GameEndedEvent.Raise();
 			return true;
 		}
 		if (manager.players.Where(unit => unit.State is Dead).Count() == manager.players.Count)
 		{
 			Debug.LogError("ENEMIES WINS CONGRADUATION");
+			GameEndedEvent.Raise();
 			return true;
 		}
 		return false;

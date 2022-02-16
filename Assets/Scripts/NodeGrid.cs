@@ -166,7 +166,7 @@ public class NodeGrid : MonoBehaviour
 			node.color = node.isObstacle ? Color.red : Color.cyan;
 			node.inRange = false;
 			node.firstRange = false;
-			node.tile.obj.GetComponent<Renderer>().material.color = Color.white;
+			node.tile.obj.GetComponent<Renderer>().material.color = node.color;
 		}
 	}
 
@@ -274,17 +274,35 @@ public class NodeGrid : MonoBehaviour
 
 	private void OnDrawGizmos()
 	{
-		float width = wordSizeGrid.x, height = wordSizeGrid.y;
+		float localwidth = wordSizeGrid.x, localheight = wordSizeGrid.y;
 
 		buttonLeft = transform.position - (Vector3.right * wordSizeGrid.x / 2) - (Vector3.forward * wordSizeGrid.y / 2);
-		for (int x = 0; x < width; x++)
+		for (int x = 0; x < localwidth; x++)
 		{
-			Debug.DrawLine(buttonLeft + new Vector3(0, 0.02f, x), new Vector3(width + buttonLeft.x, 0.02f, (x + buttonLeft.z)), Color.black);
+			Debug.DrawLine(buttonLeft + new Vector3(0, 0.02f, x), new Vector3(localwidth + buttonLeft.x, 0.02f, (x + buttonLeft.z)), Color.black);
 		}
-		for (int x = 0; x < height; x++)
+		for (int x = 0; x < localheight; x++)
 		{
-			Debug.DrawLine(buttonLeft + new Vector3(x, 0.02f, 0), new Vector3(x + buttonLeft.x, 0.02f, (height + buttonLeft.z)), Color.black);
+			Debug.DrawLine(buttonLeft + new Vector3(x, 0.02f, 0), new Vector3(x + buttonLeft.x, 0.02f, (localheight + buttonLeft.z)), Color.black);
 		}
+
+		//resetGrid();
+
+		//foreach (var item in Instance.graph)
+		//{
+		//	Gizmos.color = item.color;
+		//	Gizmos.DrawCube(item.coord, new Vector3(nodeSize - 0.1f, 0.1f, nodeSize - 0.1f));
+		//}
+		//if (GameStateManager.Instance?.SelectedUnit?.partToRotate != null)
+		//{
+		//	Transform points = GameStateManager.Instance.SelectedUnit.partToRotate.Find("points");
+
+		//	foreach (Transform point in points)
+		//	{
+		//		Gizmos.color = Color.grey;
+		//		Gizmos.DrawSphere(point.position, 0.5f);
+		//	}
+		//}
 	}
 
 	public Node getNode(int x, int y)

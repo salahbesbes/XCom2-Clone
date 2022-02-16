@@ -50,6 +50,14 @@ public class AnyClass : Unit
 		}
 	}
 
+	private void OnDisable()
+	{
+		if (CurrentTarget != null)
+		{
+			GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(_currentTarger);
+		}
+	}
+
 	public void SelectNextTarget(AnyClass currentUnit)
 	{
 		if (team is RedTeam)
@@ -91,7 +99,7 @@ public class AnyClass : Unit
 			int currentTargetIndex = enemies.FindIndex(instance => instance == CurrentTarget);
 			CurrentTarget = enemies[(currentTargetIndex + 1) % enemies.Count];
 
-			Debug.Log($"switch to target {CurrentTarget}, enemies idel {enemies.Count}");
+			//Debug.Log($"switch to target {CurrentTarget}, enemies idel {enemies.Count}");
 			// todo: find an alternative this cast can cause problem i nthe future
 			//gameStateManager.SelectedEnemy = (Enemy)currentTarget;
 			rotateTowardDirection(partToRotate, CurrentTarget.aimPoint.position - aimPoint.position);
@@ -104,6 +112,7 @@ public class AnyClass : Unit
 			float coverValue = howMuchCoverTheCurrentTArgetHave();
 			TargetAimPercent = TargetAimPercent - coverValue;
 			//Debug.Log($"{TargetAimPercent}");
+			Debug.Log($"{ transform.name } raise onchange event ");
 			onChangeTarget.Raise();
 		}
 	}
@@ -167,7 +176,6 @@ public class AnyClass : Unit
 
 			if (Input.GetMouseButtonDown(0))
 			{
-				Debug.Log($"  from idel state you pressed mouse 0");
 				//ActionData move = actions.FirstOrDefault((el) => el is MovementAction);
 				//move.Actionevent.Raise();
 				CreateNewMoveAction();
@@ -231,10 +239,10 @@ public class AnyClass : Unit
 
 		foreach (Node item in allAccceccibleNodes)
 		{
-			if (item.firstRange == true)
-				item.tile.obj.GetComponent<Renderer>().material.color = Color.black;
-			else
-				item.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
+			//if (item.firstRange == true)
+			//	item.tile.obj.GetComponent<Renderer>().material.color = Color.black;
+			//else
+			//	item.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
 		}
 
 		return allAccceccibleNodes;

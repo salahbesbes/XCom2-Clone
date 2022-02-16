@@ -13,14 +13,13 @@ MonoBehaviour:
   m_Name: specialist_P_khaled
   m_EditorClassIdentifier: 
   myName: specialist khaled
-  _health: 30
-  onWeaponFinishShooting: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
+  _health: 100
   EquipeEvent: {fileID: 11400000, guid: 6945a8e9d3763734096b06dc5a504f83, type: 2}
   weapon: {fileID: 0}
   damage:
     baseValue: 30
     modifiers: 
   armor:
-    baseValue: 3
+    baseValue: 7
     modifiers: 
-  maxHealth: 30
+  _maxHealth: 26
