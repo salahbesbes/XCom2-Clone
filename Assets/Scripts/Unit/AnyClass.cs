@@ -57,7 +57,7 @@ public class AnyClass : Unit, IBaseActions
 		get => _currentTarger;
 		set
 		{
-			GameStateManager.Instance.께께께께께께께께�(_currentTarger);
+			GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(_currentTarger);
 			_currentTarger = value;
 			GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.unit?.onWeaponFinishShooting);
 		}
@@ -96,7 +96,6 @@ public class AnyClass : Unit, IBaseActions
 			List<Enemy> enemies = gameStateManager.enemies;
 			enemies = enemies.Where(unit => unit.State == unit.idelState).ToList();
 
-			Debug.Log($"enemies count is {enemies.Count} target isi => {enemies.FirstOrDefault()}");
 
 			if (enemies.Count == 0)
 			{

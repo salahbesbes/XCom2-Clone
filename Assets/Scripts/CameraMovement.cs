@@ -17,8 +17,6 @@ public class CameraMovement : MonoBehaviour
 
 	private float rotationAngle;
 
-	[Range(1, 10)]
-	public float factor;
 
 	private void Awake()
 	{
@@ -28,24 +26,29 @@ public class CameraMovement : MonoBehaviour
 
 	private void Update()
 	{
-		float zoomDelta = Input.GetAxis("Mouse ScrollWheel");
-		if (zoomDelta != 0f)
+		if (GameStateManager.Instance.SelectedUnit.fpsCam.enabled == false)
 		{
-			AdjustZoom(zoomDelta);
+
+			float zoomDelta = Input.GetAxis("Mouse ScrollWheel");
+			if (zoomDelta != 0f)
+			{
+				AdjustZoom(zoomDelta);
+			}
+
+			float xDelta = Input.GetAxis("Horizontal");
+			float zDelta = Input.GetAxis("Vertical");
+			if (xDelta != 0f || zDelta != 0f)
+			{
+				AdjustPosition(xDelta, zDelta);
+			}
+
+			float rotationDelta = Input.GetAxis("Rotation");
+			if (rotationDelta != 0f)
+			{
+				AdjustRotation(rotationDelta);
+			}
 		}
 
-		float xDelta = Input.GetAxis("Horizontal");
-		float zDelta = Input.GetAxis("Vertical");
-		if (xDelta != 0f || zDelta != 0f)
-		{
-			AdjustPosition(xDelta, zDelta);
-		}
-
-		float rotationDelta = Input.GetAxis("Rotation");
-		if (rotationDelta != 0f)
-		{
-			AdjustRotation(rotationDelta);
-		}
 	}
 
 	private void AdjustRotation(float delta)
