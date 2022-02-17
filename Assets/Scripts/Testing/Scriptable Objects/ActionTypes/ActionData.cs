@@ -8,16 +8,6 @@ public class ActionData : ScriptableObject
 
 	public Sprite icon;
 
-	//public AnimationType animationType;
-
-	public string SwordName
-	{
-		get
-		{
-			return cost;
-		}
-	}
-
 	public Sprite Icon
 	{
 		get

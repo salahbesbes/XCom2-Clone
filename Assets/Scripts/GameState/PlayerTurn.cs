@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -48,8 +49,23 @@ public class PlayerTurn : AnyState<GameStateManager>
 			gameManager.SelectedUnit.enabled = false;
 			gameManager.SelectedUnit.SwitchState(gameManager.SelectedUnit.idelState);
 			gameManager.SelectedUnit.fpsCam.enabled = false;
+
+			List<PlayerStateManager> availablePlayers = gameManager.players.Where(unit => unit.State == unit.idelState).ToList();
 			int currentPlayerIndex = gameManager.players.FindIndex(instance => instance == gameManager.SelectedUnit);
 			gameManager.SelectedUnit = gameManager.players[(currentPlayerIndex + 1) % nbPlayers];
+			//Debug.Log($"{availablePlayers.Count}");
+			//gameManager.SelectedUnit = availablePlayers[(currentPlayerIndex + 1) % nbPlayers];
+			// search for the next unit which is not dead if found
+			//for (int i = currentPlayerIndex + 1; i < gameManager.players.Count; i++)
+			//{
+			//	if (gameManager.players[i % nbPlayers].State is Dead)
+			//		continue;
+			//	else
+			//	{
+			//		gameManager.SelectedUnit = gameManager.players[i % nbPlayers];
+			//		break;
+			//	}
+			//}
 
 			gameManager.SelectedUnit.enabled = true;
 			gameManager.SelectedUnit.fpsCam.enabled = true;
@@ -111,8 +127,16 @@ public class EnemyTurn : AnyState<GameStateManager>
 			gameManager.SelectedUnit.SwitchState(gameManager.SelectedUnit.idelState);
 			gameManager.SelectedUnit.fpsCam.enabled = false;
 			int currentPlayerIndex = gameManager.enemies.FindIndex(instance => instance == gameManager.SelectedUnit);
-			gameManager.SelectedUnit = gameManager.enemies[(currentPlayerIndex + 1) % nbPlayers];
-
+			gameManager.SelectedUnit = gameManager.enemies[currentPlayerIndex % nbPlayers];
+			// search for the next unit which is not dead if found
+			//for (int i = currentPlayerIndex + 1; i < gameManager.enemies.Count; i++)
+			//{
+			//	if (!(gameManager.enemies[i % nbPlayers].State is Dead))
+			//	{
+			//		gameManager.SelectedUnit = gameManager.enemies[i % nbPlayers];
+			//		break;
+			//	}
+			//}
 			gameManager.SelectedUnit.enabled = true;
 			gameManager.SelectedUnit.fpsCam.enabled = true;
 			gameManager.SelectedUnit.CurrentTarget = gameManager.players.FirstOrDefault(); ;

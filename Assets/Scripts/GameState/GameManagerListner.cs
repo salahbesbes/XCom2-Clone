@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class GameManagerListner : MonoBehaviour
 {
+	public VoidEvent GameEndedEvent;
+
 	private void clearGameManagerFromPreviousSelectedUnit()
 	{
 		PlayerEventListener[] listners = gameObject.GetComponents<PlayerEventListener>();
@@ -35,6 +37,10 @@ public class GameManagerListner : MonoBehaviour
 			{
 				e.response.AddListener(unit.CreateNewShootAction);
 			}
+			if (playerEvent is LunchGrenadeActionEvent)
+			{
+				e.response.AddListener(unit.GetComponent<Grenadier>().CreateLunchGrenadeAction);
+			}
 		}
 	}
 
@@ -52,7 +58,8 @@ public class GameManagerListner : MonoBehaviour
 	public void MakeOnlySelectedUnitListingToEventArgument(AnyClass unit, VoidEvent voidEvent)
 	{
 		// the Subject (Trigger) is the GameManager and the listner is Current
-		// Selected.currentTarget Or the Subject current Selected Unit listner is Current Selected.currentTarget
+		// Selected.currentTarget Or the Subject current Selected Unit listner is Current
+		// Selected.currentTarget
 
 		if (voidEvent == null || unit == null) Debug.Log($" unit OR void event is null");
 
@@ -74,12 +81,15 @@ public class GameManagerListner : MonoBehaviour
 			{
 				unit.listners.GetComponent<CallBackOnListen>().onTargetChangeEventTrigger();
 			}
+			else if (voidEvent is StatsChangeEvent)
+			{
+				unit.transform.GetComponentInChildren<handleHealthUnitBar>().onDamage();
+			}
 		});
 	}
 
 	public void clearPreviousSelectedUnitFromAllWeaponEvent(AnyClass unit)
 	{
-
 		if (unit == null) return;
 		WeaponListner[] listners = unit.listners.GetComponents<WeaponListner>();
 		foreach (WeaponListner listner in listners)
@@ -90,9 +100,12 @@ public class GameManagerListner : MonoBehaviour
 
 	public void MakeOnlySelectedUnitListingToWeaponEvent(AnyClass unit, WeaponEvent weaponEvent)
 	{
-		// the Subject (Trigger) is the current Selected Unit and the listner is Current Selected.currentTarget
-		if (weaponEvent == null || unit == null) Debug.Log($"  unit OR weapon event is null");
-		if (unit == null || weaponEvent == null) return;
+		// the Subject (Trigger) is the current Selected Unit and the listner is Current
+		// Selected.currentTarget
+		if (unit == null || weaponEvent == null)
+		{
+			Debug.Log($"  unit OR weapon event is null"); return;
+		}
 		WeaponListner e = unit.listners.AddComponent<WeaponListner>();
 		e.GameEvent = weaponEvent;
 		e.UnityEventResponse = new UnityWeaponEvent();
@@ -136,7 +149,38 @@ public class GameManagerListner : MonoBehaviour
 		e.Register();
 	}
 
+	public void MakeOnlySelectedUnitListingGrenadeExplosionEvent(AnyClass unit, GrenadeExplosion grenadeExplotionEvent)
+	{
+		// the Subject (Trigger) is the Equipement GAme Object in the scene and the listner
+		// is the Current Selected Unit
 
+		if (unit == null || grenadeExplotionEvent == null)
+		{
+			Debug.Log($"unit / weapon event is null"); return;
+		}
+		GrenadeExplosionListner e = unit.listners.AddComponent<GrenadeExplosionListner>();
+		e.GameEvent = grenadeExplotionEvent;
+		e.UnityEventResponse = new UnityGrenadeExplosionEvent();
+		e.UnityEventResponse.AddListener((EventArgument) =>
+		{
+			// EventArgument is what ever argument is passed when we trugger (raise the
+			// Event ) in this case its Weapon
+			unit.listners.GetComponent<UnitCallBack>().onGrenadeExplodes(EventArgument);
+		});
+
+		e.Register();
+	}
+
+	public void clearPreviousSelectedUnitFromAllGrenadeExplosionEvent(AnyClass unit)
+	{
+		if (unit == null) return;
+		GrenadeExplosionListner[] listners = unit.listners.GetComponents<GrenadeExplosionListner>();
+		//if (listners == nuWeaponListnerll) return;
+		foreach (GrenadeExplosionListner listner in listners)
+		{
+			Destroy(listner);
+		}
+	}
 
 	public void PlayerDied(PlayerStateManager player)
 	{
@@ -144,9 +188,7 @@ public class GameManagerListner : MonoBehaviour
 		{
 			checkIfselectedUnitDied(player);
 		}
-
 	}
-
 
 	private void checkIfselectedUnitDied(PlayerStateManager unit)
 	{
@@ -161,7 +203,6 @@ public class GameManagerListner : MonoBehaviour
 			else if (manager.State is EnemyTurn)
 			{
 				manager.SelectedUnit = manager.enemies.FirstOrDefault();
-
 			}
 		}
 	}
@@ -173,14 +214,15 @@ public class GameManagerListner : MonoBehaviour
 		if (manager.enemies.Where(unit => unit.State is Dead).Count() == manager.enemies.Count)
 		{
 			Debug.LogError("PLAYER WINS CONGRADUATION");
+			GameEndedEvent.Raise();
 			return true;
 		}
 		if (manager.players.Where(unit => unit.State is Dead).Count() == manager.players.Count)
 		{
 			Debug.LogError("ENEMIES WINS CONGRADUATION");
+			GameEndedEvent.Raise();
 			return true;
 		}
 		return false;
 	}
-
 }

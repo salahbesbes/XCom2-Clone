@@ -7,16 +7,23 @@ public class Grenade : Ammo
 	[SerializeField] private Rigidbody _rb;
 	public GameObject ExplodeEffect;
 	private List<Node> NodeInRange = new List<Node>();
+	private GrenadierStats grenadier;
+
 	[Range(0, 5)]
 	public int explosionIn;
+
 	[Range(0, 5)]
 	public int explotionRange;
-	[HideInInspector]
-	public UnitStats unitStats;
 
+	[HideInInspector]
 	public void Init(Vector3 velocity, bool isGhost)
 	{
 		_rb.velocity = velocity;
+	}
+
+	private void Start()
+	{
+		grenadier = GameStateManager.Instance.SelectedUnit.GetComponent<GrenadierStats>();
 	}
 
 	public void OnCollisionEnter(Collision col)
@@ -24,8 +31,7 @@ public class Grenade : Ammo
 		ExplodeIn(col, explosionIn);
 	}
 
-
-	void HitTargetInrange(int range)
+	private void HitTargetInrange(int range)
 	{
 		Node GrenadeNode = NodeGrid.Instance.getNodeFromTransformPosition(transform);
 		if (GrenadeNode.coord.y > 0.5f) return;
@@ -40,10 +46,6 @@ public class Grenade : Ammo
 				NodeInRange.Add(neighbour);
 			}
 		}
-
-
-
-
 	}
 
 	private void LateUpdate()
@@ -55,19 +57,13 @@ public class Grenade : Ammo
 		}
 	}
 
-
 	private async Task ExplodeIn(Collision col, int time)
 	{
 		_rb.isKinematic = true;
 
 		HitTargetInrange(explotionRange);
 		await Task.Delay(1000 * time);
-		GameObject obj = Instantiate(ExplodeEffect, transform.position, Quaternion.identity);
-
-
-
-
-		GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(GameStateManager.Instance.SelectedUnit.CurrentTarget);
+		Instantiate(ExplodeEffect, transform.position, Quaternion.identity);
 
 		foreach (Node item in NodeInRange)
 		{
@@ -77,16 +73,13 @@ public class Grenade : Ammo
 				if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Enemy" || LayerMask.LayerToName(hit.transform.gameObject.layer) == "Player")
 				{
 					AnyClass target = hit.transform.parent.parent.GetComponent<AnyClass>();
-					GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(target, unitStats.onWeaponFinishShooting);
-					unitStats.onWeaponFinishShooting.Raise(unitStats);
-					GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(target);
-
-
+					Debug.Log($"  detect  {target} ");
+					GameStateManager.Instance.MakeOnlySelectedUnitListingGrenadeExplosionEvent(target, grenadier.grenadeLancherEvent);
+					grenadier.grenadeLancherEvent.Raise(grenadier.unit);
+					GameStateManager.Instance.clearPreviousSelectedUnitFromAllGrenadeExplosionEvent(target);
 				}
 			}
 		}
-		GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(GameStateManager.Instance.SelectedUnit.CurrentTarget, unitStats.onWeaponFinishShooting);
-
 		Destroy(gameObject);
 	}
 }

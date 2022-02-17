@@ -76,7 +76,6 @@ GameObject:
   - component: {fileID: 2799943649867599114}
   - component: {fileID: 2799943649867599115}
   - component: {fileID: 2799943649867599112}
-  - component: {fileID: 6876030841421809414}
   - component: {fileID: 211984260630963475}
   m_Layer: 7
   m_Name: HealthBarCanvas
@@ -180,34 +179,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
---- !u!114 &6876030841421809414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2799943649867599350}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8333b2aee637b545b4b170976e532d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gameEvent: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
-  _unityEventResponse:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 211984260630963475}
-        m_TargetAssemblyTypeName: handleHealthUnitBar, Assembly-CSharp
-        m_MethodName: onDamage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &211984260630963475
 MonoBehaviour:
   m_ObjectHideFlags: 0

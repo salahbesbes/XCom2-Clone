@@ -5,20 +5,25 @@ using UnityEngine;
 public class UnitStats : ScriptableObject
 {
 	public string myName;
+
 	[SerializeField]
 	private int _health;
-	public WeaponEvent onWeaponFinishShooting;
 	public EquipementEvent EquipeEvent;
 	public Weapon weapon;
 	public Stat damage;
 	public Stat armor;
+
 	[SerializeField]
-	private int maxHealth = 100;
+	private int _maxHealth = 100;
+
+	public int maxHealth
+	{ get => _maxHealth; private set { } }
+
 	private void Reset()
 	{
 		//Output the message to the Console
 		//Debug.Log("Reset");
-		Health = maxHealth;
+		Health = _maxHealth;
 
 		//eventToListnTo = FindObjectOfType<VoidEvent>();
 
@@ -28,13 +33,13 @@ public class UnitStats : ScriptableObject
 
 	private void Awake()
 	{
-		Health = maxHealth;
+		Health = _maxHealth;
 		//Debug.Log($"awake called");
 	}
 
 	private void OnEnable()
 	{
-		Health = maxHealth;
+		Health = _maxHealth;
 		armor.modifiers.Clear();
 		damage.modifiers.Clear();
 		//Debug.Log($"enabled");
@@ -64,9 +69,7 @@ public class UnitStats : ScriptableObject
 		}
 		set
 		{
-			_health = Mathf.Clamp(value, 0, maxHealth);
+			_health = Mathf.Clamp(value, 0, _maxHealth);
 		}
 	}
-
-
 }

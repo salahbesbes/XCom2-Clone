@@ -1,3 +1,6 @@
+using System.Linq;
+using UnityEngine;
+
 public class PlayerStateManager : AnyClass
 {
 	public SelectingEnemy selectingEnemy = new SelectingEnemy();
@@ -39,6 +42,18 @@ public class PlayerStateManager : AnyClass
 	{
 		//currentPos = grid.getNodeFromTransformPosition(transform);
 		State.Update(this);
+		//customUpdate();
+	}
+
+	public virtual void customUpdate()
+	{
+		if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))
+		{
+			ActionData shoot = actions.FirstOrDefault((el) => el is ShootingAction);
+			currentActionAnimation = AnimationType.shoot;
+			SwitchState(doingAction);
+			shoot?.Actionevent?.Raise();
+		}
 	}
 
 	public void SwitchState(BaseState<PlayerStateManager> newState, AnimationType? anim = null)

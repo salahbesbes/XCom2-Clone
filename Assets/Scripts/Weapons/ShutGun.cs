@@ -86,7 +86,7 @@ public class ShutGun : Weapon
 				Debug.Log($" out of range!  bullet range is  {weaponType.bulletRange} ");
 			}
 		}
-		Debug.Log($"finish shotting");
+		//Debug.Log($"finish shotting");
 		player.FinishAction(shoot);
 	}
 

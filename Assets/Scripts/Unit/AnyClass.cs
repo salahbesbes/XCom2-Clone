@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class AnyClass : Unit, IBaseActions
+public class AnyClass : Unit
 {
 
 	public Transform hand;
 	public Inventory inventory;
 	public List<ActionData> actions = new List<ActionData>();
+	public Team team;
 	public Stats stats;
 	public Transform ActionHolder;
 	public GameObject Action_prefab;
@@ -30,6 +31,7 @@ public class AnyClass : Unit, IBaseActions
 	public VoidEvent openInventory;
 	public Item newWeapon;
 	private float _targetAimValue;
+	public Weapon weapon;
 
 	public void Start()
 	{
@@ -65,15 +67,25 @@ public class AnyClass : Unit, IBaseActions
 		{
 			GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(_currentTarger);
 			_currentTarger = value;
-			GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.unit?.onWeaponFinishShooting);
+			rotateTowardDirection(partToRotate, _currentTarger.aimPoint.position - transform.position);
+
+			GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.onWeaponFinishShooting);
 		}
 	}
 
-	public async void SelectNextTarget(AnyClass currentUnit)
+	private void OnDisable()
 	{
-		if (currentUnit is Enemy)
+		if (CurrentTarget != null)
 		{
-			List<Player> players = gameStateManager.players;
+			GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(_currentTarger);
+		}
+	}
+
+	public void SelectNextTarget(AnyClass currentUnit)
+	{
+		if (team is RedTeam)
+		{
+			List<PlayerStateManager> players = gameStateManager.players;
 			players = players.Where(unit => unit.State is Idel).ToList();
 			int nbPlyaers = players.Count;
 			int currentTargetIndex = players.FindIndex(instance => instance == CurrentTarget);
@@ -97,11 +109,12 @@ public class AnyClass : Unit, IBaseActions
 
 			onChangeTarget.Raise();
 		}
-		else if (currentUnit is Player)
+		else if (team is GreanTeam)
 		{
-			List<Enemy> enemies = gameStateManager.enemies;
+			List<PlayerStateManager> enemies = gameStateManager.enemies;
 			enemies = enemies.Where(unit => unit.State == unit.idelState).ToList();
 
+			Debug.Log($"enemies count is {enemies.Count} target isi => {enemies.FirstOrDefault()}");
 
 			if (enemies.Count == 0)
 			{
@@ -111,7 +124,7 @@ public class AnyClass : Unit, IBaseActions
 			int currentTargetIndex = enemies.FindIndex(instance => instance == CurrentTarget);
 			CurrentTarget = enemies[(currentTargetIndex + 1) % enemies.Count];
 
-			Debug.Log($"switch to target {CurrentTarget}, enemies idel {enemies.Count}");
+			//Debug.Log($"switch to target {CurrentTarget}, enemies idel {enemies.Count}");
 			// todo: find an alternative this cast can cause problem i nthe future
 			//gameStateManager.SelectedEnemy = (Enemy)currentTarget;
 			rotateTowardDirection(partToRotate, CurrentTarget.aimPoint.position - aimPoint.position);
@@ -124,6 +137,7 @@ public class AnyClass : Unit, IBaseActions
 			float coverValue = howMuchCoverTheCurrentTArgetHave();
 			TargetAimPercent = TargetAimPercent - coverValue;
 			//Debug.Log($"{TargetAimPercent}");
+			Debug.Log($"{ transform.name } raise onchange event ");
 			onChangeTarget.Raise();
 		}
 	}
@@ -187,8 +201,9 @@ public class AnyClass : Unit, IBaseActions
 
 			if (Input.GetMouseButtonDown(0))
 			{
-				ActionData move = actions.FirstOrDefault((el) => el is MovementAction);
-				move.Actionevent.Raise();
+				//ActionData move = actions.FirstOrDefault((el) => el is MovementAction);
+				//move.Actionevent.Raise();
+				CreateNewMoveAction();
 			}
 
 			if (oldPotentialDest != null && oldPotentialDest != potentialDestination)
@@ -249,10 +264,10 @@ public class AnyClass : Unit, IBaseActions
 
 		foreach (Node item in allAccceccibleNodes)
 		{
-			if (item.firstRange == true)
-				item.tile.obj.GetComponent<Renderer>().material.color = Color.black;
-			else
-				item.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
+			//if (item.firstRange == true)
+			//	item.tile.obj.GetComponent<Renderer>().material.color = Color.black;
+			//else
+			//	item.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
 		}
 
 		return allAccceccibleNodes;
@@ -314,35 +329,10 @@ public class AnyClass : Unit, IBaseActions
 			if (oldDest == null || destination == currentPos)
 				oldDest = currentPos;
 			MoveAction move = new MoveAction(MoveActionCallback, "Move", oldDest, destination);
+			PlayerStateManager thisUnit = (PlayerStateManager)this;
+			thisUnit.SwitchState(thisUnit.doingAction);
 			Enqueue(move);
 		}
-	}
-
-	public void CreateNewReloadAction()
-	{
-		// cant have more that 2 actions
-		//int actionPoints = GetComponent<PlayerStats>().ActionPoint;
-		//if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
-		//{
-		//	Debug.Log($" No action point Left !!!");
-		//	return;
-		//}
-		ReloadAction reload = new ReloadAction(ReloadActionCallBack, "Reload");
-		Enqueue(reload);
-	}
-
-	public void CreateNewShootAction()
-	{
-		// cant have more that 2 actions
-		//int actionPoints = GetComponent<PlayerStats>().ActionPoint;
-		//if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
-		//{
-		//	Debug.Log($" No action point Left !!!");
-		//	return;
-		//}
-
-		ShootAction shoot = new ShootAction(ShootActionCallBack, "Shoot");
-		Enqueue(shoot);
 	}
 
 	public void getCoversValueFromStandingNode()
@@ -363,4 +353,43 @@ public class AnyClass : Unit, IBaseActions
 	//		Debug.DrawRay(targetNode.coord + Vector3.up, dir);
 	//	}
 	//}
+	public void CreateNewReloadAction()
+	{
+		// cant have more that 2 actions
+		//int actionPoints = GetComponent<PlayerStats>().ActionPoint;
+		//if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
+		//{
+		//	Debug.Log($" No action point Left !!!");
+		//	return;
+		//}
+		ReloadAction reload = new ReloadAction(ReloadActionCallBack, "Reload");
+		Enqueue(reload);
+	}
+
+	public void ReloadActionCallBack(ReloadAction reload)
+	{
+		weapon.Reload(reload);
+	}
+
+	public void CreateNewShootAction()
+	{
+		// cant have more that 2 actions
+		//int actionPoints = GetComponent<PlayerStats>().ActionPoint;
+		//if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
+		//{
+		//	Debug.Log($" No action point Left !!!");
+		//	return;
+		//}
+
+		ShootAction shoot = new ShootAction(ShootActionCallBack, "Shoot");
+		Enqueue(shoot);
+	}
+
+	public void ShootActionCallBack(ShootAction soot)
+	{
+		weapon.startShooting(soot);
+	}
+
+	public virtual void onHover()
+	{ }
 }

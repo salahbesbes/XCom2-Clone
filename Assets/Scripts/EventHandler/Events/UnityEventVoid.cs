@@ -23,19 +23,18 @@ namespace gameEventNameSpace
 	}
 
 	[System.Serializable]
-	public class UnityEquipementEvent : UnityEvent<EquipementData>
+	public class UnityGrenadeExplosionEvent : UnityEvent<UnitStats>
 	{
 	}
 
+	[System.Serializable]
+	public class UnityEquipementEvent : UnityEvent<EquipementData>
+	{
+	}
 
 	[System.Serializable]
 	public class UnityNotifyGameManagerEvent : UnityEvent<PlayerStateManager>
 	{
 	}
 
-
-	[System.Serializable]
-	public class UnityInventoryEvent : UnityEvent<Inventory>
-	{
-	}
 }

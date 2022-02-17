@@ -1,12 +1,8 @@
 using UnityEngine;
+
 public class handleHealthUnitBar : MonoBehaviour
 {
-
 	private int healthBeforeShoot;
-
-
-
-
 
 	private AnyClass thisUnit;
 	public GameObject unitHealth;
@@ -14,39 +10,19 @@ public class handleHealthUnitBar : MonoBehaviour
 
 	private void Start()
 	{
-		thisUnit = GetComponentInParent<AnyClass>();
+		thisUnit = GetComponentInParent<PlayerStateManager>();
 		//tmpHealth = thisUnit.stats.unit.Health;
 		HealthHolder = transform.Find("HealthHolder");
-		Player test = thisUnit as Player;
 
-
-		if (test == null)
+		if (thisUnit.team is RedTeam)
 		{
 			unitHealth.GetComponent<MeshRenderer>().material = Resources.Load("UnitHealth_Enemy_Mat", typeof(Material)) as Material;
 		}
 		else
 		{
 			unitHealth.GetComponent<MeshRenderer>().material = Resources.Load("UnitHealth_Player_Mat", typeof(Material)) as Material;
-
 		}
 
-
-		//if (test == null)
-		//{
-		//	Material redMaterial = Resources.Load("unithealth", typeof(Material)) as Material;
-		//	redMaterial.color = Color.red;
-		//	unitHealth.GetComponent<MeshRenderer>().material = redMaterial;
-		//	Debug.Log($"tried with red material");
-
-
-		//}
-		//else
-		//{
-
-		//	Material greenMaterial = Resources.Load("unithealth", typeof(Material)) as Material;
-		//	greenMaterial.color = Color.green;
-		//	unitHealth.GetComponent<MeshRenderer>().material = greenMaterial;
-		//}
 		updateHealthBar();
 	}
 
@@ -65,22 +41,20 @@ public class handleHealthUnitBar : MonoBehaviour
 
 	public void onDamage()
 	{
+		Debug.Log($"{transform.parent.name}");
 		for (int i = healthBeforeShoot - 1; i >= thisUnit.stats.unit.Health; i--)
 		{
 			HealthHolder.GetChild(i).GetComponent<Renderer>().material.color = Color.gray;
 		}
 		healthBeforeShoot = thisUnit.stats.unit.Health;
-
 	}
 
 	public void onHeal()
 	{
-
 		for (int i = healthBeforeShoot; i < thisUnit.stats.unit.Health; i++)
 		{
 			HealthHolder.GetChild(i).GetComponent<Renderer>().material.color = Color.red;
 		}
 		healthBeforeShoot = thisUnit.stats.unit.Health;
-
 	}
 }

@@ -15,10 +15,6 @@ public abstract class Weapon : Mono
 	public virtual async Task startShooting(ShootAction shoot)
 	{ }
 
-	public virtual void onHover()
-	{
-	}
-
 	private void OnEnable()
 	{
 		LineRenderer lr = GetComponent<LineRenderer>();

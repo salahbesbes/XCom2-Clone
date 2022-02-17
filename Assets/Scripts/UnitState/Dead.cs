@@ -5,7 +5,7 @@ public class Dead : AnyState<PlayerStateManager>
 	public override AnyClass EnterState(PlayerStateManager player)
 	{
 		//player.model.transform.GetComponent<CapsuleCollider>().height = 0.5f;
-		Debug.Log($" {player} enter state dead ");
+		Debug.Log($" {player} IS DEAD");
 
 		//string CorrespondNameOfTheAnimation = Enum.GetName(typeof(AnimationType), player.currentActionAnimation);
 
@@ -14,17 +14,13 @@ public class Dead : AnyState<PlayerStateManager>
 		player.PlayAnimation(AnimationType.die);
 		player.model.GetComponent<CapsuleCollider>().height = 0.05f;
 
-
 		player.notifyGameManagerEvent.Raise(player);
-
-
 
 		return null;
 	}
 
 	public override void ExitState(PlayerStateManager player)
 	{
-
 	}
 
 	public override void Update(PlayerStateManager player)
