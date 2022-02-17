@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25cdd59191ebfd24d84d6f935b2d3b3a, type: 3}
   m_Name: GrenadeLuncher
   m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 7925c47caf74cf143abe3cf8eddd9b7c, type: 3}
+  nameItem: grnade Luncher
+  prefab: {fileID: 1019699778931151208, guid: 470a59d1c4b5e2e4da8d6217f4bb32b8, type: 3}
   holdDownShooting: 0
   shooting: 0
   readyToShoot: 1

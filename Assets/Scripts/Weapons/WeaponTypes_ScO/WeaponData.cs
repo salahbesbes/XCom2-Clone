@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WeaponData : ScriptableObject
+public class WeaponData : Item
 {
 	public bool holdDownShooting = false;
 	public bool shooting = false;

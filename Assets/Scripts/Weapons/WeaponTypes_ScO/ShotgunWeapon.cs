@@ -27,4 +27,18 @@ public class ShotgunWeapon : WeaponData
 	{
 		bulletLeft = maxMagazine;
 	}
+
+	public override void Use()
+	{
+
+		ShutGun EquipedWeapon = (ShutGun)prefab;
+
+		AnyClass selectedUnit = GameStateManager.Instance.SelectedUnit;
+		Quaternion prevWeaponRotation = selectedUnit.weapon.transform.rotation;
+		Destroy(selectedUnit.weapon.gameObject);
+
+		Instantiate(prefab, selectedUnit.weapon.transform.position, prevWeaponRotation, selectedUnit.hand);
+		EquipedWeapon.player = selectedUnit;
+		selectedUnit.weapon = EquipedWeapon;
+	}
 }

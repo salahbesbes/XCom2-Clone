@@ -12,19 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7763a7e051b811c45bc4475564fdde22, type: 3}
   m_Name: ShotGunWeapon
   m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 4480afab6cd87a24088e70c10da2ce5d, type: 3}
+  nameItem: shutGun
+  prefab: {fileID: 3947872283905567805, guid: b10db975e4bcb8e4f980b3617f1fdccf, type: 3}
   holdDownShooting: 1
   shooting: 0
   readyToShoot: 1
   reloading: 0
-  ammoSpeed: 458
+  ammoSpeed: 500
   bouncingForce: 0
-  bulletLeft: 856
+  bulletLeft: 1000
   bulletsShot: 9
   maxMagazine: 1000
   bulletRange: 50
   spread: 0.332
   timeBetweenShooting: 0
-  timeBetweenShots: 0.02
+  timeBetweenShots: 1
   shutGun: 0
   bulletInOneShot: 8
   type: 3

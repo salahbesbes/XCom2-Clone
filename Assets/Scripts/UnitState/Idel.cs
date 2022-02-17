@@ -35,7 +35,16 @@ public class Idel : AnyState<PlayerStateManager>
 		{
 			player.fpsCam.enabled = false;
 		}
-
+		if (Input.GetKeyDown(KeyCode.K))
+		{
+			player.inventory.Add(player.newWeapon);
+			player.onUpdateInventoryEvent.Raise(player.inventory);
+		}
+		if (Input.GetKeyDown(KeyCode.O))
+		{
+			Debug.Log($"{player.openInventory}");
+			player.openInventory.Raise();
+		}
 		player.CheckMovementRange();
 		oldDestination = potentialDest;
 		potentialDest = player.onNodeHover(oldDestination);

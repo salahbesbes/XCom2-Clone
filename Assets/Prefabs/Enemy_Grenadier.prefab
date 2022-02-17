@@ -477,6 +477,8 @@ MonoBehaviour:
   partToRotate: {fileID: 8583340694775715537}
   model: {fileID: 913434680869059614}
   speed: 5
+  hand: {fileID: 1338195499998405693}
+  inventory: {fileID: 11400000, guid: bcd83eaee4eb7474795d5b8cb5b09776, type: 2}
   actions:
   - {fileID: 11400000, guid: 7601e2943867df44ab824c6a69d77f26, type: 2}
   - {fileID: 11400000, guid: 7fdc721c4f9522941a5d3c87d1ccb88f, type: 2}
@@ -492,6 +494,8 @@ MonoBehaviour:
   sportPoints: []
   onChangeTarget: {fileID: 11400000, guid: 94c3fca271f0a5840ad25cf123f548ac, type: 2}
   notifyGameManagerEvent: {fileID: 11400000, guid: 1d69433eabc8c3a4a94a59d28589f794, type: 2}
+  onUpdateInventoryEvent: {fileID: 11400000, guid: efb84aa7044a6904c956641ca034f9c5, type: 2}
+  newWeapon: {fileID: 11400000, guid: e251c19419ae6094995047d0b06c06b5, type: 2}
   currentActionAnimation: 1
 --- !u!1001 &3272450888122335655
 PrefabInstance:
@@ -633,6 +637,11 @@ PrefabInstance:
 --- !u!4 &913434680869059614 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2433976513214381497, guid: 0455e876db478b140a5873e472078b64, type: 3}
+  m_PrefabInstance: {fileID: 3272450888122335655}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1338195499998405693 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4609483735327303066, guid: 0455e876db478b140a5873e472078b64, type: 3}
   m_PrefabInstance: {fileID: 3272450888122335655}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6539718105168211613 stripped

@@ -22,4 +22,19 @@ public class GrenadeLuncher : WeaponData
 	{
 		bulletLeft = maxMagazine;
 	}
+
+
+	public override void Use()
+	{
+
+		HeavyWeapon EquipedWeapon = (HeavyWeapon)prefab;
+
+		AnyClass selectedUnit = GameStateManager.Instance.SelectedUnit;
+		Quaternion prevWeaponRotation = selectedUnit.weapon.transform.rotation;
+		Destroy(selectedUnit.weapon.gameObject);
+
+		Instantiate(prefab, selectedUnit.weapon.transform.position, prevWeaponRotation, selectedUnit.hand);
+		EquipedWeapon.player = selectedUnit.inventory.unit;
+		selectedUnit.weapon = EquipedWeapon;
+	}
 }

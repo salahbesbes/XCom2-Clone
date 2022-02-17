@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89975eb6a1b5a0a46bc34e507de555e6, type: 3}
   m_Name: AutomaticWeapon
   m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 040d244b849e5f6449426bc8f19b2316, type: 3}
+  nameItem: ak47
+  prefab: {fileID: 642632081860650248, guid: e3f6749e3b34b374ba0ae9092315c715, type: 3}
   holdDownShooting: 1
   shooting: 0
   readyToShoot: 1
@@ -21,7 +24,7 @@ MonoBehaviour:
   bulletLeft: 1000
   bulletsShot: 9
   maxMagazine: 1000
-  bulletRange: 20
+  bulletRange: 100
   spread: 0
   timeBetweenShooting: 0.1
   timeBetweenShots: 1

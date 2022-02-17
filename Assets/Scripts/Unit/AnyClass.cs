@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class AnyClass : Unit, IBaseActions
 {
+
+	public Transform hand;
+	public Inventory inventory;
 	public List<ActionData> actions = new List<ActionData>();
 	public Stats stats;
 	public Transform ActionHolder;
@@ -23,13 +26,16 @@ public class AnyClass : Unit, IBaseActions
 
 	public VoidEvent onChangeTarget;
 	public NotifyGameManagerEvent notifyGameManagerEvent;
+	public UpdateInventoryEvent onUpdateInventoryEvent;
+	public VoidEvent openInventory;
+	public Item newWeapon;
 	private float _targetAimValue;
 
 	public void Start()
 	{
+		inventory.unit = this;
 		grid = NodeGrid.Instance;
 		gameStateManager = GameStateManager.Instance;
-
 		currentPos = grid.getNodeFromTransformPosition(transform);
 		queueOfActions = new Queue<ActionBase>();
 		path = new List<Node>();

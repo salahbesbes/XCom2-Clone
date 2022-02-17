@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviour
+public abstract class Weapon : Mono
 {
 	//private WeaponData _weaponData;
 	//public abstract WeaponData weaponType { get; set; }
@@ -41,4 +41,12 @@ public abstract class Weapon : MonoBehaviour
 	{
 		return 100;
 	}
+
+
+}
+
+
+public class Mono : MonoBehaviour
+{
+
 }

@@ -33,4 +33,9 @@ namespace gameEventNameSpace
 	{
 	}
 
+
+	[System.Serializable]
+	public class UnityInventoryEvent : UnityEvent<Inventory>
+	{
+	}
 }
