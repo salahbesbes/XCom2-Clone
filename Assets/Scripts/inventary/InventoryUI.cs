@@ -10,14 +10,7 @@ public class InventoryUI : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.I))
-		{
-			gameObject.SetActive(true);
-		}
-		if (Input.GetKeyDown(KeyCode.M))
-		{
-			gameObject.SetActive(false);
-		}
+
 	}
 
 
@@ -52,9 +45,14 @@ public class InventoryUI : MonoBehaviour
 
 	public void close()
 	{
-		gameObject.SetActive(false);
+		itemHolder = transform.GetChild(0);
+		itemHolder.gameObject.SetActive(false);
 	}
-
+	public void open()
+	{
+		itemHolder = transform.GetChild(0);
+		itemHolder.gameObject.SetActive(true);
+	}
 	private void OnEnable()
 	{
 		if (GameStateManager.Instance?.SelectedUnit?.inventory)

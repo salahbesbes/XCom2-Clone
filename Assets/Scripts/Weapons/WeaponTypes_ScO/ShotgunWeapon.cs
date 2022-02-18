@@ -30,14 +30,12 @@ public class ShotgunWeapon : WeaponData
 
 	public override void Use()
 	{
+		PlayerStateManager selectedUnit = GameStateManager.Instance.SelectedUnit;
 
-		ShutGun EquipedWeapon = (ShutGun)prefab;
-
-		AnyClass selectedUnit = GameStateManager.Instance.SelectedUnit;
 		Quaternion prevWeaponRotation = selectedUnit.weapon.transform.rotation;
 		Destroy(selectedUnit.weapon.gameObject);
 
-		Instantiate(prefab, selectedUnit.weapon.transform.position, prevWeaponRotation, selectedUnit.hand);
+		ShutGun EquipedWeapon = Instantiate(prefab, selectedUnit.weapon.transform.position, prevWeaponRotation, selectedUnit.hand) as ShutGun;
 		EquipedWeapon.player = selectedUnit;
 		selectedUnit.weapon = EquipedWeapon;
 	}

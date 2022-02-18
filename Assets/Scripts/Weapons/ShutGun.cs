@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -99,6 +100,19 @@ public class ShutGun : Weapon
 	public override string ToString()
 	{
 		return $"weapon: {this.name}";
+	}
+
+
+
+	public override void onUpdate()
+	{
+		if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))
+		{
+			ActionData shoot = player.actions.FirstOrDefault((el) => el is ShootingAction);
+			player.currentActionAnimation = AnimationType.shoot;
+			player.SwitchState(player.doingAction);
+			shoot?.Actionevent?.Raise();
+		}
 	}
 
 	public override float howMuchVisibleTheTArgetIs()

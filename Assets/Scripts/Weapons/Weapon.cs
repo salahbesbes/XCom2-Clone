@@ -7,7 +7,7 @@ public abstract class Weapon : Mono
 	//public abstract WeaponData weaponType { get; set; }
 
 	public Transform startPoint;
-	public AnyClass player;
+	public PlayerStateManager player;
 
 	public virtual async Task Reload(ReloadAction reload)
 	{ }
@@ -37,6 +37,18 @@ public abstract class Weapon : Mono
 	{
 		return 100;
 	}
+
+
+	public virtual void onHover()
+	{
+
+	}
+
+	public virtual void onUpdate()
+	{
+
+	}
+
 
 
 }

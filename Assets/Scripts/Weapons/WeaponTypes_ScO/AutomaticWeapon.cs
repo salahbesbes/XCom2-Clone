@@ -30,14 +30,11 @@ public class AutomaticWeapon : WeaponData
 
 	public override void Use()
 	{
-
-		Ak47 EquipedWeapon = (Ak47)prefab;
-
-		AnyClass selectedUnit = GameStateManager.Instance.SelectedUnit;
+		PlayerStateManager selectedUnit = GameStateManager.Instance.SelectedUnit;
 		Quaternion prevWeaponRotation = selectedUnit.weapon.transform.rotation;
 		Destroy(selectedUnit.weapon.gameObject);
 
-		Instantiate(prefab, selectedUnit.weapon.transform.position, prevWeaponRotation, selectedUnit.hand);
+		Ak47 EquipedWeapon = Instantiate(prefab, selectedUnit.weapon.transform.position, prevWeaponRotation, selectedUnit.hand) as Ak47;
 		EquipedWeapon.player = selectedUnit;
 		selectedUnit.weapon = EquipedWeapon;
 	}

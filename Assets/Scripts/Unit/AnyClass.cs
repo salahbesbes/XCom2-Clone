@@ -390,6 +390,4 @@ public class AnyClass : Unit
 		weapon.startShooting(soot);
 	}
 
-	public virtual void onHover()
-	{ }
 }

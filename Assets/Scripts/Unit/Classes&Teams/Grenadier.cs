@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class Grenadier : PlayerStateManager, IClassGrenadier
@@ -22,28 +21,10 @@ public class Grenadier : PlayerStateManager, IClassGrenadier
 		enabled = this == gameStateManager.SelectedUnit ? true : false;
 	}
 
-	public override void onHover()
-	{
-		Node potentialDestination = NodeGrid.Instance.getNodeFromMousePosition(secondCam);
-		if (potentialDestination != null && potentialDestination != destination && potentialDestination != currentPos)
-		{
-			//lineConponent.SetUpLine(turnPoints);
-
-			potentialDestination.tile.obj.GetComponent<Renderer>().material.color = Color.blue;
-			myWeapon.DrowTrajectory(potentialDestination.coord);
-			if (Input.GetMouseButtonDown(0))
-			{
-				ActionData action = actions.FirstOrDefault((el) => el is LunchGrenadeData);
-				currentActionAnimation = AnimationType.shoot;
-				SwitchState(doingAction);
-				action?.Actionevent?.Raise();
-			}
-		}
-	}
 
 	public override void customUpdate()
 	{
-		onHover();
+		weapon.onUpdate();
 	}
 
 	public void CreateLunchGrenadeAction()

@@ -37,6 +37,7 @@ public class Idel : AnyState<PlayerStateManager>
 		}
 		if (Input.GetKeyDown(KeyCode.K))
 		{
+			player.openInventory.Raise();
 			player.inventory.Add(player.newWeapon);
 			player.onUpdateInventoryEvent.Raise(player.inventory);
 		}

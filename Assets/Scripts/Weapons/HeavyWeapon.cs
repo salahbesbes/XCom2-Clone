@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -130,6 +131,30 @@ public class HeavyWeapon : Weapon
 		return percent * 100;
 	}
 
+
+
+	public override void onHover()
+	{
+		Node potentialDestination = NodeGrid.Instance.getNodeFromMousePosition(player.secondCam);
+		if (potentialDestination != null && potentialDestination != player.destination && potentialDestination != player.currentPos)
+		{
+			//lineConponent.SetUpLine(turnPoints);
+
+			potentialDestination.tile.obj.GetComponent<Renderer>().material.color = Color.blue;
+			DrowTrajectory(potentialDestination.coord);
+			if (Input.GetMouseButtonDown(0))
+			{
+				ActionData action = player.actions.FirstOrDefault((el) => el is LunchGrenadeData);
+				player.currentActionAnimation = AnimationType.shoot;
+				player.SwitchState(player.doingAction);
+				action?.Actionevent?.Raise();
+			}
+		}
+	}
+	public override void onUpdate()
+	{
+		onHover();
+	}
 	public struct LunchData
 	{
 		public readonly Vector3 initialVelocity;

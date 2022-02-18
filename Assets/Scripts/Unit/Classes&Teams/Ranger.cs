@@ -20,4 +20,10 @@ public class Ranger : PlayerStateManager, IClassRanger
 		myWeapon = weapon as ShutGun;
 		enabled = this == gameStateManager.SelectedUnit ? true : false;
 	}
+
+
+	public override void customUpdate()
+	{
+		weapon.onUpdate();
+	}
 }

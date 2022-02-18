@@ -20,6 +20,10 @@ public class Assault : PlayerStateManager, IClassAssault
 		myWeapon = weapon as Ak47;
 		enabled = this == gameStateManager.SelectedUnit ? true : false;
 	}
+	public override void customUpdate()
+	{
+		weapon.onUpdate();
+	}
 }
 
 internal interface IClassAssault

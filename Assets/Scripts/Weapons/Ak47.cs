@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -17,7 +18,16 @@ public class Ak47 : Weapon
 		player.FinishAction(reload);
 		await Task.Yield();
 	}
-
+	public override void onUpdate()
+	{
+		if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))
+		{
+			ActionData shoot = player.actions.FirstOrDefault((el) => el is ShootingAction);
+			player.currentActionAnimation = AnimationType.shoot;
+			player.SwitchState(player.doingAction);
+			shoot?.Actionevent?.Raise();
+		}
+	}
 	public void Shoot(RaycastHit hit)
 	{
 		// slow don the rate of shooting using delay method

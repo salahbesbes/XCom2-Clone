@@ -26,15 +26,13 @@ public class GrenadeLuncher : WeaponData
 
 	public override void Use()
 	{
+		PlayerStateManager selectedUnit = GameStateManager.Instance.SelectedUnit;
 
-		HeavyWeapon EquipedWeapon = (HeavyWeapon)prefab;
-
-		AnyClass selectedUnit = GameStateManager.Instance.SelectedUnit;
 		Quaternion prevWeaponRotation = selectedUnit.weapon.transform.rotation;
 		Destroy(selectedUnit.weapon.gameObject);
 
-		Instantiate(prefab, selectedUnit.weapon.transform.position, prevWeaponRotation, selectedUnit.hand);
-		EquipedWeapon.player = selectedUnit.inventory.unit;
+		HeavyWeapon EquipedWeapon = Instantiate(prefab, selectedUnit.weapon.transform.position, prevWeaponRotation, selectedUnit.hand) as HeavyWeapon;
+		EquipedWeapon.player = selectedUnit;
 		selectedUnit.weapon = EquipedWeapon;
 	}
 }
