@@ -104,12 +104,6 @@ public class MovingTest : MonoBehaviour
 	{
 		if (points.Count > 0)
 		{
-			//for (int i = 0; i < turnPoints.Length; i++)
-			//{
-			//	turnPoints[i].y = transform.position.y;
-			//}
-			//grid.path = path;
-			//grid.turnPoints = turnPoints;
 			Vector3 currentPoint = points[0];
 			int index = 0;
 			Vector3 dir = currentPoint - transform.position;
@@ -149,20 +143,6 @@ public class MovingTest : MonoBehaviour
 					Debug.Log($"{points.Count}");
 				}
 
-				// check underground
-				//if (!Physics.Raycast(point.position, -transform.up, out hit, 2))
-				//{
-				//	// modify the points array
-				//	Vector3 hitPoint = hit.point;
-				//	points.Insert(index, hitPoint);
-				//	// look at top
-				//	Vector3 top = new Vector3(hitPoint.x, 20, hitPoint.z);
-				//	transform.LookAt(top);
-
-				//}
-
-				// this yield return null waits until the next frame reached ( dont
-				// exit the methode )
 				await Task.Yield();
 			}
 		}

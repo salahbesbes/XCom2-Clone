@@ -206,6 +206,33 @@ public static class FindPath
 	/// <returns> array of position where the unit change direction </returns>
 	public static Vector3[] createWayPoint(List<Node> path)
 	{
+
+		List<Vector3> pathPoint = new List<Vector3>();
+		for (int i = 0; i < path.Count; i++)
+		{
+			Node currentNode = path[i];
+
+			Vector3 point = currentNode.coord;
+
+			if (currentNode.tile.obj != null)
+			{
+				Node prevNode = path[i - 1];
+				pathPoint.Add(prevNode.coord);
+				Vector3 prevUP = new Vector3(prevNode.coord.x, 1, prevNode.coord.z);
+				pathPoint.Add(prevUP);
+			}
+
+			pathPoint.Add(point);
+			// todo: create a reference on the object sits ontop of the tile so that i know how tall he is
+
+		}
+
+		return pathPoint.ToArray();
+
+
+	}
+	public static Vector3[] createWayPointOriginal(List<Node> path)
+	{
 		Vector2 oldDirection = Vector2.zero;
 		List<Vector3> wayPoints = new List<Vector3>();
 
@@ -231,6 +258,7 @@ public static class FindPath
 		return wayPoints.ToArray();
 	}
 }
+
 
 public class Node
 {
