@@ -13,7 +13,7 @@ public class Tile
 	public bool mouseOnTile = false;
 	private Transform parent;
 	private float size = 1;
-
+	public Collider colliderOnTop;
 	public float offset = 2f;
 
 	public Tile(Node node, Transform parent, List<Tile> listTiles)
@@ -129,4 +129,16 @@ public class Cover
 	{
 		return $"cover exist";
 	}
+}
+
+public enum Direction
+{
+	right,
+	left,
+	top,
+	buttom,
+	topLeft,
+	topright,
+	front,
+	flanked
 }

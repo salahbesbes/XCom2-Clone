@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class AnyClass : Unit
 {
-
 	public Transform hand;
 	public Inventory inventory;
 	public List<ActionData> actions = new List<ActionData>();
@@ -32,6 +31,13 @@ public class AnyClass : Unit
 	public Item newWeapon;
 	private float _targetAimValue;
 	public Weapon weapon;
+
+	protected Node front;
+	protected Node back;
+	protected Node right;
+	protected Node left;
+	protected float coverValue;
+	protected Direction targetDirection;
 
 	public void Start()
 	{
@@ -65,11 +71,139 @@ public class AnyClass : Unit
 		get => _currentTarger;
 		set
 		{
+			TheNorth(value);
+
 			GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(_currentTarger);
 			_currentTarger = value;
 			rotateTowardDirection(partToRotate, _currentTarger.aimPoint.position - transform.position);
 
 			GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.onWeaponFinishShooting);
+		}
+	}
+
+	private bool checkForDiagonal(Node node)
+	{
+		if (node == null) return false;
+		return Mathf.Abs(currentPos.x - node.x) == Mathf.Abs(currentPos.y - node.y);
+	}
+
+	public void TheNorth(AnyClass target)
+	{
+		if (target == null || currentPos == null) return;
+		//Node front, back, right, left;
+		Transform points = partToRotate.Find("points");
+
+		front = NodeGrid.Instance.getNodeFromTransformPosition(points.GetChild(0));
+		back = NodeGrid.Instance.getNodeFromTransformPosition(points.GetChild(1));
+		right = NodeGrid.Instance.getNodeFromTransformPosition(points.GetChild(2));
+		left = NodeGrid.Instance.getNodeFromTransformPosition(points.GetChild(3));
+
+		if (checkForDiagonal(front))
+			front = grid.getNode(currentPos.x, front.y);
+		if (checkForDiagonal(back))
+			back = grid.getNode(currentPos.x, back.y);
+		if (checkForDiagonal(right))
+			right = grid.getNode(right.x, currentPos.y);
+		if (checkForDiagonal(left))
+			left = grid.getNode(left.x, currentPos.y);
+
+		if (front != null)
+			front.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
+		else
+			Debug.Log($"front is null");
+
+		if (back != null)
+			back.tile.obj.GetComponent<Renderer>().material.color = Color.red;
+		else
+			Debug.Log($"back is null");
+
+		if (right != null)
+			right.tile.obj.GetComponent<Renderer>().material.color = Color.blue;
+		else
+			Debug.Log($"right is null");
+
+		if (left != null)
+			left.tile.obj.GetComponent<Renderer>().material.color = Color.green;
+		else
+			Debug.Log($"left is null");
+
+		//Debug.Log($"front {front}, back {back}, right {right}, left {left} player {currentPos}");
+	}
+
+	private void CheckTArgetPositionTowardTheFrontNode()
+	{
+		Vector3 sumfrontandright = new Vector3(front.x, 0, front.y) + new Vector3(right.x, 0, right.y);
+		sumfrontandright.Normalize();
+		//Vector3 targetDirection = new Vector3(CurrentTarget.currentPos.x, 0, CurrentTarget.currentPos.y) + new Vector3(currentPos.x, 0, currentPos.y);
+		Vector3 frontVector = front.coord - currentPos.coord;
+		Vector3 dir = CurrentTarget.currentPos.coord - currentPos.coord;
+		dir.Normalize();
+
+		// rotation angle between the front and the current target
+		float rotationAngle = Quaternion.FromToRotation(frontVector, dir).eulerAngles.y;
+
+		if (rotationAngle == 0)
+		{
+			targetDirection = Direction.front;
+		}
+		else if (rotationAngle < 90)
+		{
+			targetDirection = Direction.topright;
+		}
+		else
+		{
+			targetDirection = Direction.topLeft;
+		}
+		//Debug.Log($"rotationAngle {rotationAngle} pos  {targetDirection}");
+
+		//Debug.Log($"target {CurrentTarget.currentPos}");
+		//Debug.Log($"front {front}");
+	}
+
+	public void CalculateCoverValue()
+	{
+		CheckTArgetPositionTowardTheFrontNode();
+
+		switch (targetDirection)
+		{
+			case Direction.topLeft:
+				if (left != null && left.tile.colliderOnTop != null)
+				{
+					Debug.Log($" target is at the  {targetDirection}  and the player has a left cover");
+				}
+				else
+				{
+					Debug.Log($" target is at the  {targetDirection}  and the player HS NO COVER ON THE LEFT");
+				}
+
+				break;
+
+			case Direction.topright:
+				if (right != null && right.tile.colliderOnTop != null)
+				{
+					Debug.Log($" target is at the  {targetDirection}  and the player has a right cover");
+				}
+				else
+				{
+					Debug.Log($" target is at the  {targetDirection}  and the player HAS NO COVER ON THE RIGHT");
+				}
+
+				break;
+
+			case Direction.front:
+				if (front != null && front.tile.colliderOnTop != null)
+				{
+					Debug.Log($" target is at the  {targetDirection}  and the player has a FRONT cover");
+				}
+				else
+				{
+					Debug.Log($" target is at the  {targetDirection}  and the player HAS NO COVER ON THE FRONT");
+				}
+
+				break;
+
+			default:
+				break;
 		}
 	}
 
@@ -389,5 +523,4 @@ public class AnyClass : Unit
 	{
 		weapon.startShooting(soot);
 	}
-
 }

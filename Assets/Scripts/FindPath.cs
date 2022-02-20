@@ -22,18 +22,16 @@ public static class FindPath
 		List<Node> res = new List<Node>();
 		while (openList.Count > 0)
 		{
-			// first sort the list by nodeCost then by the h value (distance to the destination)
-			// this give us the shortest path and not expansive 
+			// first sort the list by nodeCost then by the h value (distance to the
+			// destination) this give us the shortest path and not expansive
 			openList = openList.OrderBy(item => item.nodeCost).OrderBy(item => item.h).ToList();
 			current = openList[0];
-
 
 			if (current == destination)
 			{
 				res = getThePath(startNode, current);
 				return res;
 			}
-
 
 			openList.Remove(current);
 			closedLsit.Add(current);
@@ -54,15 +52,11 @@ public static class FindPath
 						openList.Add(neighbour);
 				}
 			}
-
-
 		}
 
 		Debug.Log($"cant find path in the map ");
 		return res;
-
 	}
-
 
 	/*
 	 startNode.g = 0;
@@ -78,7 +72,6 @@ public static class FindPath
 			QueueNotTested = new Queue<Node>(QueueNotTested.OrderBy(item => item.h).OrderBy(item => item.nodeCost));
 
 			//var queue = new Queue<string>(myStringList);
-
 
 			//we can loop throw an empty list in that case we are sure we didnt
 			//find any path
@@ -142,10 +135,9 @@ public static class FindPath
 		// we pass the result var to the get methode and we set the gridPath any way (empty
 		// or full)
 		return result;
-	 
-	 
-	 
+
 	 */
+
 	public static float CalcG(Node a, Node b)
 	{
 		return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
@@ -204,34 +196,63 @@ public static class FindPath
 	/// <summary> return an array of position where the unit change position </summary>
 	/// <param name="path"> path between start and end nodes </param>
 	/// <returns> array of position where the unit change direction </returns>
-	public static Vector3[] createWayPoint(List<Node> path)
+	public static Vector3[] createWayPointtttttt(List<Node> path)
 	{
-
 		List<Vector3> pathPoint = new List<Vector3>();
-		for (int i = 0; i < path.Count; i++)
+		if (path != null && path.Count > 0)
 		{
-			Node currentNode = path[i];
+			bool prevNodeisEmpty = true;
+			float prevHeight = 0;
 
-			Vector3 point = currentNode.coord;
-
-			if (currentNode.tile.obj != null)
+			for (int i = 1; i < path.Count; i++)
 			{
-				Node prevNode = path[i - 1];
-				pathPoint.Add(prevNode.coord);
-				Vector3 prevUP = new Vector3(prevNode.coord.x, 1, prevNode.coord.z);
-				pathPoint.Add(prevUP);
+				Node currentNode = path[i];
+
+				Vector3 point = new Vector3(currentNode.coord.x, currentNode.coord.y, currentNode.coord.z);
+				Vector3 prevNode = new Vector3(path[i - 1].coord.x, path[i - 1].coord.y, path[i - 1].coord.z);
+				if (currentNode.tile.colliderOnTop != null)
+				{
+					float heightObj = currentNode.tile.colliderOnTop.bounds.size.y;
+					prevHeight = heightObj;
+					if (prevNodeisEmpty)
+					{
+						Debug.Log($"node index {i} is not empty prev is empty");
+
+						pathPoint.Add(prevNode);
+						Vector3 prevUP = new Vector3(prevNode.x, heightObj, prevNode.z);
+						pathPoint.Add(prevUP);
+						Vector3 newCurrentNode = new Vector3(point.x, heightObj, point.z);
+						pathPoint.Add(newCurrentNode);
+					}
+					else if (prevNodeisEmpty == false)
+					{
+						Debug.Log($"node index {i} is not empty prev is obstacle");
+					}
+					prevNodeisEmpty = false;
+				}
+				else
+				{
+					if (prevNodeisEmpty == false)
+					{
+						Debug.Log($"node index {i} is EMPTY prev is obstacle");
+
+						Vector3 currentUp = new Vector3(currentNode.coord.x, prevHeight, currentNode.coord.z);
+						pathPoint.Add(currentUp);
+						prevNodeisEmpty = true;
+					}
+
+					pathPoint.Add(point);
+					// todo: create a reference on the object sits ontop of the
+					// tile so that i know how tall he is
+				}
 			}
 
-			pathPoint.Add(point);
-			// todo: create a reference on the object sits ontop of the tile so that i know how tall he is
-
+			Debug.Log($"{path.Count}");
 		}
-
 		return pathPoint.ToArray();
-
-
 	}
-	public static Vector3[] createWayPointOriginal(List<Node> path)
+
+	public static Vector3[] createWayPoint(List<Node> path)
 	{
 		Vector2 oldDirection = Vector2.zero;
 		List<Vector3> wayPoints = new List<Vector3>();
@@ -258,7 +279,6 @@ public static class FindPath
 		return wayPoints.ToArray();
 	}
 }
-
 
 public class Node
 {

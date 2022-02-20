@@ -160,9 +160,46 @@ public class NodeGrid : MonoBehaviour
 			node.g = float.PositiveInfinity;
 			node.parent = null;
 			//node.path = new List<Node>();
-			string[] collidableLayers = { "Unwalkable" };
+			string[] collidableLayers = { "Unwalkable", "Player", "Enemy", "LowObstacle", "Pickable" };
+			RaycastHit hit;
+
 			int layerToCheck = LayerMask.GetMask(collidableLayers);
-			node.isObstacle = Physics.CheckSphere(node.coord, nodeSize / 2, layerToCheck);
+			Collider[] colliders = Physics.OverlapSphere(node.coord, nodeSize / 3, layerToCheck);
+
+			if (colliders.Length > 0)
+			{
+				foreach (var collider in colliders)
+				{
+					node.tile.colliderOnTop = collider;
+
+					if (collider.CompareTag("mug")) node.nodeCost = 10;
+					else if (collider.CompareTag("grass")) node.nodeCost = 5;
+					else if (LayerMask.LayerToName(collider.transform.gameObject.layer) == "Unwalkable")
+					{
+						node.isObstacle = true;
+						break;
+					}
+					else if (LayerMask.LayerToName(collider.transform.gameObject.layer) == "LowObstacle")
+					{
+						node.color = Color.blue;
+						node.isObstacle = false;
+					}
+					else if (LayerMask.LayerToName(collider.transform.gameObject.layer) == "Player" ||
+						LayerMask.LayerToName(collider.transform.gameObject.layer) == "Enemy")
+					{
+						node.isObstacle = true;
+					}
+					else
+					{
+						node.color = Color.yellow;
+						node.isObstacle = false;
+					}
+				}
+			}
+			else
+			{
+				node.isObstacle = false;
+			}
 			node.color = node.isObstacle ? Color.red : Color.cyan;
 			node.inRange = false;
 			node.firstRange = false;
@@ -221,17 +258,28 @@ public class NodeGrid : MonoBehaviour
 
 				// project a sphere to check with the Layer Unwalkable if some thing
 				// with the layer Unwalkable above it
-				string[] collidableLayers = { "Unwalkable", "Enemy", "Player", "Default" };
+				string[] collidableLayers = { "Unwalkable", "Enemy", "Player", "LowObstacle" };
 				int layerToCheck = LayerMask.GetMask(collidableLayers);
 				//graph[x, y].isObstacle = Physics.CheckSphere(nodeCoord, nodeSize / 2, layerToCheck);
 
-				Collider[] hitColliders = Physics.OverlapSphere(nodeCoord, nodeSize / 2, layerToCheck);
+				Collider[] hitColliders = Physics.OverlapSphere(nodeCoord, nodeSize / 3, layerToCheck);
 
-				foreach (var item in hitColliders)
+				foreach (var collider in hitColliders)
 				{
-					if (item.CompareTag("mug")) graph[x, y].nodeCost = 10;
-					else if (item.CompareTag("grass")) graph[x, y].nodeCost = 5;
-					else graph[x, y].isObstacle = true;
+					graph[x, y].tile.colliderOnTop = collider;
+
+					if (collider.CompareTag("mug")) graph[x, y].nodeCost = 10;
+					else if (collider.CompareTag("grass")) graph[x, y].nodeCost = 5;
+					else if (LayerMask.LayerToName(collider.transform.gameObject.layer) == "Unwalkable")
+					{
+						graph[x, y].isObstacle = true;
+						break;
+					}
+					else if (LayerMask.LayerToName(collider.transform.gameObject.layer) == "Player" ||
+						LayerMask.LayerToName(collider.transform.gameObject.layer) == "Enemy")
+					{
+						graph[x, y].isObstacle = true;
+					}
 				}
 
 				//graph[x, y].isObstacle = hitColliders.Length > 0 ? true : false;
@@ -285,24 +333,6 @@ public class NodeGrid : MonoBehaviour
 		{
 			Debug.DrawLine(buttonLeft + new Vector3(x, 0.02f, 0), new Vector3(x + buttonLeft.x, 0.02f, (localheight + buttonLeft.z)), Color.black);
 		}
-
-		//resetGrid();
-
-		//foreach (var item in Instance.graph)
-		//{
-		//	Gizmos.color = item.color;
-		//	Gizmos.DrawCube(item.coord, new Vector3(nodeSize - 0.1f, 0.1f, nodeSize - 0.1f));
-		//}
-		//if (GameStateManager.Instance?.SelectedUnit?.partToRotate != null)
-		//{
-		//	Transform points = GameStateManager.Instance.SelectedUnit.partToRotate.Find("points");
-
-		//	foreach (Transform point in points)
-		//	{
-		//		Gizmos.color = Color.grey;
-		//		Gizmos.DrawSphere(point.position, 0.5f);
-		//	}
-		//}
 	}
 
 	public Node getNode(int x, int y)

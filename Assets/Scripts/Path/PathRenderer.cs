@@ -1,20 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PathRenderer : MonoBehaviour
 {
-	LineRenderer lr;
-	Node destination;
-	Node currentPos;
+	private LineRenderer lr;
+	private Node destination;
+	private Node currentPos;
 
-	List<Node> path = new List<Node>();
-	Vector3[] turnPoints;
-	Node potentialDest;
-	Node oldDestination;
-	List<Vector3> positions = new List<Vector3>();
+	private List<Node> path = new List<Node>();
+	private Vector3[] turnPoints;
+	private Node potentialDest;
+	private Node oldDestination;
+	private List<Vector3> positions = new List<Vector3>();
 
-	void Start()
+	private void Start()
 	{
 		lr = GetComponent<LineRenderer>();
 		currentPos = NodeGrid.Instance.getNodeFromTransformPosition(transform);
@@ -22,38 +23,17 @@ public class PathRenderer : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update()
+	private void Update()
 	{
 		NodeGrid.Instance.resetGrid();
 		currentPos = NodeGrid.Instance.getNodeFromTransformPosition(transform);
-		lr.positionCount = path.Count;
-		positions = path.Select(el => el.coord).Select(el => new Vector3(el.x, 0.5f, el.z)).ToList();
 
-		List<Vector3> newList = makechangeson(2, positions);
+		Vector3[] newList = onNodeHover();
+		lr.positionCount = newList.Length;
 		lr.SetPositions(newList.ToArray());
-		potentialDest = onNodeHover(oldDestination);
 	}
 
-	private List<Vector3> makechangeson(int idx, List<Vector3> positions)
-	{
-
-
-
-
-
-
-
-
-		return positions;
-
-	}
-
-
-
-
-
-
-	public Node onNodeHover(Node oldPotentialDest)
+	public Vector3[] onNodeHover()
 	{
 		//Node oldDestination = destination;
 		if (NodeGrid.Instance == null) return null;
@@ -67,39 +47,51 @@ public class PathRenderer : MonoBehaviour
 		{
 			List<Node> potentialPath = FindPath.AStarAlgo(currentPos, potentialDestination);
 			if (potentialPath.Count == 0) return null;
-			Vector3[] turns = FindPath.createWayPoint(potentialPath);
-
-			//lineConponent.SetUpLine(turnPoints);
-
-			path = potentialPath;
-			turnPoints = turns;
-			foreach (Node node in path)
+			Vector3[] points = FindPath.createWayPoint(potentialPath);
+			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				if (turnPoints.Contains(node.coord))
-					node.tile.obj.GetComponent<Renderer>().material.color = Color.green;
-				else
-				{
-					node.tile.obj.GetComponent<Renderer>().material.color = Color.gray;
-				}
+				move(points);
 			}
-			potentialDestination.tile.obj.GetComponent<Renderer>().material.color = Color.blue;
-
-			if (Input.GetMouseButtonDown(0))
-			{
-				//ActionData move = actions.FirstOrDefault((el) => el is MovementAction);
-				//move.Actionevent.Raise();
-				//CreateNewMoveAction();
-			}
-
-			if (oldPotentialDest != null && oldPotentialDest != potentialDestination)
-			{
-				oldPotentialDest.tile.destroyAllActiveCover();
-				oldPotentialDest.tile.mouseOnTile = false;
-			}
-			return potentialDestination;
+			return points;
 		}
 		// if potentialDestination is null(hover over some unwalckabale) we return the
 		// oldDestination
-		return oldPotentialDest;
+		return turnPoints;
+	}
+
+	public async Task move(Vector3[] points)
+	{
+		if (points.Length > 0)
+		{
+			float playerHeight = transform.GetComponent<Collider>().bounds.size.y;
+			Vector3 currentPoint = points[0] + (Vector3.up * playerHeight / 2);
+			int index = 0;
+			Vector3 dir = currentPoint - transform.position;
+			// this while loop simulate the update methode
+			Quaternion targetRotation = Quaternion.LookRotation(dir);
+			transform.Rotate(0, targetRotation.eulerAngles.y, 0);
+
+			while (true)
+			{
+				if (transform.position == currentPoint)
+				{
+					index++;
+					if (index >= points.Length)
+					{
+						//PathRequestManager.Instance.finishedProcessingPath();
+						break;
+					}
+					dir = (points[index] - transform.position).normalized;
+					currentPoint = points[index] + (Vector3.up * playerHeight / 2);
+				}
+				transform.position = Vector3.MoveTowards(transform.position, currentPoint, 5 * Time.deltaTime);
+
+				await Task.Yield();
+			}
+		}
+
+		Debug.Log($"finish moving");
+		//onActionFinish();
+		await Task.Yield();
 	}
 }

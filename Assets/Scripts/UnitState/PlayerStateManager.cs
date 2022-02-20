@@ -44,7 +44,6 @@ public class PlayerStateManager : AnyClass
 
 	public virtual void customUpdate()
 	{
-
 	}
 
 	public void SwitchState(BaseState<PlayerStateManager> newState, AnimationType? anim = null)

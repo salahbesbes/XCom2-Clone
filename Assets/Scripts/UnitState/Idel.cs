@@ -50,6 +50,8 @@ public class Idel : AnyState<PlayerStateManager>
 
 		oldDestination = potentialDest;
 		potentialDest = player.onNodeHover(oldDestination);
+		player.TheNorth(player.CurrentTarget);
+		player.CalculateCoverValue();
 		//player.updateNeighbourCover();
 	}
 
