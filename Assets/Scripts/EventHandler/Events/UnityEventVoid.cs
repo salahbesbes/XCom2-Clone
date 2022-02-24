@@ -36,8 +36,14 @@ namespace gameEventNameSpace
 	public class UnityNotifyGameManagerEvent : UnityEvent<PlayerStateManager>
 	{
 	}
+
 	[System.Serializable]
 	public class UnityInventoryEvent : UnityEvent<Inventory>
+	{
+	}
+
+	[System.Serializable]
+	public class UnityBoolEvent : UnityEvent<bool>
 	{
 	}
 }

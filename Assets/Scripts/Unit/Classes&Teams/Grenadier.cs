@@ -1,24 +1,11 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-public class Grenadier : PlayerStateManager, IClassGrenadier
+﻿public class Grenadier : PlayerStateManager, IClassGrenadier
 {
 	private HeavyWeapon myWeapon;
 
-	public void Start()
+	public new void Start()
 	{
-		grid = NodeGrid.Instance;
-		gameStateManager = GameStateManager.Instance;
-
-		currentPos = grid.getNodeFromTransformPosition(transform);
-		queueOfActions = new Queue<ActionBase>();
-		path = new List<Node>();
-		turnPoints = new Vector3[0];
-		currentPos = grid.getNodeFromTransformPosition(transform);
-		animator = model.GetComponent<Animator>();
-		stats = GetComponent<Stats>();
 		myWeapon = weapon as HeavyWeapon;
-		enabled = this == gameStateManager.SelectedUnit ? true : false;
+		base.Start();
 	}
 
 

@@ -7,6 +7,7 @@ public class Stats : MonoBehaviour
 
 	public WeaponEvent onWeaponFinishShooting;
 	public StatsChangeEvent onStatsChange;
+	public BoolEvent FlunckingTarget;
 
 	private void Start()
 	{

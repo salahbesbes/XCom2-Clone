@@ -131,7 +131,6 @@ public class Unit : MonoBehaviour
 			await Task.Yield();
 			partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 		}
-		rotateBy = Quaternion.Angle(startRotation, this.partToRotate.rotation);
 	}
 
 	public void turnTheModel(Vector3 dir)
@@ -171,7 +170,7 @@ public class Unit : MonoBehaviour
 
 						break;
 					}
-
+					// im moving the model not the part to rotate
 					rotateTowardDirection(model, destination.coord - partToRotate.transform.position, 0.5f);
 					currentPoint = turnPoints[index];
 				}
@@ -217,7 +216,7 @@ public class Unit : MonoBehaviour
 		}
 	}
 
-	public void FinishAction(ActionBase action)
+	public async void FinishAction(ActionBase action)
 	{
 		//todo: reset the grid
 
@@ -237,7 +236,7 @@ public class Unit : MonoBehaviour
 				break;
 
 			case MoveAction:
-				rotateTowardDirection(_currentTarger.partToRotate, transform.position - _currentTarger.aimPoint.position);
+				//rotateTowardDirection(_currentTarger.partToRotate, transform.position - _currentTarger.aimPoint.position);
 				Vector3 ori = new Vector3(_currentTarger.partToRotate.transform.position.x, 0.5f, _currentTarger.partToRotate.transform.position.z);
 
 				RaycastHit hit;
@@ -253,17 +252,17 @@ public class Unit : MonoBehaviour
 		}
 		player.SwitchState(player.idelState);
 
-		rotateTowardDirection(model, _currentTarger.aimPoint.position - partToRotate.position);
-		rotateTowardDirection(partToRotate, _currentTarger.aimPoint.position - partToRotate.position);
+		await rotateTowardDirection(partToRotate, _currentTarger.aimPoint.position - partToRotate.position, 0.5f);
+		// when moving i rotating the model not the part to rotate, so when reach
+		// destination i have to rotate the model last time
+		await rotateTowardDirection(model, _currentTarger.aimPoint.position - partToRotate.position, 0.5f);
+		player.CoverBihaviour.UpdateNorthPositionTowardTarget(_currentTarger);
+		player.CoverBihaviour.CalculateCoverValue();
+		player.CheckForFlunks();
 		processing = false;
-		Transform points = partToRotate.Find("points");
 
 		// update the cost
 		//GetComponent<PlayerStats>().ActionPoint -= action.cost;
-		//if (partToRotate.transform.rotation.eulerAngles)
-		//	between - 23.4 29.95
-		//	between 34.8 59
-		//	between 112 152
 
 		ExecuteActionInQueue();
 	}

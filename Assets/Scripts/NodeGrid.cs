@@ -170,12 +170,11 @@ public class NodeGrid : MonoBehaviour
 			{
 				foreach (var collider in colliders)
 				{
-					node.tile.colliderOnTop = collider;
-
 					if (collider.CompareTag("mug")) node.nodeCost = 10;
 					else if (collider.CompareTag("grass")) node.nodeCost = 5;
 					else if (LayerMask.LayerToName(collider.transform.gameObject.layer) == "Unwalkable")
 					{
+						node.tile.colliderOnTop = collider;
 						node.isObstacle = true;
 						break;
 					}
@@ -183,6 +182,7 @@ public class NodeGrid : MonoBehaviour
 					{
 						node.color = Color.blue;
 						node.isObstacle = false;
+						node.tile.colliderOnTop = collider;
 					}
 					else if (LayerMask.LayerToName(collider.transform.gameObject.layer) == "Player" ||
 						LayerMask.LayerToName(collider.transform.gameObject.layer) == "Enemy")

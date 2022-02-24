@@ -1,24 +1,11 @@
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Assault : PlayerStateManager, IClassAssault
 {
 	private Ak47 myWeapon;
 
-	public void Start()
+	public new void Start()
 	{
-		grid = NodeGrid.Instance;
-		gameStateManager = GameStateManager.Instance;
-
-		currentPos = grid.getNodeFromTransformPosition(transform);
-		queueOfActions = new Queue<ActionBase>();
-		path = new List<Node>();
-		turnPoints = new Vector3[0];
-		currentPos = grid.getNodeFromTransformPosition(transform);
-		animator = model.GetComponent<Animator>();
-		stats = GetComponent<Stats>();
 		myWeapon = weapon as Ak47;
-		enabled = this == gameStateManager.SelectedUnit ? true : false;
+		base.Start();
 	}
 	public override void customUpdate()
 	{

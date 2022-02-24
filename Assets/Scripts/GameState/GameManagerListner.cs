@@ -182,6 +182,39 @@ public class GameManagerListner : MonoBehaviour
 		}
 	}
 
+	public void MakeOnlySelectedUnitListingToBoolEvent(AnyClass unit, BoolEvent boolEvent)
+	{
+		// the Subject (Trigger) is the Equipement GAme Object in the scene and the listner
+		// is the Current Selected Unit
+
+		if (unit == null || boolEvent == null)
+		{
+			Debug.Log($"unit / bool event is null"); return;
+		}
+		BoolListner e = unit.listners.AddComponent<BoolListner>();
+		e.GameEvent = boolEvent;
+		e.UnityEventResponse = new UnityBoolEvent();
+		e.UnityEventResponse.AddListener((EventArgument) =>
+		{
+			// EventArgument is what ever argument is passed when we trugger (raise the
+			// Event ) in this case its Weapon
+			unit.listners.GetComponent<UnitCallBack>().onUnitFlunked(EventArgument);
+		});
+
+		e.Register();
+	}
+
+	public void clearPreviousSelectedUnitFromAllBoolEvent(AnyClass unit)
+	{
+		if (unit == null) return;
+		BoolListner[] listners = unit.listners.GetComponents<BoolListner>();
+		//if (listners == nuWeaponListnerll) return;
+		foreach (BoolListner listner in listners)
+		{
+			Destroy(listner);
+		}
+	}
+
 	public void PlayerDied(PlayerStateManager player)
 	{
 		if (didGameEnd() == false)

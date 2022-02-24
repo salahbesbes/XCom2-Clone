@@ -32,28 +32,33 @@ public class AnyClass : Unit
 	private float _targetAimValue;
 	public Weapon weapon;
 
-	protected Node front;
-	protected Node back;
-	protected Node right;
-	protected Node left;
-	protected float coverValue;
-	protected Direction targetDirection;
+	public Direction targetDirection;
+	public CoverLogic CoverBihaviour;
+	public FlunckDirection flunckTargetTop;
+	public FlunckDirection flunckTargetRight;
+	public FlunckDirection flunckTargetLeft;
 
 	public void Start()
 	{
-		inventory.unit = this;
 		grid = NodeGrid.Instance;
 		gameStateManager = GameStateManager.Instance;
+		flunckTargetTop = flunckTargetRight = flunckTargetLeft = FlunckDirection.None;
+
 		currentPos = grid.getNodeFromTransformPosition(transform);
 		queueOfActions = new Queue<ActionBase>();
 		path = new List<Node>();
 		turnPoints = new Vector3[0];
-		currentPos = grid.getNodeFromTransformPosition(transform);
 		animator = model.GetComponent<Animator>();
 		stats = GetComponent<Stats>();
-		//stateManager = GetComponent<PlayerStateManager>();
-		//Debug.Log($"start of any class ");
-		enabled = this == gameStateManager.SelectedUnit ? true : false;
+
+		if (this != gameStateManager.SelectedUnit)
+		{
+			//TheNorth(gameStateManager.SelectedUnit);
+			enabled = false;
+		}
+		else
+		{
+		}
 	}
 
 	public float TargetAimPercent
@@ -71,72 +76,29 @@ public class AnyClass : Unit
 		get => _currentTarger;
 		set
 		{
-			TheNorth(value);
+			if (GameStateManager.Instance.SelectedUnit != value)
+			{
+				GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(_currentTarger);
+				GameStateManager.Instance.clearPreviousSelectedUnitFromAllBoolEvent(_currentTarger);
+				_currentTarger = value;
+				rotateTowardDirection(partToRotate, _currentTarger.aimPoint.position - transform.position);
 
-			GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(_currentTarger);
-			_currentTarger = value;
-			rotateTowardDirection(partToRotate, _currentTarger.aimPoint.position - transform.position);
-
-			GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.onWeaponFinishShooting);
+				GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.onWeaponFinishShooting);
+				GameStateManager.Instance.MakeOnlySelectedUnitListingToBoolEvent(_currentTarger, stats?.FlunckingTarget);
+			}
+			else // if the Target is the selected unit we dont want to mess with the listener neither rotate it
+			{
+				_currentTarger = value;
+			}
 		}
 	}
 
-	private bool checkForDiagonal(Node node)
+	private void UpdateDirectionTowardTarget(AnyClass target = null)
 	{
-		if (node == null) return false;
-		return Mathf.Abs(currentPos.x - node.x) == Mathf.Abs(currentPos.y - node.y);
-	}
-
-	public void TheNorth(AnyClass target)
-	{
-		if (target == null || currentPos == null) return;
-		//Node front, back, right, left;
-		Transform points = partToRotate.Find("points");
-
-		front = NodeGrid.Instance.getNodeFromTransformPosition(points.GetChild(0));
-		back = NodeGrid.Instance.getNodeFromTransformPosition(points.GetChild(1));
-		right = NodeGrid.Instance.getNodeFromTransformPosition(points.GetChild(2));
-		left = NodeGrid.Instance.getNodeFromTransformPosition(points.GetChild(3));
-
-		if (checkForDiagonal(front))
-			front = grid.getNode(currentPos.x, front.y);
-		if (checkForDiagonal(back))
-			back = grid.getNode(currentPos.x, back.y);
-		if (checkForDiagonal(right))
-			right = grid.getNode(right.x, currentPos.y);
-		if (checkForDiagonal(left))
-			left = grid.getNode(left.x, currentPos.y);
-
-		if (front != null)
-			front.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
-		else
-			Debug.Log($"front is null");
-
-		if (back != null)
-			back.tile.obj.GetComponent<Renderer>().material.color = Color.red;
-		else
-			Debug.Log($"back is null");
-
-		if (right != null)
-			right.tile.obj.GetComponent<Renderer>().material.color = Color.blue;
-		else
-			Debug.Log($"right is null");
-
-		if (left != null)
-			left.tile.obj.GetComponent<Renderer>().material.color = Color.green;
-		else
-			Debug.Log($"left is null");
-
-		//Debug.Log($"front {front}, back {back}, right {right}, left {left} player {currentPos}");
-	}
-
-	private void CheckTArgetPositionTowardTheFrontNode()
-	{
-		Vector3 sumfrontandright = new Vector3(front.x, 0, front.y) + new Vector3(right.x, 0, right.y);
-		sumfrontandright.Normalize();
-		//Vector3 targetDirection = new Vector3(CurrentTarget.currentPos.x, 0, CurrentTarget.currentPos.y) + new Vector3(currentPos.x, 0, currentPos.y);
-		Vector3 frontVector = front.coord - currentPos.coord;
-		Vector3 dir = CurrentTarget.currentPos.coord - currentPos.coord;
+		target = target ?? CurrentTarget;
+		Vector3 frontVector = CoverBihaviour.front.coord - currentPos.coord;
+		frontVector.Normalize();
+		Vector3 dir = target.currentPos.coord - currentPos.coord;
 		dir.Normalize();
 
 		// rotation angle between the front and the current target
@@ -154,56 +116,107 @@ public class AnyClass : Unit
 		{
 			targetDirection = Direction.topLeft;
 		}
+
 		//Debug.Log($"rotationAngle {rotationAngle} pos  {targetDirection}");
 
 		//Debug.Log($"target {CurrentTarget.currentPos}");
-		//Debug.Log($"front {front}");
+		//Debug.Log($"front {CoverBihaviour.front}");
 	}
 
-	public void CalculateCoverValue()
+	public void CheckForFlunks(AnyClass target = null)
 	{
-		CheckTArgetPositionTowardTheFrontNode();
+		target = target ?? CurrentTarget;
+		UpdateDirectionTowardTarget(target);
+		CoverLogic TargerCover = target.CoverBihaviour;
 
-		switch (targetDirection)
+		Debug.Log($" selected target {target.name} is at the  {targetDirection}=> with cover Val = {TargerCover.CoverValue}");
+		if (TargerCover.front != null && TargerCover.front.tile.colliderOnTop != null)
 		{
-			case Direction.topLeft:
-				if (left != null && left.tile.colliderOnTop != null)
-				{
-					Debug.Log($" target is at the  {targetDirection}  and the player has a left cover");
-				}
-				else
-				{
-					Debug.Log($" target is at the  {targetDirection}  and the player HS NO COVER ON THE LEFT");
-				}
+			flunckTargetTop = FlunckDirection.None;
+			//Debug.Log($" the target have FRONT Cover => target Cover Val = {TargerCover.CoverValue}");
+			if (targetDirection == Direction.topLeft)
+			{
+				checkLefFlunck(TargerCover);
+			}
 
-				break;
+			if (targetDirection == Direction.topright)
+			{
+				checkRightFlunck(TargerCover);
+			}
+		}
+		else
+		{
+			flunckTargetTop = FlunckDirection.front;
+			checkRightFlunck(TargerCover);
+			checkLefFlunck(TargerCover);
+			//Debug.Log($" selected target an he is Flanked on the FRONT side => target Cover Val = {TargerCover.CoverValue}");
+		}
+		//if (CoverBihaviour.front != null && CoverBihaviour.front.tile.colliderOnTop != null)
+		//{
+		//	Debug.Log($" the player has a FRONT cover");
+		//}
+		//else
+		//{
+		//	Debug.Log($" the player HAS NO COVER ON THE FRONT");
+		//}
 
-			case Direction.topright:
-				if (right != null && right.tile.colliderOnTop != null)
-				{
-					Debug.Log($" target is at the  {targetDirection}  and the player has a right cover");
-				}
-				else
-				{
-					Debug.Log($" target is at the  {targetDirection}  and the player HAS NO COVER ON THE RIGHT");
-				}
+		if (flunckTargetTop == FlunckDirection.front)
+		{
+			if (targetDirection == Direction.topLeft && flunckTargetLeft == FlunckDirection.left)
+			{
+				Debug.Log($"flunking enemy on the Left");
+				stats.FlunckingTarget.Raise(true);
+			}
+			if (targetDirection == Direction.topright && flunckTargetRight == FlunckDirection.right)
+			{
+				Debug.Log($"flunking enemy on the Right");
+				stats.FlunckingTarget.Raise(true);
+			}
+			if (targetDirection == Direction.front)
+			{
+				Debug.Log($"flunking enemy on the Front");
+				stats.FlunckingTarget.Raise(true);
+			}
+			//else
+			//{
+			//	// not fluncking
+			//	stats.FlunckingTarget.Raise(false);
+			//}
+		}
+		else
+		{
+			// not flunking
+			stats.FlunckingTarget.Raise(false);
+		}
 
-				break;
+		Debug.Log($"fluncked left {flunckTargetLeft == FlunckDirection.left} fluncked right {flunckTargetRight == FlunckDirection.right} fluncked top {flunckTargetTop == FlunckDirection.front} ");
+	}
 
-			case Direction.front:
-				if (front != null && front.tile.colliderOnTop != null)
-				{
-					Debug.Log($" target is at the  {targetDirection}  and the player has a FRONT cover");
-				}
-				else
-				{
-					Debug.Log($" target is at the  {targetDirection}  and the player HAS NO COVER ON THE FRONT");
-				}
+	private void checkLefFlunck(CoverLogic TargerCover)
+	{
+		if (TargerCover.left != null && TargerCover.left.tile.colliderOnTop != null)
+		{
+			//Debug.Log($" selected target have LEFT Cover and  => target Cover Val = {TargerCover.CoverValue}");
+			flunckTargetLeft = FlunckDirection.None;
+		}
+		else
+		{
+			//Debug.Log($" selected target he is Flanked on the LEFT side  => target Cover Val = {TargerCover.CoverValue}");
+			flunckTargetLeft = FlunckDirection.left;
+		}
+	}
 
-				break;
-
-			default:
-				break;
+	private void checkRightFlunck(CoverLogic TargerCover)
+	{
+		if (TargerCover.right != null && TargerCover.right.tile.colliderOnTop != null)
+		{
+			flunckTargetRight = FlunckDirection.None;
+			//Debug.Log($" selected target have RIGHT Cover => target Cover Val = {TargerCover.CoverValue}");
+		}
+		else
+		{
+			flunckTargetRight = FlunckDirection.right;
+			//Debug.Log($" selected target he is Flanked on the RIGHT side => target Cover Val = {TargerCover.CoverValue}");
 		}
 	}
 
@@ -232,7 +245,7 @@ public class AnyClass : Unit
 			// todo: find an alternative this cast can cause problem i nthe future
 			//gameStateManager.SelectedPlayer = (Player)currentTarget;
 			rotateTowardDirection(partToRotate, CurrentTarget.aimPoint.position - aimPoint.position);
-			rotateTowardDirection(CurrentTarget.partToRotate, aimPoint.position - CurrentTarget.aimPoint.position);
+			//rotateTowardDirection(CurrentTarget.partToRotate, aimPoint.position - CurrentTarget.aimPoint.position);
 
 			TargetAimPercent = 0;
 			float percentVisibility = weapon.howMuchVisibleTheTArgetIs();
@@ -262,7 +275,7 @@ public class AnyClass : Unit
 			// todo: find an alternative this cast can cause problem i nthe future
 			//gameStateManager.SelectedEnemy = (Enemy)currentTarget;
 			rotateTowardDirection(partToRotate, CurrentTarget.aimPoint.position - aimPoint.position);
-			rotateTowardDirection(CurrentTarget.partToRotate, aimPoint.position - CurrentTarget.aimPoint.position);
+			//rotateTowardDirection(CurrentTarget.partToRotate, aimPoint.position - CurrentTarget.aimPoint.position);
 
 			TargetAimPercent = 0;
 			float percentVisibility = weapon.howMuchVisibleTheTArgetIs();
