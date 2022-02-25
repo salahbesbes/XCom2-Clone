@@ -290,6 +290,7 @@ GameObject:
   - component: {fileID: 5263632829259190162}
   - component: {fileID: 4472647041185635904}
   - component: {fileID: 4891481670221145093}
+  - component: {fileID: 947418056}
   m_Layer: 6
   m_Name: Unit_Grenadier
   m_TagString: Player
@@ -338,7 +339,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7fdc721c4f9522941a5d3c87d1ccb88f, type: 2}
   - {fileID: 11400000, guid: 7601e2943867df44ab824c6a69d77f26, type: 2}
   - {fileID: 11400000, guid: 72dbc769b41b64646bf0d892d1c78690, type: 2}
-  team: {fileID: 11400000, guid: 54fb32d86b4d94d4aac9e4723b72c90f, type: 2}
+  team: {fileID: 11400000, guid: 409cddb8b62dc8248b23ab1f17c8756b, type: 2}
   stats: {fileID: 4891481670221145093}
   ActionHolder: {fileID: 0}
   Action_prefab: {fileID: 5356878571294043885, guid: 2da8bad2b03449540907bca690fcdc44, type: 3}
@@ -355,6 +356,11 @@ MonoBehaviour:
   openInventory: {fileID: 11400000, guid: 407a0e5402a8a3346b54246b4e57fc4e, type: 2}
   newWeapon: {fileID: 11400000, guid: a8d80d334974af144ba598170fcbc8dd, type: 2}
   weapon: {fileID: 7166689938569792557}
+  targetDirection: 0
+  CoverBihaviour: {fileID: 0}
+  flunckTargetTop: 0
+  flunckTargetRight: 0
+  flunckTargetLeft: 0
   currentActionAnimation: 1
 --- !u!114 &4891481670221145093
 MonoBehaviour:
@@ -371,7 +377,20 @@ MonoBehaviour:
   unit: {fileID: 11400000, guid: 13b6c9a71cd249548b698e2406cb74b8, type: 2}
   onWeaponFinishShooting: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
   onStatsChange: {fileID: 11400000, guid: a07400bccbadf4a4cb35eec674d69f9f, type: 2}
+  FlunckingTarget: {fileID: 11400000, guid: 188bc17f173420a43bf3c55e91433ce8, type: 2}
   grenadeLancherEvent: {fileID: 11400000, guid: 35b58e83a63140b459bfde1bdc9433a9, type: 2}
+--- !u!114 &947418056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5263632829259190161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc5ccc77f6e3cb74cb33a358e58739c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5263632830425901099
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,7 +414,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5263632830425901099}
-  m_LocalRotation: {x: -0, y: 0.89985985, z: -0, w: 0.43617922}
+  m_LocalRotation: {x: -0, y: 0.95480496, z: -0, w: -0.2972331}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -405,7 +424,7 @@ Transform:
   - {fileID: 6671166365682267655}
   m_Father: {fileID: 5263632829259190162}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -169.48, z: 0}
 --- !u!1 &5865145228662918821
 GameObject:
   m_ObjectHideFlags: 0
@@ -1041,6 +1060,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 5917530999319954000, guid: 0455e876db478b140a5873e472078b64, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c1d1b758713c94545b8b24303de0cf8c, type: 2}
+    - target: {fileID: 5917530999319954000, guid: 0455e876db478b140a5873e472078b64, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3812586e4b9fa574f8bee91dc2b2fb90, type: 2}
+    - target: {fileID: 5917530999319954000, guid: 0455e876db478b140a5873e472078b64, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0a50d62fd311a61469e9d850f7d3744b, type: 2}
     - target: {fileID: 6043753292510270145, guid: 0455e876db478b140a5873e472078b64, type: 3}
       propertyPath: m_Layer
       value: 6

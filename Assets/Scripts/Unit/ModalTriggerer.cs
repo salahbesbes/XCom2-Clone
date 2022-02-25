@@ -20,4 +20,18 @@ public class ModalTriggerer : MonoBehaviour
 			thisUnit.stats.addArmorModifier(other.GetComponent<Equipement>().equipement);
 		}
 	}
+
+	private void Start()
+	{
+		AnyClass thisUnit = transform.parent.parent.GetComponent<AnyClass>();
+
+		SkinnedMeshRenderer[] meshRendrers = GetComponentsInChildren<SkinnedMeshRenderer>();
+		foreach (var mesh in meshRendrers)
+		{
+			foreach (Material material in mesh.materials)
+			{
+				thisUnit.modelMaterials.Add(material);
+			}
+		}
+	}
 }

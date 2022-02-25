@@ -279,6 +279,7 @@ GameObject:
   - component: {fileID: 2216809912561688554}
   - component: {fileID: 1329027290010044634}
   - component: {fileID: 1329027290010044629}
+  - component: {fileID: 7754342583139496679}
   m_Layer: 6
   m_Name: Unit_Assault
   m_TagString: Player
@@ -320,6 +321,7 @@ MonoBehaviour:
   unit: {fileID: 11400000, guid: 8607f01da4740ea4d80ddca7089228b5, type: 2}
   onWeaponFinishShooting: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
   onStatsChange: {fileID: 11400000, guid: a07400bccbadf4a4cb35eec674d69f9f, type: 2}
+  FlunckingTarget: {fileID: 11400000, guid: 188bc17f173420a43bf3c55e91433ce8, type: 2}
 --- !u!114 &1329027290010044629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,7 +360,24 @@ MonoBehaviour:
   openInventory: {fileID: 11400000, guid: 407a0e5402a8a3346b54246b4e57fc4e, type: 2}
   newWeapon: {fileID: 11400000, guid: a8d80d334974af144ba598170fcbc8dd, type: 2}
   weapon: {fileID: 2718626070587638492}
+  targetDirection: 0
+  CoverBihaviour: {fileID: 0}
+  flunckTargetTop: 0
+  flunckTargetRight: 0
+  flunckTargetLeft: 0
   currentActionAnimation: 1
+--- !u!114 &7754342583139496679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2216809912561688553}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc5ccc77f6e3cb74cb33a358e58739c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2244750018113330794
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,6 +854,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1519459078781912447, guid: 6d2895f265907354a99933feaa1adf27, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d9b71cb893390b7499ac6209d9f3a603, type: 2}
+    - target: {fileID: 1519459078781912447, guid: 6d2895f265907354a99933feaa1adf27, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 467d9782b8a21aa46a4440d349414381, type: 2}
     - target: {fileID: 1642830206534423554, guid: 6d2895f265907354a99933feaa1adf27, type: 3}
       propertyPath: m_Name
       value: Mod_Assault

@@ -517,6 +517,7 @@ GameObject:
   - component: {fileID: 4365444702461693161}
   - component: {fileID: 3469807228968737753}
   - component: {fileID: 3469807228968737752}
+  - component: {fileID: 8818029592945154347}
   m_Layer: 6
   m_Name: Unit_Ranger
   m_TagString: Player
@@ -558,6 +559,7 @@ MonoBehaviour:
   unit: {fileID: 11400000, guid: ce9772e8864f3ee42aabcf3799f1ae0a, type: 2}
   onWeaponFinishShooting: {fileID: 11400000, guid: 1ff11f237e511354bbc676ff4607b975, type: 2}
   onStatsChange: {fileID: 11400000, guid: a07400bccbadf4a4cb35eec674d69f9f, type: 2}
+  FlunckingTarget: {fileID: 11400000, guid: 188bc17f173420a43bf3c55e91433ce8, type: 2}
 --- !u!114 &3469807228968737752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -596,7 +598,24 @@ MonoBehaviour:
   openInventory: {fileID: 11400000, guid: 407a0e5402a8a3346b54246b4e57fc4e, type: 2}
   newWeapon: {fileID: 11400000, guid: a8d80d334974af144ba598170fcbc8dd, type: 2}
   weapon: {fileID: 6501637342891066912}
+  targetDirection: 0
+  CoverBihaviour: {fileID: 0}
+  flunckTargetTop: 0
+  flunckTargetRight: 0
+  flunckTargetLeft: 0
   currentActionAnimation: 1
+--- !u!114 &8818029592945154347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4365444702461693162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc5ccc77f6e3cb74cb33a358e58739c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4427153000534412649
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,6 +755,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1193470989728448575, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 47eb96832fe91c14a8afdd1bab084ac3, type: 2}
     - target: {fileID: 1364349931353071474, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -835,6 +858,22 @@ PrefabInstance:
     - target: {fileID: 3227780934213839072, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3228241753353756160, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 47eb96832fe91c14a8afdd1bab084ac3, type: 2}
+    - target: {fileID: 3228241753353756160, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 39199c2dd5b25fc4c95798b6d5143bc0, type: 2}
+    - target: {fileID: 3228241753353756160, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3228241753353756160, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[1]
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3276981269744555289, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
       propertyPath: m_Layer
@@ -1019,6 +1058,10 @@ PrefabInstance:
     - target: {fileID: 7719937966145400806, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7719937966145400806, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7766414759704535856, guid: 568c2b5e061493e4e81828af6e9d81d0, type: 3}
       propertyPath: m_Layer

@@ -38,6 +38,8 @@ public class AnyClass : Unit
 	public FlunckDirection flunckTargetRight;
 	public FlunckDirection flunckTargetLeft;
 
+	public List<Material> modelMaterials = new List<Material>();
+
 	public void Start()
 	{
 		grid = NodeGrid.Instance;
@@ -50,6 +52,9 @@ public class AnyClass : Unit
 		turnPoints = new Vector3[0];
 		animator = model.GetComponent<Animator>();
 		stats = GetComponent<Stats>();
+		CoverBihaviour.UpdateNorthPositionTowardTarget(gameStateManager.SelectedUnit);
+		CoverBihaviour.CalculateCoverValue();
+
 
 		if (this != gameStateManager.SelectedUnit)
 		{
@@ -76,11 +81,16 @@ public class AnyClass : Unit
 		get => _currentTarger;
 		set
 		{
+			_currentTarger?.stopGlowing();
 			if (GameStateManager.Instance.SelectedUnit != value)
 			{
 				GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(_currentTarger);
 				GameStateManager.Instance.clearPreviousSelectedUnitFromAllBoolEvent(_currentTarger);
+
 				_currentTarger = value;
+				//CoverBihaviour.UpdateNorthPositionTowardTarget(value);
+				//CheckForFlunks();
+
 				rotateTowardDirection(partToRotate, _currentTarger.aimPoint.position - transform.position);
 
 				GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.onWeaponFinishShooting);
@@ -96,6 +106,7 @@ public class AnyClass : Unit
 	public void UpdateDirectionTowardTarget(AnyClass target = null)
 	{
 		target = target ?? CurrentTarget;
+
 		Vector3 frontVector = CoverBihaviour.front.coord - currentPos.coord;
 		frontVector.Normalize();
 		Vector3 dir = target.currentPos.coord - currentPos.coord;
@@ -128,12 +139,12 @@ public class AnyClass : Unit
 		target = target ?? CurrentTarget;
 		UpdateDirectionTowardTarget(target);
 		CoverLogic TargerCover = target.CoverBihaviour;
-		Debug.Log($" im {transform.name} and my target is at  selected target {target.name} is at the  {targetDirection}=> with cover Val = {TargerCover.CoverValue}");
+		//Debug.Log($" im {transform.name} and my target is at  selected target {target.name} is at the  {targetDirection}=> with cover Val = {TargerCover.CoverValue}");
 		bool flunckTop = false;
 		bool flunckLeft = false;
 		bool flunckRight = false;
 
-
+		target.stopGlowing();
 		if (targetDirection == Direction.front)
 		{
 			if (TargerCover.front != null && TargerCover.front.tile.colliderOnTop != null)
@@ -142,27 +153,28 @@ public class AnyClass : Unit
 			}
 			else
 			{
-				Debug.Log($"my target {target.name} does not have cover on the front");
+				//Debug.Log($"my target {target.name} does not have cover on the front");
 				flunckTop = true;
 			}
 			if (flunckTop == true)
 			{
 				Debug.Log($" im {name} =>> flucking my target {target.name} IN THE FRONT");
 
+				target.makeMeGlow();
 			}
 		}
 		else
 		{
 			if (target.targetDirection == Direction.topLeft && targetDirection == Direction.topLeft)
 			{
-				Debug.Log($"both me {name} and mu target {target.name} are in the left ");
+				//Debug.Log($"both me {name} and mu target {target.name} are in the left ");
 				if (TargerCover.front != null && TargerCover.front.tile.colliderOnTop != null)
 				{
 					flunckTop = false;
 				}
 				else
 				{
-					Debug.Log($"my target {target.name} does not have cover on the front");
+					//Debug.Log($"my target {target.name} does not have cover on the front");
 					flunckTop = true;
 				}
 				if (TargerCover.left != null && TargerCover.left.tile.colliderOnTop != null)
@@ -171,25 +183,26 @@ public class AnyClass : Unit
 				}
 				else
 				{
-					Debug.Log($"my target {target.name} does not have cover on the left");
+					//Debug.Log($"my target {target.name} does not have cover on the left");
 					flunckLeft = true;
 				}
 				if (flunckTop && flunckLeft)
 				{
 					Debug.Log($" im {name} =>> flucking my target {target.name} on the LEFT sie");
+					target.makeMeGlow();
 				}
 			}
 
 			if (target.targetDirection == Direction.topright && targetDirection == Direction.topright)
 			{
-				Debug.Log($"both me {name} and mu target {target.name} are in the right ");
+				//Debug.Log($"both me {name} and mu target {target.name} are in the right ");
 				if (TargerCover.front != null && TargerCover.front.tile.colliderOnTop != null)
 				{
 					flunckTop = false;
 				}
 				else
 				{
-					Debug.Log($"my target {target.name} does not have cover on the front");
+					//Debug.Log($"my target {target.name} does not have cover on the front");
 					flunckTop = true;
 				}
 				if (TargerCover.right != null && TargerCover.right.tile.colliderOnTop != null)
@@ -198,19 +211,40 @@ public class AnyClass : Unit
 				}
 				else
 				{
-					Debug.Log($"my target {target.name} does not have cover on the right");
+					//Debug.Log($"my target {target.name} does not have cover on the right");
 					flunckRight = true;
 				}
 				if (flunckTop && flunckRight)
 				{
 					Debug.Log($" im {name} =>> flucking my target {target.name} on the Right sie");
+					target.makeMeGlow();
+
 				}
 			}
 		}
-
-
-
 	}
+
+	private void makeMeGlow()
+	{
+		if (modelMaterials == null) return;
+		Debug.Log($" {name} materials length = {modelMaterials.Count}");
+		foreach (Material material in modelMaterials)
+		{
+			if (material.GetFloat("_fluncked") == 0)
+				material.SetFloat("_fluncked", 1);
+		}
+	}
+
+	private void stopGlowing()
+	{
+		if (modelMaterials == null) return;
+		foreach (Material material in modelMaterials)
+		{
+			if (material.GetFloat("_fluncked") == 1)
+				material.SetFloat("_fluncked", 0);
+		}
+	}
+
 	public void CheckForFlunksoriginal(AnyClass target = null)
 	{
 		target = target ?? CurrentTarget;
@@ -316,7 +350,7 @@ public class AnyClass : Unit
 		}
 	}
 
-	public void SelectNextTarget(AnyClass currentUnit)
+	public async void SelectNextTarget(AnyClass currentUnit)
 	{
 		if (team is RedTeam)
 		{
@@ -332,22 +366,20 @@ public class AnyClass : Unit
 			CurrentTarget = players[(currentTargetIndex + 1) % nbPlyaers];
 			// todo: find an alternative this cast can cause problem i nthe future
 			//gameStateManager.SelectedPlayer = (Player)currentTarget;
-			rotateTowardDirection(partToRotate, CurrentTarget.aimPoint.position - aimPoint.position);
+			await rotateTowardDirection(partToRotate, CurrentTarget.aimPoint.position - aimPoint.position, 1);
 			//rotateTowardDirection(CurrentTarget.partToRotate, aimPoint.position - CurrentTarget.aimPoint.position);
 
-			TargetAimPercent = 0;
-			float percentVisibility = weapon.howMuchVisibleTheTArgetIs();
-			TargetAimPercent = percentVisibility;
-
-			float coverValue = howMuchCoverTheCurrentTArgetHave();
-			TargetAimPercent = TargetAimPercent - coverValue;
-
 			onChangeTarget.Raise();
+			CoverBihaviour.UpdateNorthPositionTowardTarget(CurrentTarget);
+			CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(this);
+			CoverBihaviour.CalculateCoverValue();
+			CheckForFlunks();
+
 		}
 		else if (team is GreanTeam)
 		{
 			List<PlayerStateManager> enemies = gameStateManager.enemies;
-			enemies = enemies.Where(unit => unit.State == unit.idelState).ToList();
+			enemies = enemies.Where(unit => unit.State is Idel).ToList();
 
 			Debug.Log($"enemies count is {enemies.Count} target isi => {enemies.FirstOrDefault()}");
 
@@ -362,38 +394,17 @@ public class AnyClass : Unit
 			//Debug.Log($"switch to target {CurrentTarget}, enemies idel {enemies.Count}");
 			// todo: find an alternative this cast can cause problem i nthe future
 			//gameStateManager.SelectedEnemy = (Enemy)currentTarget;
-			rotateTowardDirection(partToRotate, CurrentTarget.aimPoint.position - aimPoint.position);
+			await rotateTowardDirection(partToRotate, CurrentTarget.aimPoint.position - aimPoint.position, 1);
 			//rotateTowardDirection(CurrentTarget.partToRotate, aimPoint.position - CurrentTarget.aimPoint.position);
 
-			TargetAimPercent = 0;
-			float percentVisibility = weapon.howMuchVisibleTheTArgetIs();
-			TargetAimPercent = percentVisibility;
-
-			float coverValue = howMuchCoverTheCurrentTArgetHave();
-			TargetAimPercent = TargetAimPercent - coverValue;
-			//Debug.Log($"{TargetAimPercent}");
-			Debug.Log($"{ transform.name } raise onchange event ");
 			onChangeTarget.Raise();
+			CoverBihaviour.UpdateNorthPositionTowardTarget(CurrentTarget);
+			CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(this);
+			CoverBihaviour.CalculateCoverValue();
+			CheckForFlunks();
 		}
 	}
 
-	private void OnValidate()
-	{
-		//Debug.Log($"validate execute");
-	}
-
-	private float howMuchCoverTheCurrentTArgetHave()
-	{
-		Vector3 ori = new Vector3(CurrentTarget.partToRotate.transform.position.x, 0.5f, CurrentTarget.partToRotate.transform.position.z);
-		RaycastHit hit;
-		Debug.DrawRay(ori, CurrentTarget.partToRotate.forward);
-		if (Physics.Raycast(ori, CurrentTarget.partToRotate.forward, out hit, Vector3.forward.magnitude * 2))
-		{
-			//Debug.Log($" target have some obstacle =>  {hit.collider.name}");
-			return 20.2f;
-		}
-		return 0;
-	}
 
 	public Node onNodeHover(Node oldPotentialDest)
 	{
@@ -570,24 +581,6 @@ public class AnyClass : Unit
 		}
 	}
 
-	public void getCoversValueFromStandingNode()
-	{
-		//float myTotalCover = 0;
-		//foreach (Cover cover in currentPos.tile.listOfActiveCover)
-		//{
-		//	myTotalCover += cover.Value;
-		//}
-		//Debug.Log($"total cover = {myTotalCover}");
-	}
-
-	//public void checkTargetCoverDirection(Node targetNode)
-	//{
-	//	foreach (Cover cover in targetNode.tile.listOfActiveCover)
-	//	{
-	//		Vector3 dir = new Vector3(cover.coverObj.transform.position.x - targetNode.coord.x, 0, cover.coverObj.transform.position.z - targetNode.coord.z).normalized;
-	//		Debug.DrawRay(targetNode.coord + Vector3.up, dir);
-	//	}
-	//}
 	public void CreateNewReloadAction()
 	{
 		// cant have more that 2 actions

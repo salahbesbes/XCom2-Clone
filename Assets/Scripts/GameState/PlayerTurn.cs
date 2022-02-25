@@ -50,7 +50,7 @@ public class PlayerTurn : AnyState<GameStateManager>
 			gameManager.SelectedUnit.SwitchState(gameManager.SelectedUnit.idelState);
 			gameManager.SelectedUnit.fpsCam.enabled = false;
 
-			List<PlayerStateManager> availablePlayers = gameManager.players.Where(unit => unit.State == unit.idelState).ToList();
+			List<PlayerStateManager> availablePlayers = gameManager.players.Where(unit => unit.State is Idel).ToList();
 			int currentPlayerIndex = gameManager.players.FindIndex(instance => instance == gameManager.SelectedUnit);
 			gameManager.SelectedUnit = gameManager.players[(currentPlayerIndex + 1) % nbPlayers];
 			//Debug.Log($"{availablePlayers.Count}");
@@ -74,6 +74,9 @@ public class PlayerTurn : AnyState<GameStateManager>
 			//gameManager.MakeGAmeMAnagerListingToNewSelectedUnit(gameManager.SelectedPlayer);
 
 			gameManager.PlayerChangeEvent.Raise();
+			//gameManager.SelectedUnit.CoverBihaviour.UpdateNorthPositionTowardTarget(gameManager.SelectedUnit.CurrentTarget);
+			//gameManager.SelectedUnit.CoverBihaviour.CalculateCoverValue();
+			//gameManager.SelectedUnit.CheckForFlunks();
 		}
 	}
 }

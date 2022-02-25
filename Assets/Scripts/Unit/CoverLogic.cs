@@ -9,7 +9,6 @@ public class CoverLogic : MonoBehaviour
 	private GameStateManager gameManger;
 	private Node lastKnownPosition;
 	private NodeGrid grid;
-	private Transform oldPoints;
 	public Node front;
 	public Node back;
 	public Node right;
@@ -34,12 +33,7 @@ public class CoverLogic : MonoBehaviour
 		grid = NodeGrid.Instance;
 		gameManger = GameStateManager.Instance;
 		unit = GetComponent<AnyClass>();
-		UpdateNorthPositionTowardTarget(gameManger.SelectedUnit);
-		CalculateCoverValue();
-
-		lastKnownPosition = grid.getNodeFromTransformPosition(gameManger.SelectedUnit.transform);
 		unit.CoverBihaviour = this;
-		oldPoints = unit.partToRotate.Find("points");
 	}
 
 	private async void Rotate()
@@ -60,12 +54,10 @@ public class CoverLogic : MonoBehaviour
 				CalculateCoverValue();
 				unit.UpdateDirectionTowardTarget(gameManger.SelectedUnit);
 				lastKnownPosition = gameManger.SelectedUnit.currentPos;
+				//Debug.Log($"we totate {name } and calculate covers toward the selected unit {gameManger.SelectedUnit} ");
 			}
 		}
-		oldPoints = unit.partToRotate.Find("points");
-
 	}
-
 
 	public void UpdateNorthPositionTowardTarget(AnyClass target)
 	{
@@ -99,8 +91,6 @@ public class CoverLogic : MonoBehaviour
 		if (checkForDiagonal(left))
 			left = grid.getNode(left.x, unit.currentPos.y);
 
-		float angle = Quaternion.FromToRotation(oldFront.coord, front.coord).eulerAngles.y;
-		//Debug.Log($"{angle}");
 
 		if (front != null)
 		{
