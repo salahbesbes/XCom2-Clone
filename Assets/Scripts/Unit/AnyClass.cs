@@ -93,7 +93,7 @@ public class AnyClass : Unit
 		}
 	}
 
-	private void UpdateDirectionTowardTarget(AnyClass target = null)
+	public void UpdateDirectionTowardTarget(AnyClass target = null)
 	{
 		target = target ?? CurrentTarget;
 		Vector3 frontVector = CoverBihaviour.front.coord - currentPos.coord;
@@ -128,8 +128,96 @@ public class AnyClass : Unit
 		target = target ?? CurrentTarget;
 		UpdateDirectionTowardTarget(target);
 		CoverLogic TargerCover = target.CoverBihaviour;
+		Debug.Log($" im {transform.name} and my target is at  selected target {target.name} is at the  {targetDirection}=> with cover Val = {TargerCover.CoverValue}");
+		bool flunckTop = false;
+		bool flunckLeft = false;
+		bool flunckRight = false;
 
-		Debug.Log($" selected target {target.name} is at the  {targetDirection}=> with cover Val = {TargerCover.CoverValue}");
+
+		if (targetDirection == Direction.front)
+		{
+			if (TargerCover.front != null && TargerCover.front.tile.colliderOnTop != null)
+			{
+				flunckTop = false;
+			}
+			else
+			{
+				Debug.Log($"my target {target.name} does not have cover on the front");
+				flunckTop = true;
+			}
+			if (flunckTop == true)
+			{
+				Debug.Log($" im {name} =>> flucking my target {target.name} IN THE FRONT");
+
+			}
+		}
+		else
+		{
+			if (target.targetDirection == Direction.topLeft && targetDirection == Direction.topLeft)
+			{
+				Debug.Log($"both me {name} and mu target {target.name} are in the left ");
+				if (TargerCover.front != null && TargerCover.front.tile.colliderOnTop != null)
+				{
+					flunckTop = false;
+				}
+				else
+				{
+					Debug.Log($"my target {target.name} does not have cover on the front");
+					flunckTop = true;
+				}
+				if (TargerCover.left != null && TargerCover.left.tile.colliderOnTop != null)
+				{
+					flunckLeft = false;
+				}
+				else
+				{
+					Debug.Log($"my target {target.name} does not have cover on the left");
+					flunckLeft = true;
+				}
+				if (flunckTop && flunckLeft)
+				{
+					Debug.Log($" im {name} =>> flucking my target {target.name} on the LEFT sie");
+				}
+			}
+
+			if (target.targetDirection == Direction.topright && targetDirection == Direction.topright)
+			{
+				Debug.Log($"both me {name} and mu target {target.name} are in the right ");
+				if (TargerCover.front != null && TargerCover.front.tile.colliderOnTop != null)
+				{
+					flunckTop = false;
+				}
+				else
+				{
+					Debug.Log($"my target {target.name} does not have cover on the front");
+					flunckTop = true;
+				}
+				if (TargerCover.right != null && TargerCover.right.tile.colliderOnTop != null)
+				{
+					flunckRight = false;
+				}
+				else
+				{
+					Debug.Log($"my target {target.name} does not have cover on the right");
+					flunckRight = true;
+				}
+				if (flunckTop && flunckRight)
+				{
+					Debug.Log($" im {name} =>> flucking my target {target.name} on the Right sie");
+				}
+			}
+		}
+
+
+
+	}
+	public void CheckForFlunksoriginal(AnyClass target = null)
+	{
+		target = target ?? CurrentTarget;
+		UpdateDirectionTowardTarget(target);
+		CoverLogic TargerCover = target.CoverBihaviour;
+
+		//Debug.Log($" selected target {target.name} is at the  {targetDirection}=> with cover Val = {TargerCover.CoverValue}");
 		if (TargerCover.front != null && TargerCover.front.tile.colliderOnTop != null)
 		{
 			flunckTargetTop = FlunckDirection.None;
@@ -189,7 +277,7 @@ public class AnyClass : Unit
 			stats.FlunckingTarget.Raise(false);
 		}
 
-		Debug.Log($"fluncked left {flunckTargetLeft == FlunckDirection.left} fluncked right {flunckTargetRight == FlunckDirection.right} fluncked top {flunckTargetTop == FlunckDirection.front} ");
+		//Debug.Log($"fluncked left {flunckTargetLeft == FlunckDirection.left} fluncked right {flunckTargetRight == FlunckDirection.right} fluncked top {flunckTargetTop == FlunckDirection.front} ");
 	}
 
 	private void checkLefFlunck(CoverLogic TargerCover)

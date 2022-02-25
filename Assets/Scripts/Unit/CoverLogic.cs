@@ -9,7 +9,7 @@ public class CoverLogic : MonoBehaviour
 	private GameStateManager gameManger;
 	private Node lastKnownPosition;
 	private NodeGrid grid;
-
+	private Transform oldPoints;
 	public Node front;
 	public Node back;
 	public Node right;
@@ -39,11 +39,12 @@ public class CoverLogic : MonoBehaviour
 
 		lastKnownPosition = grid.getNodeFromTransformPosition(gameManger.SelectedUnit.transform);
 		unit.CoverBihaviour = this;
+		oldPoints = unit.partToRotate.Find("points");
 	}
 
 	private async void Rotate()
 	{
-		await unit.rotateTowardDirection(unit.partToRotate, gameManger.SelectedUnit.transform.position - unit.transform.position, 0.4f);
+		await unit.rotateTowardDirection(unit.partToRotate, gameManger.SelectedUnit.transform.position - unit.transform.position, 1f);
 		// I need to wait full rotation so that I can update the new node direction
 		unit.CurrentTarget = gameManger.SelectedUnit;
 	}
@@ -57,11 +58,14 @@ public class CoverLogic : MonoBehaviour
 				Rotate();
 				UpdateNorthPositionTowardTarget(gameManger.SelectedUnit);
 				CalculateCoverValue();
-
+				unit.UpdateDirectionTowardTarget(gameManger.SelectedUnit);
 				lastKnownPosition = gameManger.SelectedUnit.currentPos;
 			}
 		}
+		oldPoints = unit.partToRotate.Find("points");
+
 	}
+
 
 	public void UpdateNorthPositionTowardTarget(AnyClass target)
 	{
@@ -81,33 +85,52 @@ public class CoverLogic : MonoBehaviour
 		back = NodeGrid.Instance.getNodeFromTransformPosition(points.GetChild(1));
 		right = NodeGrid.Instance.getNodeFromTransformPosition(points.GetChild(2));
 		left = NodeGrid.Instance.getNodeFromTransformPosition(points.GetChild(3));
+		Node oldFront = front;
 
 		if (checkForDiagonal(front))
 			front = grid.getNode(unit.currentPos.x, front.y);
+
 		if (checkForDiagonal(back))
 			back = grid.getNode(unit.currentPos.x, back.y);
+
 		if (checkForDiagonal(right))
 			right = grid.getNode(right.x, unit.currentPos.y);
+
 		if (checkForDiagonal(left))
 			left = grid.getNode(left.x, unit.currentPos.y);
 
+		float angle = Quaternion.FromToRotation(oldFront.coord, front.coord).eulerAngles.y;
+		//Debug.Log($"{angle}");
+
 		if (front != null)
+		{
+			//Debug.Log($"front {front}");
 			front.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
+		}
 		else
 			Debug.Log($"front is null");
 
 		if (back != null)
+		{
+			//Debug.Log($"back {back}");
 			back.tile.obj.GetComponent<Renderer>().material.color = Color.red;
+		}
 		else
 			Debug.Log($"back is null");
 
 		if (right != null)
+		{
+			//Debug.Log($"right {right}");
 			right.tile.obj.GetComponent<Renderer>().material.color = Color.blue;
+		}
 		else
 			Debug.Log($"right is null");
 
 		if (left != null)
+		{
+			//Debug.Log($"left {left}");
 			left.tile.obj.GetComponent<Renderer>().material.color = Color.green;
+		}
 		else
 			Debug.Log($"left is null");
 		//Debug.Log($"front {front}, back {back}, right {right}, left {left} player {currentPos}");
@@ -119,17 +142,17 @@ public class CoverLogic : MonoBehaviour
 		covers.Clear();
 
 		// add new Covers
-		if (front.tile.colliderOnTop != null)
+		if (front != null && front.tile.colliderOnTop != null)
 		{
 			covers.Add(new NewCover(CoverDirection.front, CoverType.low, front));
 			//Debug.Log($"{unit.name} has cover on the FRONT node ");
 		}
-		if (right.tile.colliderOnTop != null)
+		if (right != null && right.tile.colliderOnTop != null)
 		{
 			covers.Add(new NewCover(CoverDirection.right, CoverType.low, right));
 			//Debug.Log($"{unit.name} has cover on the RIGHT node ");
 		}
-		if (left.tile.colliderOnTop != null)
+		if (left != null && left.tile.colliderOnTop != null)
 		{
 			covers.Add(new NewCover(CoverDirection.left, CoverType.low, left));
 			//Debug.Log($"{unit.name} has cover on the LEFT node ");

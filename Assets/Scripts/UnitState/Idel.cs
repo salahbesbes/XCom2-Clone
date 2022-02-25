@@ -52,6 +52,7 @@ public class Idel : AnyState<PlayerStateManager>
 		potentialDest = player.onNodeHover(oldDestination);
 		//player.CoverBihaviour.UpdateNorthPositionTowardTarget(player.CurrentTarget);
 		//player.CoverBihaviour.CalculateCoverValue();
+		//player.CheckForFlunks();
 	}
 
 	public async void rotateTowardDirection(PlayerStateManager player, Vector3 dir)

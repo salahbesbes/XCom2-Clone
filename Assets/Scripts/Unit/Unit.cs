@@ -252,7 +252,7 @@ public class Unit : MonoBehaviour
 		}
 		player.SwitchState(player.idelState);
 
-		await rotateTowardDirection(partToRotate, _currentTarger.aimPoint.position - partToRotate.position, 0.5f);
+		await rotateTowardDirection(partToRotate, _currentTarger.aimPoint.position - partToRotate.position, 1f);
 		// when moving i rotating the model not the part to rotate, so when reach
 		// destination i have to rotate the model last time
 		await rotateTowardDirection(model, _currentTarger.aimPoint.position - partToRotate.position, 0.5f);
