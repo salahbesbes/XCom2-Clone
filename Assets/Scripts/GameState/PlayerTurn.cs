@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -13,8 +12,10 @@ public class PlayerTurn : AnyState<GameStateManager>
 
 		gameManager.SelectedUnit.enabled = true;
 		gameManager.SelectedUnit.fpsCam.enabled = true;
-		gameManager.PlayerChangeEvent.Raise();
+		gameManager.SelectedUnit.onCameraEnabeled();
+		//gameManager.PlayerChangeEvent.Raise();
 		gameManager.SelectedUnit.onChangeTarget.Raise();
+
 		return gameManager.SelectedUnit;
 	}
 
@@ -40,7 +41,7 @@ public class PlayerTurn : AnyState<GameStateManager>
 		}
 	}
 
-	public void SelectNextPlayer(GameStateManager gameManager)
+	public async void SelectNextPlayer(GameStateManager gameManager)
 	{
 		int nbPlayers = gameManager.players.Count;
 
@@ -50,7 +51,7 @@ public class PlayerTurn : AnyState<GameStateManager>
 			gameManager.SelectedUnit.SwitchState(gameManager.SelectedUnit.idelState);
 			gameManager.SelectedUnit.fpsCam.enabled = false;
 
-			List<PlayerStateManager> availablePlayers = gameManager.players.Where(unit => unit.State is Idel).ToList();
+			//List<PlayerStateManager> availablePlayers = gameManager.players.Where(unit => unit.State is Idel).ToList();
 			int currentPlayerIndex = gameManager.players.FindIndex(instance => instance == gameManager.SelectedUnit);
 			gameManager.SelectedUnit = gameManager.players[(currentPlayerIndex + 1) % nbPlayers];
 			//Debug.Log($"{availablePlayers.Count}");
@@ -69,11 +70,19 @@ public class PlayerTurn : AnyState<GameStateManager>
 
 			gameManager.SelectedUnit.enabled = true;
 			gameManager.SelectedUnit.fpsCam.enabled = true;
+			gameManager.SelectedUnit.onCameraEnabeled();
 			gameManager.SelectedUnit.CurrentTarget = gameManager.enemies.FirstOrDefault(unit => unit.State is Idel);
+			Vector3 TargetDir = gameManager.SelectedUnit.CurrentTarget.aimPoint.position - gameManager.SelectedUnit.aimPoint.position;
+			await gameManager.SelectedUnit.rotateTowardDirection(gameManager.SelectedUnit.partToRotate, TargetDir, 3);
+
+			gameManager.SelectedUnit.CoverBihaviour.UpdateNorthPositionTowardTarget(gameManager.SelectedUnit.CurrentTarget);
+			gameManager.SelectedUnit.CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(gameManager.SelectedUnit);
+			gameManager.SelectedUnit.CoverBihaviour.CalculateCoverValue();
+			gameManager.SelectedUnit.CheckForFlunks(gameManager.SelectedUnit.CurrentTarget);
 
 			//gameManager.MakeGAmeMAnagerListingToNewSelectedUnit(gameManager.SelectedPlayer);
 
-			gameManager.PlayerChangeEvent.Raise();
+			//gameManager.PlayerChangeEvent.Raise();
 			//gameManager.SelectedUnit.CoverBihaviour.UpdateNorthPositionTowardTarget(gameManager.SelectedUnit.CurrentTarget);
 			//gameManager.SelectedUnit.CoverBihaviour.CalculateCoverValue();
 			//gameManager.SelectedUnit.CheckForFlunks();
@@ -91,8 +100,9 @@ public class EnemyTurn : AnyState<GameStateManager>
 
 		gameManager.SelectedUnit.enabled = true;
 		gameManager.SelectedUnit.fpsCam.enabled = true;
+		gameManager.SelectedUnit.onCameraEnabeled();
 
-		gameManager.PlayerChangeEvent.Raise();
+		//gameManager.PlayerChangeEvent.Raise();
 		gameManager.SelectedUnit.onChangeTarget.Raise();
 		return gameManager.SelectedUnit;
 	}
@@ -142,9 +152,19 @@ public class EnemyTurn : AnyState<GameStateManager>
 			//}
 			gameManager.SelectedUnit.enabled = true;
 			gameManager.SelectedUnit.fpsCam.enabled = true;
+			gameManager.SelectedUnit.onCameraEnabeled();
+
 			gameManager.SelectedUnit.CurrentTarget = gameManager.players.FirstOrDefault(); ;
 
-			gameManager.PlayerChangeEvent.Raise();
+			//gameManager.SelectedUnit.CoverBihaviour.UpdateNorthPositionTowardTarget(gameManager.SelectedUnit.CurrentTarget);
+			//gameManager.SelectedUnit.CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(gameManager.SelectedUnit);
+			//gameManager.SelectedUnit.CoverBihaviour.CalculateCoverValue();
+
+			gameManager.SelectedUnit.CoverBihaviour.UpdateNorthPositionTowardTarget(gameManager.SelectedUnit.CurrentTarget);
+			//SelectedUnit.CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(SelectedUnit);
+			gameManager.SelectedUnit.CheckForFlunks(gameManager.SelectedUnit.CurrentTarget);
+
+			//gameManager.PlayerChangeEvent.Raise();
 		}
 	}
 }

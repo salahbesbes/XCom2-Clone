@@ -115,21 +115,29 @@ public class Unit : MonoBehaviour
 		float timeElapsed = 0, lerpDuration = timeToSpentTurning;
 
 		if (partToRotate == null) return;
-		Quaternion startRotation = partToRotate.rotation;
 
-		Quaternion targetRotation = Quaternion.LookRotation(dir);
-
-		while (timeElapsed < lerpDuration)
+		try
 		{
-			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,
-				    targetRotation,
-				     timeElapsed / lerpDuration
-				    )
-				    .eulerAngles;
-			//partToRotate.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / lerpDuration);
-			timeElapsed += (speed * Time.deltaTime);
-			await Task.Yield();
-			partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+			Quaternion startRotation = partToRotate.rotation;
+
+			Quaternion targetRotation = Quaternion.LookRotation(dir);
+
+			while (timeElapsed < lerpDuration)
+			{
+				Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,
+					    targetRotation,
+					     timeElapsed / lerpDuration
+					    )
+					    .eulerAngles;
+				//partToRotate.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / lerpDuration);
+				timeElapsed += (speed * Time.deltaTime);
+				await Task.Yield();
+				partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+			}
+		}
+		catch (Exception ex)
+		{
+			Debug.Log($"exception {ex.Message}");
 		}
 	}
 

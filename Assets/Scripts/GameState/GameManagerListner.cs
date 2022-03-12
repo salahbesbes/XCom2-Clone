@@ -83,7 +83,7 @@ public class GameManagerListner : MonoBehaviour
 			}
 			else if (voidEvent is StatsChangeEvent)
 			{
-				unit.transform.GetComponentInChildren<handleHealthUnitBar>().onDamage();
+				unit.HealthBar.GetComponent<NewHealthBar>().onDamage();
 			}
 		});
 	}

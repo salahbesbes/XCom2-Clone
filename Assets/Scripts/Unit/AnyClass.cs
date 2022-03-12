@@ -12,7 +12,7 @@ public class AnyClass : Unit
 	public Stats stats;
 	public Transform ActionHolder;
 	public GameObject Action_prefab;
-	public Transform HealthBarHolder;
+	public Transform HealthBar;
 	public GameObject listners;
 	public Camera fpsCam;
 	public Camera secondCam;
@@ -52,9 +52,8 @@ public class AnyClass : Unit
 		turnPoints = new Vector3[0];
 		animator = model.GetComponent<Animator>();
 		stats = GetComponent<Stats>();
-		CoverBihaviour.UpdateNorthPositionTowardTarget(gameStateManager.SelectedUnit);
-		CoverBihaviour.CalculateCoverValue();
-
+		//CoverBihaviour.UpdateNorthPositionTowardTarget(gameStateManager.SelectedUnit);
+		//CoverBihaviour.CalculateCoverValue();
 
 		if (this != gameStateManager.SelectedUnit)
 		{
@@ -68,7 +67,10 @@ public class AnyClass : Unit
 
 	public float TargetAimPercent
 	{
-		get => _targetAimValue;
+		get
+		{
+			return Mathf.Clamp(100 - CurrentTarget.CoverBihaviour.CoverValue, 0, int.MaxValue);
+		}
 		set
 		{
 			value = Mathf.Clamp(value, 0, int.MaxValue);
@@ -91,8 +93,6 @@ public class AnyClass : Unit
 				//CoverBihaviour.UpdateNorthPositionTowardTarget(value);
 				//CheckForFlunks();
 
-				rotateTowardDirection(partToRotate, _currentTarger.aimPoint.position - transform.position);
-
 				GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.onWeaponFinishShooting);
 				GameStateManager.Instance.MakeOnlySelectedUnitListingToBoolEvent(_currentTarger, stats?.FlunckingTarget);
 			}
@@ -100,15 +100,19 @@ public class AnyClass : Unit
 			{
 				_currentTarger = value;
 			}
+			onChangeTarget.Raise();
 		}
 	}
 
 	public void UpdateDirectionTowardTarget(AnyClass target = null)
 	{
 		target = target ?? CurrentTarget;
-
+		if (currentPos == null)
+			currentPos = NodeGrid.Instance.getNodeFromTransformPosition(transform);
 		Vector3 frontVector = CoverBihaviour.front.coord - currentPos.coord;
 		frontVector.Normalize();
+		if (target.currentPos == null)
+			target.currentPos = NodeGrid.Instance.getNodeFromTransformPosition(target.transform);
 		Vector3 dir = target.currentPos.coord - currentPos.coord;
 		dir.Normalize();
 
@@ -137,6 +141,7 @@ public class AnyClass : Unit
 	public void CheckForFlunks(AnyClass target = null)
 	{
 		target = target ?? CurrentTarget;
+
 		UpdateDirectionTowardTarget(target);
 		CoverLogic TargerCover = target.CoverBihaviour;
 		//Debug.Log($" im {transform.name} and my target is at  selected target {target.name} is at the  {targetDirection}=> with cover Val = {TargerCover.CoverValue}");
@@ -218,13 +223,12 @@ public class AnyClass : Unit
 				{
 					Debug.Log($" im {name} =>> flucking my target {target.name} on the Right sie");
 					target.makeMeGlow();
-
 				}
 			}
 		}
 	}
 
-	private void makeMeGlow()
+	public void makeMeGlow()
 	{
 		if (modelMaterials == null) return;
 		Debug.Log($" {name} materials length = {modelMaterials.Count}");
@@ -235,7 +239,7 @@ public class AnyClass : Unit
 		}
 	}
 
-	private void stopGlowing()
+	public void stopGlowing()
 	{
 		if (modelMaterials == null) return;
 		foreach (Material material in modelMaterials)
@@ -366,15 +370,13 @@ public class AnyClass : Unit
 			CurrentTarget = players[(currentTargetIndex + 1) % nbPlyaers];
 			// todo: find an alternative this cast can cause problem i nthe future
 			//gameStateManager.SelectedPlayer = (Player)currentTarget;
-			await rotateTowardDirection(partToRotate, CurrentTarget.aimPoint.position - aimPoint.position, 1);
+			//await rotateTowardDirection(partToRotate, CurrentTarget.aimPoint.position - aimPoint.position, 1);
 			//rotateTowardDirection(CurrentTarget.partToRotate, aimPoint.position - CurrentTarget.aimPoint.position);
 
-			onChangeTarget.Raise();
 			CoverBihaviour.UpdateNorthPositionTowardTarget(CurrentTarget);
 			CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(this);
 			CoverBihaviour.CalculateCoverValue();
 			CheckForFlunks();
-
 		}
 		else if (team is GreanTeam)
 		{
@@ -394,17 +396,14 @@ public class AnyClass : Unit
 			//Debug.Log($"switch to target {CurrentTarget}, enemies idel {enemies.Count}");
 			// todo: find an alternative this cast can cause problem i nthe future
 			//gameStateManager.SelectedEnemy = (Enemy)currentTarget;
-			await rotateTowardDirection(partToRotate, CurrentTarget.aimPoint.position - aimPoint.position, 1);
-			//rotateTowardDirection(CurrentTarget.partToRotate, aimPoint.position - CurrentTarget.aimPoint.position);
+			//await rotateTowardDirection(partToRotate, CurrentTarget.aimPoint.position - aimPoint.position, 1);
 
-			onChangeTarget.Raise();
 			CoverBihaviour.UpdateNorthPositionTowardTarget(CurrentTarget);
 			CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(this);
 			CoverBihaviour.CalculateCoverValue();
 			CheckForFlunks();
 		}
 	}
-
 
 	public Node onNodeHover(Node oldPotentialDest)
 	{
@@ -541,6 +540,22 @@ public class AnyClass : Unit
 			}
 		}
 		return newLastLayer;
+	}
+
+	public void onCameraEnabeled()
+	{
+		if (GameStateManager.Instance?.players == null || GameStateManager.Instance?.enemies == null)
+			return;
+		foreach (AnyClass unit in GameStateManager.Instance.players)
+		{
+			BillBoard billBoard = unit.HealthBar.GetComponent<BillBoard>();
+			billBoard.cam = fpsCam.transform;
+		}
+		foreach (AnyClass unit in GameStateManager.Instance.enemies)
+		{
+			BillBoard billBoard = unit.HealthBar.GetComponent<BillBoard>();
+			billBoard.cam = fpsCam.transform;
+		}
 	}
 
 	public void CreateNewMoveAction()

@@ -18,11 +18,6 @@ public class Stats : MonoBehaviour
 		onWeaponFinishShooting.Raise(unit);
 	}
 
-	public void Die()
-	{
-		Debug.Log($"player died");
-	}
-
 	public void addArmorModifier(EquipementData equiment)
 	{
 		unit.armor.AddModifier(equiment.Value);

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(AnyClass))]
 public class CoverLogic : MonoBehaviour
 {
-	private AnyClass unit;
+	private PlayerStateManager unit;
 	private GameStateManager gameManger;
 	private Node lastKnownPosition;
 	private NodeGrid grid;
@@ -28,28 +29,58 @@ public class CoverLogic : MonoBehaviour
 		}
 	}
 
-	private void Start()
+	private async void Start()
 	{
 		grid = NodeGrid.Instance;
 		gameManger = GameStateManager.Instance;
-		unit = GetComponent<AnyClass>();
+		unit = GetComponent<PlayerStateManager>();
 		unit.CoverBihaviour = this;
-	}
 
-	private async void Rotate()
-	{
-		await unit.rotateTowardDirection(unit.partToRotate, gameManger.SelectedUnit.transform.position - unit.transform.position, 1f);
-		// I need to wait full rotation so that I can update the new node direction
-		unit.CurrentTarget = gameManger.SelectedUnit;
-	}
-
-	private void Update()
-	{
 		if (gameManger.SelectedUnit != unit)
+		{
+			await RotateToward(gameManger.SelectedUnit, 1, 1);
+			lastKnownPosition = gameManger.SelectedUnit.currentPos;
+			UpdateNorthPositionTowardTarget(gameManger.SelectedUnit);
+			CalculateCoverValue();
+			unit.UpdateDirectionTowardTarget(gameManger.SelectedUnit);
+		}
+	}
+
+	public async Task RotateToward(AnyClass target, float time = 2, float speed = 5)
+	{
+		Vector3 dir = target.transform.position - unit.transform.position;
+		await Rotate(unit.partToRotate, dir, time, speed);
+	}
+
+	public void onSelectedUnitChanges()
+	{
+		gameManger = GameStateManager.Instance;
+		unit = GetComponent<PlayerStateManager>();
+		grid = NodeGrid.Instance;
+
+		if (gameManger == null || grid == null || unit == null) return;
+		if (gameManger.SelectedUnit != unit)
+		{
+			Debug.Log($"before rotate ");
+			unit.CurrentTarget = gameManger.SelectedUnit;
+			lastKnownPosition = gameManger.SelectedUnit.currentPos;
+			RotateToward(gameManger.SelectedUnit);
+			Debug.Log($"supose to print after 5 sec");
+
+			UpdateNorthPositionTowardTarget(gameManger.SelectedUnit);
+			CalculateCoverValue();
+			unit.UpdateDirectionTowardTarget(gameManger.SelectedUnit);
+			//Debug.Log($"we totate {name } and calculate covers toward the selected unit {gameManger.SelectedUnit} ");
+		}
+	}
+
+	private async void Update()
+	{
+		if (gameManger.SelectedUnit != unit && unit.State is Idel)
 		{
 			if (gameManger.SelectedUnit.currentPos != lastKnownPosition)
 			{
-				Rotate();
+				await RotateToward(gameManger.SelectedUnit);
 				UpdateNorthPositionTowardTarget(gameManger.SelectedUnit);
 				CalculateCoverValue();
 				unit.UpdateDirectionTowardTarget(gameManger.SelectedUnit);
@@ -90,7 +121,6 @@ public class CoverLogic : MonoBehaviour
 
 		if (checkForDiagonal(left))
 			left = grid.getNode(left.x, unit.currentPos.y);
-
 
 		if (front != null)
 		{
@@ -154,5 +184,28 @@ public class CoverLogic : MonoBehaviour
 	{
 		if (node == null) return false;
 		return Mathf.Abs(unit.currentPos.x - node.x) == Mathf.Abs(unit.currentPos.y - node.y);
+	}
+
+	public async Task Rotate(Transform partToRotate, Vector3 dir, float timeToSpentTurning = 2, float speed = 1)
+	{
+		float timeElapsed = 0, lerpDuration = timeToSpentTurning;
+
+		if (partToRotate == null) return;
+		Quaternion startRotation = partToRotate.rotation;
+
+		Quaternion targetRotation = Quaternion.LookRotation(dir);
+		while (timeElapsed < lerpDuration)
+		{
+			Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,
+				    targetRotation,
+				     timeElapsed / lerpDuration
+				    )
+				    .eulerAngles;
+			//partToRotate.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / lerpDuration);
+			timeElapsed += (speed * Time.deltaTime);
+			await Task.Yield();
+
+			partToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+		}
 	}
 }

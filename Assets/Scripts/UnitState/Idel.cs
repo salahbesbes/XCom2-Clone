@@ -9,13 +9,6 @@ public class Idel : AnyState<PlayerStateManager>
 	{
 		//Debug.Log($" {player.name}  state : {player.State.name}");
 		player.weapon.enabled = false;
-		if (player.CoverBihaviour != null)
-		{
-			player.CoverBihaviour.UpdateNorthPositionTowardTarget(player.CurrentTarget);
-			//player.CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(player);
-			player.CoverBihaviour.CalculateCoverValue();
-			player.CheckForFlunks();
-		}
 		return null;
 	}
 
@@ -56,8 +49,8 @@ public class Idel : AnyState<PlayerStateManager>
 
 		oldDestination = potentialDest;
 		potentialDest = player.onNodeHover(oldDestination);
-		player.CoverBihaviour.UpdateNorthPositionTowardTarget(player.CurrentTarget);
-		player.CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(player);
+		//player.CoverBihaviour.UpdateNorthPositionTowardTarget(player.CurrentTarget);
+		//player.CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(player);
 		//player.CoverBihaviour.CalculateCoverValue();
 		//player.CheckForFlunks();
 	}

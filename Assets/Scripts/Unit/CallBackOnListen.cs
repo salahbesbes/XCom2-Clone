@@ -3,7 +3,6 @@ using UnityEngine;
 
 public partial class CallBackOnListen : MonoBehaviour
 {
-	private GameStateManager manager;
 
 	[Header("--------------------")]
 	public TextMeshProUGUI myHealth;
@@ -22,24 +21,20 @@ public partial class CallBackOnListen : MonoBehaviour
 	[Header("--------------------")]
 	public TextMeshProUGUI AimChance;
 
-	private void Awake()
-	{
-		manager = GameStateManager.Instance;
-	}
 
 	public void updateMyUiStats()
 	{
-		UnitStats thisUnit = manager.SelectedUnit.stats.unit;
+		UnitStats thisUnit = GameStateManager.Instance.SelectedUnit.stats.unit;
 
 		myHealth.text = $"Health : {thisUnit.Health}";
-		MyName.text = $"{  thisUnit.myName }:";
+
 		myArmor.text = $"Armor: { thisUnit.armor.Value}";
 		myDamage.text = $"damage: { thisUnit.damage.Value}";
 	}
 
 	public void updateTargetUiStats()
 	{
-		UnitStats currentTargetSelected = manager.SelectedUnit.CurrentTarget.stats.unit;
+		UnitStats currentTargetSelected = GameStateManager.Instance.SelectedUnit.CurrentTarget.stats.unit;
 
 		//Debug.Log($" target { manager.SelectedUnit.stats.unit.name}");
 		TargetHealth.text = $"Health : { currentTargetSelected.Health}";
@@ -50,7 +45,7 @@ public partial class CallBackOnListen : MonoBehaviour
 
 	public void onEquipeEventTrigger(EquipementData equipement)
 	{
-		Debug.Log($"{ manager.SelectedUnit.stats.unit.name} equiped {equipement.name} and update  UI");
+		Debug.Log($"{ GameStateManager.Instance.SelectedUnit.stats.unit.name} equiped {equipement.name} and update  UI");
 		updateMyUiStats();
 	}
 
@@ -67,7 +62,7 @@ public partial class CallBackOnListen : MonoBehaviour
 		//targetStats = unit;
 		//Debug.Log($"  oncallback  {thisUnit.transform.name}");
 
-		AimChance.text = $"Aim : {manager.SelectedUnit.TargetAimPercent} %";
+		AimChance.text = $"Aim : {GameStateManager.Instance.SelectedUnit.TargetAimPercent} %";
 	}
 
 	public void onPlayerChangeEventTrigger()

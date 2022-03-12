@@ -13,7 +13,8 @@ public class Dead : AnyState<PlayerStateManager>
 		//player.model.GetComponent<Animator>().SetBool("die", true);
 		player.PlayAnimation(AnimationType.die);
 		player.model.GetComponent<CapsuleCollider>().height = 0.05f;
-
+		player.stopGlowing();
+		player.HealthBar.gameObject.SetActive(false);
 		player.notifyGameManagerEvent.Raise(player);
 
 		return null;

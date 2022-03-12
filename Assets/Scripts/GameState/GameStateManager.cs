@@ -47,11 +47,14 @@ public class GameStateManager : GameManagerListner
 			// to idel state
 			_selectedUnit?.SwitchState(_selectedUnit?.idelState);
 			clearPreviousSelectedUnitFromAllVoidEvents(_selectedUnit);
+
 			//clearPreviousSelectedUnitFromAllWeaponEvent(_selectedUnit);
 			//clearPreviousSelectedUnitFromAlEquipementEvent(_selectedUnit);
 
 			_selectedUnit = value;
+
 			//Debug.Log($"Selected  {SelectedUnit} ");
+			PlayerChangeEvent.Raise();
 
 			MakeGAmeMAnagerListingToNewSelectedUnit(_selectedUnit);
 
@@ -97,6 +100,7 @@ public class GameStateManager : GameManagerListner
 		if (Instance == null)
 		{
 			Instance = this;
+			SwitchState(playerTurn);
 		}
 		else
 		{
@@ -106,9 +110,10 @@ public class GameStateManager : GameManagerListner
 
 	private void Start()
 	{
-		SwitchState(playerTurn);
 		grid = NodeGrid.Instance;
-
+		SelectedUnit.CoverBihaviour.UpdateNorthPositionTowardTarget(SelectedUnit.CurrentTarget);
+		//SelectedUnit.CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(SelectedUnit);
+		SelectedUnit.CheckForFlunks(SelectedUnit.CurrentTarget);
 		//if (State is PlayerTurn)
 		//{
 		//}
