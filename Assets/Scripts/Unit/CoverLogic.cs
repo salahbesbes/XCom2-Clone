@@ -52,27 +52,6 @@ public class CoverLogic : MonoBehaviour
 		await Rotate(unit.partToRotate, dir, time, speed);
 	}
 
-	public void onSelectedUnitChanges()
-	{
-		gameManger = GameStateManager.Instance;
-		unit = GetComponent<PlayerStateManager>();
-		grid = NodeGrid.Instance;
-
-		if (gameManger == null || grid == null || unit == null) return;
-		if (gameManger.SelectedUnit != unit)
-		{
-			Debug.Log($"before rotate ");
-			unit.CurrentTarget = gameManger.SelectedUnit;
-			lastKnownPosition = gameManger.SelectedUnit.currentPos;
-			RotateToward(gameManger.SelectedUnit);
-			Debug.Log($"supose to print after 5 sec");
-
-			UpdateNorthPositionTowardTarget(gameManger.SelectedUnit);
-			CalculateCoverValue();
-			unit.UpdateDirectionTowardTarget(gameManger.SelectedUnit);
-			//Debug.Log($"we totate {name } and calculate covers toward the selected unit {gameManger.SelectedUnit} ");
-		}
-	}
 
 	private async void Update()
 	{
@@ -92,10 +71,8 @@ public class CoverLogic : MonoBehaviour
 
 	public void UpdateNorthPositionTowardTarget(AnyClass target)
 	{
-		if (unit.currentPos == null)
-		{
-			unit.currentPos = grid.getNodeFromTransformPosition(unit.transform);
-		}
+		unit.currentPos = unit.currentPos ?? grid.getNodeFromTransformPosition(unit.transform);
+
 
 		if (target == null || unit.currentPos == null)
 		{
@@ -108,7 +85,6 @@ public class CoverLogic : MonoBehaviour
 		back = NodeGrid.Instance.getNodeFromTransformPosition(points.GetChild(1));
 		right = NodeGrid.Instance.getNodeFromTransformPosition(points.GetChild(2));
 		left = NodeGrid.Instance.getNodeFromTransformPosition(points.GetChild(3));
-		Node oldFront = front;
 
 		if (checkForDiagonal(front))
 			front = grid.getNode(unit.currentPos.x, front.y);

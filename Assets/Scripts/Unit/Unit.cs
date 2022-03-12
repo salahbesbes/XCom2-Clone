@@ -264,9 +264,7 @@ public class Unit : MonoBehaviour
 		// when moving i rotating the model not the part to rotate, so when reach
 		// destination i have to rotate the model last time
 		await rotateTowardDirection(model, _currentTarger.aimPoint.position - partToRotate.position, 0.5f);
-		//player.CoverBihaviour.UpdateNorthPositionTowardTarget(_currentTarger);
-		//player.CoverBihaviour.CalculateCoverValue();
-		//player.CheckForFlunks();
+		player.testDelay();
 		processing = false;
 
 		// update the cost

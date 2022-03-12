@@ -112,7 +112,7 @@ public class GameStateManager : GameManagerListner
 	{
 		grid = NodeGrid.Instance;
 		SelectedUnit.CoverBihaviour.UpdateNorthPositionTowardTarget(SelectedUnit.CurrentTarget);
-		//SelectedUnit.CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(SelectedUnit);
+		SelectedUnit.CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(SelectedUnit);
 		SelectedUnit.CheckForFlunks(SelectedUnit.CurrentTarget);
 		//if (State is PlayerTurn)
 		//{

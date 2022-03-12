@@ -73,13 +73,9 @@ public class PlayerTurn : AnyState<GameStateManager>
 			gameManager.SelectedUnit.onCameraEnabeled();
 			gameManager.SelectedUnit.CurrentTarget = gameManager.enemies.FirstOrDefault(unit => unit.State is Idel);
 			Vector3 TargetDir = gameManager.SelectedUnit.CurrentTarget.aimPoint.position - gameManager.SelectedUnit.aimPoint.position;
-			await gameManager.SelectedUnit.rotateTowardDirection(gameManager.SelectedUnit.partToRotate, TargetDir, 3);
-
-			gameManager.SelectedUnit.CoverBihaviour.UpdateNorthPositionTowardTarget(gameManager.SelectedUnit.CurrentTarget);
-			gameManager.SelectedUnit.CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(gameManager.SelectedUnit);
-			gameManager.SelectedUnit.CoverBihaviour.CalculateCoverValue();
-			gameManager.SelectedUnit.CheckForFlunks(gameManager.SelectedUnit.CurrentTarget);
-
+			//await gameManager.SelectedUnit.rotateTowardDirection(gameManager.SelectedUnit.partToRotate, TargetDir, 3);
+			//await gameManager.SelectedUnit.rotateTowardDirection(gameManager.SelectedUnit.CurrentTarget.partToRotate, -TargetDir, 3);
+			//gameManager.SelectedUnit.newFlunking(gameManager.SelectedUnit.CurrentTarget);
 			//gameManager.MakeGAmeMAnagerListingToNewSelectedUnit(gameManager.SelectedPlayer);
 
 			//gameManager.PlayerChangeEvent.Raise();

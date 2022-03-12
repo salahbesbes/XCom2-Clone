@@ -203,7 +203,6 @@ public class GameManagerListner : MonoBehaviour
 
 		e.Register();
 	}
-
 	public void clearPreviousSelectedUnitFromAllBoolEvent(AnyClass unit)
 	{
 		if (unit == null) return;

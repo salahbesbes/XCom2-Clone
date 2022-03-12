@@ -60,21 +60,7 @@ public class UnitCallBack : MonoBehaviour
 	public void onUnitFlunked(bool parm)
 	{
 		PlayerStateManager thisUnit = GetComponentInParent<PlayerStateManager>();
-		if (parm == true)
-		{
-			Debug.Log($"{thisUnit.name} is flunked by selected unit {manager.SelectedUnit}");
-			if (thisUnit.CoverBihaviour.alreadyFluncked == false)
-			{
-				thisUnit.CoverBihaviour.alreadyFluncked = true;
-			}
-		}
-		else
-		{
-			Debug.Log($"{thisUnit.name} is no more fluncked");
-			if (thisUnit.CoverBihaviour.alreadyFluncked == true)
-			{
-				thisUnit.CoverBihaviour.alreadyFluncked = false;
-			}
-		}
+		Debug.Log($" {thisUnit} is fluncked by {GameStateManager.Instance.SelectedUnit} {parm} ");
+
 	}
 }
