@@ -19,7 +19,7 @@ public class SelectingEnemy : AnyState<PlayerStateManager>
 		NodeGrid.Instance.resetGrid();
 		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
-			player.SelectNextTarget(player);
+			player.SelectNextTarget();
 			Camera.main.transform.LookAt(player.CurrentTarget.aimPoint);
 		}
 		if (Input.GetKeyDown(KeyCode.Escape))

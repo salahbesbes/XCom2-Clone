@@ -83,7 +83,7 @@ public class GameManagerListner : MonoBehaviour
 			}
 			else if (voidEvent is StatsChangeEvent)
 			{
-				unit.HealthBar.GetComponent<NewHealthBar>().onDamage();
+				unit.HealthBar.GetComponent<NewHealthBar>().onEquipementEventTrigger();
 			}
 		});
 	}
@@ -143,7 +143,7 @@ public class GameManagerListner : MonoBehaviour
 		{
 			// EventArgument is what ever argument is passed when we trugger (raise the
 			// Event ) in this case its Weapon
-			unit.listners.GetComponent<CallBackOnListen>().onEquipeEventTrigger(EventArgument);
+			unit.listners.GetComponent<UnitCallBack>().onEquipeEventTrigger(EventArgument);
 		});
 
 		e.Register();

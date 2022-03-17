@@ -35,6 +35,8 @@ public class NewHealthBar : MonoBehaviour
 	{
 		thisUnit = GetComponentInParent<PlayerStateManager>();
 		int armor = thisUnit.stats.unit.armor.Value;
+		armorText.text = $"{armor}";
+
 		for (int i = 0, j = 0; i < armorBar.childCount; i++, j++)
 		{
 			Transform child = armorBar.GetChild(i);
@@ -65,6 +67,15 @@ public class NewHealthBar : MonoBehaviour
 		await updateBackImage(0.5f, health);
 	}
 
+	public async void onEquipementEventTrigger()
+	{
+		thisUnit = GetComponentInParent<PlayerStateManager>();
+		float health = (float)thisUnit.stats.unit.Health / (float)thisUnit.stats.unit.maxHealth;
+		healthText.text = $"{thisUnit.stats.unit.Health}";
+		updateArmor();
+		await updateFrontImage(0.75f, health);
+		await updateBackImage(0.5f, health);
+	}
 	private async Task updateBackImage(float lerpDuration = 0.5f, float newVal = 1)
 	{
 		float timeElapsed = 0;

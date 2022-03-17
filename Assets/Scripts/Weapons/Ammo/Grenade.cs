@@ -36,11 +36,16 @@ public class Grenade : Ammo
 		Node GrenadeNode = NodeGrid.Instance.getNodeFromTransformPosition(transform);
 		if (GrenadeNode.coord.y > 0.5f) return;
 		int halfRange = range / 2;
-
-		for (int i = GrenadeNode.x - halfRange; i < GrenadeNode.x + halfRange; i++)
+		for (int i = GrenadeNode.x - halfRange; i <= GrenadeNode.x + halfRange; i++)
 		{
-			for (int j = GrenadeNode.y - halfRange; j < GrenadeNode.y + halfRange; j++)
+			// if lalfRange is even we ignore the last row
+			if (halfRange % 2 == 0 && i == GrenadeNode.x + halfRange)
+				continue;
+			for (int j = GrenadeNode.y - halfRange; j <= GrenadeNode.y + halfRange; j++)
 			{
+				// if lalfRange is even we ignore the last col
+				if (halfRange % 2 == 0 && j == GrenadeNode.y + halfRange)
+					continue;
 				Node neighbour = NodeGrid.Instance.getNode(i, j);
 				if (neighbour == null) continue;
 				NodeInRange.Add(neighbour);

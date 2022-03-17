@@ -152,10 +152,12 @@ public class AnyClass : Unit
 		target = target ?? CurrentTarget;
 		//Debug.Log($" check for flunk called ");
 		UpdateDirectionTowardTarget(target);
+
 		CoverLogic TargerCover = target.CoverBihaviour;
 		bool flunckTop, flunckLeft, flunckRight;
 
 		target.stopGlowing();
+
 		if (targetDirection == Direction.front)
 		{
 			if (TargerCover.front != null && TargerCover.front.tile.colliderOnTop != null)
@@ -360,7 +362,7 @@ public class AnyClass : Unit
 		}
 	}
 
-	public void SelectNextTarget(AnyClass currentUnit)
+	public void SelectNextTarget()
 	{
 		if (team is GreanTeam)
 		{
@@ -375,6 +377,9 @@ public class AnyClass : Unit
 			}
 			int currentTargetIndex = enemies.FindIndex(instance => instance == CurrentTarget);
 			CurrentTarget = enemies[(currentTargetIndex + 1) % enemies.Count];
+			//PlayerStateManager target = (PlayerStateManager)CurrentTarget;
+			//if (target?.State is not Idel) SelectNextTarget();
+
 
 		}
 		else if (team is RedTeam)

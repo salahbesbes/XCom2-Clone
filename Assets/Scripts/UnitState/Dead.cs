@@ -16,6 +16,7 @@ public class Dead : AnyState<PlayerStateManager>
 		player.stopGlowing();
 		player.HealthBar.gameObject.SetActive(false);
 		player.notifyGameManagerEvent.Raise(player);
+		GameStateManager.Instance.SelectedUnit.SelectNextTarget();
 
 		return null;
 	}

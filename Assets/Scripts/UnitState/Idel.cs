@@ -28,7 +28,7 @@ public class Idel : AnyState<PlayerStateManager>
 
 		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
-			player.SelectNextTarget(player);
+			player.SelectNextTarget();
 		}
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{

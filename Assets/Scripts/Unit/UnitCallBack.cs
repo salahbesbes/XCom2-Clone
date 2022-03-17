@@ -3,15 +3,15 @@
 public class UnitCallBack : MonoBehaviour
 {
 	private GameStateManager manager;
-
+	PlayerStateManager thisUnit;
 	private void Start()
 	{
 		manager = GameStateManager.Instance;
+		thisUnit = GetComponentInParent<PlayerStateManager>();
 	}
 
 	public void TakeDamage(UnitStats triggerStats)
 	{
-		PlayerStateManager thisUnit = GetComponentInParent<PlayerStateManager>();
 		int damage = triggerStats.damage.Value;
 		//damage -= thisUnit.stats.unit.armor.Value;
 		damage = Mathf.Clamp(damage, 0, int.MaxValue);
@@ -33,14 +33,14 @@ public class UnitCallBack : MonoBehaviour
 	public void onWeaponShootEventTrigger(UnitStats triggerStats)
 	{
 		TakeDamage(triggerStats);
-		updateTopCanvas();
+		//updateTopCanvas();
 		updateTargetHealthBar();
 	}
 
 	public void onGrenadeExplodes(UnitStats triggerStats)
 	{
 		TakeDamage(triggerStats);
-		updateTopCanvas();
+		//updateTopCanvas();
 		updateTargetHealthBar();
 	}
 
@@ -57,10 +57,26 @@ public class UnitCallBack : MonoBehaviour
 		manager.clearPreviousSelectedUnitFromAllVoidEvents(thisUnit);
 	}
 
+
+	private void updateMytHealthBar()
+	{
+		PlayerStateManager thisUnit = GetComponentInParent<PlayerStateManager>();
+		manager.MakeOnlySelectedUnitListingToEventArgument(thisUnit, manager.SelectedUnit.stats.onStatsChange);
+		manager.SelectedUnit.stats.onStatsChange.Raise();
+		manager.clearPreviousSelectedUnitFromAllVoidEvents(thisUnit);
+	}
+
 	public void onUnitFlunked(bool parm)
 	{
 		PlayerStateManager thisUnit = GetComponentInParent<PlayerStateManager>();
 		Debug.Log($" {thisUnit} is fluncked by {GameStateManager.Instance.SelectedUnit} {parm} ");
+	}
 
+	public void onEquipeEventTrigger(EquipementData equipement)
+	{
+		//PlayerStateManager thisUnit = GetComponentInParent<PlayerStateManager>();
+		Debug.Log($"we modifie stats");
+		thisUnit.stats.addArmorModifier(equipement);
+		//updateMytHealthBar();
 	}
 }

@@ -17,7 +17,12 @@ public class ModalTriggerer : MonoBehaviour
 		}
 		if (LayerMask.LayerToName(other.gameObject.layer) == "Pickable")
 		{
-			thisUnit.stats.addArmorModifier(other.GetComponent<Equipement>().equipement);
+			Equipement obj = other.GetComponent<Equipement>();
+			Debug.Log($"before");
+
+			if (obj == null) return;
+			obj.equipement.eventTrigger.Raise(obj.equipement);
+			Debug.Log($"picked");
 		}
 	}
 

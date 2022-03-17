@@ -13,10 +13,7 @@ public class Stats : MonoBehaviour
 	{
 	}
 
-	public void triggerEvent()
-	{
-		onWeaponFinishShooting.Raise(unit);
-	}
+
 
 	public void addArmorModifier(EquipementData equiment)
 	{

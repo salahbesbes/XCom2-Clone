@@ -3,7 +3,6 @@ using UnityEngine;
 
 public partial class CallBackOnListen : MonoBehaviour
 {
-
 	[Header("--------------------")]
 	public TextMeshProUGUI myHealth;
 
@@ -20,7 +19,6 @@ public partial class CallBackOnListen : MonoBehaviour
 
 	[Header("--------------------")]
 	public TextMeshProUGUI AimChance;
-
 
 	public void updateMyUiStats()
 	{
@@ -68,11 +66,6 @@ public partial class CallBackOnListen : MonoBehaviour
 	public void onPlayerChangeEventTrigger()
 	{
 		//Debug.Log($"update player stas");
-		updateMyUiStats();
-	}
-
-	public void onStatsChange()
-	{
 		updateMyUiStats();
 	}
 }
