@@ -29,7 +29,8 @@ public class handleHealthUnitBar : MonoBehaviour
 	private void updateHealthBar()
 	{
 		float holderWidth = HealthHolder.GetComponent<RectTransform>().rect.width;
-		healthBeforeShoot = thisUnit.stats.unit.Health;
+		healthBeforeShoot = thisUnit.stats.unit.Health.Value;
+		healthBeforeShoot = thisUnit.stats.unit.Health.Value;
 		float unitwidth = holderWidth / healthBeforeShoot;
 		for (int i = 0; i < healthBeforeShoot; i++)
 		{
@@ -42,19 +43,19 @@ public class handleHealthUnitBar : MonoBehaviour
 	public void onDamage()
 	{
 		Debug.Log($"{transform.parent.name}");
-		for (int i = healthBeforeShoot - 1; i >= thisUnit.stats.unit.Health; i--)
+		for (int i = healthBeforeShoot - 1; i >= thisUnit.stats.unit.Health.Value; i--)
 		{
 			HealthHolder.GetChild(i).GetComponent<Renderer>().material.color = Color.gray;
 		}
-		healthBeforeShoot = thisUnit.stats.unit.Health;
+		healthBeforeShoot = thisUnit.stats.unit.Health.Value;
 	}
 
 	public void onHeal()
 	{
-		for (int i = healthBeforeShoot; i < thisUnit.stats.unit.Health; i++)
+		for (int i = healthBeforeShoot; i < thisUnit.stats.unit.Health.Value; i++)
 		{
 			HealthHolder.GetChild(i).GetComponent<Renderer>().material.color = Color.red;
 		}
-		healthBeforeShoot = thisUnit.stats.unit.Health;
+		healthBeforeShoot = thisUnit.stats.unit.Health.Value;
 	}
 }

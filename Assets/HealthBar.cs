@@ -40,14 +40,14 @@ public class HealthBar : MonoBehaviour
 	{
 		if (player == false)
 		{
-			for (int i = target.stats.unit.Health; i < target.stats.unit.maxHealth; i++)
+			for (int i = target.stats.unit.Health.Value; i < target.stats.unit.maxHealth; i++)
 			{
 				HealthHolder.GetChild(i).GetComponent<RawImage>().color = Color.grey;
 			}
 		}
 		else
 		{
-			for (int i = target.stats.unit.maxHealth - 1; i >= target.stats.unit.Health; i--)
+			for (int i = target.stats.unit.maxHealth - 1; i >= target.stats.unit.Health.Value; i--)
 			{
 				HealthHolder.GetChild(i).GetComponent<RawImage>().color = Color.grey;
 			}
@@ -114,11 +114,11 @@ public class HealthBar : MonoBehaviour
 	public async void onTargetDamaged()
 	{
 		target = GameStateManager.Instance.SelectedUnit.CurrentTarget;
-		for (int i = target.stats.unit.maxHealth - 1; i >= target.stats.unit.Health; i--)
+		for (int i = target.stats.unit.maxHealth - 1; i >= target.stats.unit.Health.Value; i--)
 		{
 			HealthHolder.GetChild(i).GetComponent<RawImage>().color = Color.green;
 		}
-		for (int i = target.stats.unit.maxHealth - 1; i >= target.stats.unit.Health; i--)
+		for (int i = target.stats.unit.maxHealth - 1; i >= target.stats.unit.Health.Value; i--)
 		{
 			HealthHolder.GetChild(i).GetComponent<RawImage>().color = Color.grey;
 			await Task.Delay(50);
@@ -128,11 +128,11 @@ public class HealthBar : MonoBehaviour
 	public async void onPlayerDamaged()
 	{
 		target = GameStateManager.Instance.SelectedUnit;
-		for (int i = target.stats.unit.maxHealth - 1; i >= target.stats.unit.Health; i--)
+		for (int i = target.stats.unit.maxHealth - 1; i >= target.stats.unit.Health.Value; i--)
 		{
 			HealthHolder.GetChild(i).GetComponent<RawImage>().color = Color.green;
 		}
-		for (int i = target.stats.unit.maxHealth - 1; i >= target.stats.unit.Health; i--)
+		for (int i = target.stats.unit.maxHealth - 1; i >= target.stats.unit.Health.Value; i--)
 		{
 			HealthHolder.GetChild(i).GetComponent<RawImage>().color = Color.grey;
 			await Task.Delay(50);

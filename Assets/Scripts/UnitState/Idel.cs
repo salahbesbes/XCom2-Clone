@@ -75,6 +75,6 @@ public class Idel : AnyState<PlayerStateManager>
 
 	public override void ExitState(PlayerStateManager player)
 	{
-		player.weapon.enabled = true;
+
 	}
 }

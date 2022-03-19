@@ -52,6 +52,7 @@ public class AutoAmmo : Ammo
 
 				case "Character":
 					SpawnDecal(collision, fleshHitEffect);
+					Debug.Log($"collide on {collision.transform.name}");
 					break;
 
 				case "WaterFilledExtinguish":

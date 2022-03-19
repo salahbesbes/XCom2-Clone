@@ -100,7 +100,6 @@ public class AnyClass : Unit
 
 	public async void testDelay()
 	{
-
 		Vector3 TargetDir = CurrentTarget.aimPoint.position - aimPoint.position;
 		await rotateTowardDirection(partToRotate, TargetDir, 2);
 
@@ -108,8 +107,6 @@ public class AnyClass : Unit
 		CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(this);
 		CheckForFlunks(CurrentTarget);
 	}
-
-
 
 	public void UpdateDirectionTowardTarget(AnyClass target = null)
 	{
@@ -369,7 +366,6 @@ public class AnyClass : Unit
 			List<PlayerStateManager> enemies = gameStateManager.enemies;
 			enemies = enemies.Where(unit => unit.State is Idel).ToList();
 
-
 			if (enemies.Count == 0)
 			{
 				Debug.Log($" No More Targets All Dead  ");
@@ -379,8 +375,6 @@ public class AnyClass : Unit
 			CurrentTarget = enemies[(currentTargetIndex + 1) % enemies.Count];
 			//PlayerStateManager target = (PlayerStateManager)CurrentTarget;
 			//if (target?.State is not Idel) SelectNextTarget();
-
-
 		}
 		else if (team is RedTeam)
 		{
@@ -394,7 +388,6 @@ public class AnyClass : Unit
 				return;
 			}
 			CurrentTarget = players[(currentTargetIndex + 1) % nbPlyaers];
-
 		}
 	}
 

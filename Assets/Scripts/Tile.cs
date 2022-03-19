@@ -87,7 +87,7 @@ public class Tile
 	{
 		Vector3 origin = obj.transform.position + Vector3.up * size;
 		GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-		quad.transform.position = origin + Vector3.back * size / 2;
+		quad.transform.position = origin + Vector3.back * size;
 		quad.transform.rotation = Quaternion.Euler(180, 0, 0);
 		quad.transform.SetParent(parent);
 		quad.transform.localScale = new Vector3(size, 2 * size, 1);

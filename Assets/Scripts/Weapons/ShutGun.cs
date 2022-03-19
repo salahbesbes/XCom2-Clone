@@ -18,7 +18,7 @@ public class ShutGun : Weapon
 		await Task.Yield();
 	}
 
-	public void Shoot(RaycastHit hit)
+	public void Shoot(Vector3 dir)
 	{
 		// slow don the rate of shooting using delay method
 		if (weaponType.readyToShoot)
@@ -31,7 +31,7 @@ public class ShutGun : Weapon
 		//Node hitNode = grid.getNodeFromTransformPosition(null, hit.point);
 		//Vector3 targetPoint = hitNode.coord;
 		// this is the direction between the player node to the hit point node
-		Vector3 dir = player.CurrentTarget.aimPoint.position - startPoint.position;
+		//Vector3 dir = player.CurrentTarget.aimPoint.position - startPoint.position;
 
 		// sp to different direction around the target
 		float x = Random.Range(-weaponType.spread, weaponType.spread);
@@ -43,7 +43,6 @@ public class ShutGun : Weapon
 		Ammo bullet = Instantiate(weaponType.ammo, startPoint.position, Quaternion.identity);
 		// we orient the bullet to the direction created
 		bullet.transform.forward = dir.normalized;
-
 		Rigidbody rb = bullet.GetComponent<Rigidbody>();
 		// the bullet create at any point folow the direction (wich have 0 on y at any
 		// direction) so the bullet created at the startPoint stays on the same height
@@ -65,29 +64,20 @@ public class ShutGun : Weapon
 
 		if (weaponType.readyToShoot && !weaponType.reloading && weaponType.bulletLeft > 0)
 		{
-			Vector3 dir = (player.CurrentTarget.aimPoint.position - startPoint.position).normalized;
+			Vector3 dir = ShotPercent(player.TargetAimPercent);
+
 			GameObject effectObj = Instantiate(weaponType.ammo.fireEffect, startPoint.position, player.partToRotate.rotation);
 			ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
-			RaycastHit hit;
-			if (Physics.Raycast(startPoint.position, dir, out hit, weaponType.bulletRange))
-			{
-				weaponType.bulletsShot = 0;
-				effect.Play(true);
+			weaponType.bulletsShot = 0;
+			effect.Play(true);
 
-				while (weaponType.bulletsShot <= weaponType.bulletInOneShot)
-				{
-					Shoot(hit);
-					await Task.Delay((int)(weaponType.timeBetweenShooting * 1000));
-				}
-				//effect.Stop(true);
-				//Destroy(effect.gameObject);
-			}
-			else
+			while (weaponType.bulletsShot <= weaponType.bulletInOneShot)
 			{
-				Debug.Log($" out of range!  bullet range is  {weaponType.bulletRange} ");
+				Shoot(dir);
+				await Task.Delay((int)(weaponType.timeBetweenShooting * 1000));
 			}
 		}
-		//Debug.Log($"finish shotting");
+		weaponType.readyToShoot = true;
 		player.FinishAction(shoot);
 	}
 
@@ -102,8 +92,6 @@ public class ShutGun : Weapon
 		return $"weapon: {this.name}";
 	}
 
-
-
 	public override void onUpdate()
 	{
 		if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))
@@ -113,29 +101,5 @@ public class ShutGun : Weapon
 			player.SwitchState(player.doingAction);
 			shoot?.Actionevent?.Raise();
 		}
-	}
-
-	public override float howMuchVisibleTheTArgetIs()
-	{
-		Vector3 ori = startPoint.position;
-		float spotValue = 1.0f / player.CurrentTarget.sportPoints.Count;
-		float percent = 0;
-		string[] collidableLayers = { "Enemy", "Unwalkable" };
-		int layerToCheck = LayerMask.GetMask(collidableLayers);
-		RaycastHit hit;
-
-		foreach (Transform spot in player.CurrentTarget.sportPoints)
-		{
-			Vector3 dir = (spot.position - ori).normalized;
-			Debug.DrawRay(ori, dir * weaponType.bulletRange, Color.cyan);
-			if (Physics.Raycast(ori, dir, out hit, weaponType.bulletRange, layerToCheck))
-			{
-				if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Enemy")
-				{
-					percent += spotValue;
-				}
-			}
-		}
-		return percent * 100;
 	}
 }

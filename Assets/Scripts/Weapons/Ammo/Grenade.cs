@@ -26,9 +26,9 @@ public class Grenade : Ammo
 		grenadier = GameStateManager.Instance.SelectedUnit.GetComponent<GrenadierStats>();
 	}
 
-	public void OnCollisionEnter(Collision col)
+	public async void OnCollisionEnter(Collision col)
 	{
-		ExplodeIn(col, explosionIn);
+		await ExplodeIn(col, explosionIn);
 	}
 
 	private void HitTargetInrange(int range)

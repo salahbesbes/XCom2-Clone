@@ -4,6 +4,7 @@ public class SelectingEnemy : AnyState<PlayerStateManager>
 {
 	public override AnyClass EnterState(PlayerStateManager player)
 	{
+		player.weapon.enabled = true;
 		//Debug.Log($"{player.name}  state : {player.State.name}");
 		player.fpsCam.enabled = false;
 		//player.secondCam.transform.LookAt(player.currentTarget.transform);

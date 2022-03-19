@@ -14,9 +14,17 @@ public class HeavyWeapon : Weapon
 		Vector3 fwd = transform.TransformDirection(Vector3.forward);
 		Debug.DrawRay(startPoint.position, fwd, Color.green);
 		lr = GetComponent<LineRenderer>();
-		lr.positionCount = resolution;
 	}
+	private void OnEnable()
+	{
+		lr.enabled = true;
+	}
+	private void OnDisable()
+	{
+		lr.positionCount = 0;
+		lr.enabled = false;
 
+	}
 	public override async Task Reload(ReloadAction reload)
 	{
 		Debug.Log($"start reloading");
@@ -25,18 +33,7 @@ public class HeavyWeapon : Weapon
 		weaponType.reloading = false;
 		Debug.Log($"finish reloading");
 		player.FinishAction(reload);
-	}
-
-	public override async Task startShooting(ShootAction shoot)
-	{
-		//Quaternion Ori = transform.rotation;
-		//rotateWeaponAndLunch(transform, -10);
-		//yield return new WaitForSeconds(0.5f);
-		//Grenade bullet = (Grenade)Instantiate(weaponType.Ammo, startPoint.position, Quaternion.identity);
-		//Rigidbody rb = bullet.GetComponent<Rigidbody>();
-		//lunchToWard(rb, player.currentTarget.aimPoint, weaponType.bouncingForce, weaponType.ammoSpeed);
-		//transform.rotation = Ori;
-		//yield return null;
+		await Task.Yield();
 	}
 
 	private void lunchToWard(Rigidbody ball, Vector3 targetPos, float weaponMaxAltitude, float ammoSpeed = 1)
@@ -82,6 +79,7 @@ public class HeavyWeapon : Weapon
 
 	public void DrowTrajectory(Vector3 targetPos)
 	{
+		lr.positionCount = resolution;
 		Physics.gravity = -Vector3.up * weaponType.ammoSpeed;
 		LunchData data = calculateLunchVelocity(targetPos, weaponType.bouncingForce, Physics.gravity.y);
 		Vector3 previousDrowPoint = startPoint.position;
@@ -107,32 +105,6 @@ public class HeavyWeapon : Weapon
 		player.FinishAction(action);
 	}
 
-	public override float howMuchVisibleTheTArgetIs()
-	{
-		Vector3 ori = startPoint.position;
-		float spotValue = 1.0f / player.CurrentTarget.sportPoints.Count;
-		float percent = 0;
-		string[] collidableLayers = { "Enemy", "Unwalkable" };
-		int layerToCheck = LayerMask.GetMask(collidableLayers);
-		RaycastHit hit;
-
-		foreach (Transform spot in player.CurrentTarget.sportPoints)
-		{
-			Vector3 dir = (spot.position - ori).normalized;
-			Debug.DrawRay(ori, dir * weaponType.bulletRange, Color.cyan);
-			if (Physics.Raycast(ori, dir, out hit, weaponType.bulletRange, layerToCheck))
-			{
-				if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Enemy")
-				{
-					percent += spotValue;
-				}
-			}
-		}
-		return percent * 100;
-	}
-
-
-
 	public override void onHover()
 	{
 		Node potentialDestination = NodeGrid.Instance.getNodeFromMousePosition(player.secondCam);
@@ -151,10 +123,12 @@ public class HeavyWeapon : Weapon
 			}
 		}
 	}
+
 	public override void onUpdate()
 	{
 		onHover();
 	}
+
 	public struct LunchData
 	{
 		public readonly Vector3 initialVelocity;

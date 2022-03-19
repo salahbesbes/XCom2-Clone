@@ -52,7 +52,6 @@ public class CoverLogic : MonoBehaviour
 		await Rotate(unit.partToRotate, dir, time, speed);
 	}
 
-
 	private async void Update()
 	{
 		if (gameManger.SelectedUnit != unit && unit.State is Idel)
@@ -72,7 +71,6 @@ public class CoverLogic : MonoBehaviour
 	public void UpdateNorthPositionTowardTarget(AnyClass target)
 	{
 		unit.currentPos = unit.currentPos ?? grid.getNodeFromTransformPosition(unit.transform);
-
 
 		if (target == null || unit.currentPos == null)
 		{
@@ -103,32 +101,24 @@ public class CoverLogic : MonoBehaviour
 			//Debug.Log($"front {front}");
 			front.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
 		}
-		else
-			Debug.Log($"front is null");
 
 		if (back != null)
 		{
 			//Debug.Log($"back {back}");
 			back.tile.obj.GetComponent<Renderer>().material.color = Color.red;
 		}
-		else
-			Debug.Log($"back is null");
 
 		if (right != null)
 		{
 			//Debug.Log($"right {right}");
 			right.tile.obj.GetComponent<Renderer>().material.color = Color.blue;
 		}
-		else
-			Debug.Log($"right is null");
 
 		if (left != null)
 		{
 			//Debug.Log($"left {left}");
 			left.tile.obj.GetComponent<Renderer>().material.color = Color.green;
 		}
-		else
-			Debug.Log($"left is null");
 		//Debug.Log($"front {front}, back {back}, right {right}, left {left} player {currentPos}");
 	}
 

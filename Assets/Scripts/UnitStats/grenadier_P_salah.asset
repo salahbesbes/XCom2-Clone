@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: grenadier_P_salah
   m_EditorClassIdentifier: 
   myName: grenadier salah
-  _health: 100
+  _health:
+    baseValue: 18
+    modifiers: 
   EquipeEvent: {fileID: 11400000, guid: 6945a8e9d3763734096b06dc5a504f83, type: 2}
   weapon: {fileID: 0}
   damage:

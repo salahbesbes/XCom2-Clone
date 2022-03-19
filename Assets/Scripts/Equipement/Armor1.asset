@@ -10,7 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff02e67d13b8eee4e9068414d1b5e9be, type: 3}
-  m_Name: blackArmor
+  m_Name: Armor1
   m_EditorClassIdentifier: 
-  Value: 20
-  eventTrigger: {fileID: 11400000, guid: 6945a8e9d3763734096b06dc5a504f83, type: 2}
+  Value: 3

@@ -65,15 +65,3 @@ internal class NewCover
 		return $"Cover({direction}, {type}) => Value = {Value} at {node}";
 	}
 }
-
-internal class MovingTest : Mono
-{
-	private CoverType coverType = CoverType.low;
-	private CoverDirection coverdirection = CoverDirection.front;
-
-	private void Start()
-	{
-		//Debug.Log($" cover Type is {coverType} [{coverType.getCoverValue<CoverType>()}]");
-		//Debug.Log($" cover Direction is {coverdirection} [{coverdirection.getCoverValue<CoverDirection>()}]");
-	}
-}

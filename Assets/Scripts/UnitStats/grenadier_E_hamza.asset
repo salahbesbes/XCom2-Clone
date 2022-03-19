@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: grenadier_E_hamza
   m_EditorClassIdentifier: 
   myName: grenadier hamza
-  _health: 100
+  _health:
+    baseValue: 1000
+    modifiers: 
   EquipeEvent: {fileID: 11400000, guid: 6945a8e9d3763734096b06dc5a504f83, type: 2}
   weapon: {fileID: 0}
   damage:
@@ -22,4 +24,4 @@ MonoBehaviour:
   armor:
     baseValue: 3
     modifiers: 
-  _maxHealth: 30
+  _maxHealth: 28

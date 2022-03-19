@@ -19,7 +19,7 @@ MonoBehaviour:
   shooting: 0
   readyToShoot: 1
   reloading: 0
-  ammoSpeed: 600
+  ammoSpeed: 943
   bouncingForce: 0
   bulletLeft: 1000
   bulletsShot: 9
@@ -31,4 +31,4 @@ MonoBehaviour:
   shutGun: 0
   bulletInOneShot: 8
   type: 1
-  ammo: {fileID: 8936033122034238652, guid: 6b064e4c3a06afb4fb0ca0d45f8eeabc, type: 3}
+  ammo: {fileID: 5588995599351290597, guid: 4ea7580e162ccb444b1db4c91dc5a9f1, type: 3}

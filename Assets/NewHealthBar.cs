@@ -22,8 +22,8 @@ public class NewHealthBar : MonoBehaviour
 		armorText = transform.GetChild(1).Find("Background").Find("ArmorText").GetComponent<TextMeshProUGUI>();
 
 		thisUnit = GetComponentInParent<PlayerStateManager>();
-		float health = thisUnit.stats.unit.Health / thisUnit.stats.unit.maxHealth;
-		healthText.text = $"{thisUnit.stats.unit.Health}";
+		float health = thisUnit.stats.unit.Health.Value / thisUnit.stats.unit.maxHealth;
+		healthText.text = $"{thisUnit.stats.unit.Health.Value}";
 		armorText.text = $"{thisUnit.stats.unit.armor.Value}";
 
 		updateArmor();
@@ -33,7 +33,7 @@ public class NewHealthBar : MonoBehaviour
 
 	private void updateArmor()
 	{
-		thisUnit = GetComponentInParent<PlayerStateManager>();
+		//thisUnit = GetComponentInParent<PlayerStateManager>();
 		int armor = thisUnit.stats.unit.armor.Value;
 		armorText.text = $"{armor}";
 
@@ -44,7 +44,6 @@ public class NewHealthBar : MonoBehaviour
 			Color color = image.color;
 			if (j < armor)
 			{
-
 				color.a = 1f;
 				image.color = color;
 			}
@@ -52,16 +51,15 @@ public class NewHealthBar : MonoBehaviour
 			{
 				color.a = 0f;
 				image.color = color;
-
 			}
 		}
 	}
 
 	public async void onDamage()
 	{
-		thisUnit = GetComponentInParent<PlayerStateManager>();
-		float health = (float)thisUnit.stats.unit.Health / (float)thisUnit.stats.unit.maxHealth;
-		healthText.text = $"{thisUnit.stats.unit.Health}";
+		//thisUnit = GetComponentInParent<PlayerStateManager>();
+		float health = (float)thisUnit.stats.unit.Health.Value / (float)thisUnit.stats.unit.maxHealth;
+		healthText.text = $"{thisUnit.stats.unit.Health.Value}";
 		updateArmor();
 		await updateFrontImage(0.75f, health);
 		await updateBackImage(0.5f, health);
@@ -69,13 +67,14 @@ public class NewHealthBar : MonoBehaviour
 
 	public async void onEquipementEventTrigger()
 	{
-		thisUnit = GetComponentInParent<PlayerStateManager>();
-		float health = (float)thisUnit.stats.unit.Health / (float)thisUnit.stats.unit.maxHealth;
-		healthText.text = $"{thisUnit.stats.unit.Health}";
+		//thisUnit = GetComponentInParent<PlayerStateManager>();
+		float health = (float)thisUnit.stats.unit.Health.Value / (float)thisUnit.stats.unit.maxHealth;
+		healthText.text = $"{thisUnit.stats.unit.Health.Value}";
 		updateArmor();
-		await updateFrontImage(0.75f, health);
 		await updateBackImage(0.5f, health);
+		await updateFrontImage(0.75f, health);
 	}
+
 	private async Task updateBackImage(float lerpDuration = 0.5f, float newVal = 1)
 	{
 		float timeElapsed = 0;

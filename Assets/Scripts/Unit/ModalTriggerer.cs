@@ -18,11 +18,10 @@ public class ModalTriggerer : MonoBehaviour
 		if (LayerMask.LayerToName(other.gameObject.layer) == "Pickable")
 		{
 			Equipement obj = other.GetComponent<Equipement>();
-			Debug.Log($"before");
 
 			if (obj == null) return;
-			obj.equipement.eventTrigger.Raise(obj.equipement);
-			Debug.Log($"picked");
+
+			obj.picked(thisUnit);
 		}
 	}
 

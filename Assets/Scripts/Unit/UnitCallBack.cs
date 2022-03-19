@@ -3,7 +3,8 @@
 public class UnitCallBack : MonoBehaviour
 {
 	private GameStateManager manager;
-	PlayerStateManager thisUnit;
+	private PlayerStateManager thisUnit;
+
 	private void Start()
 	{
 		manager = GameStateManager.Instance;
@@ -16,11 +17,11 @@ public class UnitCallBack : MonoBehaviour
 		//damage -= thisUnit.stats.unit.armor.Value;
 		damage = Mathf.Clamp(damage, 0, int.MaxValue);
 
-		thisUnit.stats.unit.Health -= damage;
+		thisUnit.stats.unit.Health.Value -= damage;
 
-		Debug.Log($"{thisUnit.name}  was hit by {triggerStats.name} remain health {thisUnit.stats.unit.Health}");
+		Debug.Log($"{thisUnit.name}  was hit by {triggerStats.name} remain health {thisUnit.stats.unit.Health.Value}");
 		//Debug.Log($"health after hit {thisUnit.stats.unit.Health}");
-		if (thisUnit.stats.unit.Health <= 0)
+		if (thisUnit.stats.unit.Health.Value <= 0)
 		{
 			//Debug.Log($"{thisUnit.name} killed by {triggerStats.name}");
 
@@ -56,7 +57,6 @@ public class UnitCallBack : MonoBehaviour
 		manager.SelectedUnit.stats.onStatsChange.Raise();
 		manager.clearPreviousSelectedUnitFromAllVoidEvents(thisUnit);
 	}
-
 
 	private void updateMytHealthBar()
 	{

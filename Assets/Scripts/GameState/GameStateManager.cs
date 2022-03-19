@@ -49,7 +49,7 @@ public class GameStateManager : GameManagerListner
 			clearPreviousSelectedUnitFromAllVoidEvents(_selectedUnit);
 
 			//clearPreviousSelectedUnitFromAllWeaponEvent(_selectedUnit);
-			clearPreviousSelectedUnitFromAlEquipementEvent(_selectedUnit);
+			//clearPreviousSelectedUnitFromAlEquipementEvent(_selectedUnit);
 
 			_selectedUnit = value;
 
@@ -60,7 +60,7 @@ public class GameStateManager : GameManagerListner
 
 			//MakeOnlySelectedUnitListingToEventArgument(_selectedUnit, PlayerChangeEvent);
 
-			MakeOnlySelectedUnitListingToEquipeEvent(_selectedUnit, _selectedUnit?.GetComponent<Stats>()?.unit?.EquipeEvent);
+			//MakeOnlySelectedUnitListingToEquipeEvent(_selectedUnit, _selectedUnit?.GetComponent<Stats>()?.unit?.EquipeEvent);
 		}
 	}
 

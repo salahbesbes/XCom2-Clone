@@ -277,7 +277,7 @@ public class Unit : MonoBehaviour
 	{
 		Transform points = partToRotate.Find("points");
 		Utils utils = points.GetComponent<Utils>();
-		Node front, back, right, left;
+		Node front;
 
 		//Vector3 backCoord = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
 		front = NodeGrid.Instance.getNodeFromTransformPosition(null, points.transform.localPosition);

@@ -13,29 +13,18 @@ public class Stats : MonoBehaviour
 	{
 	}
 
-
-
 	public void addArmorModifier(EquipementData equiment)
 	{
 		unit.armor.AddModifier(equiment.Value);
-		unit.EquipeEvent.Raise(equiment);
 	}
 
-	public void addDamageModifier()
+	public void addDamageModifier(EquipementData equiment)
 	{
-		if (unit.damage.modifiers.Count != 0)
-
-		{
-			unit.damage.AddModifier(unit.damage.modifiers[unit.damage.modifiers.Count - 1] + 2);
-		}
-		else
-		{
-			unit.damage.AddModifier(10);
-		}
+		unit.damage.AddModifier(equiment.Value);
 	}
 
-	public void heal(int healValue)
+	public void addHealthModifier(EquipementData equiment)
 	{
-		unit.Health = Mathf.Clamp(unit.Health += healValue, 0, int.MaxValue);
+		unit.Health.AddModifier(equiment.Value);
 	}
 }

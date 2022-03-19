@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 1011055582716978091}
   - component: {fileID: 2099745317451156214}
   - component: {fileID: 8371300584363915410}
-  - component: {fileID: 4935568523958254575}
   - component: {fileID: 6693965318503978171}
   - component: {fileID: 8936033122034238652}
   - component: {fileID: -2998492999953921230}
+  - component: {fileID: 3993110091444179932}
   m_Layer: 10
   m_Name: BulletAutomatic
   m_TagString: bullet
@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2225754711644898913}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 3281250183555024378, guid: 7a0e149abd9d94e049d88f93cecca00d, type: 3}
 --- !u!23 &8371300584363915410
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ed65637eb35c04648b46c9fa30c700bc, type: 2}
+  - {fileID: 2100000, guid: 9278b9a26840b443386bdc0f8e7de555, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -87,19 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &4935568523958254575
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2225754711644898913}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6693965318503978171
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -150,3 +137,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeTime: 2
+--- !u!136 &3993110091444179932
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2225754711644898913}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.013199998
+  m_Height: 0.07587999
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.03774, z: 0}

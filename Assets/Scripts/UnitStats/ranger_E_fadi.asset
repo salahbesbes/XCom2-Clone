@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: ranger_E_fadi
   m_EditorClassIdentifier: 
   myName: ranger Fadi
-  _health: 100
+  _health:
+    baseValue: 1000
+    modifiers: 
   EquipeEvent: {fileID: 11400000, guid: 6945a8e9d3763734096b06dc5a504f83, type: 2}
   weapon: {fileID: 0}
   damage:
@@ -22,4 +24,4 @@ MonoBehaviour:
   armor:
     baseValue: 7
     modifiers: 
-  _maxHealth: 15
+  _maxHealth: 30

@@ -161,7 +161,6 @@ public class NodeGrid : MonoBehaviour
 			node.parent = null;
 			//node.path = new List<Node>();
 			string[] collidableLayers = { "Unwalkable", "Player", "Enemy", "LowObstacle", "Pickable" };
-			RaycastHit hit;
 
 			int layerToCheck = LayerMask.GetMask(collidableLayers);
 			Collider[] colliders = Physics.OverlapSphere(node.coord, nodeSize / 3, layerToCheck);

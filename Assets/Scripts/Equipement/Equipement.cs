@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class Equipement : MonoBehaviour
+public abstract class Equipement : MonoBehaviour
 {
-	public EquipementData equipement;
+
+	public abstract void picked(AnyClass unit);
 }

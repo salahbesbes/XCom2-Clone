@@ -5,16 +5,10 @@ public class Item : ScriptableObject
 {
 	public Sprite icon;
 	public string nameItem;
-	public Mono prefab;
-
-
+	public SelectableItem prefab;
 
 	public virtual void Use()
 	{
 		Debug.Log($"virtual use");
 	}
-
 }
-
-
-

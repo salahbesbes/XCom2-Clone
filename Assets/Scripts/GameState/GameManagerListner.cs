@@ -44,7 +44,7 @@ public class GameManagerListner : MonoBehaviour
 		}
 	}
 
-	public void clearPreviousSelectedUnitFromAllVoidEvents(AnyClass? unit)
+	public void clearPreviousSelectedUnitFromAllVoidEvents(AnyClass unit)
 	{
 		if (unit == null) return;
 		VoidListner[] listners = unit.listners.GetComponents<VoidListner>();
@@ -143,7 +143,7 @@ public class GameManagerListner : MonoBehaviour
 		{
 			// EventArgument is what ever argument is passed when we trugger (raise the
 			// Event ) in this case its Weapon
-			unit.listners.GetComponent<UnitCallBack>().onEquipeEventTrigger(EventArgument);
+			//unit.listners.GetComponent<UnitCallBack>().onEquipeEventTrigger(EventArgument);
 		});
 
 		e.Register();
@@ -203,6 +203,7 @@ public class GameManagerListner : MonoBehaviour
 
 		e.Register();
 	}
+
 	public void clearPreviousSelectedUnitFromAllBoolEvent(AnyClass unit)
 	{
 		if (unit == null) return;
