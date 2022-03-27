@@ -15,11 +15,6 @@ public abstract class Weapon : SelectableItem
 	public virtual async Task startShooting(ShootAction shoot)
 	{ await Task.Yield(); }
 
-
-
-
-
-
 	public virtual void onHover()
 	{
 	}
@@ -28,25 +23,24 @@ public abstract class Weapon : SelectableItem
 	{
 	}
 
-
-
 	public Vector3 ShotPercent(float AimPercent)
 	{
-
 		int randomValue = Random.Range(0, 100);
 		if (randomValue <= AimPercent)
 		{
 			Debug.Log($"  head Shot ");
+			GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(player.CurrentTarget);
+			GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(player.CurrentTarget, player.CurrentTarget.stats.onWeaponFinishShooting);
+
 			return (player.CurrentTarget.aimPoint.position - startPoint.position).normalized;
 		}
 		else
 		{
 			Debug.Log($"missed shot");
-			Vector3 newDir = (player.CurrentTarget.aimPoint.position - startPoint.position).normalized + Vector3.up * 0.05f;
+			Vector3 newDir = (player.CurrentTarget.aimPoint.position - startPoint.position).normalized + Vector3.up * 0.1f;
+			GameStateManager.Instance.clearPreviousSelectedUnitFromAllWeaponEvent(player.CurrentTarget);
 			return newDir;
 		}
-
-
 	}
 }
 

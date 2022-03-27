@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class PlayerTurn : AnyState<GameStateManager>
 {
-	private Color InitColor;
-
 	public override AnyClass EnterState(GameStateManager gameManager)
 	{
 		gameManager.SelectedUnit = gameManager.players.FirstOrDefault();
@@ -41,7 +39,7 @@ public class PlayerTurn : AnyState<GameStateManager>
 		}
 	}
 
-	public async void SelectNextPlayer(GameStateManager gameManager)
+	public void SelectNextPlayer(GameStateManager gameManager)
 	{
 		int nbPlayers = gameManager.players.Count;
 
@@ -54,25 +52,12 @@ public class PlayerTurn : AnyState<GameStateManager>
 			//List<PlayerStateManager> availablePlayers = gameManager.players.Where(unit => unit.State is Idel).ToList();
 			int currentPlayerIndex = gameManager.players.FindIndex(instance => instance == gameManager.SelectedUnit);
 			gameManager.SelectedUnit = gameManager.players[(currentPlayerIndex + 1) % nbPlayers];
-			//Debug.Log($"{availablePlayers.Count}");
-			//gameManager.SelectedUnit = availablePlayers[(currentPlayerIndex + 1) % nbPlayers];
-			// search for the next unit which is not dead if found
-			//for (int i = currentPlayerIndex + 1; i < gameManager.players.Count; i++)
-			//{
-			//	if (gameManager.players[i % nbPlayers].State is Dead)
-			//		continue;
-			//	else
-			//	{
-			//		gameManager.SelectedUnit = gameManager.players[i % nbPlayers];
-			//		break;
-			//	}
-			//}
 
 			gameManager.SelectedUnit.enabled = true;
 			gameManager.SelectedUnit.fpsCam.enabled = true;
 			gameManager.SelectedUnit.onCameraEnabeled();
 			gameManager.SelectedUnit.CurrentTarget = gameManager.enemies.FirstOrDefault(unit => unit.State is Idel);
-			Vector3 TargetDir = gameManager.SelectedUnit.CurrentTarget.aimPoint.position - gameManager.SelectedUnit.aimPoint.position;
+			//Vector3 TargetDir = gameManager.SelectedUnit.CurrentTarget.aimPoint.position - gameManager.SelectedUnit.aimPoint.position;
 			//await gameManager.SelectedUnit.rotateTowardDirection(gameManager.SelectedUnit.partToRotate, TargetDir, 3);
 			//await gameManager.SelectedUnit.rotateTowardDirection(gameManager.SelectedUnit.CurrentTarget.partToRotate, -TargetDir, 3);
 			//gameManager.SelectedUnit.newFlunking(gameManager.SelectedUnit.CurrentTarget);
@@ -137,30 +122,11 @@ public class EnemyTurn : AnyState<GameStateManager>
 			gameManager.SelectedUnit.fpsCam.enabled = false;
 			int currentPlayerIndex = gameManager.enemies.FindIndex(instance => instance == gameManager.SelectedUnit);
 			gameManager.SelectedUnit = gameManager.enemies[currentPlayerIndex % nbPlayers];
-			// search for the next unit which is not dead if found
-			//for (int i = currentPlayerIndex + 1; i < gameManager.enemies.Count; i++)
-			//{
-			//	if (!(gameManager.enemies[i % nbPlayers].State is Dead))
-			//	{
-			//		gameManager.SelectedUnit = gameManager.enemies[i % nbPlayers];
-			//		break;
-			//	}
-			//}
+
 			gameManager.SelectedUnit.enabled = true;
 			gameManager.SelectedUnit.fpsCam.enabled = true;
 			gameManager.SelectedUnit.onCameraEnabeled();
-
-			gameManager.SelectedUnit.CurrentTarget = gameManager.players.FirstOrDefault(); ;
-
-			//gameManager.SelectedUnit.CoverBihaviour.UpdateNorthPositionTowardTarget(gameManager.SelectedUnit.CurrentTarget);
-			//gameManager.SelectedUnit.CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(gameManager.SelectedUnit);
-			//gameManager.SelectedUnit.CoverBihaviour.CalculateCoverValue();
-
-			gameManager.SelectedUnit.CoverBihaviour.UpdateNorthPositionTowardTarget(gameManager.SelectedUnit.CurrentTarget);
-			//SelectedUnit.CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(SelectedUnit);
-			gameManager.SelectedUnit.CheckForFlunks(gameManager.SelectedUnit.CurrentTarget);
-
-			//gameManager.PlayerChangeEvent.Raise();
+			gameManager.SelectedUnit.CurrentTarget = gameManager.enemies.FirstOrDefault(unit => unit.State is Idel);
 		}
 	}
 }

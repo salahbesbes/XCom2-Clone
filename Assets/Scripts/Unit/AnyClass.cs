@@ -1,6 +1,7 @@
 using gameEventNameSpace;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class AnyClass : Unit
@@ -19,7 +20,16 @@ public class AnyClass : Unit
 	protected GameStateManager gameStateManager;
 
 	public Transform aimPoint;
-	public bool isFlanked;
+	private bool _isFlunk = false;
+
+	public bool IsFluncked
+	{
+		get
+		{
+			return _isFlunk;
+		}
+		set { _isFlunk = value; }
+	}
 
 	[HideInInspector]
 	public List<Transform> sportPoints;
@@ -86,6 +96,7 @@ public class AnyClass : Unit
 				_currentTarger = value;
 				//CoverBihaviour.UpdateNorthPositionTowardTarget(value);
 				//CheckForFlunks();
+				// this code run in syncrones way, problem is we want write "await" in the get method of some Attribute
 				testDelay();
 				GameStateManager.Instance.MakeOnlySelectedUnitListingToWeaponEvent(_currentTarger, stats?.onWeaponFinishShooting);
 				GameStateManager.Instance.MakeOnlySelectedUnitListingToBoolEvent(_currentTarger, stats?.FlunckingTarget);
@@ -98,14 +109,24 @@ public class AnyClass : Unit
 		}
 	}
 
-	public async void testDelay()
+	public async Task<AnyClass> getTarget()
+	{
+		await testDelay();
+
+		return CurrentTarget;
+	}
+
+	public async Task testDelay()
 	{
 		Vector3 TargetDir = CurrentTarget.aimPoint.position - aimPoint.position;
 		await rotateTowardDirection(partToRotate, TargetDir, 2);
 
 		CoverBihaviour.UpdateNorthPositionTowardTarget(CurrentTarget);
 		CurrentTarget.CoverBihaviour.UpdateNorthPositionTowardTarget(this);
-		CheckForFlunks(CurrentTarget);
+		//bool targetIsFluncked = CheckForFlunks(CurrentTarget);
+		//if (targetIsFluncked) CurrentTarget.makeMeGlow();
+		CurrentTarget.IsFluncked = CheckForFlunks(CurrentTarget);
+		if (CurrentTarget.IsFluncked) _currentTarger.makeMeGlow();
 	}
 
 	public void UpdateDirectionTowardTarget(AnyClass target = null)
@@ -144,7 +165,7 @@ public class AnyClass : Unit
 		//Debug.Log($"front {CoverBihaviour.front}");
 	}
 
-	public void CheckForFlunks(AnyClass target = null)
+	public bool CheckForFlunks(AnyClass target = null)
 	{
 		target = target ?? CurrentTarget;
 		//Debug.Log($" check for flunk called ");
@@ -152,8 +173,6 @@ public class AnyClass : Unit
 
 		CoverLogic TargerCover = target.CoverBihaviour;
 		bool flunckTop, flunckLeft, flunckRight;
-
-		target.stopGlowing();
 
 		if (targetDirection == Direction.front)
 		{
@@ -170,7 +189,7 @@ public class AnyClass : Unit
 			{
 				//Debug.Log($" im {name} =>> flucking my target {target.name} IN THE FRONT");
 
-				target.makeMeGlow();
+				return true;
 			}
 		}
 		else
@@ -199,7 +218,7 @@ public class AnyClass : Unit
 				if (flunckTop && flunckLeft)
 				{
 					//Debug.Log($" im {name} =>> flucking my target {target.name} on the LEFT sie");
-					target.makeMeGlow();
+					return true;
 				}
 			}
 
@@ -227,10 +246,11 @@ public class AnyClass : Unit
 				if (flunckTop && flunckRight)
 				{
 					//Debug.Log($" im {name} =>> flucking my target {target.name} on the Right sie");
-					target.makeMeGlow();
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 
 	public void makeMeGlow()

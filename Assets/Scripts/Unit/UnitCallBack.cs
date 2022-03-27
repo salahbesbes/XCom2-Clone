@@ -14,12 +14,14 @@ public class UnitCallBack : MonoBehaviour
 	public void TakeDamage(UnitStats triggerStats)
 	{
 		int damage = triggerStats.damage.Value;
-		//damage -= thisUnit.stats.unit.armor.Value;
+		int criticalDamage = thisUnit.IsFluncked ? damage / 4 : 0;
+		damage += criticalDamage;
+		damage -= thisUnit.stats.unit.armor.Value;
 		damage = Mathf.Clamp(damage, 0, int.MaxValue);
 
 		thisUnit.stats.unit.Health.Value -= damage;
 
-		Debug.Log($"{thisUnit.name}  was hit by {triggerStats.name} remain health {thisUnit.stats.unit.Health.Value}");
+		//Debug.Log($"{thisUnit.name}  was hit by {triggerStats.name} remain health {thisUnit.stats.unit.Health.Value}");
 		//Debug.Log($"health after hit {thisUnit.stats.unit.Health}");
 		if (thisUnit.stats.unit.Health.Value <= 0)
 		{
