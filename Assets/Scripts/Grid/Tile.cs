@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class Tile
+public class Tile : MonoBehaviour
 {
-	public Transform obj;
 	public Node node;
 	public Cover leftCover;
 	public Cover rightCover;
@@ -12,37 +12,76 @@ public class Tile
 	public List<Cover> listOfActiveCover;
 	public bool mouseOnTile = false;
 	private Transform parent;
-	private float size = 1;
-	public Collider colliderOnTop;
+	[HideInInspector]
+	public float size = 1;
+	public float scale = 1;
+	[HideInInspector]
 	public float offset = 2f;
+	public Collider colliderOnTop;
 
-	public Tile(Node node, Transform parent, List<Tile> listTiles)
+	public GameObject getPrefabOnTopOfTheNode(Node node)
 	{
-		// create Quad
-		size = NodeGrid.Instance.nodeSize / 2;
-		this.parent = parent;
-		this.node = node;
-		GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-		obj = quad.transform;
-		quad.transform.position = node.coord;
-		quad.transform.rotation = Quaternion.Euler(90, 0, 0);
-		quad.transform.SetParent(parent);
-		quad.transform.localScale = new Vector3(size, size, size);
+		RaycastHit hit;
 
-		quad.GetComponent<Renderer>().material = (Material)Resources.Load("tile", typeof(Material));
-		listTiles.Add(this);
-		node.tile = this;
-		listOfActiveCover = new List<Cover>();
+
+		if (Physics.Raycast(node.coord, Vector3.up, out hit))
+		{
+
+			//Debug.Log($"{hit.collider.name}");
+			hit.collider.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", Color.blue);
+		}
+		return hit.transform.gameObject;
 	}
 
+	private void Awake()
+	{
+		parent = transform;
+		size = NodeGrid.Instance.nodeSize;
+		scale = NodeGrid.Instance.scale;
+		transform.localScale = new Vector3(size, size, size);
+		listOfActiveCover = new List<Cover>();
+
+	}
+	public Collider getPrefabOnTopOfTheTile()
+	{
+
+		string[] collidableLayers = { "Unwalkable", "Unit" };
+		int layerToCheck = LayerMask.GetMask(collidableLayers);
+		float GroundTileheight = node.groundTile.transform.position.y;
+		Collider[] objs = Physics.OverlapSphere(node.coord + Vector3.up * GroundTileheight, NodeGrid.Instance.nodeSize / 2, layerToCheck);
+		if (objs.Length != 0)
+		{
+
+			Collider unit = objs.FirstOrDefault(el => el.CompareTag("Unit"));
+			if (unit) return unit;
+			else
+			{
+				Collider highObstacle = objs.FirstOrDefault(el => el.CompareTag("HighObstacle"));
+				if (highObstacle) return highObstacle;
+				else
+				{
+					return objs[0].transform.GetComponent<Collider>();
+				}
+			}
+
+
+			//for (int i = 0; i < objs.Length; i++)
+			//{
+
+			//}
+			//// TODO: if 2 GameObject share same tile this line can cause bugs
+		}
+
+		return null;
+	}
 	public void createRightCover()
 	{
-		Vector3 origin = obj.transform.position + Vector3.up * size;
+		Vector3 origin = node.coord + Vector3.up * (size / 2) * scale;
 		GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
 		quad.transform.position = origin + Vector3.right * size;
 		quad.transform.rotation = Quaternion.Euler(0, 90, 0);
+		quad.transform.localScale = new Vector3(size, size, 1) * scale;
 		quad.transform.SetParent(parent);
-		quad.transform.localScale = new Vector3(size, 2 * size, 1);
 
 		quad.GetComponent<Renderer>().material = (Material)Resources.Load("tile", typeof(Material));
 		quad.GetComponent<Renderer>().material.color = Color.red;
@@ -53,12 +92,12 @@ public class Tile
 
 	public void createLeftCover()
 	{
-		Vector3 origin = obj.transform.position + Vector3.up * size;
+		Vector3 origin = node.coord + Vector3.up * (size / 2) * scale;
 		GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
 		quad.transform.position = origin + Vector3.left * size;
 		quad.transform.rotation = Quaternion.Euler(0, -90, 0);
+		quad.transform.localScale = new Vector3(size, size, 1) * scale;
 		quad.transform.SetParent(parent);
-		quad.transform.localScale = new Vector3(size, 2 * size, 1);
 
 		quad.GetComponent<Renderer>().material = (Material)Resources.Load("tile", typeof(Material));
 		quad.GetComponent<Renderer>().material.color = Color.green;
@@ -69,12 +108,12 @@ public class Tile
 
 	public void createForwardCover()
 	{
-		Vector3 origin = obj.transform.position + Vector3.up * size;
+		Vector3 origin = node.coord + Vector3.up * (size / 2) * scale;
 		GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
 		quad.transform.position = origin + Vector3.forward * size;
 		quad.transform.rotation = Quaternion.Euler(0, 0, 0);
+		quad.transform.localScale = new Vector3(size, size, 1) * scale;
 		quad.transform.SetParent(parent);
-		quad.transform.localScale = new Vector3(size, 2 * size, 1);
 
 		quad.GetComponent<Renderer>().material = (Material)Resources.Load("tile", typeof(Material));
 		quad.GetComponent<Renderer>().material.color = Color.gray;
@@ -85,18 +124,23 @@ public class Tile
 
 	public void createBackCover()
 	{
-		Vector3 origin = obj.transform.position + Vector3.up * size;
+		Vector3 origin = node.coord + Vector3.up * (size / 2) * scale;
 		GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
 		quad.transform.position = origin + Vector3.back * size;
 		quad.transform.rotation = Quaternion.Euler(180, 0, 0);
+		quad.transform.localScale = new Vector3(size, size, 1) * scale;
 		quad.transform.SetParent(parent);
-		quad.transform.localScale = new Vector3(size, 2 * size, 1);
 
 		quad.GetComponent<Renderer>().material = (Material)Resources.Load("tile", typeof(Material));
 		quad.GetComponent<Renderer>().material.color = Color.yellow;
 		backCover = new Cover(quad);
 		listOfActiveCover.Add(backCover);
 		//Debug.Log($"create Back Cover");
+	}
+
+	public void hightLight(Color newColor)
+	{
+		GetComponent<Renderer>().material.color = newColor;
 	}
 
 	public void destroyAllActiveCover()
@@ -130,6 +174,9 @@ public class Cover
 		return $"cover exist";
 	}
 }
+
+
+
 
 public enum Direction
 {

@@ -7,7 +7,7 @@ public class PathRenderer : MonoBehaviour
 {
 	private LineRenderer lr;
 	private Node destination;
-	private Node currentPos;
+	private Node currentPos { get; set; }
 
 	private List<Node> path = new List<Node>();
 	private Vector3[] turnPoints;
@@ -15,10 +15,12 @@ public class PathRenderer : MonoBehaviour
 	private Node oldDestination;
 	private List<Vector3> positions = new List<Vector3>();
 
+
 	private void Start()
 	{
 		lr = GetComponent<LineRenderer>();
 		currentPos = NodeGrid.Instance.getNodeFromTransformPosition(transform);
+		Debug.Log($"{currentPos}");
 		turnPoints = new Vector3[0];
 	}
 

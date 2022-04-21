@@ -131,6 +131,8 @@ public class AnyClass : Unit
 
 	public void UpdateDirectionTowardTarget(AnyClass target = null)
 	{
+
+
 		target = target ?? CurrentTarget;
 		currentPos = currentPos ?? NodeGrid.Instance.getNodeFromTransformPosition(transform);
 
@@ -441,13 +443,13 @@ public class AnyClass : Unit
 			foreach (Node node in path)
 			{
 				if (turnPoints.Contains(node.coord))
-					node.tile.obj.GetComponent<Renderer>().material.color = Color.green;
+					node.tile.GetComponent<Renderer>().material.color = Color.green;
 				else
 				{
-					node.tile.obj.GetComponent<Renderer>().material.color = Color.gray;
+					node.tile.GetComponent<Renderer>().material.color = Color.gray;
 				}
 			}
-			potentialDestination.tile.obj.GetComponent<Renderer>().material.color = Color.blue;
+			potentialDestination.tile.GetComponent<Renderer>().material.color = Color.blue;
 			checkForCover(potentialDestination);
 
 			if (Input.GetMouseButtonDown(0))
@@ -516,9 +518,9 @@ public class AnyClass : Unit
 		foreach (Node item in allAccceccibleNodes)
 		{
 			//if (item.firstRange == true)
-			//	item.tile.obj.GetComponent<Renderer>().material.color = Color.black;
+			//	item.tile.GetComponent<Renderer>().material.color = Color.black;
 			//else
-			//	item.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
+			//	item.tile.GetComponent<Renderer>().material.color = Color.yellow;
 		}
 
 		return allAccceccibleNodes;

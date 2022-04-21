@@ -9,6 +9,9 @@ TagManager:
   - grenade
   - mug
   - grass
+  - Unit
+  - HighObstacle
+  - LowObstacle
   layers:
   - Default
   - TransparentFX

@@ -281,7 +281,7 @@ public class Unit : MonoBehaviour
 
 		//Vector3 backCoord = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
 		front = NodeGrid.Instance.getNodeFromTransformPosition(null, points.transform.localPosition);
-		front.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
+		front.tile.hightLight(Color.yellow);
 
 		//utils.updateCoversNode();
 

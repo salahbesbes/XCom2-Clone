@@ -20,18 +20,19 @@ public class NodeGrid : MonoBehaviour
 
 	[HideInInspector]
 	public float nodeRadius;
-
+	[Range(0.1f, 10)]
 	public float nodeSize = 1;
+	public int scale = 1;
 	private LayerMask playerLayer;
 	private LayerMask Unwalkable;
 
 	[HideInInspector]
-	public int width, height;
+	public float width, height;
 
-	public Vector2 wordSizeGrid;
-	private List<Tile> tiles = new List<Tile>();
+	//public Vector2 wordSizeGrid;
+	public List<Tile> tiles { get; private set; } = new List<Tile>();
 	public Transform quadHolder;
-
+	public Tile GroundTilePrefab;
 	/// <summary>
 	/// move the unit toward the destination var sent from the grid to Gridpath var. this
 	/// methode start on mouse douwn frame and the player start moving on the next frame until
@@ -105,8 +106,8 @@ public class NodeGrid : MonoBehaviour
 			// todo: we get the position of the mouse toward the grid we create we need
 			// to implement the logic we need
 			Vector3 worldPosition = ray.GetPoint(distance);
-			if (worldPosition.x >= transform.position.x - wordSizeGrid.x / 2 && worldPosition.x <= wordSizeGrid.x / 2 + transform.position.x
-				&& worldPosition.z >= transform.position.z - wordSizeGrid.y / 2 && worldPosition.z <= wordSizeGrid.y / 2 + transform.position.z)
+			if (worldPosition.x >= transform.position.x - width / 2 && worldPosition.x <= width / 2 + transform.position.x
+				&& worldPosition.z >= transform.position.z - height / 2 && worldPosition.z <= height / 2 + transform.position.z)
 			{
 				float roundX = Mathf.Floor(worldPosition.x) + nodeRadius;
 				float roundY = Mathf.Floor(worldPosition.z) + nodeRadius;
@@ -153,56 +154,26 @@ public class NodeGrid : MonoBehaviour
 
 	public void resetGrid()
 	{
+
 		if (Instance?.graph == null) return;
 		foreach (Node node in graph)
 		{
+			Debug.DrawLine(node.coord, node.coord + Vector3.up, Color.red);
 			node.h = float.PositiveInfinity;
 			node.g = float.PositiveInfinity;
 			node.parent = null;
 			//node.path = new List<Node>();
-			string[] collidableLayers = { "Unwalkable", "Player", "Enemy", "LowObstacle", "Pickable" };
-
+			string[] collidableLayers = { "Unwalkable", "Player", "Enemy" };
 			int layerToCheck = LayerMask.GetMask(collidableLayers);
-			Collider[] colliders = Physics.OverlapSphere(node.coord, nodeSize / 3, layerToCheck);
-
-			if (colliders.Length > 0)
-			{
-				foreach (var collider in colliders)
-				{
-					if (collider.CompareTag("mug")) node.nodeCost = 10;
-					else if (collider.CompareTag("grass")) node.nodeCost = 5;
-					else if (LayerMask.LayerToName(collider.transform.gameObject.layer) == "Unwalkable")
-					{
-						node.tile.colliderOnTop = collider;
-						node.isObstacle = true;
-						break;
-					}
-					else if (LayerMask.LayerToName(collider.transform.gameObject.layer) == "LowObstacle")
-					{
-						node.color = Color.blue;
-						node.isObstacle = false;
-						node.tile.colliderOnTop = collider;
-					}
-					else if (LayerMask.LayerToName(collider.transform.gameObject.layer) == "Player" ||
-						LayerMask.LayerToName(collider.transform.gameObject.layer) == "Enemy")
-					{
-						node.isObstacle = true;
-					}
-					else
-					{
-						node.color = Color.yellow;
-						node.isObstacle = false;
-					}
-				}
-			}
-			else
-			{
-				node.isObstacle = false;
-			}
-			node.color = node.isObstacle ? Color.red : Color.cyan;
+			node.isObstacle = Physics.CheckSphere(node.coord, nodeSize / 2, layerToCheck);
+			node.color = node.isObstacle ? Color.red : Color.white;
 			node.inRange = false;
 			node.firstRange = false;
-			node.tile.obj.GetComponent<Renderer>().material.color = node.color;
+			node.groundTile.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", node.color);
+			node.tile.colliderOnTop = node.tile.getPrefabOnTopOfTheTile();
+
+
+			//if (node.tile.obj != null) node.groundTile.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", Color.black);
 		}
 	}
 
@@ -224,15 +195,18 @@ public class NodeGrid : MonoBehaviour
 			//turnPoints = new Vector3[0];
 			Instance = this;
 			nodeRadius = nodeSize / 2;
-			height = Mathf.RoundToInt(wordSizeGrid.x / nodeSize);
-			width = Mathf.RoundToInt(wordSizeGrid.y / nodeSize);
-			graph = new Node[width, height];
-			buttonLeft = transform.position - (Vector3.right * wordSizeGrid.x / 2) - (Vector3.forward * wordSizeGrid.y / 2);
+
+			scale = (int)transform.localScale.z;
+			height = Mathf.RoundToInt(transform.localScale.z * 10) / nodeSize;
+			width = Mathf.RoundToInt(transform.localScale.x * 10) / nodeSize;
+			graph = new Node[(int)width, (int)height];
+			buttonLeft = transform.position - (Vector3.right * transform.localScale.x * 5) - (Vector3.forward * transform.localScale.z * 5);
+			Debug.Log($"grid [{width},{height}]");
 			generateGrid();
 			//start = graph[0, 0];
 
 			//DontDestroyOnLoad(gameObject);
-			transform.localScale = new Vector3((float)width / 10, 1, (float)height / 10);
+			//transform.localScale = new Vector3((float)wordSizeGrid.x / 10, 1, (float)wordSizeGrid.y / 10);
 			FindObjectOfType<Camera>().transform.position += new Vector3(0, 45 * (width / 50), 0);
 
 			//nodeLayer = LayerMask.GetMask("Node");
@@ -243,48 +217,47 @@ public class NodeGrid : MonoBehaviour
 
 	private void generateGrid()
 	{
+		int count = 0;
 		//initialize graph
 		for (int x = 0; x < height; x++)
 		{
 			for (int y = 0; y < width; y++)
 			{
-				Vector3 offset = new Vector3(nodeSize / 2, 0.01f, nodeSize / 2);
+				Vector3 offset = new Vector3(nodeSize / 2, 0, nodeSize / 2);
 				Vector3 nodeCoord = buttonLeft + offset + Vector3.right * nodeSize * x + Vector3.forward * nodeSize * y;
 				// create node
 				graph[x, y] = new Node(nodeCoord, x, y);
+				float quadSize = nodeSize / transform.localScale.x;
 
-				new Tile(graph[x, y], quadHolder, tiles);
+				Tile newTile = Instantiate(GroundTilePrefab, graph[x, y].coord, Quaternion.identity, quadHolder);
+				newTile.node = graph[x, y];
+				newTile.size = quadSize;
+				newTile.transform.localScale = new Vector3(quadSize, quadSize, quadSize);
+				Vector3 offsetCreation = new Vector3(0, -quadSize / 2 + 0.01f, 0);
+				newTile.transform.position += offsetCreation;
+				graph[x, y].groundTile = newTile.gameObject;
+				graph[x, y].tile = newTile;
 
+				//new Tile(graph[x, y], quadHolder, tiles, quadSize);
 				// project a sphere to check with the Layer Unwalkable if some thing
 				// with the layer Unwalkable above it
-				string[] collidableLayers = { "Unwalkable", "Enemy", "Player", "LowObstacle" };
+				string[] collidableLayers = { "Unwalkable", "Enemy", "Player", "Default" };
 				int layerToCheck = LayerMask.GetMask(collidableLayers);
 				//graph[x, y].isObstacle = Physics.CheckSphere(nodeCoord, nodeSize / 2, layerToCheck);
 
-				Collider[] hitColliders = Physics.OverlapSphere(nodeCoord, nodeSize / 3, layerToCheck);
+				Collider[] hitColliders = Physics.OverlapSphere(nodeCoord, nodeSize / 2, layerToCheck);
 
-				foreach (var collider in hitColliders)
+				foreach (var item in hitColliders)
 				{
-					graph[x, y].tile.colliderOnTop = collider;
-
-					if (collider.CompareTag("mug")) graph[x, y].nodeCost = 10;
-					else if (collider.CompareTag("grass")) graph[x, y].nodeCost = 5;
-					else if (LayerMask.LayerToName(collider.transform.gameObject.layer) == "Unwalkable")
-					{
-						graph[x, y].isObstacle = true;
-						break;
-					}
-					else if (LayerMask.LayerToName(collider.transform.gameObject.layer) == "Player" ||
-						LayerMask.LayerToName(collider.transform.gameObject.layer) == "Enemy")
-					{
-						graph[x, y].isObstacle = true;
-					}
+					if (item.CompareTag("mug")) graph[x, y].nodeCost = 10;
+					else if (item.CompareTag("grass")) graph[x, y].nodeCost = 5;
+					else graph[x, y].isObstacle = true;
 				}
-
+				count++;
 				//graph[x, y].isObstacle = hitColliders.Length > 0 ? true : false;
 			}
 		}
-
+		Debug.Log($"  {count} nodes");
 		//calculate neighbours and create a cover for each node
 		for (int x = 0; x < height; x++)
 		{
@@ -321,17 +294,37 @@ public class NodeGrid : MonoBehaviour
 
 	private void OnDrawGizmos()
 	{
-		float localwidth = wordSizeGrid.x, localheight = wordSizeGrid.y;
+		Gizmos.DrawCube(buttonLeft, Vector3.one);
+		int localheight = Mathf.RoundToInt(transform.localScale.z * 10);
+		int localwidth = Mathf.RoundToInt(transform.localScale.x * 10);
+		buttonLeft = transform.position - (Vector3.right * transform.localScale.x * 5) - (Vector3.forward * transform.localScale.z * 5);
+		//Debug.Log($"grid [{localwidth / nodeSize},{localheight / nodeSize}]");
+		for (float x = 0; x < localheight; x += nodeSize)
+		{
+			Debug.DrawLine(buttonLeft + new Vector3(0, 0.00f, x), new Vector3(localwidth + buttonLeft.x, 0.00f, (x + buttonLeft.z)), new Color(0, 0, 0, 0.5f));
+		}
+		for (float x = 0; x < localwidth; x += nodeSize)
+		{
+			Debug.DrawLine(buttonLeft + new Vector3(x, 0.00f, 0), new Vector3(x + buttonLeft.x, 0.00f, (localheight + buttonLeft.z)), new Color(0, 0, 0, 0.5f));
+		}
 
-		buttonLeft = transform.position - (Vector3.right * wordSizeGrid.x / 2) - (Vector3.forward * wordSizeGrid.y / 2);
-		for (int x = 0; x < localwidth; x++)
-		{
-			Debug.DrawLine(buttonLeft + new Vector3(0, 0.02f, x), new Vector3(localwidth + buttonLeft.x, 0.02f, (x + buttonLeft.z)), Color.black);
-		}
-		for (int x = 0; x < localheight; x++)
-		{
-			Debug.DrawLine(buttonLeft + new Vector3(x, 0.02f, 0), new Vector3(x + buttonLeft.x, 0.02f, (localheight + buttonLeft.z)), Color.black);
-		}
+		//resetGrid();
+
+		//foreach (var item in Instance.graph)
+		//{
+		//	Gizmos.color = item.color;
+		//	Gizmos.DrawCube(item.coord, new Vector3(nodeSize - 0.1f, 0.1f, nodeSize - 0.1f));
+		//}
+		//if (GameStateManager.Instance?.SelectedUnit?.partToRotate != null)
+		//{
+		//	Transform points = GameStateManager.Instance.SelectedUnit.partToRotate.Find("points");
+
+		//	foreach (Transform point in points)
+		//	{
+		//		Gizmos.color = Color.grey;
+		//		Gizmos.DrawSphere(point.position, 0.5f);
+		//	}
+		//}
 	}
 
 	public Node getNode(int x, int y)

@@ -99,25 +99,25 @@ public class CoverLogic : MonoBehaviour
 		if (front != null)
 		{
 			//Debug.Log($"front {front}");
-			front.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
+			front.tile.GetComponent<Renderer>().material.color = Color.yellow;
 		}
 
 		if (back != null)
 		{
 			//Debug.Log($"back {back}");
-			back.tile.obj.GetComponent<Renderer>().material.color = Color.red;
+			back.tile.GetComponent<Renderer>().material.color = Color.red;
 		}
 
 		if (right != null)
 		{
 			//Debug.Log($"right {right}");
-			right.tile.obj.GetComponent<Renderer>().material.color = Color.blue;
+			right.tile.GetComponent<Renderer>().material.color = Color.blue;
 		}
 
 		if (left != null)
 		{
 			//Debug.Log($"left {left}");
-			left.tile.obj.GetComponent<Renderer>().material.color = Color.green;
+			left.tile.GetComponent<Renderer>().material.color = Color.green;
 		}
 		//Debug.Log($"front {front}, back {back}, right {right}, left {left} player {currentPos}");
 	}

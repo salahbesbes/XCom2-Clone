@@ -24,16 +24,16 @@ public class Utils : MonoBehaviour
 	public void updateCoversNode()
 	{
 		frontCover = NodeGrid.Instance.getNodeFromTransformPosition(frontCoverTransform);
-		frontCover.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
+		frontCover.tile.GetComponent<Renderer>().material.color = Color.yellow;
 
 		backCover = NodeGrid.Instance.getNodeFromTransformPosition(backCoverTransform);
-		backCover.tile.obj.GetComponent<Renderer>().material.color = Color.white;
+		backCover.tile.GetComponent<Renderer>().material.color = Color.white;
 
 		leftCover = NodeGrid.Instance.getNodeFromTransformPosition(leftCoverTransform);
-		leftCover.tile.obj.GetComponent<Renderer>().material.color = Color.grey;
+		leftCover.tile.GetComponent<Renderer>().material.color = Color.grey;
 
 		rightCover = NodeGrid.Instance.getNodeFromTransformPosition(rightCoverTransform);
-		rightCover.tile.obj.GetComponent<Renderer>().material.color = Color.green;
+		rightCover.tile.GetComponent<Renderer>().material.color = Color.green;
 
 		//Debug.Log($"front {frontCover} back {backCover} left {leftCover} right {rightCover}");
 	}

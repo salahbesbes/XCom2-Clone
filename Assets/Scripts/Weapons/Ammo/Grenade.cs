@@ -57,7 +57,7 @@ public class Grenade : Ammo
 	{
 		foreach (Node item in NodeInRange)
 		{
-			item.tile.obj.GetComponent<Renderer>().material.color = Color.yellow;
+			item.tile.GetComponent<Renderer>().material.color = Color.yellow;
 			Debug.DrawLine(item.coord, item.coord + Vector3.up, Color.green);
 		}
 	}

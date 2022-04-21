@@ -112,7 +112,7 @@ public class HeavyWeapon : Weapon
 		{
 			//lineConponent.SetUpLine(turnPoints);
 
-			potentialDestination.tile.obj.GetComponent<Renderer>().material.color = Color.blue;
+			potentialDestination.tile.hightLight(Color.blue);
 			DrowTrajectory(potentialDestination.coord);
 			if (Input.GetMouseButtonDown(0))
 			{
