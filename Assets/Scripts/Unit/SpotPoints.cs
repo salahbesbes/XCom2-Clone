@@ -5,7 +5,7 @@ public class SpotPoints : MonoBehaviour
 {
 	private void OnEnable()
 	{
-		AnyClass thisPlayer = transform.parent.parent.GetComponent<AnyClass>();
+		Unit thisPlayer = transform.parent.parent.GetComponent<Unit>();
 		thisPlayer.sportPoints = sportPoint;
 	}
 

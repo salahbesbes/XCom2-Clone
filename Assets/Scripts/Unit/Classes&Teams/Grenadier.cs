@@ -1,4 +1,7 @@
-﻿public class Grenadier : PlayerStateManager, IClassGrenadier
+﻿
+using UnityEngine;
+
+public class Grenadier : PlayerStateManager, IClassGrenadier
 {
 	private HeavyWeapon myWeapon;
 
@@ -16,6 +19,13 @@
 
 	public void CreateLunchGrenadeAction()
 	{
+		int actionPoints = stats.unit.ActionPoint;
+
+		if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
+		{
+			Debug.Log($" No action point Left !!!");
+			return;
+		}
 		Node potentialDestination = NodeGrid.Instance.getNodeFromMousePosition(secondCam);
 		LunchGrenadeAction action = new LunchGrenadeAction(LunchGrenadeCallback, "LunchGrenade", potentialDestination);
 		Enqueue(action);

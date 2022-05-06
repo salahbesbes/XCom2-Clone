@@ -24,6 +24,8 @@ public class Ak47 : Weapon
 		if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))
 		{
 			ActionData shoot = player.actions.FirstOrDefault((el) => el is ShootingAction);
+			if (shoot == null || player.stats.unit.ActionPoint <= 1) return;
+
 			player.currentActionAnimation = AnimationType.shoot;
 			player.SwitchState(player.doingAction);
 			shoot?.Actionevent?.Raise();

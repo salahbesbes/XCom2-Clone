@@ -6,10 +6,10 @@ public class MoveAction : ActionBase
 	public new Action<MoveAction, Node, Node> executeAction;
 	private Node start, end;
 
-	public MoveAction(Action<MoveAction, Node, Node> callback, string name, Node start, Node end)
+	public MoveAction(Action<MoveAction, Node, Node> callback, string name, Node start, Node end, int cost = 1)
 	{
 		executeAction = callback;
-
+		this.cost = cost;
 		this.name = name;
 		this.start = start;
 		this.end = end;
@@ -30,10 +30,10 @@ public class ShootAction : ActionBase
 {
 	public new Action<ShootAction> executeAction;
 
-	public ShootAction(Action<ShootAction> callback, string name)
+	public ShootAction(Action<ShootAction> callback, string name, int cost = 2)
 	{
 		executeAction = callback;
-
+		this.cost = cost;
 		this.name = name;
 	}
 
@@ -47,10 +47,12 @@ public class ReloadAction : ActionBase
 {
 	public new Action<ReloadAction> executeAction;
 
-	public ReloadAction(Action<ReloadAction> callback, string name)
+	public ReloadAction(Action<ReloadAction> callback, string name, int cost = 1)
 	{
 		executeAction = callback;
 		this.name = name;
+		this.cost = cost;
+
 	}
 
 	public override void TryExecuteAction()
@@ -64,11 +66,12 @@ public class LunchGrenadeAction : ActionBase
 	public new Action<LunchGrenadeAction, Node> executeAction;
 	public Node destination;
 
-	public LunchGrenadeAction(Action<LunchGrenadeAction, Node> callback, string name, Node dest)
+	public LunchGrenadeAction(Action<LunchGrenadeAction, Node> callback, string name, Node dest, int cost = 2)
 	{
 		executeAction = callback;
 		this.name = name;
 		destination = dest;
+		this.cost = cost;
 	}
 
 	public override void TryExecuteAction()
@@ -92,4 +95,6 @@ public class ActionBase
 	public virtual void onActionFinish()
 	{
 	}
+
+
 }

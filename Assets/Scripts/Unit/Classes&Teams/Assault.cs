@@ -28,11 +28,3 @@ internal interface IClassGrenadier
 	public void LunchGrenadeCallback(LunchGrenadeAction action, Node destination);
 }
 
-public interface IBaseActions
-{
-	public void CreateNewMoveAction();
-
-	public void CreateNewReloadAction();
-
-	public void CreateNewShootAction();
-}

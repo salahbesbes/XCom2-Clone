@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class DoingAction : AnyState<PlayerStateManager>
+public class DoingAction : BaseState<PlayerStateManager>
 {
-	public override AnyClass EnterState(PlayerStateManager player)
+	public override Unit EnterState(PlayerStateManager player)
 	{
 		//Debug.Log($"{player.name} current state : {player.State.name}");
 		//Debug.Log($"{player.currentActionAnimation}");

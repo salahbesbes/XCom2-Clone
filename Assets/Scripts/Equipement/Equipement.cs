@@ -3,5 +3,5 @@ using UnityEngine;
 public abstract class Equipement : MonoBehaviour
 {
 
-	public abstract void picked(AnyClass unit);
+	public abstract void picked(Unit unit);
 }

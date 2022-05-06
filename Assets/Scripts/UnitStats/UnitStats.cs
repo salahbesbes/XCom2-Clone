@@ -32,6 +32,13 @@ public class UnitStats : ScriptableObject
 		}
 	}
 
+	[SerializeField]
+	public int _maxActionPoint = 2;
+	private int _ActionPoint = 2;
+	public int ActionPoint { get => _ActionPoint; set => _ActionPoint = Mathf.Clamp(value, 0, int.MaxValue); }
+
+
+
 	private void Reset()
 	{
 		//Output the message to the Console
@@ -39,7 +46,7 @@ public class UnitStats : ScriptableObject
 		Health.Value = _maxHealth;
 
 		//eventToListnTo = FindObjectOfType<VoidEvent>();
-
+		ActionPoint = _maxActionPoint;
 		armor.modifiers.Clear();
 		damage.modifiers.Clear();
 		Health.modifiers.Clear();
@@ -53,6 +60,7 @@ public class UnitStats : ScriptableObject
 
 	private void OnEnable()
 	{
+		ActionPoint = _maxActionPoint;
 		Health.Value = _maxHealth;
 		armor.modifiers.Clear();
 		damage.modifiers.Clear();
@@ -76,4 +84,11 @@ public class UnitStats : ScriptableObject
 		//armor.Value = 5;
 		//Debug.Log($"validate");
 	}
+
+
+	public void resetActionPoints()
+	{
+		ActionPoint = _maxActionPoint;
+	}
+
 }

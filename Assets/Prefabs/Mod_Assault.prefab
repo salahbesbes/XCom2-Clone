@@ -55,6 +55,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mod_Assault
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c7404f67aae92b847a7238f29679158e, type: 3}
+      propertyPath: m_TagString
+      value: Unit
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: c7404f67aae92b847a7238f29679158e, type: 3}
       propertyPath: m_Controller
       value: 
@@ -126,18 +130,6 @@ CapsuleCollider:
   m_Height: 1.7789756
   m_Direction: 1
   m_Center: {x: 0, y: 0.8894878, z: 0}
---- !u!114 &8093690059641649598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1642830206534423554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 341a1090eb1e7a74a8b6276054457f70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4653381317448014760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,6 +148,18 @@ MonoBehaviour:
   - {fileID: 8733405511535923086}
   - {fileID: 6201231579108288393}
   - {fileID: 5470680602631035963}
+--- !u!114 &8093690059641649598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642830206534423554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 341a1090eb1e7a74a8b6276054457f70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8614678144860619313
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2,10 +2,10 @@
 {
 	public HealthData equipement;
 
-	public override void picked(AnyClass unit)
+	public override void picked(Unit unit)
 	{
 		unit.stats.addHealthModifier(equipement);
-		unit.HealthBar.GetComponent<NewHealthBar>().onEquipementEventTrigger();
+		unit.HealthBar.GetComponent<HealthBar>().onEquipementEventTrigger();
 		Destroy(gameObject);
 	}
 }

@@ -114,9 +114,10 @@ public class HeavyWeapon : Weapon
 
 			potentialDestination.tile.hightLight(Color.blue);
 			DrowTrajectory(potentialDestination.coord);
-			if (Input.GetMouseButtonDown(0))
+			if (Input.GetMouseButtonDown(0) && player.stats.unit.ActionPoint > 0)
 			{
 				ActionData action = player.actions.FirstOrDefault((el) => el is LunchGrenadeData);
+				if (action == null || player.stats.unit.ActionPoint <= 1) return;
 				player.currentActionAnimation = AnimationType.shoot;
 				player.SwitchState(player.doingAction);
 				action?.Actionevent?.Raise();

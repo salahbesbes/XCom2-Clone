@@ -1,4 +1,4 @@
-public class PlayerStateManager : AnyClass
+public class PlayerStateManager : Unit
 {
 	public SelectingEnemy selectingEnemy = new SelectingEnemy();
 	public Idel idelState = new Idel();
@@ -15,9 +15,8 @@ public class PlayerStateManager : AnyClass
 	// //Debug.Log($"start of player state manager ");
 
 	//}
-	private void OnEnable()
+	public void OnEnable()
 	{
-		SwitchState(idelState);
 	}
 
 	private BaseState<PlayerStateManager> _State;
@@ -33,6 +32,7 @@ public class PlayerStateManager : AnyClass
 
 	private void Awake()
 	{
+		SwitchState(idelState);
 	}
 
 	private void Update()
@@ -46,7 +46,7 @@ public class PlayerStateManager : AnyClass
 	{
 	}
 
-	public void SwitchState(BaseState<PlayerStateManager> newState, AnimationType? anim = null)
+	public void SwitchState(BaseState<PlayerStateManager> newState)
 	{
 		State?.ExitState(this);
 		State = newState;

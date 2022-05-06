@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class GameManagerListner : MonoBehaviour
 {
 	public VoidEvent GameEndedEvent;
+	public StringEvent notifyCanvas;
 
 	private void clearGameManagerFromPreviousSelectedUnit()
 	{
@@ -16,7 +17,7 @@ public class GameManagerListner : MonoBehaviour
 		}
 	}
 
-	public void MakeGAmeMAnagerListingToNewSelectedUnit(AnyClass unit)
+	public void MakeGAmeMAnagerListingToNewSelectedUnit(Unit unit)
 	{
 		clearGameManagerFromPreviousSelectedUnit();
 		// the Subject (Trigger) is the GameManager and the listner is Current Selected Unit
@@ -29,10 +30,7 @@ public class GameManagerListner : MonoBehaviour
 			e.response = new UnityEvent();
 			e.register();
 			if (unit == null) return;
-			if (playerEvent is MovementActionEvent)
-			{
-				e.response.AddListener(unit.CreateNewMoveAction);
-			}
+
 			if (playerEvent is ShootActionEvent)
 			{
 				e.response.AddListener(unit.CreateNewShootAction);
@@ -44,7 +42,7 @@ public class GameManagerListner : MonoBehaviour
 		}
 	}
 
-	public void clearPreviousSelectedUnitFromAllVoidEvents(AnyClass unit)
+	public void clearPreviousSelectedUnitFromAllVoidEvents(Unit unit)
 	{
 		if (unit == null) return;
 		VoidListner[] listners = unit.listners.GetComponents<VoidListner>();
@@ -55,7 +53,7 @@ public class GameManagerListner : MonoBehaviour
 		}
 	}
 
-	public void MakeOnlySelectedUnitListingToEventArgument(AnyClass unit, VoidEvent voidEvent)
+	public void MakeOnlySelectedUnitListingToEventArgument(Unit unit, VoidEvent voidEvent)
 	{
 		// the Subject (Trigger) is the GameManager and the listner is Current
 		// Selected.currentTarget Or the Subject current Selected Unit listner is Current
@@ -83,12 +81,12 @@ public class GameManagerListner : MonoBehaviour
 			}
 			else if (voidEvent is StatsChangeEvent)
 			{
-				unit.HealthBar.GetComponent<NewHealthBar>().onEquipementEventTrigger();
+				unit.HealthBar.GetComponent<HealthBar>().onEquipementEventTrigger();
 			}
 		});
 	}
 
-	public void clearPreviousSelectedUnitFromAllWeaponEvent(AnyClass unit)
+	public void clearPreviousSelectedUnitFromAllWeaponEvent(Unit unit)
 	{
 		if (unit == null) return;
 		WeaponListner[] listners = unit.listners.GetComponents<WeaponListner>();
@@ -98,7 +96,7 @@ public class GameManagerListner : MonoBehaviour
 		}
 	}
 
-	public void MakeOnlySelectedUnitListingToWeaponEvent(AnyClass unit, WeaponEvent weaponEvent)
+	public void MakeOnlySelectedUnitListingToWeaponEvent(Unit unit, WeaponEvent weaponEvent)
 	{
 		// the Subject (Trigger) is the current Selected Unit and the listner is Current
 		// Selected.currentTarget
@@ -119,7 +117,7 @@ public class GameManagerListner : MonoBehaviour
 		e.Register();
 	}
 
-	public void clearPreviousSelectedUnitFromAlEquipementEvent(AnyClass unit)
+	public void clearPreviousSelectedUnitFromAlEquipementEvent(Unit unit)
 	{
 		if (unit == null) return;
 		EquipementListner[] listners = unit.listners.GetComponents<EquipementListner>();
@@ -130,7 +128,7 @@ public class GameManagerListner : MonoBehaviour
 		}
 	}
 
-	public void MakeOnlySelectedUnitListingToEquipeEvent(AnyClass unit, EquipementEvent equipeEvent)
+	public void MakeOnlySelectedUnitListingToEquipeEvent(Unit unit, EquipementEvent equipeEvent)
 	{
 		// the Subject (Trigger) is the Equipement GAme Object in the scene and the listner
 		// is the Current Selected Unit
@@ -149,7 +147,7 @@ public class GameManagerListner : MonoBehaviour
 		e.Register();
 	}
 
-	public void MakeOnlySelectedUnitListingGrenadeExplosionEvent(AnyClass unit, GrenadeExplosion grenadeExplotionEvent)
+	public void MakeOnlySelectedUnitListingGrenadeExplosionEvent(Unit unit, GrenadeExplosion grenadeExplotionEvent)
 	{
 		// the Subject (Trigger) is the Equipement GAme Object in the scene and the listner
 		// is the Current Selected Unit
@@ -171,7 +169,7 @@ public class GameManagerListner : MonoBehaviour
 		e.Register();
 	}
 
-	public void clearPreviousSelectedUnitFromAllGrenadeExplosionEvent(AnyClass unit)
+	public void clearPreviousSelectedUnitFromAllGrenadeExplosionEvent(Unit unit)
 	{
 		if (unit == null) return;
 		GrenadeExplosionListner[] listners = unit.listners.GetComponents<GrenadeExplosionListner>();
@@ -182,7 +180,7 @@ public class GameManagerListner : MonoBehaviour
 		}
 	}
 
-	public void MakeOnlySelectedUnitListingToBoolEvent(AnyClass unit, BoolEvent boolEvent)
+	public void MakeOnlySelectedUnitListingToBoolEvent(Unit unit, BoolEvent boolEvent)
 	{
 		// the Subject (Trigger) is the Equipement GAme Object in the scene and the listner
 		// is the Current Selected Unit
@@ -204,7 +202,7 @@ public class GameManagerListner : MonoBehaviour
 		e.Register();
 	}
 
-	public void clearPreviousSelectedUnitFromAllBoolEvent(AnyClass unit)
+	public void clearPreviousSelectedUnitFromAllBoolEvent(Unit unit)
 	{
 		if (unit == null) return;
 		BoolListner[] listners = unit.listners.GetComponents<BoolListner>();

@@ -1,14 +1,15 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Idel : AnyState<PlayerStateManager>
+public class Idel : BaseState<PlayerStateManager>
 {
 	private Node oldDestination, potentialDest;
 
-	public override AnyClass EnterState(PlayerStateManager player)
+	public override Unit EnterState(PlayerStateManager player)
 	{
 		//Debug.Log($" {player.name}  state : {player.State.name}");
 		player.weapon.enabled = false;
+		player.PlayAnimation(AnimationType.idel);
 		return null;
 	}
 

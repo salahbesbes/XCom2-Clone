@@ -64,31 +64,7 @@ public class GameStateManager : GameManagerListner
 		}
 	}
 
-	//public Player SelectedPlayer
-	//{
-	//	get => _selectedPlayer; set
-	//	{
-	//		// every time game manager want to switch player update the old selected one
-	//		// to idel state
-	//		_selectedPlayer?.SwitchState(_selectedPlayer?.idelState);
-	//		clearPreviousSelectedUnitFromAllVoidEvents(_selectedPlayer);
-	//		clearPreviousSelectedUnitFromAllWeaponEvent(_selectedPlayer);
-	//		clearPreviousSelectedUnitFromAlEquipementEvent(_selectedPlayer);
 
-	//		_selectedPlayer = value;
-	//		if (State is PlayerTurn)
-	//		{
-	//			MakeGAmeMAnagerListingToNewSelectedUnit(_selectedPlayer);
-	//			MakeOnlySelectedUnitListingToEventArgument(_selectedPlayer, PlayerChangeEvent);
-	//			MakeOnlySelectedUnitListingToEquipeEvent(_selectedPlayer, _selectedPlayer.GetComponent<Stats>()?.unit?.EquipeEvent);
-	//		}
-	//		else if (State is EnemyTurn)
-	//		{
-	//			MakeOnlySelectedUnitListingToWeaponEvent(_selectedPlayer, SelectedEnemy?.GetComponent<Stats>()?.unit?.ShootActionEvent);
-	//			MakeOnlySelectedUnitListingToEventArgument(_selectedPlayer, SelectedEnemy?.onChangeTarget);
-	//		}
-	//	}
-	//}
 
 	[HideInInspector]
 	public NodeGrid grid;
@@ -100,7 +76,7 @@ public class GameStateManager : GameManagerListner
 		if (Instance == null)
 		{
 			Instance = this;
-			SwitchState(playerTurn);
+
 		}
 		else
 		{
@@ -111,6 +87,7 @@ public class GameStateManager : GameManagerListner
 	private void Start()
 	{
 		grid = NodeGrid.Instance;
+		SwitchState(playerTurn);
 	}
 
 	private void Update()
@@ -126,7 +103,7 @@ public class GameStateManager : GameManagerListner
 		// the only way to change the state
 		State = newState;
 		clearPreviousSelectedUnitFromAllWeaponEvent(SelectedUnit?.CurrentTarget);
-		AnyClass selectedUnit = State.EnterState(this);
+		Unit selectedUnit = State.EnterState(this);
 	}
 
 	public void ChangeState()
@@ -140,7 +117,7 @@ public abstract class BaseState<T>
 {
 	public string name;
 
-	public abstract AnyClass EnterState(T playerContext);
+	public abstract Unit EnterState(T playerContext);
 
 	public abstract void Update(T playerContext);
 
@@ -149,17 +126,5 @@ public abstract class BaseState<T>
 	public override string ToString()
 	{
 		return $"{GetType().Name}";
-	}
-}
-
-// this class inhirit from PlayerBaseState Class the role of this class is to share (execute) code
-// that all state execute it
-public abstract class AnyState<T> : BaseState<T>
-{
-	// if we want to execute code in all states in the update methode
-
-	public AnyState()
-	{
-		name = GetType().Name;
 	}
 }

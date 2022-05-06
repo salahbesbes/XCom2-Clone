@@ -10,7 +10,7 @@ public class Tile : MonoBehaviour
 	public Cover forwardCover;
 	public Cover backCover;
 	public List<Cover> listOfActiveCover;
-	public bool mouseOnTile = false;
+	public bool mouseAlreadyOnTile = false;
 	private Transform parent;
 	[HideInInspector]
 	public float size = 1;
@@ -18,7 +18,7 @@ public class Tile : MonoBehaviour
 	[HideInInspector]
 	public float offset = 2f;
 	public Collider colliderOnTop;
-
+	public Material defaultMaterial;
 	public GameObject getPrefabOnTopOfTheNode(Node node)
 	{
 		RaycastHit hit;
@@ -38,109 +38,148 @@ public class Tile : MonoBehaviour
 		parent = transform;
 		size = NodeGrid.Instance.nodeSize;
 		scale = NodeGrid.Instance.scale;
-		transform.localScale = new Vector3(size, size, size);
+		transform.localScale = new Vector3(size, 0.1f, size);
 		listOfActiveCover = new List<Cover>();
+		defaultMaterial = NodeGrid.Instance.tile_mat;
+
 
 	}
 	public Collider getPrefabOnTopOfTheTile()
 	{
 
-		string[] collidableLayers = { "Unwalkable", "Unit" };
-		int layerToCheck = LayerMask.GetMask(collidableLayers);
-		float GroundTileheight = node.groundTile.transform.position.y;
-		Collider[] objs = Physics.OverlapSphere(node.coord + Vector3.up * GroundTileheight, NodeGrid.Instance.nodeSize / 2, layerToCheck);
-		if (objs.Length != 0)
-		{
+		string[] collidableLayers = { "Environment", "Charachter" };
 
-			Collider unit = objs.FirstOrDefault(el => el.CompareTag("Unit"));
-			if (unit) return unit;
+		int layerToCheck = LayerMask.GetMask(collidableLayers);
+		float GroundTileheight = node.tile.transform.position.y;
+		Collider[] objs = Physics.OverlapSphere(node.coord + Vector3.up * GroundTileheight, NodeGrid.Instance.nodeSize / 2, layerToCheck);
+
+		node.isUnwalkable = false;
+		node.isObstacle = false;
+		if (objs.Length == 0) return null;
+
+		Collider unit = objs.FirstOrDefault(el => el.CompareTag("Unit"));
+		if (unit)
+		{
+			node.isUnwalkable = true;
+			node.isObstacle = false;
+			return unit;
+		}
+		else
+		{
+			Collider highObstacle = objs.FirstOrDefault(el => el.CompareTag("HighObstacle"));
+			if (highObstacle)
+			{
+				node.isUnwalkable = true;
+				node.isObstacle = true;
+				return highObstacle;
+			}
 			else
 			{
-				Collider highObstacle = objs.FirstOrDefault(el => el.CompareTag("HighObstacle"));
-				if (highObstacle) return highObstacle;
+				Collider lowObstacle = objs.FirstOrDefault(el => el.CompareTag("LowObstacle"));
+				if (lowObstacle)
+				{
+					node.isUnwalkable = true;
+					node.isObstacle = true;
+					return lowObstacle;
+				}
 				else
 				{
-					return objs[0].transform.GetComponent<Collider>();
+					Collider jumpObj = objs.FirstOrDefault(el => el.CompareTag("JumpObject"));
+					if (jumpObj)
+					{
+
+						node.isUnwalkable = false;
+						node.isObstacle = false;
+						return jumpObj;
+					}
+					else
+					{
+						Collider obj = objs.FirstOrDefault();
+
+						node.isUnwalkable = false;
+						node.isObstacle = false;
+						return obj;
+					}
 				}
+
 			}
-
-
-			//for (int i = 0; i < objs.Length; i++)
-			//{
-
-			//}
-			//// TODO: if 2 GameObject share same tile this line can cause bugs
 		}
-
-		return null;
 	}
-	public void createRightCover()
+	public void createRightCover(CoverType typeOfCover)
 	{
-		Vector3 origin = node.coord + Vector3.up * (size / 2) * scale;
-		GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-		quad.transform.position = origin + Vector3.right * size;
-		quad.transform.rotation = Quaternion.Euler(0, 90, 0);
-		quad.transform.localScale = new Vector3(size, size, 1) * scale;
-		quad.transform.SetParent(parent);
-
-		quad.GetComponent<Renderer>().material = (Material)Resources.Load("tile", typeof(Material));
-		quad.GetComponent<Renderer>().material.color = Color.red;
-		rightCover = new Cover(quad);
+		rightCover = new Cover(CoverDirection.right, typeOfCover, node);
+		rightCover.showSprite(size, scale);
 		listOfActiveCover.Add(rightCover);
 		//Debug.Log($"create right Cover");
 	}
 
-	public void createLeftCover()
+	public void createLeftCover(CoverType typeOfCover)
 	{
-		Vector3 origin = node.coord + Vector3.up * (size / 2) * scale;
-		GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-		quad.transform.position = origin + Vector3.left * size;
-		quad.transform.rotation = Quaternion.Euler(0, -90, 0);
-		quad.transform.localScale = new Vector3(size, size, 1) * scale;
-		quad.transform.SetParent(parent);
-
-		quad.GetComponent<Renderer>().material = (Material)Resources.Load("tile", typeof(Material));
-		quad.GetComponent<Renderer>().material.color = Color.green;
-		leftCover = new Cover(quad);
+		leftCover = new Cover(CoverDirection.left, typeOfCover, node);
+		leftCover.showSprite(size, scale);
 		listOfActiveCover.Add(leftCover);
 		//Debug.Log($"create left Cover");
 	}
 
-	public void createForwardCover()
+	public void createForwardCover(CoverType typeOfCover)
 	{
-		Vector3 origin = node.coord + Vector3.up * (size / 2) * scale;
-		GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-		quad.transform.position = origin + Vector3.forward * size;
-		quad.transform.rotation = Quaternion.Euler(0, 0, 0);
-		quad.transform.localScale = new Vector3(size, size, 1) * scale;
-		quad.transform.SetParent(parent);
+		forwardCover = new Cover(CoverDirection.front, typeOfCover, node);
+		forwardCover.showSprite(size, scale);
 
-		quad.GetComponent<Renderer>().material = (Material)Resources.Load("tile", typeof(Material));
-		quad.GetComponent<Renderer>().material.color = Color.gray;
-		forwardCover = new Cover(quad);
 		listOfActiveCover.Add(forwardCover);
 		//Debug.Log($"create forward Cover");
 	}
 
-	public void createBackCover()
+	public void createBackCover(CoverType typeOfCover)
 	{
-		Vector3 origin = node.coord + Vector3.up * (size / 2) * scale;
-		GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-		quad.transform.position = origin + Vector3.back * size;
-		quad.transform.rotation = Quaternion.Euler(180, 0, 0);
-		quad.transform.localScale = new Vector3(size, size, 1) * scale;
-		quad.transform.SetParent(parent);
+		backCover = new Cover(CoverDirection.back, typeOfCover, node);
 
-		quad.GetComponent<Renderer>().material = (Material)Resources.Load("tile", typeof(Material));
-		quad.GetComponent<Renderer>().material.color = Color.yellow;
-		backCover = new Cover(quad);
+		//Vector3 origin = node.coord + Vector3.up * (size / 2) * scale;
+		//quad.transform.position = origin + Vector3.back * size;
+		//quad.transform.rotation = Quaternion.Euler(180, 0, 0);
+		//quad.transform.localScale = new Vector3(size, size, 1) * scale;
+		//quad.transform.SetParent(parent);
+		backCover.showSprite(size, scale);
+
 		listOfActiveCover.Add(backCover);
 		//Debug.Log($"create Back Cover");
 	}
 
 	public void hightLight(Color newColor)
 	{
+		if (defaultMaterial != NodeGrid.Instance.tile_mat)
+		{
+			hightLight();
+			return;
+		}
 		GetComponent<Renderer>().material.color = newColor;
+	}
+	public void hightLight(Material newMaterial = null)
+	{
+		if (newMaterial != null)
+		{
+			GetComponent<Renderer>().material = newMaterial;
+			return;
+		}
+		else if (defaultMaterial == NodeGrid.Instance.tile_mat)
+		{
+			return;
+		}
+		else
+		{
+			GetComponent<Renderer>().material = defaultMaterial == NodeGrid.Instance.larva_mat ? NodeGrid.Instance.highlightedLarva_mat : NodeGrid.Instance.highlightedAcid_mat;
+		}
+	}
+	public void resetTextureAndColor()
+	{
+		if (colliderOnTop == null)
+		{
+			GetComponent<MeshRenderer>().material.color = node.color;
+		}
+		else
+		{
+			GetComponent<Renderer>().material = defaultMaterial;
+		}
 	}
 
 	public void destroyAllActiveCover()
@@ -148,32 +187,33 @@ public class Tile : MonoBehaviour
 		if (listOfActiveCover.Count == 0) return;
 		foreach (Cover cover in listOfActiveCover)
 		{
-			GameObject.Destroy(cover.coverObj);
+			GameObject.Destroy(cover.prefab);
 		}
 		//Debug.Log($"destroy");
 		listOfActiveCover.Clear();
 	}
 }
 
-public class Cover
-{
-	private float _value = 0;
-	public GameObject coverObj;
 
-	public float Value
-	{ get { return _value; } set { _value = value; } }
+//public class NewCover
+//{
+//	private float _value = 0;
+//	public GameObject coverObj;
 
-	public Cover(GameObject cover, float coverValue = 45f)
-	{
-		coverObj = cover;
-		Value = coverValue;
-	}
+//	public float Value
+//	{ get { return _value; } set { _value = value; } }
 
-	public override string ToString()
-	{
-		return $"cover exist";
-	}
-}
+//	public NewCover(GameObject cover, float coverValue = 45f)
+//	{
+//		coverObj = cover;
+//		Value = coverValue;
+//	}
+
+//	public override string ToString()
+//	{
+//		return $"cover exist";
+//	}
+//}
 
 
 

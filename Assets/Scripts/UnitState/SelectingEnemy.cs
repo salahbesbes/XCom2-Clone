@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class SelectingEnemy : AnyState<PlayerStateManager>
+public class SelectingEnemy : BaseState<PlayerStateManager>
 {
-	public override AnyClass EnterState(PlayerStateManager player)
+	public override Unit EnterState(PlayerStateManager player)
 	{
 		player.weapon.enabled = true;
 		//Debug.Log($"{player.name}  state : {player.State.name}");

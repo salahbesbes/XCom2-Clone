@@ -1,19 +1,19 @@
-public class AssaultClass : AnyClass
+public class AssaultClass : Unit
 {
 }
 
 
-public class RangerClass : AnyClass
+public class RangerClass : Unit
 {
 }
 
 
-public class GrenadierClass : AnyClass
+public class GrenadierClass : Unit
 {
 }
 
 
-public class SpecialistClass : AnyClass
+public class SpecialistClass : Unit
 {
 }
 

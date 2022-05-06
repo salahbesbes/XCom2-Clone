@@ -3,19 +3,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
-[RequireComponent(typeof(AnyClass))]
+[RequireComponent(typeof(Unit))]
 public class CoverLogic : MonoBehaviour
 {
 	private PlayerStateManager unit;
 	private GameStateManager gameManger;
-	private Node lastKnownPosition;
+	private Node selectedUnitLastPosition;
+	private Node myLastPosition;
 	private NodeGrid grid;
 	public Node front;
 	public Node back;
 	public Node right;
 	public Node left;
 
-	private List<NewCover> covers = new List<NewCover>();
+	private List<Cover> covers = new List<Cover>();
 	internal bool alreadyFluncked = false;
 
 	public int CoverValue
@@ -35,18 +36,18 @@ public class CoverLogic : MonoBehaviour
 		gameManger = GameStateManager.Instance;
 		unit = GetComponent<PlayerStateManager>();
 		unit.CoverBihaviour = this;
-
-		if (gameManger.SelectedUnit != unit)
-		{
-			await RotateToward(gameManger.SelectedUnit, 1, 1);
-			lastKnownPosition = gameManger.SelectedUnit.currentPos;
-			UpdateNorthPositionTowardTarget(gameManger.SelectedUnit);
-			CalculateCoverValue();
-			unit.UpdateDirectionTowardTarget(gameManger.SelectedUnit);
-		}
+		myLastPosition = unit.currentPos;
+		//	if (gameManger.SelectedUnit != unit)
+		//	{
+		//		await RotateToward(gameManger.SelectedUnit, 1, 1);
+		//		selectedUnitLastPosition = gameManger.SelectedUnit.currentPos;
+		//		UpdateNorthPositionTowardTarget(gameManger.SelectedUnit);
+		//		CalculateCoverValue();
+		//		unit.UpdateDirectionTowardTarget(gameManger.SelectedUnit);
+		//	}
 	}
 
-	public async Task RotateToward(AnyClass target, float time = 2, float speed = 5)
+	public async Task RotateToward(Unit target, float time = 2, float speed = 5)
 	{
 		Vector3 dir = target.transform.position - unit.transform.position;
 		await Rotate(unit.partToRotate, dir, time, speed);
@@ -56,19 +57,20 @@ public class CoverLogic : MonoBehaviour
 	{
 		if (gameManger.SelectedUnit != unit && unit.State is Idel)
 		{
-			if (gameManger.SelectedUnit.currentPos != lastKnownPosition)
+			if (gameManger.SelectedUnit.currentPos != selectedUnitLastPosition)
 			{
 				await RotateToward(gameManger.SelectedUnit);
 				UpdateNorthPositionTowardTarget(gameManger.SelectedUnit);
 				CalculateCoverValue();
 				unit.UpdateDirectionTowardTarget(gameManger.SelectedUnit);
-				lastKnownPosition = gameManger.SelectedUnit.currentPos;
+				selectedUnitLastPosition = gameManger.SelectedUnit.currentPos;
 				//Debug.Log($"we totate {name } and calculate covers toward the selected unit {gameManger.SelectedUnit} ");
 			}
 		}
+
 	}
 
-	public void UpdateNorthPositionTowardTarget(AnyClass target)
+	public void UpdateNorthPositionTowardTarget(Unit target)
 	{
 		unit.currentPos = unit.currentPos ?? grid.getNodeFromTransformPosition(unit.transform);
 
@@ -130,17 +132,37 @@ public class CoverLogic : MonoBehaviour
 		// add new Covers
 		if (front != null && front.tile.colliderOnTop != null)
 		{
-			covers.Add(new NewCover(CoverDirection.front, CoverType.low, front));
-			//Debug.Log($"{unit.name} has cover on the FRONT node ");
+			if (front.tile.colliderOnTop.CompareTag("LowObstacle"))
+			{
+				covers.Add(new Cover(CoverDirection.front, CoverType.low, front));
+			}
+			else if (front.tile.colliderOnTop.CompareTag("HighObstacle"))
+			{
+				covers.Add(new Cover(CoverDirection.front, CoverType.high, front));
+			}
 		}
 		if (right != null && right.tile.colliderOnTop != null)
 		{
-			covers.Add(new NewCover(CoverDirection.right, CoverType.low, right));
+			if (right.tile.colliderOnTop.CompareTag("LowObstacle"))
+			{
+				covers.Add(new Cover(CoverDirection.right, CoverType.low, right));
+			}
+			else if (right.tile.colliderOnTop.CompareTag("HighObstacle"))
+			{
+				covers.Add(new Cover(CoverDirection.right, CoverType.high, right));
+			}
 			//Debug.Log($"{unit.name} has cover on the RIGHT node ");
 		}
 		if (left != null && left.tile.colliderOnTop != null)
 		{
-			covers.Add(new NewCover(CoverDirection.left, CoverType.low, left));
+			if (left.tile.colliderOnTop.CompareTag("LowObstacle"))
+			{
+				covers.Add(new Cover(CoverDirection.left, CoverType.low, left));
+			}
+			else if (left.tile.colliderOnTop.CompareTag("HighObstacle"))
+			{
+				covers.Add(new Cover(CoverDirection.left, CoverType.high, left));
+			}
 			//Debug.Log($"{unit.name} has cover on the LEFT node ");
 		}
 		//Debug.Log($" {unit.name} has Cover Value => {CoverValue}");

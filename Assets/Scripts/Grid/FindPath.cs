@@ -23,8 +23,17 @@ public static class FindPath
 		while (openList.Count > 0)
 		{
 			// first sort the list by nodeCost then by the h value (distance to the destination)
-			// this give us the shortest path and not expansive 
-			openList = openList.OrderBy(item => item.nodeCost).OrderBy(item => item.h).ToList();
+			// this give us the shortest path and not expansive
+
+			if (NodeGrid.Instance.ActivateCostPath)
+			{
+				openList = openList.OrderBy(item => item.g).OrderBy(item => item.f).ToList();
+			}
+			else
+			{
+				openList = openList.OrderBy(item => item.g).ToList();
+
+			}
 			current = openList[0];
 
 
@@ -40,7 +49,7 @@ public static class FindPath
 
 			foreach (Node neighbour in current.neighbours)
 			{
-				if (closedLsit.Contains(neighbour) || neighbour.isObstacle) continue;
+				if (closedLsit.Contains(neighbour) || neighbour.isUnwalkable) continue;
 
 				float tmpG = current.g + CalcG(current, neighbour);
 				// if the tmpG is less then the current G on the neighbour node
@@ -64,88 +73,7 @@ public static class FindPath
 	}
 
 
-	/*
-	 startNode.g = 0;
-		Queue<Node> QueueNotTested = new Queue<Node>();
-		List<Node> result = new List<Node>();
-		bool success = false;
 
-		QueueNotTested.Enqueue(startNode);
-
-		while (QueueNotTested.Count >= 0)
-		{
-			// sort the list in acending order by the heuretic value
-			QueueNotTested = new Queue<Node>(QueueNotTested.OrderBy(item => item.h).OrderBy(item => item.nodeCost));
-
-			//var queue = new Queue<string>(myStringList);
-
-
-			//we can loop throw an empty list in that case we are sure we didnt
-			//find any path
-			if (QueueNotTested.Count == 0)
-			{
-				Debug.Log($"cant find path ");
-				success = false;
-				break;
-			}
-
-			// select the first node of the list which have the less value of the
-			// heuritic value
-			//Node current = QueueNotTested[0];
-			//if (queueOfSameHValue.Count > 0) Debug.Log($"{cur},  {current}");
-			//remove it from the rhe list
-			Node current = QueueNotTested.Dequeue();
-			// make it visited
-			current.visited = true;
-
-			// if the current == end we find the en point
-			if (current == destination)
-			{
-				//Debug.Log($"Found End :) ");
-				result = getThePath(startNode, current);
-				success = true;
-				break;
-			}
-			//printGrid(current);
-
-			if (current.isObstacle == true) continue;
-
-			for (int i = 0; i < current.neighbours.Count; i++)
-			{
-				// foreach neighbor which is not an obstacle
-				Node neighbor = current.neighbours[i];
-				if (neighbor.isObstacle == true) continue;
-				else
-				{
-					// calculate the g val (toWard the parent)
-					float neighborG = CalcG(current, neighbor);
-					// calculate the new possible g value (toWard the start
-					// node)
-					float tempG = current.g + neighborG;
-					// by default the neighbor.g is positif Infinit but after
-					// setting g val to a neighbor we can revisit this node and
-					// at this time the g val is not infinit so we wan do the
-					// comparison
-
-					if (tempG < neighbor.g)
-					{
-						neighbor.parent = current;
-						neighbor.g = tempG;
-						neighbor.h = neighbor.g + CalcH(neighbor, destination);
-						// update the list we are worrking on
-						QueueNotTested.Enqueue(neighbor);
-					}
-				}
-			}
-		}
-
-		// we pass the result var to the get methode and we set the gridPath any way (empty
-		// or full)
-		return result;
-	 
-	 
-	 
-	 */
 	public static float CalcG(Node a, Node b)
 	{
 		return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
@@ -156,20 +84,7 @@ public static class FindPath
 		return Mathf.Abs(a.x - e.x) + Mathf.Abs(a.y - e.y);
 	}
 
-	/// <summary>
-	/// get the path from the end node to start node, and make the unit prefab moves toward that
-	/// destination folowing that path
-	/// </summary>
-	/// <param name="unit"> the prefab </param>
-	/// <param name="currentUnitNode"> start node </param>
-	/// <param name="endUnitNode"> destination </param>
-	/// <param name="turnPoints"> class variable sent from Grid to save turn Points </param>
-	/// <param name="gridPath"> class variable sent from the Grid to save the Hole path </param>
-	/// <returns> </returns>
-	public static List<Node> getPathToDestination(Node currentUnitNode, Node endUnitNode)
-	{
-		return AStarAlgo(currentUnitNode, endUnitNode);
-	}
+
 
 	/// <summary>
 	/// create list of nodes of the shortest path between the start and end, start and end node
@@ -197,7 +112,14 @@ public static class FindPath
 		path.Reverse();
 
 		startNode.path = path;
-		//Debug.Log($"path Cost {pathCost}");
+		if (NodeGrid.Instance.DemoScene && NodeGrid.Instance.pathCost != null)
+		{
+			NodeGrid.Instance.pathCost.text = $"Path cost: {pathCost} \n {path.Count} nodes";
+		}
+		else
+		{
+			//Debug.Log($"Path cost: {pathCost}, {path.Count} nodes");
+		}
 		return path;
 	}
 
@@ -270,6 +192,7 @@ public class Node
 	public float f = float.PositiveInfinity;
 	public int nodeCost = 0;
 	public bool inRange = false;
+	public bool isUnwalkable = false;
 	public bool isObstacle = false;
 	public List<Node> neighbours;
 	public Node parent = null;
@@ -278,7 +201,6 @@ public class Node
 	public int x;
 	public int y;
 
-	public GameObject groundTile;
 	public Tile tile;
 
 	public Node(Vector3 coord, int x, int y)

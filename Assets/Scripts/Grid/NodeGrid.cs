@@ -1,14 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class NodeGrid : MonoBehaviour
 {
 	public static NodeGrid Instance;
-
+	public bool DemoScene;
+	public bool ActivateCostPath = true;
 	[HideInInspector]
 	public Vector3 buttonLeft;
+	public Material tile_mat;
+	public Material acid_mat;
+	public Material highlightedAcid_mat;
+	public Material larva_mat;
+	public Material highlightedLarva_mat;
 
 	//[HideInInspector]
 	//public Node destination, start;
@@ -25,7 +33,8 @@ public class NodeGrid : MonoBehaviour
 	public int scale = 1;
 	private LayerMask playerLayer;
 	private LayerMask Unwalkable;
-
+	public TextMeshProUGUI pathCost;
+	public Button activateButton;
 	[HideInInspector]
 	public float width, height;
 
@@ -70,7 +79,6 @@ public class NodeGrid : MonoBehaviour
 			yield return null;
 		}
 	}
-
 	public Node GetNode(float i, float j)
 	{
 		for (int x = 0; x < height; x++)
@@ -88,7 +96,6 @@ public class NodeGrid : MonoBehaviour
 		}
 		return null;
 	}
-
 	public Node getNodeFromMousePosition(Camera cam = null)
 	{
 		if (EventSystem.current.IsPointerOverGameObject())
@@ -136,7 +143,6 @@ public class NodeGrid : MonoBehaviour
 
 			float percentX = Mathf.Floor(posX) + nodeRadius;
 			float percentY = Mathf.Floor(posY) + nodeRadius;
-
 			return GetNode(percentX, percentY);
 		}
 		else if (prefab == null && vect3 != null)
@@ -151,52 +157,107 @@ public class NodeGrid : MonoBehaviour
 		}
 		return null;
 	}
-
 	public void resetGrid()
 	{
 
 		if (Instance?.graph == null) return;
 		foreach (Node node in graph)
 		{
-			Debug.DrawLine(node.coord, node.coord + Vector3.up, Color.red);
 			node.h = float.PositiveInfinity;
 			node.g = float.PositiveInfinity;
 			node.parent = null;
 			//node.path = new List<Node>();
-			string[] collidableLayers = { "Unwalkable", "Player", "Enemy" };
-			int layerToCheck = LayerMask.GetMask(collidableLayers);
-			node.isObstacle = Physics.CheckSphere(node.coord, nodeSize / 2, layerToCheck);
-			node.color = node.isObstacle ? Color.red : Color.white;
+			if (DemoScene)
+			{
+
+				string[] collidableLayers = { "Environment" };
+				int layerToCheck = LayerMask.GetMask(collidableLayers);
+				bool objectExistOnTop = Physics.CheckSphere(node.coord, nodeSize / 2, layerToCheck);
+
+				if (objectExistOnTop)
+				{
+					Collider[] hitColliders = Physics.OverlapSphere(node.coord, nodeSize / 2, layerToCheck);
+
+					foreach (var item in hitColliders)
+					{
+						if (item.CompareTag("mud")) node.nodeCost = 10;
+						else if (item.CompareTag("grass")) node.nodeCost = 5;
+						else if (item.CompareTag("Unit"))
+						{
+							node.isUnwalkable = true;
+							node.isObstacle = false;
+						}
+						else if (item.CompareTag("HighObstacle"))
+						{
+							node.isUnwalkable = true;
+							node.isObstacle = true;
+						}
+					}
+				}
+				else
+				{
+					node.isUnwalkable = false;
+					node.isObstacle = false;
+				}
+			}
+
+			node.tile.colliderOnTop = node.tile.getPrefabOnTopOfTheTile();
+			if (node.tile.colliderOnTop != null)
+			{
+
+				if (node.tile.colliderOnTop.CompareTag("mud"))
+				{
+					node.nodeCost = 10;
+					node.tile.hightLight(larva_mat);
+					node.tile.defaultMaterial = larva_mat;
+				}
+				else if (node.tile.colliderOnTop.CompareTag("grass"))
+				{
+					node.nodeCost = 5;
+					node.tile.hightLight(acid_mat);
+					node.tile.defaultMaterial = acid_mat;
+				}
+			}
+			node.color = node.isUnwalkable ? Color.blue : Color.white;
+			node.color = node.isObstacle ? Color.red : node.color;
+			//node.color = node.isObstacle && node.isUnwalkable ? Color.red : node.color;
+
 			node.inRange = false;
 			node.firstRange = false;
-			node.groundTile.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", node.color);
-			node.tile.colliderOnTop = node.tile.getPrefabOnTopOfTheTile();
 
+			node.tile.resetTextureAndColor();
 
 			//if (node.tile.obj != null) node.groundTile.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", Color.black);
 		}
 	}
 
-	public void Update()
+	public void enablePathCost()
 	{
-		//resetGrid();
+		ActivateCostPath = !ActivateCostPath;
+
+		if (ActivateCostPath)
+		{
+			activateButton.GetComponent<Image>().color = Color.green;
+			activateButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Enabled";
+		}
+		else
+		{
+			activateButton.GetComponent<Image>().color = Color.red;
+			activateButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Disabled";
+
+
+		}
+
 	}
-
-	//[HideInInspector]
-	//public Vector3[] turnPoints;
-
-	//[HideInInspector]
-	//public List<Node> path = new List<Node>();
-
 	private void Awake()
 	{
 		if (Instance == null)
 		{
 			//turnPoints = new Vector3[0];
 			Instance = this;
+			scale = (int)transform.localScale.z;
 			nodeRadius = nodeSize / 2;
 
-			scale = (int)transform.localScale.z;
 			height = Mathf.RoundToInt(transform.localScale.z * 10) / nodeSize;
 			width = Mathf.RoundToInt(transform.localScale.x * 10) / nodeSize;
 			graph = new Node[(int)width, (int)height];
@@ -207,11 +268,13 @@ public class NodeGrid : MonoBehaviour
 
 			//DontDestroyOnLoad(gameObject);
 			//transform.localScale = new Vector3((float)wordSizeGrid.x / 10, 1, (float)wordSizeGrid.y / 10);
-			FindObjectOfType<Camera>().transform.position += new Vector3(0, 45 * (width / 50), 0);
+			//Camera.main.transform.position += new Vector3(0, 45 * (width / 50), 0);
 
 			//nodeLayer = LayerMask.GetMask("Node");
-			playerLayer = LayerMask.GetMask("Player");
-			Unwalkable = LayerMask.GetMask("Unwalkable");
+			playerLayer = LayerMask.GetMask("Charachter");
+			Unwalkable = LayerMask.GetMask("Environment");
+
+			GetComponent<MeshRenderer>().enabled = false;
 		}
 	}
 
@@ -232,27 +295,28 @@ public class NodeGrid : MonoBehaviour
 				Tile newTile = Instantiate(GroundTilePrefab, graph[x, y].coord, Quaternion.identity, quadHolder);
 				newTile.node = graph[x, y];
 				newTile.size = quadSize;
-				newTile.transform.localScale = new Vector3(quadSize, quadSize, quadSize);
-				Vector3 offsetCreation = new Vector3(0, -quadSize / 2 + 0.01f, 0);
+				newTile.transform.localScale = new Vector3(quadSize, 0.1f, quadSize);
+				Vector3 offsetCreation = new Vector3(0, -0.11f / 2, 0);
 				newTile.transform.position += offsetCreation;
-				graph[x, y].groundTile = newTile.gameObject;
 				graph[x, y].tile = newTile;
 
 				//new Tile(graph[x, y], quadHolder, tiles, quadSize);
 				// project a sphere to check with the Layer Unwalkable if some thing
 				// with the layer Unwalkable above it
-				string[] collidableLayers = { "Unwalkable", "Enemy", "Player", "Default" };
+				string[] collidableLayers = { "Environment", "Charachter" };
+
 				int layerToCheck = LayerMask.GetMask(collidableLayers);
 				//graph[x, y].isObstacle = Physics.CheckSphere(nodeCoord, nodeSize / 2, layerToCheck);
 
 				Collider[] hitColliders = Physics.OverlapSphere(nodeCoord, nodeSize / 2, layerToCheck);
 
-				foreach (var item in hitColliders)
-				{
-					if (item.CompareTag("mug")) graph[x, y].nodeCost = 10;
-					else if (item.CompareTag("grass")) graph[x, y].nodeCost = 5;
-					else graph[x, y].isObstacle = true;
-				}
+				//foreach (var item in hitColliders)
+				//{
+				//	Debug.Log("graph[x, y].nodeCost = 10 found mud");
+				//	if (item.CompareTag("mud")) graph[x, y].nodeCost = 10;
+				//	else if (item.CompareTag("grass")) graph[x, y].nodeCost = 5;
+				//	else graph[x, y].isUnwalkable = true;
+				//}
 				count++;
 				//graph[x, y].isObstacle = hitColliders.Length > 0 ? true : false;
 			}
@@ -286,6 +350,11 @@ public class NodeGrid : MonoBehaviour
 				}
 			}
 		}
+
+
+
+
+
 	}
 
 	private void OnDrawGizmosSelected()
@@ -307,7 +376,15 @@ public class NodeGrid : MonoBehaviour
 		{
 			Debug.DrawLine(buttonLeft + new Vector3(x, 0.00f, 0), new Vector3(x + buttonLeft.x, 0.00f, (localheight + buttonLeft.z)), new Color(0, 0, 0, 0.5f));
 		}
-
+		for (int x = 0; x < height; x++)
+		{
+			for (int y = 0; y < width; y++)
+			{
+				Vector3 offset = new Vector3(nodeSize / 2, 0, nodeSize / 2);
+				Vector3 nodeCoord = buttonLeft + offset + Vector3.right * nodeSize * x + Vector3.forward * nodeSize * y;
+				//Gizmos.DrawSphere(nodeCoord, 0.5f);
+			}
+		}
 		//resetGrid();
 
 		//foreach (var item in Instance.graph)

@@ -10,7 +10,7 @@ public class Inventory : ScriptableObject
 {
 	public List<Item> items = new List<Item>();
 	public int space = 20;
-	[HideInInspector] public AnyClass unit;
+	[HideInInspector] public Unit unit;
 
 
 

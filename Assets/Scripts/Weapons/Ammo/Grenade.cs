@@ -70,20 +70,20 @@ public class Grenade : Ammo
 		await Task.Delay(1000 * time);
 		Instantiate(ExplodeEffect, transform.position, Quaternion.identity);
 
-		foreach (Node item in NodeInRange)
+		foreach (Node node in NodeInRange)
 		{
-			RaycastHit hit;
-			if (Physics.Raycast(item.coord, Vector3.up, out hit, 1))
-			{
-				if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Enemy" || LayerMask.LayerToName(hit.transform.gameObject.layer) == "Player")
-				{
-					AnyClass target = hit.transform.parent.parent.GetComponent<AnyClass>();
-					Debug.Log($"  detect  {target} ");
-					GameStateManager.Instance.MakeOnlySelectedUnitListingGrenadeExplosionEvent(target, grenadier.grenadeLancherEvent);
-					grenadier.grenadeLancherEvent.Raise(grenadier.unit);
-					GameStateManager.Instance.clearPreviousSelectedUnitFromAllGrenadeExplosionEvent(target);
-				}
-			}
+			// if the node does not contain any collider OnTop continiou to next neignbour
+			if (node.tile.colliderOnTop == null) continue;
+			// if the collider is not a Unit continiou to next neignbour
+			if (node.tile.colliderOnTop.CompareTag("Unit") == false) continue;
+			// else if node.tile.colliderOnTop exist and it is a Unit
+			PlayerStateManager target = node.tile.colliderOnTop.transform.parent.parent.GetComponent<PlayerStateManager>();
+			if (target == null) continue;
+			GameStateManager.Instance.MakeOnlySelectedUnitListingGrenadeExplosionEvent(target, grenadier.grenadeLancherEvent);
+			grenadier.grenadeLancherEvent.Raise(grenadier.unit);
+			GameStateManager.Instance.clearPreviousSelectedUnitFromAllGrenadeExplosionEvent(target);
+
+
 		}
 		Destroy(gameObject);
 	}

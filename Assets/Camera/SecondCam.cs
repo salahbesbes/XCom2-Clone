@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class SecondCam : MonoBehaviour
 {
-	private AnyClass currentTarget;
-	private AnyClass unit;
+	private Unit currentTarget;
+	private Unit unit;
 
 	public float speed = 4;
 	public float angle;
@@ -12,7 +12,7 @@ public class SecondCam : MonoBehaviour
 
 	private void Start()
 	{
-		unit = GetComponentInParent<AnyClass>();
+		unit = GetComponentInParent<Unit>();
 		switchTrarget();
 	}
 

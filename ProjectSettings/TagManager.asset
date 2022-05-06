@@ -7,24 +7,26 @@ TagManager:
   - point
   - bullet
   - grenade
-  - mug
   - grass
   - Unit
   - HighObstacle
   - LowObstacle
+  - Pickable
+  - JumpObject
+  - mud
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Unwalkable
+  - Environment
   - Water
   - UI
-  - Player
-  - Enemy
-  - LowObstacle
+  - 
+  - Charachter
+  - 
   - Node
   - Ammo
-  - Pickable
+  - Item
   - 
   - 
   - 

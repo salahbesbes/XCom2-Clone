@@ -5,8 +5,8 @@ public class ModalTriggerer : MonoBehaviour
 {
 	public async Task OnTriggerEnter(Collider other)
 	{
-		AnyClass thisUnit = transform.parent.parent.GetComponent<AnyClass>();
-		if (LayerMask.LayerToName(other.gameObject.layer) == "LowObstacle")
+		Unit thisUnit = transform.parent.parent.GetComponent<Unit>();
+		if (other.CompareTag("JumpObject"))
 		{
 			thisUnit.PlayAnimation(AnimationType.jump);
 			thisUnit.speed = 1;
@@ -15,7 +15,7 @@ public class ModalTriggerer : MonoBehaviour
 			thisUnit.PlayAnimation(AnimationType.run);
 			thisUnit.speed = 5;
 		}
-		if (LayerMask.LayerToName(other.gameObject.layer) == "Pickable")
+		if (other.CompareTag("Pickable"))
 		{
 			Equipement obj = other.GetComponent<Equipement>();
 
@@ -27,7 +27,7 @@ public class ModalTriggerer : MonoBehaviour
 
 	private void Start()
 	{
-		AnyClass thisUnit = transform.parent.parent.GetComponent<AnyClass>();
+		Unit thisUnit = transform.parent.parent.GetComponent<Unit>();
 
 		SkinnedMeshRenderer[] meshRendrers = GetComponentsInChildren<SkinnedMeshRenderer>();
 		foreach (var mesh in meshRendrers)

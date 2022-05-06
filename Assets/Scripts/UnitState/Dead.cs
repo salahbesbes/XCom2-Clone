@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Dead : AnyState<PlayerStateManager>
+public class Dead : BaseState<PlayerStateManager>
 {
-	public override AnyClass EnterState(PlayerStateManager player)
+	public override Unit EnterState(PlayerStateManager player)
 	{
 		//player.model.transform.GetComponent<CapsuleCollider>().height = 0.5f;
 		Debug.Log($" {player} IS DEAD");

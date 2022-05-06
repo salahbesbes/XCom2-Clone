@@ -17,7 +17,6 @@ public class CameraMovement : MonoBehaviour
 
 	private float rotationAngle;
 
-
 	private void Awake()
 	{
 		swivel = transform.GetChild(0);
@@ -26,7 +25,7 @@ public class CameraMovement : MonoBehaviour
 
 	private void Update()
 	{
-		if (GameStateManager.Instance.SelectedUnit.fpsCam.enabled == false)
+		if (GameStateManager.Instance.SelectedUnit?.fpsCam?.enabled == false)
 		{
 
 			float zoomDelta = Input.GetAxis("Mouse ScrollWheel");
@@ -89,10 +88,10 @@ public class CameraMovement : MonoBehaviour
 
 	private Vector3 ClampPosition(Vector3 position)
 	{
-		float xMax = grid.width * grid.nodeSize + 5;
+		float xMax = grid.width - grid.width / 4;
 		position.x = Mathf.Clamp(position.x, grid.buttonLeft.x, grid.buttonLeft.x + xMax);
 
-		float zMax = grid.height * grid.nodeSize + 5;
+		float zMax = grid.height - grid.height / 4;
 		position.z = Mathf.Clamp(position.z, grid.buttonLeft.z, grid.buttonLeft.z + zMax);
 
 		return position;
