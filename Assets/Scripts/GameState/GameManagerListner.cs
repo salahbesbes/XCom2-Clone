@@ -1,5 +1,6 @@
 using gameEventNameSpace;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -238,20 +239,27 @@ public class GameManagerListner : MonoBehaviour
 		}
 	}
 
+	public async Task delayEndEvent(int time)
+	{
+		await Task.Delay(time);
+		GameEndedEvent.Raise();
+
+
+	}
 	private bool didGameEnd()
 	{
 		GameStateManager manager = GameStateManager.Instance;
 
-		if (manager.enemies.Where(unit => unit.State is Dead).Count() == manager.enemies.Count)
+		if (manager.enemies.Where(unit => unit.State is Dead).Count() == manager.enemies.Count || manager.enemies.Count == 0)
 		{
 			Debug.LogError("PLAYER WINS CONGRADUATION");
-			GameEndedEvent.Raise();
+			delayEndEvent(1500);
 			return true;
 		}
-		if (manager.players.Where(unit => unit.State is Dead).Count() == manager.players.Count)
+		if (manager.players.Where(unit => unit.State is Dead).Count() == manager.players.Count || manager.players.Count == 0)
 		{
 			Debug.LogError("ENEMIES WINS CONGRADUATION");
-			GameEndedEvent.Raise();
+			delayEndEvent(1500);
 			return true;
 		}
 		return false;

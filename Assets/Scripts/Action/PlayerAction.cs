@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerAction : ScriptableObject
 {
+
 	private List<PlayerEventListener> listeners = new List<PlayerEventListener>();
 
 	public void Raise()

@@ -39,14 +39,10 @@ public class UnitStats : ScriptableObject
 
 
 
-	private void Reset()
+	public void Reset()
 	{
-		//Output the message to the Console
-		//Debug.Log("Reset");
-		Health.Value = _maxHealth;
-
-		//eventToListnTo = FindObjectOfType<VoidEvent>();
 		ActionPoint = _maxActionPoint;
+		Health.Value = _maxHealth;
 		armor.modifiers.Clear();
 		damage.modifiers.Clear();
 		Health.modifiers.Clear();
@@ -60,13 +56,7 @@ public class UnitStats : ScriptableObject
 
 	private void OnEnable()
 	{
-		ActionPoint = _maxActionPoint;
-		Health.Value = _maxHealth;
-		armor.modifiers.Clear();
-		damage.modifiers.Clear();
-		Health.modifiers.Clear();
-
-		//Debug.Log($"enabled");
+		Reset();
 	}
 
 	private void OnDisable()
@@ -90,5 +80,7 @@ public class UnitStats : ScriptableObject
 	{
 		ActionPoint = _maxActionPoint;
 	}
+
+
 
 }

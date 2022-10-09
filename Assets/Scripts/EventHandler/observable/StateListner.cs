@@ -8,7 +8,7 @@ namespace gameEventNameSpace
 	{
 		public Text UiText;
 
-		public void updateUiText(BaseState<GameStateManager> newState)
+		public void updateUiText(BaseState<GameStateManager> State)
 		{
 			if (UiText == null || UiText?.text == null)
 			{
@@ -16,7 +16,7 @@ namespace gameEventNameSpace
 				return;
 			}
 
-			UiText.text = $"{newState.name} ";
+			UiText.text = $"{State}";
 		}
 	}
 }

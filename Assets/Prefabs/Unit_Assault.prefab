@@ -368,14 +368,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8914e65715247ad4d9559f3836fa9980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  processing: 0
-  partToRotate: {fileID: 2216809911428806740}
-  model: {fileID: 5141909743562238813}
-  speed: 5
   hand: {fileID: 6441464802395239294}
   inventory: {fileID: 11400000, guid: f79db954885a69d4091a728360f69069, type: 2}
   actions:
-  - {fileID: 11400000, guid: 7601e2943867df44ab824c6a69d77f26, type: 2}
   - {fileID: 11400000, guid: 7fdc721c4f9522941a5d3c87d1ccb88f, type: 2}
   team: {fileID: 11400000, guid: 54fb32d86b4d94d4aac9e4723b72c90f, type: 2}
   stats: {fileID: 1329027290010044634}
@@ -399,6 +394,10 @@ MonoBehaviour:
   flunckTargetRight: 0
   flunckTargetLeft: 0
   modelMaterials: []
+  processing: 0
+  partToRotate: {fileID: 2216809911428806740}
+  model: {fileID: 5141909743562238813}
+  speed: 5
   currentActionAnimation: 1
 --- !u!114 &7754342583139496679
 MonoBehaviour:
@@ -1005,7 +1004,7 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2216809912561688554}
     m_Modifications:
-    - target: {fileID: -7148703659687669263, guid: 9dfabce62dbd99c49ba2eafab7f1a98d, type: 3}
+    - target: {fileID: 2756568513882254288, guid: 9dfabce62dbd99c49ba2eafab7f1a98d, type: 3}
       propertyPath: cam
       value: 
       objectReference: {fileID: 2216809912383782428}

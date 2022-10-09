@@ -31,4 +31,4 @@ MonoBehaviour:
   shutGun: 0
   bulletInOneShot: 1
   type: 2
-  ammo: {fileID: 5940904161140941163, guid: e5327058d6dd0864d9c7260369387913, type: 3}
+  ammo: {fileID: -2757523015699579240, guid: 913b5cfeb6c472243b7e0593c42d3b70, type: 3}

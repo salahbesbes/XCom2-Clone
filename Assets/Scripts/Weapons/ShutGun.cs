@@ -97,8 +97,11 @@ public class ShutGun : Weapon
 		if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))
 		{
 			ActionData shoot = player.actions.FirstOrDefault((el) => el is ShootingAction);
-			if (shoot == null || player.stats.unit.ActionPoint <= 1) return;
-
+			if (shoot == null || player.stats.unit.ActionPoint <= 0)
+			{
+				GameStateManager.Instance.notifyCanvas.Raise("No Action Point left");
+				return;
+			}
 			player.currentActionAnimation = AnimationType.shoot;
 			player.SwitchState(player.doingAction);
 			shoot?.Actionevent?.Raise();

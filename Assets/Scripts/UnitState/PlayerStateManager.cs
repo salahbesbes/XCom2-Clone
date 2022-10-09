@@ -18,6 +18,12 @@ public class PlayerStateManager : Unit
 	public void OnEnable()
 	{
 	}
+	public void IsDead()
+	{
+		gameStateManager.players.Remove(this);
+		gameStateManager.enemies.Remove(this);
+	}
+
 
 	private BaseState<PlayerStateManager> _State;
 

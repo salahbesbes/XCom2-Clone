@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SelectingEnemy : BaseState<PlayerStateManager>
 {
-	public override Unit EnterState(PlayerStateManager player)
+	public override void EnterState(PlayerStateManager player)
 	{
 		player.weapon.enabled = true;
 		//Debug.Log($"{player.name}  state : {player.State.name}");
@@ -12,7 +12,6 @@ public class SelectingEnemy : BaseState<PlayerStateManager>
 
 		player.PlayAnimation(AnimationType.aim);
 
-		return null;
 	}
 
 	public override void Update(PlayerStateManager player)

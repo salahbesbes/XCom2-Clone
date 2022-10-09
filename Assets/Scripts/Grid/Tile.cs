@@ -145,30 +145,31 @@ public class Tile : MonoBehaviour
 		//Debug.Log($"create Back Cover");
 	}
 
-	public void hightLight(Color newColor)
+	public void hightLight(Color newColor, bool texture = false)
 	{
-		if (defaultMaterial != NodeGrid.Instance.tile_mat)
+		if (texture == true)
 		{
-			hightLight();
-			return;
+			if (node.tile.defaultMaterial != NodeGrid.Instance.tile_mat)
+			{
+				Material mat = node.tile.defaultMaterial == NodeGrid.Instance.larva_mat ? NodeGrid.Instance.highlightedLarva_mat : NodeGrid.Instance.highlightedAcid_mat;
+
+				hightLight(mat);
+				return;
+			}
 		}
 		GetComponent<Renderer>().material.color = newColor;
 	}
-	public void hightLight(Material newMaterial = null)
+	public void hightLight(Material newMaterial)
 	{
-		if (newMaterial != null)
+		Material currentMaterial = GetComponent<Renderer>().material;
+
+		if (currentMaterial != newMaterial)
 		{
 			GetComponent<Renderer>().material = newMaterial;
 			return;
 		}
-		else if (defaultMaterial == NodeGrid.Instance.tile_mat)
-		{
-			return;
-		}
-		else
-		{
-			GetComponent<Renderer>().material = defaultMaterial == NodeGrid.Instance.larva_mat ? NodeGrid.Instance.highlightedLarva_mat : NodeGrid.Instance.highlightedAcid_mat;
-		}
+
+
 	}
 	public void resetTextureAndColor()
 	{

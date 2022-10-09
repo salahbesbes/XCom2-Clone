@@ -5,12 +5,11 @@ public class Idel : BaseState<PlayerStateManager>
 {
 	private Node oldDestination, potentialDest;
 
-	public override Unit EnterState(PlayerStateManager player)
+	public override void EnterState(PlayerStateManager player)
 	{
-		//Debug.Log($" {player.name}  state : {player.State.name}");
+		Debug.Log($" {player.name}  state : {player.State}");
 		player.weapon.enabled = false;
 		player.PlayAnimation(AnimationType.idel);
-		return null;
 	}
 
 	public override void Update(PlayerStateManager player)

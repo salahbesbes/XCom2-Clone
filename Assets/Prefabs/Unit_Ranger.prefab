@@ -214,6 +214,7 @@ GameObject:
   - component: {fileID: 6754694471936928840}
   - component: {fileID: 3337581918032571848}
   - component: {fileID: 425210600992094812}
+  - component: {fileID: 3801582244629923925}
   m_Layer: 6
   m_Name: RangerCamera
   m_TagString: Untagged
@@ -296,6 +297,39 @@ MonoBehaviour:
   angle: 0
   radius: 2
   degreesPerSecond: 100
+--- !u!114 &3801582244629923925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184151644160075256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &4365444701463882576
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,7 +374,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4365444702416792863}
   - component: {fileID: 4365444702416792861}
-  - component: {fileID: 9037447060269407857}
   - component: {fileID: 3896279991562166943}
   m_Layer: 6
   m_Name: fps_cam
@@ -407,18 +440,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &9037447060269407857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4365444702416792856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d3e41147be173246b3c07c57d8f8188, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3896279991562166943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -518,10 +539,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a166e36d293a5a43a8d42a7b731bf6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  processing: 0
-  partToRotate: {fileID: 4365444701463882583}
-  model: {fileID: 2259274096606290722}
-  speed: 5
   hand: {fileID: 8067716599546126831}
   inventory: {fileID: 11400000, guid: 5fb1e5a137d24514d9a6940e1f105a54, type: 2}
   actions:
@@ -536,7 +553,6 @@ MonoBehaviour:
   fpsCam: {fileID: 4365444702416792861}
   secondCam: {fileID: 3337581918032571848}
   aimPoint: {fileID: 1687762161778112823}
-  isFlanked: 0
   sportPoints: []
   onChangeTarget: {fileID: 11400000, guid: 94c3fca271f0a5840ad25cf123f548ac, type: 2}
   notifyGameManagerEvent: {fileID: 11400000, guid: 1d69433eabc8c3a4a94a59d28589f794, type: 2}
@@ -550,6 +566,10 @@ MonoBehaviour:
   flunckTargetRight: 0
   flunckTargetLeft: 0
   modelMaterials: []
+  processing: 0
+  partToRotate: {fileID: 4365444701463882583}
+  model: {fileID: 2259274096606290722}
+  speed: 5
   currentActionAnimation: 1
 --- !u!114 &8818029592945154347
 MonoBehaviour:
@@ -1111,7 +1131,7 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4365444702461693161}
     m_Modifications:
-    - target: {fileID: -7148703659687669263, guid: 9dfabce62dbd99c49ba2eafab7f1a98d, type: 3}
+    - target: {fileID: 2756568513882254288, guid: 9dfabce62dbd99c49ba2eafab7f1a98d, type: 3}
       propertyPath: cam
       value: 
       objectReference: {fileID: 4365444702416792863}

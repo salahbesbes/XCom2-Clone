@@ -54,8 +54,8 @@ public class GameStateManager : GameManagerListner
 			_selectedUnit = value;
 
 			//Debug.Log($"Selected  {SelectedUnit} ");
-			PlayerChangeEvent.Raise();
-
+			//PlayerChangeEvent.Raise();
+			SelectedUnit.fpsCam.enabled = true;
 			MakeGAmeMAnagerListingToNewSelectedUnit(_selectedUnit);
 
 			//MakeOnlySelectedUnitListingToEventArgument(_selectedUnit, PlayerChangeEvent);
@@ -103,28 +103,12 @@ public class GameStateManager : GameManagerListner
 		// the only way to change the state
 		State = newState;
 		clearPreviousSelectedUnitFromAllWeaponEvent(SelectedUnit?.CurrentTarget);
-		Unit selectedUnit = State.EnterState(this);
+		State.EnterState(this);
 	}
 
 	public void ChangeState()
 	{
 		if (State == playerTurn) SwitchState(enemyTurn);
 		else if (State == enemyTurn) SwitchState(playerTurn);
-	}
-}
-
-public abstract class BaseState<T>
-{
-	public string name;
-
-	public abstract Unit EnterState(T playerContext);
-
-	public abstract void Update(T playerContext);
-
-	public abstract void ExitState(T playerContext);
-
-	public override string ToString()
-	{
-		return $"{GetType().Name}";
 	}
 }

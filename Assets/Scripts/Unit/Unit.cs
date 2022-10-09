@@ -115,8 +115,13 @@ public class Unit : MonoBehaviour
 		if (this != gameStateManager.SelectedUnit)
 		{
 			enabled = false;
+			fpsCam.enabled = false;
 		}
 	}
+
+
+
+
 
 	public float TargetAimPercent
 	{
@@ -448,6 +453,7 @@ public class Unit : MonoBehaviour
 			}
 			int currentTargetIndex = enemies.FindIndex(instance => instance == CurrentTarget);
 			CurrentTarget = enemies[(currentTargetIndex + 1) % enemies.Count];
+
 			//PlayerStateManager target = (PlayerStateManager)CurrentTarget;
 			//if (target?.State is not Idel) SelectNextTarget();
 		}
@@ -505,14 +511,15 @@ public class Unit : MonoBehaviour
 			{
 				if (turnPoints.Contains(node.coord))
 				{
-					node.tile.hightLight(Color.green);
+
+					node.tile.hightLight(Color.green, true);
 				}
 				else
 				{
-					node.tile.hightLight(Color.gray);
+					node.tile.hightLight(Color.gray, true);
 				}
 			}
-			potentialDestination.tile.hightLight(Color.blue);
+			potentialDestination.tile.hightLight(Color.blue, true);
 
 			checkForCover(potentialDestination);
 
@@ -527,6 +534,10 @@ public class Unit : MonoBehaviour
 				{
 					Debug.Log("second range");
 					CreateNewMoveAction(2);
+				}
+				else
+				{
+					gameStateManager.notifyCanvas.Raise("destination is our of range");
 				}
 			}
 
@@ -657,12 +668,14 @@ public class Unit : MonoBehaviour
 		//cant have more that 2 actions
 
 		int actionPoints = stats.unit.ActionPoint;
-
-		if (actionPoints < cost || (processing && queueOfActions.Count >= 1))
+		if (NodeGrid.Instance.DemoScene == false)
 		{
-			Debug.Log($" No action point Left !!!");
-			gameStateManager.notifyCanvas.Raise("No Action Point left");
-			return;
+			if (actionPoints < cost || (processing && queueOfActions.Count >= 1))
+			{
+				Debug.Log($" No action point Left !!!");
+				gameStateManager.notifyCanvas.Raise("No Action Point left");
+				return;
+			}
 		}
 		Node res;
 
@@ -700,6 +713,7 @@ public class Unit : MonoBehaviour
 		if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
 		{
 			Debug.Log($" No action point Left !!!");
+			//gameStateManager.notifyCanvas.Raise("No Action Point left");
 			return;
 		}
 		ReloadAction reload = new ReloadAction(ReloadActionCallBack, "Reload");
@@ -719,6 +733,7 @@ public class Unit : MonoBehaviour
 		if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
 		{
 			Debug.Log($" No action point Left !!!");
+			//gameStateManager.notifyCanvas.Raise("No Action Point left");
 			return;
 		}
 

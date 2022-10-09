@@ -24,15 +24,13 @@ public static class FindPath
 		{
 			// first sort the list by nodeCost then by the h value (distance to the destination)
 			// this give us the shortest path and not expansive
-
 			if (NodeGrid.Instance.ActivateCostPath)
 			{
-				openList = openList.OrderBy(item => item.g).OrderBy(item => item.f).ToList();
+				openList = openList.OrderBy(item => item.f).OrderBy(item => item.g).ToList();
 			}
 			else
 			{
 				openList = openList.OrderBy(item => item.g).ToList();
-
 			}
 			current = openList[0];
 

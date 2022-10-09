@@ -23,7 +23,8 @@ public class Grenadier : PlayerStateManager, IClassGrenadier
 
 		if (actionPoints <= 0 || (processing && queueOfActions.Count >= 1))
 		{
-			Debug.Log($" No action point Left !!!");
+			Debug.Log($" No action point Left !!! {actionPoints}");
+			gameStateManager.notifyCanvas.Raise("No Action Point left");
 			return;
 		}
 		Node potentialDestination = NodeGrid.Instance.getNodeFromMousePosition(secondCam);

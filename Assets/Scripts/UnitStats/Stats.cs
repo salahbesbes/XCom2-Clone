@@ -13,6 +13,11 @@ public class Stats : MonoBehaviour
 	{
 	}
 
+	internal void ResetStats()
+	{
+		unit.Reset();
+	}
+
 	public void addArmorModifier(EquipementData equiment)
 	{
 		unit.armor.AddModifier(equiment.Value);

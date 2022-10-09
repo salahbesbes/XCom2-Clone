@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class Dead : BaseState<PlayerStateManager>
 {
-	public override Unit EnterState(PlayerStateManager player)
+	public override void EnterState(PlayerStateManager player)
 	{
 		//player.model.transform.GetComponent<CapsuleCollider>().height = 0.5f;
-		Debug.Log($" {player} IS DEAD");
+		//Debug.Log($" {player} IS DEAD");
 
 		//string CorrespondNameOfTheAnimation = Enum.GetName(typeof(AnimationType), player.currentActionAnimation);
 
@@ -16,9 +16,9 @@ public class Dead : BaseState<PlayerStateManager>
 		player.stopGlowing();
 		player.HealthBar.gameObject.SetActive(false);
 		player.notifyGameManagerEvent.Raise(player);
+		player.IsDead();
 		GameStateManager.Instance.SelectedUnit.SelectNextTarget();
 
-		return null;
 	}
 
 	public override void ExitState(PlayerStateManager player)
@@ -27,10 +27,9 @@ public class Dead : BaseState<PlayerStateManager>
 
 	public override void Update(PlayerStateManager player)
 	{
-		Debug.Log($"dead state update");
-		if (Input.anyKeyDown)
-		{
-			player.SwitchState(player.idelState);
-		}
+		//if (Input.anyKeyDown)
+		//{
+		//	player.SwitchState(player.idelState);
+		//}
 	}
 }

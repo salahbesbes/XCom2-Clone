@@ -2,12 +2,11 @@ using UnityEngine;
 
 public class DoingAction : BaseState<PlayerStateManager>
 {
-	public override Unit EnterState(PlayerStateManager player)
+	public override void EnterState(PlayerStateManager player)
 	{
-		//Debug.Log($"{player.name} current state : {player.State.name}");
+		//Debug.Log($"{player.name} current state : {player.State}");
 		//Debug.Log($"{player.currentActionAnimation}");
 		player.PlayAnimation(player.currentActionAnimation);
-		return null;
 	}
 
 	public override void Update(PlayerStateManager player)

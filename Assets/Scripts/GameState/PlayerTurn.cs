@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class PlayerTurn : BaseState<GameStateManager>
 {
-	public override Unit EnterState(GameStateManager gameManager)
+
+	public override void EnterState(GameStateManager gameManager)
 	{
 		gameManager.SelectedUnit = gameManager.players.FirstOrDefault(unit => unit.State is Idel);
-		gameManager.SelectedUnit.CurrentTarget = gameManager.enemies.FirstOrDefault();
+		gameManager.SelectedUnit.CurrentTarget = gameManager.enemies.FirstOrDefault(unit => unit.State is Idel);
 
 		gameManager.SelectedUnit.enabled = true;
 		gameManager.SelectedUnit.fpsCam.enabled = true;
@@ -14,7 +15,6 @@ public class PlayerTurn : BaseState<GameStateManager>
 		//gameManager.PlayerChangeEvent.Raise();
 		gameManager.SelectedUnit.onChangeTarget.Raise();
 
-		return gameManager.SelectedUnit;
 	}
 
 	public override void Update(GameStateManager gameManager)
@@ -45,6 +45,21 @@ public class PlayerTurn : BaseState<GameStateManager>
 
 	}
 
+
+	private PlayerStateManager findFirstAllyAlive(GameStateManager gameManager, int currentindex, int counter)
+	{
+
+		PlayerStateManager nextUnit = gameManager.players[(currentindex + 1) % gameManager.players.Count];
+		if (nextUnit.State is Idel)
+		{
+			return nextUnit;
+		}
+		if (counter >= gameManager.players.Count)
+		{
+			return null;
+		}
+		return findFirstAllyAlive(gameManager, currentindex + 1, counter + 1);
+	}
 	public void SelectNextPlayer(GameStateManager gameManager)
 	{
 		int nbPlayers = gameManager.players.Count;
@@ -58,28 +73,18 @@ public class PlayerTurn : BaseState<GameStateManager>
 			//List<PlayerStateManager> availablePlayers = gameManager.players.Where(unit => unit.State is Idel).ToList();
 			int currentPlayerIndex = gameManager.players.FindIndex(instance => instance == gameManager.SelectedUnit);
 			gameManager.SelectedUnit = gameManager.players[(currentPlayerIndex + 1) % nbPlayers];
-
+			gameManager.SelectedUnit = findFirstAllyAlive(gameManager, currentPlayerIndex, 0);
 			gameManager.SelectedUnit.enabled = true;
 			gameManager.SelectedUnit.fpsCam.enabled = true;
 			gameManager.SelectedUnit.onCameraEnabeled();
 			gameManager.SelectedUnit.CurrentTarget = gameManager.enemies.FirstOrDefault(unit => unit.State is Idel);
-			//Vector3 TargetDir = gameManager.SelectedUnit.CurrentTarget.aimPoint.position - gameManager.SelectedUnit.aimPoint.position;
-			//await gameManager.SelectedUnit.rotateTowardDirection(gameManager.SelectedUnit.partToRotate, TargetDir, 3);
-			//await gameManager.SelectedUnit.rotateTowardDirection(gameManager.SelectedUnit.CurrentTarget.partToRotate, -TargetDir, 3);
-			//gameManager.SelectedUnit.newFlunking(gameManager.SelectedUnit.CurrentTarget);
-			//gameManager.MakeGAmeMAnagerListingToNewSelectedUnit(gameManager.SelectedPlayer);
-
-			//gameManager.PlayerChangeEvent.Raise();
-			//gameManager.SelectedUnit.CoverBihaviour.UpdateNorthPositionTowardTarget(gameManager.SelectedUnit.CurrentTarget);
-			//gameManager.SelectedUnit.CoverBihaviour.CalculateCoverValue();
-			//gameManager.SelectedUnit.CheckForFlunks();
 		}
 	}
 }
 
 public class EnemyTurn : BaseState<GameStateManager>
 {
-	public override Unit EnterState(GameStateManager gameManager)
+	public override void EnterState(GameStateManager gameManager)
 	{
 		gameManager.SelectedUnit = gameManager.enemies.FirstOrDefault(unit => unit.State is Idel);
 		gameManager.SelectedUnit.CurrentTarget = gameManager.players.FirstOrDefault();
@@ -91,7 +96,6 @@ public class EnemyTurn : BaseState<GameStateManager>
 
 		//gameManager.PlayerChangeEvent.Raise();
 		gameManager.SelectedUnit.onChangeTarget.Raise();
-		return gameManager.SelectedUnit;
 	}
 
 	public override void Update(GameStateManager gameManager)
@@ -118,7 +122,20 @@ public class EnemyTurn : BaseState<GameStateManager>
 			enemy.stats.unit.resetActionPoints();
 		}
 	}
+	private PlayerStateManager findFirstAllyAlive(GameStateManager gameManager, int currentindex, int counter)
+	{
 
+		PlayerStateManager nextUnit = gameManager.enemies[(currentindex + 1) % gameManager.enemies.Count];
+		if (nextUnit.State is Idel)
+		{
+			return nextUnit;
+		}
+		if (counter >= gameManager.enemies.Count)
+		{
+			return null;
+		}
+		return findFirstAllyAlive(gameManager, currentindex + 1, counter + 1);
+	}
 	public void SelectNextEnemy(GameStateManager gameManager)
 	{
 		int nbEnemies = gameManager.enemies.Count;
@@ -131,7 +148,8 @@ public class EnemyTurn : BaseState<GameStateManager>
 			gameManager.SelectedUnit.SwitchState(gameManager.SelectedUnit.idelState);
 			gameManager.SelectedUnit.fpsCam.enabled = false;
 			int currentPlayerIndex = gameManager.enemies.FindIndex(instance => instance == gameManager.SelectedUnit);
-			gameManager.SelectedUnit = gameManager.enemies[(currentPlayerIndex + 1) % nbPlayers];
+			gameManager.SelectedUnit = gameManager.SelectedUnit = findFirstAllyAlive(gameManager, currentPlayerIndex, 0);
+
 
 			gameManager.SelectedUnit.enabled = true;
 			gameManager.SelectedUnit.fpsCam.enabled = true;
